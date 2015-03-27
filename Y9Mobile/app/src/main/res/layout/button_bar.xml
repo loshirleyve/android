@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_alignParentBottom="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <RelativeLayout style="@style/ButtonBar" >
+
+        <ImageButton
+            android:id="@+id/button_msg"
+            style="@style/ButtonBarImgBtn"
+            android:background="@drawable/main_bar_msg"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBar" >
+
+        <ImageButton
+            android:id="@+id/button_constact"
+            style="@style/ButtonBarImgBtn"
+            android:background="@drawable/main_bar_constact"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBar" >
+
+        <ImageButton
+            android:id="@+id/funnav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/flat_add_this"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBar" >
+
+        <ImageButton
+            android:id="@+id/button_jm"
+            style="@style/ButtonBarImgBtn"
+            android:background="@drawable/main_bar_jm"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBar" >
+
+        <ImageButton
+            android:id="@+id/button_setting"
+            style="@style/ButtonBarImgBtn"
+            android:background="@drawable/main_bar_setting"
+            android:contentDescription="@string/app_name" />
+    </RelativeLayout>
+
+</LinearLayout>

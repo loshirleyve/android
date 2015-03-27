@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:id="@+id/allorders"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/photo"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/mine_item_background"
+            android:onClick="true" >
+
+            <ImageView
+                android:id="@+id/allorder_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/flat_user" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/allorder_image"
+                android:text="@string/allorders" />
+
+            <TextView
+                android:id="@+id/allorder_tishitext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/allorder_imageView"
+                android:textColor="@color/red"
+                android:text="@string/orderconnut"  />
+
+            <ImageView
+                android:id="@+id/allorder_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_right_normal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nopanyment_order"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/allorders"
+            android:layout_margin="10dp"
+            android:background="@drawable/mine_item_background"
+            android:onClick="true" >
+
+            <ImageView
+                android:id="@+id/nopanyment_order_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/flat_user" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/nopanyment_order_image"
+                android:text="@string/nopanyment_order" />
+
+            <TextView
+                android:id="@+id/nopanyment_order_tishitext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/nopanyment_order_imageView"
+                android:textColor="@color/red" 
+                android:text="@string/orderconnut" />
+
+            <ImageView
+                android:id="@+id/nopanyment_order_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_right_normal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/no_submited_information_order"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/nopanyment_order"
+            android:layout_margin="10dp"
+            android:background="@drawable/mine_item_background"
+            android:clickable="true" >
+
+            <ImageView
+                android:id="@+id/no_submited_information_order_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/flat_user" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/no_submited_information_order_image"
+                android:text="@string/no_submited_information_order" />
+
+            <TextView
+                android:id="@+id/no_submited_information_order_tishitext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/no_submited_information_order_imageView"
+                android:textColor="@color/red"
+                android:text="@string/orderconnut"  />
+
+            <ImageView
+                android:id="@+id/no_submited_information_order_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_right_normal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/servicing_order"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/no_submited_information_order"
+            android:layout_margin="10dp"
+            android:background="@drawable/mine_item_background"
+            android:onClick="true" >
+
+            <ImageView
+                android:id="@+id/servicing_order_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/flat_user" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/servicing_order_image"
+                android:text="@string/servicing_order" />
+
+            <TextView
+                android:id="@+id/servicing_order_tishitext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/servicing_order_imageView"
+                android:textColor="@color/red" 
+                android:text="@string/orderconnut" />
+
+            <ImageView
+                android:id="@+id/servicing_order_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_right_normal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/comment_order"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/servicing_order"
+            android:layout_margin="10dp"
+            android:background="@drawable/mine_item_background"
+            android:onClick="true" >
+
+            <ImageView
+                android:id="@+id/comment_order_image"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/flat_user" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/comment_order_image"
+                android:text="@string/comment_order" />
+
+            <TextView
+                android:id="@+id/comment_order_tishitext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/comment_order_imageView"
+                android:textColor="@color/red" 
+                android:text="@string/orderconnut" />
+
+            <ImageView
+                android:id="@+id/comment_order_imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitXY"
+                android:src="@drawable/arrow_right_normal" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

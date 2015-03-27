@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="60dp"
+    android:layout_height="80dp"
+    android:orientation="vertical" >
+
+    <com.yun9.mobile.roundimage.RoundImageView
+        android:id="@+id/image"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:contentDescription="@string/app_name" />
+
+   
+       <TextView
+           android:id="@+id/name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textColor="@color/black"
+           android:layout_gravity="center_horizontal"
+           android:text="@string/app_name"
+           android:textSize="18sp"/>
+
+</LinearLayout>

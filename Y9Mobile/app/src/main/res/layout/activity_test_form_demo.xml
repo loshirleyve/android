@@ -1,0 +1,49 @@
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:myview="http://schemas.android.com/apk/res/com.yun9.mobile"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        >
+        <Button
+        android:id="@+id/btn1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="第1步（客户端1）显示服务端配置的表单视图并接收用户输入数据"
+        />
+
+  		<com.maoye.form.view.form.ViewFormShell
+        android:id="@+id/form1"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	/>
+        
+ 		<Button
+        android:id="@+id/btn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="第2步（客户端1）表单获取到数据后提交给服务端"
+        />
+        
+ 		
+ 		<Button
+        android:id="@+id/btn3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="第3步（客户端2,3,...）获取已经采集到数据的表单并显示"
+        />
+        
+ 		<com.maoye.form.view.form.ViewFormShell
+        android:id="@+id/form2"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	/>
+ 		
+    </LinearLayout>
+    
+</ScrollView>

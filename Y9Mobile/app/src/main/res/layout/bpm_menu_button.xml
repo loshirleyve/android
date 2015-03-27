@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ButtonBar" >
+    <ImageButton
+        android:id="@+id/btn_deal"
+        style="@style/ButtonBarImgBtn"
+        android:background="@drawable/more_easyicon_net_64"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/app_name" />
+</RelativeLayout>

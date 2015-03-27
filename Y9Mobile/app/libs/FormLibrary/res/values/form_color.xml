@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 灰白色 -->
+    <color name="form_prompt">#969696</color>
+  	<color name="form_row_line">#969696</color>
+  	<color name="form_cell_onclick_color_n">#ffffff</color>
+  	<color name="form_cell_onclick_color_p">#DDDDDD</color>
+    <!-- 黑色 -->
+    <color name="form_content">#000000</color>
+    
+    <!-- sweetAlert dialog -->
+    <color name="form_sweet_dialog_bg_color">#FFFFFF</color>
+    <color name="form_button_text_color">#FFFFFF</color>
+    <color name="form_gray_btn_bg_color">#D0D0D0</color>
+    <color name="form_gray_btn_bg_pressed_color">#B6B6B6</color>
+    <color name="form_blue_btn_bg_color">#AEDEF4</color>
+    <color name="form_blue_btn_bg_pressed_color">#96BFD2</color>
+	<!-- dialog -->
+    
+</resources>

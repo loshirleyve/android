@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:focusableInTouchMode="false"
+            android:background="@drawable/mine_item_background"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/flat_geo_marker"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/sign"
+                android:id="@+id/iv_getAddr"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:id="@+id/tv_job_time"
+                android:textColor="@color/black"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/bt_sign"
+                android:layout_toRightOf="@+id/iv_getAddr"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_job_job"
+                android:textColor="@color/black"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@+id/tv_job_time"
+                android:layout_toLeftOf="@+id/bt_sign"
+                android:layout_toRightOf="@+id/iv_getAddr"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_signed_time"
+                android:textColor="@color/black"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@+id/tv_job_job"
+                android:layout_toLeftOf="@+id/bt_sign"
+                android:layout_toRightOf="@+id/iv_getAddr"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_signed_addr"
+                android:textColor="@color/black"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_below="@+id/tv_signed_time"
+                android:layout_toLeftOf="@+id/bt_sign"
+                android:layout_toRightOf="@+id/iv_getAddr"/>
+
+        <ImageView
+                android:id="@+id/bt_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/mName"
+                android:src="@drawable/arrow_right_normal" />
+    </RelativeLayout>
+</LinearLayout>

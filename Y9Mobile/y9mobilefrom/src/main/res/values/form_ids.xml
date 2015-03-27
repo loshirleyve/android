@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- 基本 cell -->
+    <item type="id" name = "form_cell">false</item>
+    
+    
+    <!-- Cell 基本属性 -->
+    <item type="id" name = "form_cell_label">false</item>
+	<item type="id" name = "form_cell_value">false</item>
+    
+    <item type="id" name = "form_row">false</item>
+    <item type="id" name = "form_body">false</item>
+    <item type="id" name = "form_title">false</item>
+    
+    
+    <!-- 附件单元格 -->
+    <item type="id" name= "form_cell_attchment_pic">false</item>
+    <item type="id" name= "form_cell_attchment_add">false</item>
+    <item type="id" name= "form_cell_attchment_files">false</item>
+    
+    <!-- 对话框 -->
+    <item type="id" name = "form_dialog_title">false</item>
+    <item type="id" name = "form_dialog_titleImage">false</item>
+    <item type="id" name = "form_dialog_titleText">false</item>
+    <item type="id" name = "form_dialog_content">false</item>
+    <item type="id" name = "form_dialog_cancel">false</item>
+    <item type="id" name = "form_dialog_ok">false</item>
+    
+    <!-- 单选text对话框 -->
+    <item type="id" name = "form_dialog_radiochoice_text">false</item>
+    
+    
+    
+</resources>

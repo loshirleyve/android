@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="5dp"
+    android:paddingLeft="50dp"
+    android:orientation="horizontal" >
+
+     
+    <TextView
+        android:id="@+id/msg_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/them_red"
+        android:textSize="15sp" />
+    
+     <TextView
+        android:id="@+id/dian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/them_red"
+        android:text="@string/maohao"
+        android:textSize="15sp" />
+
+     <TextView
+        android:id="@+id/msg_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="15sp"  />
+     
+</LinearLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+    
+ <!--  <include
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        layout="@layout/include_titlebar"
+        /> -->
+    <com.yun9.mobile.framework.view.TitleBarView
+        android:id="@+id/tbvTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/devide_line"
+         />
+
+
+    <LinearLayout
+        android:background="@android:color/white"
+ 		android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        >
+  		<TextView
+        android:id="@+id/tvPoiName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:text="当前位置"
+         />
+
+    	<TextView
+        android:layout_marginTop="2dp"
+        android:id="@+id/tvPoiAddr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="未知"
+         />
+    </LinearLayout>
+    
+    
+    <RelativeLayout
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        >
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+        <ImageView
+            android:id="@+id/ivPicPosition"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/icon_gcoding"
+            />
+        <ImageButton
+                android:layout_marginTop="10dp"
+               android:layout_marginLeft="10dp"
+            android:id="@+id/btnTest"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
+               android:src="@drawable/flat_message"
+               android:background="@drawable/mine_item_background"
+            />
+    </RelativeLayout>
+    
+    
+ 	<RelativeLayout
+            android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        >
+       <include 
+        android:visibility="gone"
+        android:id="@+id/vgBottomView"
+        layout="@layout/include_position_bottom" 
+        />
+       <include 
+        layout="@layout/include_load" 
+        android:id="@+id/vgBottomLoad"
+        />
+    </RelativeLayout>
+
+</LinearLayout>

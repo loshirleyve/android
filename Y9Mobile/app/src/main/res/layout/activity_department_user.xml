@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/title" >
+
+        <ImageButton
+            android:id="@+id/return_btn"
+            style="@style/title_btn_return"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/app_name"
+            android:paddingRight="40dp"
+            android:src="@drawable/mini_webview_back" />
+
+        <TextView
+            android:id="@+id/title_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="@string/departmentinfo"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    
+     <TextView
+         android:id="@+id/line"
+         android:layout_below="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="0.05dp"
+        android:background="@color/devide_line" />
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_below="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

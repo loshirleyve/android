@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp" 
+        >
+
+        <TextView
+			android:layout_centerVertical="true"
+            android:id="@id/form_cell_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/form_prompt_paddingTop_size"
+            android:text=""
+            android:maxWidth="150dp"
+            android:textColor="@color/form_prompt"
+            android:textSize="@dimen/form_prompt_size" 
+            />
+
+        <ImageButton
+            android:id="@+id/form_cell_image_pic"
+            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/form_cell_label"
+            android:background="@drawable/form_ic_camera"
+            android:textColor="@color/form_content"
+            android:textSize="@dimen/form_content_size" 
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         >
+         <com.maoye.form.view.GalleryAlignLeft
+            android:id="@+id/form_cell_image_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:spacing="10dp"
+            />
+     <!--    <Gallery
+            android:id="@+id/form_cell_image_gallery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            /> -->
+    </RelativeLayout>
+    
+    
+    
+
+</LinearLayout>

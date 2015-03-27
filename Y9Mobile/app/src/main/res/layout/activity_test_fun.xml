@@ -1,0 +1,23 @@
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:myview="http://schemas.android.com/apk/res/com.yun9.mobile"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+        <Button
+        android:id="@+id/btnForm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="表单Demo测试"
+        />
+
+    	
+    </LinearLayout>
+    
+</ScrollView>

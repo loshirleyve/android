@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    >
+
+    <TextView
+        android:textColor="@color/form_prompt"
+        android:paddingTop="@dimen/form_prompt_paddingTop_size"
+        android:id="@id/form_cell_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/form_prompt_size"
+        android:text="天数"
+        android:focusable="true" 
+        android:focusableInTouchMode="true" 
+        />
+
+	<EditText
+	    android:hint=" "
+	    android:paddingTop="@dimen/form_content_paddingTop_size"
+	    android:layout_below="@id/form_cell_label"
+	    android:id="@id/form_cell_value"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:textSize="@dimen/form_content_size" 
+	    android:textColor="@color/form_content"
+	    android:background="@android:color/transparent"
+	    
+	    />
+</RelativeLayout>

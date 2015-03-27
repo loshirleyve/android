@@ -1,0 +1,108 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:windowSoftInputMode="adjustPan"
+    android:screenOrientation="portrait">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:paddingTop="10dp" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:contentDescription="@string/login_pic_tip"
+            android:src="@null" />
+
+        <TextView
+            android:id="@+id/loginUserNoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_userno_textview" />
+
+        <EditText
+            android:id="@+id/loginUserNoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <TextView
+            android:id="@+id/loginInstIdTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_inst_textview" 
+            android:visibility="gone" />
+
+          <RelativeLayout
+            android:id="@+id/inst_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginInstIdTextView"
+            android:background="@drawable/mine_item_background"
+            android:visibility="gone" >
+        <ListView
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:id="@+id/lv_inst_list"/>
+    </RelativeLayout>
+        
+        <EditText
+            android:id="@+id/loginInstIdText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:visibility="gone"  />
+
+        <TextView
+            android:id="@+id/loginPasswordTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_password_textview"
+            android:visibility="gone"  />
+
+        <EditText
+            android:id="@+id/loginPasswordText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:visibility="gone"  />
+
+          <Button
+            android:id="@+id/loginGetInst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_link" />
+          
+        <Button
+            android:id="@+id/loginSubmitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_submit"
+            android:visibility="gone" />
+        
+         <Button
+            android:id="@+id/resetButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login_reset"
+            android:visibility="gone" />
+        
+         <Button
+            android:id="@+id/moniButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/monistring" />
+         
+          <Button
+            android:id="@+id/manualButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/manual" />
+    </LinearLayout>
+
+</RelativeLayout>

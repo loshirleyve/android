@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/shiftItem_Click_LL"
+        android:background="@android:color/holo_red_light"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center" >
+        
+        <TextView 
+	        android:id="@+id/shiftItem_Label_Text"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.3"
+	        android:padding="10dp"
+	        android:gravity="center"
+	        android:textSize="20sp"
+	        />
+	    
+	    <TextView 
+	        android:id="@+id/shiftItem_Checktime_Text"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.7"
+	        android:padding="10dp"
+	        android:gravity="center"
+	        android:textSize="20sp"
+	        />
+        
+    </LinearLayout>
+ 
+</LinearLayout>

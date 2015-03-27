@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whites"
+    tools:context="com.yun9.mobile.bpm.activity.BpmActivity" >
+
+    <com.yun9.mobile.framework.view.TextTitleBarView
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <com.maoye.form.view.form.ViewFormShell
+        android:id="@+id/viewForm"
+        android:layout_below="@+id/title_bar"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	/>
+    <FrameLayout 
+        android:id="@+id/fr_bpm_node"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/viewForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>
