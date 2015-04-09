@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="form_prompt_size">14sp</dimen>
-    <dimen name="form_content_size">18sp</dimen>
-  	<dimen name="form_prompt_paddingTop_size">2dp</dimen>
-    <dimen name="form_content_paddingTop_size">5dp</dimen>
-</resources>
