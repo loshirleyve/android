@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!--查询部门下面的所有的组织-->
+    <repository>
+	    <name>QueryOrgTreeByInstAndTypeService</name>
+	    <action>com.yun9.sys.inst.support.service.QueryOrgTreeByInstAndTypeService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Org</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!--查询部门下面的parentid为0的组织-->
+	<repository>
+	    <name>SysInstDimOrgQueryByInstAndTypeService</name>
+	    <action>com.yun9.sys.inst.support.service.SysInstDimOrgQueryByInstAndTypeService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Org</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	<!--查询部门下面的所有部门-->
+	<repository>
+	    <name>SysInstDimOrgsQueryByParentIdService</name>
+	    <action>com.yun9.sys.inst.support.service.SysInstDimOrgsQueryByParentIdService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Org</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!--根据用户id查询出他的部门和职位  -->
+	<repository>
+	    <name>SysInstDimOrgQueryByCardService</name>
+	    <action>com.yun9.sys.inst.support.service.SysInstDimOrgQueryByCardService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Org</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!--根据ID查询部门-->
+	<repository>
+	    <name>SysInstDimOrgQueryByOrgIdService</name>
+	    <action>com.yun9.sys.inst.support.service.SysInstDimOrgQueryByOrgIdService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Org</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+</repositorys>

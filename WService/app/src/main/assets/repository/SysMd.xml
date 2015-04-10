@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+	<repository>
+		<name>SysCrashSaveService</name>
+		<action>com.yun9.sys.md.crash.service.SysCrashSaveService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+</repositorys>

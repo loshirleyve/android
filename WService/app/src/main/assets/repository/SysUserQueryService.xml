@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+	<repository>
+		<name>SysUserQueryService</name>
+		<action>com.yun9.sys.inst.support.service.SysUserQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.UserQuery</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+</repositorys>

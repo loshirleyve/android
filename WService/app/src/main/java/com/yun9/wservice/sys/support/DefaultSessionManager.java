@@ -6,23 +6,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.yun9.mobile.framework.bean.Bean;
-import com.yun9.mobile.framework.bean.BeanContext;
-import com.yun9.mobile.framework.bean.Initialization;
-import com.yun9.mobile.framework.bean.Injection;
-import com.yun9.mobile.framework.conf.PropertiesFactory;
-import com.yun9.mobile.framework.exception.SessionManagerException;
-import com.yun9.mobile.framework.model.AuthInfo;
-import com.yun9.mobile.framework.model.Device;
-import com.yun9.mobile.framework.model.Inst;
-import com.yun9.mobile.framework.session.SessionManager;
-import com.yun9.mobile.framework.util.AssertValue;
-import com.yun9.mobile.framework.util.JsonUtil;
-import com.yun9.mobile.framework.util.Logger;
-import com.yun9.mobile.framework.util.SystemMethod;
+import com.yun9.wservice.bean.Bean;
+import com.yun9.wservice.bean.BeanContext;
+import com.yun9.wservice.bean.Initialization;
+import com.yun9.wservice.bean.Injection;
+import com.yun9.wservice.conf.PropertiesFactory;
+import com.yun9.wservice.model.AuthInfo;
+import com.yun9.wservice.model.Device;
+import com.yun9.wservice.model.Inst;
+import com.yun9.wservice.sys.SessionManager;
+import com.yun9.wservice.sys.SessionManagerException;
+import com.yun9.wservice.util.AssertValue;
+import com.yun9.wservice.util.JsonUtil;
+import com.yun9.wservice.util.Logger;
+import com.yun9.wservice.util.SystemMethod;
+
 
 public class DefaultSessionManager implements SessionManager, Bean, Injection,
-		Initialization {
+        Initialization {
 
 	private PropertiesFactory propertiesFactory;
 

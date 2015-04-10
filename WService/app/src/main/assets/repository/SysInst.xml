@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+	<repository>
+		<name>SysInstQuery</name>
+		<action>com.yun9.sys.inst.support.service.SysInstQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Inst</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 新增或更新用户推送信息服务 -->
+	<repository>
+		<name>SysUserPushSaveService</name>
+		<action>com.yun9.sys.inst.support.service.SysUserPushSaveService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 更新用户推送绑定状态服务 -->
+	<repository>
+		<name>SysUserPushUpdateStateService</name>
+		<action>com.yun9.sys.inst.support.service.SysUserPushUpdateStateService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 更新用户个性签名 -->
+	<repository>
+		<name>SysUserUpdateSignatureService</name>
+		<action>com.yun9.sys.inst.support.service.SysUserUpdateSignatureService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 根据用户编号查询出机构列表 -->
+	<repository>
+		<name>SysInstQueryByUserService</name>
+		<action>com.yun9.sys.inst.support.service.SysInstQueryByUserService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Inst</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 根据用户编号和机构ID获取流程列表 -->
+	<repository>
+		<name>SysInstProcessQuery4InstRoleService</name>
+		<action>com.yun9.sys.inst.support.service.SysInstProcessQuery4InstRoleService</action>
+		<output>
+			<classname>com.yun9.mobile.bpm.model.SysInstProcess</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 保存用户流程模板 -->
+	<repository>
+		<name>SysInstProcessUserdefSaveService</name>
+		<action>com.yun9.sys.inst.support.service.SysInstProcessUserdefSaveService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 查询用户流程模板 -->
+	<repository>
+		<name>SysInstProcessUserdefQueryService</name>
+		<action>com.yun9.sys.inst.support.service.SysInstProcessUserdefQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.bpm.model.SysInstProcessUserdef</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+</repositorys>

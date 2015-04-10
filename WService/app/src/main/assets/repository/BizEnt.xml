@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+	<!--查询机构下面的所有企业  -->
+	<repository>
+	    <name>BizEntQueryService</name>
+	    <action>com.yun9.biz.md.support.service.BizEntQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.Ent</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+</repositorys>

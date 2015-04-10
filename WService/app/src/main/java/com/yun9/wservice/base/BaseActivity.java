@@ -1,13 +1,13 @@
 package com.yun9.wservice.base;
 
-import com.yun9.mobile.R;
-import com.yun9.mobile.framework.util.AssertValue;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import com.yun9.wservice.R;
+import com.yun9.wservice.util.AssertValue;
 
 public abstract class BaseActivity extends Activity {
 	private static boolean isShowToast = true;
@@ -49,10 +49,10 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	protected void openDialog(String msg, boolean cancel) {
-		if (!AssertValue.isNotNullAndNotEmpty(msg)) {
-			msg = this.context.getResources()
-					.getText(R.string.default_progress_dialog_msg).toString();
-		}
+//		if (!AssertValue.isNotNullAndNotEmpty(msg)) {
+//			msg = this.context.getResources()
+//					.getText(R.string.default_progress_dialog_msg).toString();
+//		}
 
 		if (!AssertValue.isNotNull(progressDialog)) {
 			progressDialog = new ProgressDialog(this);

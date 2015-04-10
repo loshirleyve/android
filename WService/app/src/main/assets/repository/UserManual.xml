@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!--获取用户使用手册  -->
+	<repository>
+		<name>SysInstUserManualQueryService</name>
+		<action>com.yun9.sys.inst.support.service.SysInstUserManualQueryService</action>
+		<output>      
+			<classname>com.yun9.mobile.framework.model.UserManual</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+</repositorys>
