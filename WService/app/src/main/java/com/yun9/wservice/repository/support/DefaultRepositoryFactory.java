@@ -2,14 +2,13 @@ package com.yun9.wservice.repository.support;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.res.AssetManager;
-import android.util.Xml;
 
+import com.thoughtworks.xstream.XStream;
 import com.yun9.wservice.bean.Bean;
 import com.yun9.wservice.bean.BeanContext;
 import com.yun9.wservice.bean.Initialization;
@@ -22,10 +21,6 @@ import com.yun9.wservice.repository.RepositoryParam;
 import com.yun9.wservice.util.AssertValue;
 import com.yun9.wservice.util.Logger;
 
-import junit.framework.Assert;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 public class DefaultRepositoryFactory implements RepositoryFactory, Bean,
         Injection, Initialization {
@@ -81,97 +76,27 @@ public class DefaultRepositoryFactory implements RepositoryFactory, Bean,
 	}
 
 	private List<Repository> parse(String fileName) throws IOException {
+		AssetManager assetManager = beanContext.getApplicationContext()
+				.getResources().getAssets();
 
-        List<Repository> repositorys = this.parseRepositorys(fileName);
-        this.initRepository(repositorys);
-        this.validateRepository(repositorys);
-        return repositorys;
+		InputStream is = null;
+		try {
+			is = assetManager.open(fileName);
+			XStream xstream1 = new XStream();
+			xstream1.alias("repositorys", List.class);
+			xstream1.alias("repository", Repository.class);
+			xstream1.alias("param", RepositoryParam.class);
+			@SuppressWarnings("unchecked")
+			List<Repository> repositorys = (List<Repository>) xstream1
+					.fromXML(is);
 
-
-//		InputStream is = null;
-//		try {
-//			is = assetManager.open(fileName);
-//			XStream xstream1 = new XStream();
-//			xstream1.alias("repositorys", List.class);
-//			xstream1.alias("repository", Repository.class);
-//			xstream1.alias("param", RepositoryParam.class);
-//			@SuppressWarnings("unchecked")
-//
-//		} finally {
-//			is.close();
-//		}
-
-
-
-
+			this.initRepository(repositorys);
+			this.validateRepository(repositorys);
+			return repositorys;
+		} finally {
+			is.close();
+		}
 	}
-    private List<Repository> parseRepositorys(String fileName){
-        List<Repository> repositories = new ArrayList<Repository>();
-
-        AssetManager assetManager = beanContext.getApplicationContext()
-                .getResources().getAssets();
-
-        InputStream is = null;
-        try {
-            is = assetManager.open(fileName);
-
-            XmlPullParser parser = Xml.newPullParser();
-            parser.setInput(is, "UTF-8");
-
-            int eventType = parser.getEventType();
-
-            String key = null;
-            String value = null;
-
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                switch (eventType) {
-                    case XmlPullParser.START_DOCUMENT:// 判断当前事件是否是文档开始事件
-                        break;
-                    case XmlPullParser.START_TAG:// 判断当前事件是否是标签元素开始事件
-                        if ("repository".equals(parser.getName())) {
-                            String name = parser.getAttributeValue(0);
-
-                            if (AssertValue.isNotNullAndNotEmpty(name)) {
-                                key = name.trim();
-                            }
-                            value = parser.nextText();
-                            if (AssertValue.isNotNullAndNotEmpty(value)) {
-                                value = value.trim();
-                            }
-
-                            if (AssertValue.isNotNullAndNotEmpty(key)
-                                    && AssertValue.isNotNullAndNotEmpty(value)) {
-                                logger.d("put properties name:" + name + ",value:"
-                                        + value);
-                                //p.put(key, value);
-                            }
-                        }
-                        key = null;
-                        value = null;
-                        break;
-                    case XmlPullParser.END_TAG:// 判断当前事件是否是标签元素结束事件
-                        break;
-                }
-                eventType = parser.next();// 进入下一个元素并触发相应事件
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        } finally {
-            if (AssertValue.isNotNull(is)){
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-
-        return repositories;
-    }
 
 	private void validateRepository(List<Repository> repositorys) {
 		if (AssertValue.isNotNullAndNotEmpty(repositorys)) {
@@ -197,7 +122,7 @@ public class DefaultRepositoryFactory implements RepositoryFactory, Bean,
 				}
 
 				if (!AssertValue.isNotNullAndNotEmpty(repository
-						.getContentType())) {
+                        .getContentType())) {
 					throw new RepositoryException("repository "
 							+ repository.getName()
 							+ " content type is not null!");
@@ -248,7 +173,7 @@ public class DefaultRepositoryFactory implements RepositoryFactory, Bean,
 
 					if (AssertValue.isNotNull(repository.getOutput())
 							&& AssertValue.isNotNullAndNotEmpty(repository
-									.getOutput().getClassname())) {
+                            .getOutput().getClassname())) {
 						repository.getOutput().setClassname(
 								(repository.getOutput().getClassname().trim()));
 					}

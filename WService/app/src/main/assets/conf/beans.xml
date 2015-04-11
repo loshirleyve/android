@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <beans>
+    <bean class="com.yun9.wservice.sys.support.DefaultSessionManager"></bean>
+    <bean class="com.yun9.wservice.repository.support.DefaultRepositoryFactory"></bean>
+    <bean class="com.yun9.wservice.repository.support.DefaultResourceFactory"></bean>
+    <bean class="com.yun9.wservice.conf.support.DefaultPropertiesFactory"></bean>
+
+
     <!--
 	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>
-	<bean class="com.yun9.mobile.framework.support.DefaultPropertiesFactory"></bean>
 
-	<bean class="com.yun9.mobile.framework.support.DefaultRepositoryFactory"></bean>
-	<bean class="com.yun9.mobile.framework.support.DefaultResourceFactory"></bean>
+
 
 	<bean class="com.yun9.mobile.framework.support.DefaultHttpFactory"></bean>
 
 	<bean class="com.yun9.mobile.framework.support.BaiduLocationFactory"></bean>
 	<bean class="com.yun9.mobile.framework.support.BaiduLocation"></bean>
 
-	<bean class="com.yun9.mobile.framework.support.DefaultSessionManager"></bean>
 
 	<bean class="com.yun9.mobile.framework.support.DefaultPromiseManager"></bean>
 	<bean class="com.yun9.mobile.framework.support.DefaultFileFactory"></bean>
