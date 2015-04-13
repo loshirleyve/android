@@ -2,32 +2,28 @@ package com.yun9.wservice.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.yun9.wservice.MainApplication;
 import com.yun9.wservice.R;
-import com.yun9.wservice.base.BaseActivity;
-import com.yun9.wservice.sys.SessionManager;
+import com.yun9.jupiter.actvity.BaseActivity;
 
 public class WelcomeActivity extends BaseActivity {
-	protected static final String TAG = "WelcomeActivity";
 	private ImageView mImageView;
 	private ProgressDialog proDlg;
 	private AlertDialog updateDlg;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_welcome);
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 		init();
 		enterAPP();
 	}
 
 	private void init() {
-
-	}
+        mImageView = (ImageView) findViewById(R.id.iv_welcome);
+    }
 
 	private void enterAPP(){
 		mImageView.postDelayed(new Runnable() {
@@ -59,16 +55,7 @@ public class WelcomeActivity extends BaseActivity {
 		}, 1000);
 	}
 	
-	@Override
-	protected void initWidget() {
-		mImageView = (ImageView) findViewById(R.id.iv_welcome);
-	}
 
-	@Override
-	protected void bindEvent() {
-
-	}
-	
 	@Override
 	public void showToast(String msg) {
 		super.showToast(msg);
