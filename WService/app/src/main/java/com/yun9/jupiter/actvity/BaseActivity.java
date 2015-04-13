@@ -1,16 +1,16 @@
 package com.yun9.jupiter.actvity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.yun9.jupiter.JupiterApplication;
+import com.yun9.jupiter.afinal.FinalActivity;
 import com.yun9.jupiter.context.AppContext;
 import com.yun9.jupiter.util.AssertValue;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends FinalActivity {
 	private static boolean isShowToast = true;
 
 	protected Context context;
@@ -23,9 +23,7 @@ public abstract class BaseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.context = this;
-
         JupiterApplication application = (JupiterApplication)this.getApplication();
-
         this.appContext  = application.getAppContext();
 	}
 

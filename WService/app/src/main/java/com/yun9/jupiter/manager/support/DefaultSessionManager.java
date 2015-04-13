@@ -19,7 +19,7 @@ import com.yun9.jupiter.manager.SessionManagerException;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.jupiter.util.SystemMethod;
+import com.yun9.jupiter.util.PublicHelp;
 
 
 public class DefaultSessionManager implements SessionManager, Bean, Injection,
@@ -144,7 +144,7 @@ public class DefaultSessionManager implements SessionManager, Bean, Injection,
 	@Override
 	public void loadDeviceInfos(Context cxt) {
 		// 收集设备信息
-		Map<String, String> deviceInfo = SystemMethod.collectDeviceInfo(cxt);
+		Map<String, String> deviceInfo = PublicHelp.collectDeviceInfo(cxt);
 
 		this.device = new Device();
 

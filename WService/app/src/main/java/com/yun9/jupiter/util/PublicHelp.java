@@ -25,7 +25,7 @@ import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-public class SystemMethod {
+public class PublicHelp {
 	private static final int ww = 480;
 	private static final int hh = 800;
 
@@ -172,7 +172,7 @@ public class SystemMethod {
 				infos.put("versionCode", versionCode);
 			}
 		} catch (NameNotFoundException e) {
-			Log.e(SystemMethod.class.getName(),
+			Log.e(PublicHelp.class.getName(),
 					"an error occured when collect package info", e);
 		}
 		Field[] fields = Build.class.getDeclaredFields();
@@ -180,10 +180,10 @@ public class SystemMethod {
 			try {
 				field.setAccessible(true);
 				infos.put(field.getName(), field.get(null).toString());
-				Log.d(SystemMethod.class.getName(), field.getName() + " : "
+				Log.d(PublicHelp.class.getName(), field.getName() + " : "
 						+ field.get(null));
 			} catch (Exception e) {
-				Log.e(SystemMethod.class.getName(),
+				Log.e(PublicHelp.class.getName(),
 						"an error occured when collect crash info", e);
 			}
 		}

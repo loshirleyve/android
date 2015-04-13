@@ -41,7 +41,7 @@ import com.yun9.jupiter.util.AssertArgument;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.jupiter.util.SystemMethod;
+import com.yun9.jupiter.util.PublicHelp;
 
 public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 
@@ -81,7 +81,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		}
 
 		// 检查网络状态
-		if (!SystemMethod.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
 				response.setCause(beanManager.getApplicationContext()
@@ -359,7 +359,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		AssertArgument.isNotNull(callback, "callback");
 		AssertArgument.isNotNull(file, "file");
 		// 检查网络状态
-		if (!SystemMethod.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
 				response.setCause(beanManager.getApplicationContext()
@@ -424,7 +424,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		AssertArgument.isNotNull(callback, "callback");
 		AssertArgument.isNotNull(file, "file");
 		// 检查网络状态
-		if (!SystemMethod.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
 				response.setCause(beanManager.getApplicationContext()
@@ -528,7 +528,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		}
 
 		// 检查网络状态
-		if (!SystemMethod.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
 				response.setCause(beanManager.getApplicationContext()
