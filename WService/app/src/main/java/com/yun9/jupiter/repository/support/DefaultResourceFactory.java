@@ -7,7 +7,7 @@ import com.yun9.jupiter.bean.Injection;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpFactory;
 import com.yun9.jupiter.repository.Repository;
-import com.yun9.jupiter.repository.RepositoryFactory;
+import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.Logger;
@@ -21,7 +21,7 @@ public class DefaultResourceFactory implements ResourceFactory, Injection,
 
 	private HttpFactory httpFactory;
 
-	private RepositoryFactory repositoryFactory;
+	private RepositoryManager repositoryManager;
 
 	@Override
 	public Class<?> getType() {
@@ -31,7 +31,7 @@ public class DefaultResourceFactory implements ResourceFactory, Injection,
 	@Override
 	public void injection(BeanManager beanManager) {
 		this.beanManager = beanManager;
-		repositoryFactory = this.beanManager.get(RepositoryFactory.class);
+		repositoryManager = this.beanManager.get(RepositoryManager.class);
 		httpFactory = this.beanManager.get(HttpFactory.class);
 	}
 
@@ -42,7 +42,7 @@ public class DefaultResourceFactory implements ResourceFactory, Injection,
 
 	@Override
 	public Resource create(String name) {
-		Repository repository = repositoryFactory.get(name);
+		Repository repository = repositoryManager.get(name);
 		DefaultResource resource = new DefaultResource(repository, this);
 
 		return resource;

@@ -16,16 +16,16 @@ import com.yun9.jupiter.bean.Injection;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.repository.Repository;
 import com.yun9.jupiter.repository.RepositoryException;
-import com.yun9.jupiter.repository.RepositoryFactory;
+import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.repository.RepositoryParam;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 
 
-public class DefaultRepositoryFactory implements RepositoryFactory, Bean,
+public class DefaultRepositoryManager implements RepositoryManager, Bean,
         Injection, Initialization {
 
-	private Logger logger = Logger.getLogger(DefaultRepositoryFactory.class);
+	private Logger logger = Logger.getLogger(DefaultRepositoryManager.class);
 
 	private BeanManager beanManager;
 
@@ -50,7 +50,7 @@ public class DefaultRepositoryFactory implements RepositoryFactory, Bean,
 
 	@Override
 	public Class<?> getType() {
-		return RepositoryFactory.class;
+		return RepositoryManager.class;
 	}
 
 	private void load() throws IOException {

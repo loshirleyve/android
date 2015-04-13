@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.yun9.wservice.MainApplication;
+import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.wservice.R;
 import com.yun9.jupiter.actvity.BaseActivity;
 
@@ -22,7 +22,9 @@ public class WelcomeActivity extends BaseActivity {
 	}
 
 	private void init() {
+        RepositoryManager repositoryManager = this.appContext.getBeanManager().get(RepositoryManager.class);
         mImageView = (ImageView) findViewById(R.id.iv_welcome);
+
     }
 
 	private void enterAPP(){
