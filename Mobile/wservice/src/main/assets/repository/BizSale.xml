@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 获取商品列表服务 -->
+	<repository>
+		<name>BizSaleServiceProductQueryService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceProductQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.server.sale.ModelProductInfo</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	<!-- 获取商品详细信息服务 -->
+	<repository>
+		<name>BizSaleServiceProductDetailInfoQueryService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceProductDetailInfoQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.server.sale.ModelProductDetailInfo</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	<!-- 产品附加信息 -->
+	<repository>
+		<name>bizSaleServiceProductsetRequirement</name>
+		<action>com.yun9.biz.sale.support.ent.service.bizSaleServiceProductsetRequirement</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.server.sale.ModelProductExtras</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	<!-- 提交订单服务 -->
+	<repository>
+		<name>BizSaleServiceOrderSaveService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceOrderSaveService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.server.sale.ModelOrderInfo</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 分类查询订单 -->
+	<repository>
+		<name>BizSaleServiceOrderCateGoryQueryService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceOrderCateGoryQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.BizSaleOrderList</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	<!--根据机构id和订单状态查询订单详情  -->
+	<repository>
+		<name>GetServiceOrderByState</name>
+		<action>com.yun9.biz.sale.support.ent.service.GetServiceOrderByState</action>
+		<output>
+			<classname>com.yun9.mobile.framework.model.ServiceOrder</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 登记代付款服务 -->
+	<repository>
+		<name>BizSaleServiceAddCollectService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceAddCollectService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 订单的评论-->
+	<repository>
+		<name>BizSaleServiceOrderCommentTextSaveOrUpService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceOrderCommentTextSaveOrUpService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 订单的评分啊-->
+	<repository>
+		<name>BizSaleServiceOrderCommentScoreSaveOrUpService</name>
+		<action>com.yun9.biz.sale.support.ent.service.BizSaleServiceOrderCommentScoreSaveOrUpService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>Object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	
+</repositorys>

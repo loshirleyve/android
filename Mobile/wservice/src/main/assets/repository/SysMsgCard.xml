@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+	<repository>
+		<name>SysMsgCardQueryMyCardService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardQueryMyCardService</action>
+		<output>
+			<classname>com.yun9.mobile.msg.model.MyMsgCard</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	
+	<repository>
+		<name>SysMsgCardSaveService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardSaveService</action>
+		<output>
+			<classname>com.yun9.mobile.msg.model.MyMsgCardMain</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 添加评论 -->
+	<repository>
+		<name>SysMsgCardCommentSaveService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardCommentSaveService</action>
+		<output>
+			<classname>com.yun9.mobile.msg.model.MsgCardComment</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 查询评论 -->
+	<repository>
+		<name>SysMsgCardCommentQueryService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardCommentQueryService</action>
+		<output>
+			<classname>com.yun9.mobile.msg.bean.MsgCardCommentBean</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 根据ID获取消息卡片 -->
+	<repository>
+		<name>SysMsgCardQueryMyCardByIdService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardQueryMyCardByIdService</action>
+		<output>
+			<classname>com.yun9.mobile.msg.model.MyMsgCard</classname>
+			<type>list</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 点赞服务 -->
+	<repository>
+		<name>SysMsgCardPraiseLikeService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardPraiseLikeService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 取消点赞服务 -->
+	<repository>
+		<name>SysMsgCardPraiseUnLikeService</name>
+		<action>com.yun9.sys.msg.card.service.SysMsgCardPraiseUnLikeService</action>
+		<output>
+			<classname>java.util.Map</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<!-- 获取随机整数服务 -->
+	<repository>
+		<name>RandomNumberService</name>
+		<action>com.yun9.sys.msg.card.service.RandomNumberService</action>
+		<output>
+			<classname>java.lang.Integer</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+</repositorys>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans>
+    <bean class="com.yun9.jupiter.manager.support.DefaultSessionManager"></bean>
+    <bean class="com.yun9.jupiter.repository.support.DefaultRepositoryManager"></bean>
+    <bean class="com.yun9.jupiter.repository.support.DefaultResourceFactory"></bean>
+    <bean class="com.yun9.jupiter.conf.support.DefaultPropertiesManager"></bean>
+    <bean class="com.yun9.jupiter.http.support.DefaultHttpFactory"></bean>
+
+    <!--
+	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>
+
+
+
+
+
+	<bean class="com.yun9.mobile.framework.support.BaiduLocationFactory"></bean>
+	<bean class="com.yun9.mobile.framework.support.BaiduLocation"></bean>
+
+
+	<bean class="com.yun9.mobile.framework.support.DefaultPromiseManager"></bean>
+	<bean class="com.yun9.mobile.framework.support.DefaultFileFactory"></bean>
+
+    <bean class="com.yun9.mobile.framework.support.DefaultCheckOnWorkAttendFactory"></bean>
+    <bean class="com.yun9.mobile.msg.action.impl.DefaultExtraMenuFactory"></bean>
+    <bean class="com.yun9.mobile.msg.action.invoke.impl.DefaultActionInvokeFactory"></bean>
+	<bean class="com.yun9.mobile.framework.support.DefaultTopicFactory"></bean>
+	
+	<bean class="com.yun9.mobile.push.impl.DefaultPushDeviceRegisterFactory"></bean>
+	<bean class="com.yun9.mobile.push.impl.DefaultPushMessageActionFactory"></bean>
+	-->
+</beans>

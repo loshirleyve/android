@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!--机构纬度卡    用户和组织的关联-->
+    <repository>
+	    <name>SaveDimOrgCardService</name>
+	    <action>com.yun9.sys.inst.support.service.SaveDimOrgCardService</action>
+		<output>
+			<classname>java.lang.String</classname>
+			<type>String</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+</repositorys>
