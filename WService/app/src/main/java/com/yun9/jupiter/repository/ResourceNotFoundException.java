@@ -1,8 +1,8 @@
 package com.yun9.jupiter.repository;
 
-import com.yun9.jupiter.actvity.BaseRuntimeException;
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 
-public class ResourceNotFoundException extends BaseRuntimeException {
+public class ResourceNotFoundException extends JupiterRuntimeException {
 
 	/**
 	 * 

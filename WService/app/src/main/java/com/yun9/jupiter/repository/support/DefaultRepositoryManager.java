@@ -9,10 +9,11 @@ import java.util.Map;
 import android.content.res.AssetManager;
 
 import com.thoughtworks.xstream.XStream;
+import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.Injection;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.repository.Repository;
 import com.yun9.jupiter.repository.RepositoryException;
@@ -22,14 +23,15 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 
 
-public class DefaultRepositoryManager implements RepositoryManager, Bean,
-        Injection, Initialization {
+public class DefaultRepositoryManager implements RepositoryManager, Bean, Initialization {
 
 	private Logger logger = Logger.getLogger(DefaultRepositoryManager.class);
 
-	private BeanManager beanManager;
-
+    @BeanInject
 	private PropertiesManager propertiesManager;
+
+    @BeanInject
+    private JupiterApplication  appContext;
 
 	private Map<String, Repository> repositorys = new HashMap<String, Repository>();
 
@@ -43,18 +45,12 @@ public class DefaultRepositoryManager implements RepositoryManager, Bean,
 	}
 
 	@Override
-	public void injection(BeanManager beanManager) {
-		this.beanManager = beanManager;
-		propertiesManager = this.beanManager.get(PropertiesManager.class);
-	}
-
-	@Override
 	public Class<?> getType() {
 		return RepositoryManager.class;
 	}
 
 	private void load() throws IOException {
-		AssetManager assetManager = beanManager.getApplicationContext()
+		AssetManager assetManager = appContext.getApplicationContext()
 				.getResources().getAssets();
 
 		String[] repositoryConfigs = assetManager.list("repository");
@@ -76,7 +72,7 @@ public class DefaultRepositoryManager implements RepositoryManager, Bean,
 	}
 
 	private List<Repository> parse(String fileName) throws IOException {
-		AssetManager assetManager = beanManager.getApplicationContext()
+		AssetManager assetManager = appContext.getApplicationContext()
 				.getResources().getAssets();
 
 		InputStream is = null;

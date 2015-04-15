@@ -1,6 +1,6 @@
-package com.yun9.jupiter.actvity;
+package com.yun9.jupiter.exception;
 
-public class BaseRuntimeException extends RuntimeException {
+public class JupiterRuntimeException extends RuntimeException {
 
 	/**
 	 * 
@@ -11,25 +11,25 @@ public class BaseRuntimeException extends RuntimeException {
 
 	private String reason = "";
 
-	public BaseRuntimeException() {
+	public JupiterRuntimeException() {
 	}
 
-    public BaseRuntimeException(Throwable cause) {
+    public JupiterRuntimeException(Throwable cause) {
         super(cause);
         this.reason = cause.getMessage();
     }
 
-	public BaseRuntimeException(String message) {
+	public JupiterRuntimeException(String message) {
 		super(message);
 		this.reason = message;
 	}
-    public BaseRuntimeException(String message,String code) {
+    public JupiterRuntimeException(String message, String code) {
         super(message);
         this.code = code;
         this.reason = message;
     }
 
-	public BaseRuntimeException(String message,String code, Throwable cause) {
+	public JupiterRuntimeException(String message, String code, Throwable cause) {
 		super(message, cause);
 		this.reason = message;
         this.code = code;

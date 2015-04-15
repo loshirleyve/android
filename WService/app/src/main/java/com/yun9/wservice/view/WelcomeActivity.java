@@ -3,16 +3,24 @@ package com.yun9.wservice.view;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
+import com.yun9.jupiter.actvity.JupiterActivity;
+import com.yun9.jupiter.actvity.annotation.ViewInject;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.wservice.R;
-import com.yun9.jupiter.actvity.BaseActivity;
 
-public class WelcomeActivity extends BaseActivity {
+
+
+public class WelcomeActivity extends JupiterActivity {
+    @ViewInject(id = R.id.iv_welcome,click = "btnClick")
 	private ImageView mImageView;
-	private ProgressDialog proDlg;
-	private AlertDialog updateDlg;
+
+    @BeanInject
+    private RepositoryManager repositoryManager;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_welcome);
@@ -22,15 +30,18 @@ public class WelcomeActivity extends BaseActivity {
 	}
 
 	private void init() {
-        RepositoryManager repositoryManager = this.appContext.getBeanManager().get(RepositoryManager.class);
-        mImageView = (ImageView) findViewById(R.id.iv_welcome);
+    }
 
+    public void btnClick(View v){
+        this.showToast("点击了图片！");
     }
 
 	private void enterAPP(){
+        this.showToast("你好！");
 		mImageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
+                WelcomeActivity.this.showToast("你好。我打开了！");
                 //BeanConfig.getInstance().load();
 //				SessionManager sessionManager = BeanConfig.getInstance()
 //						.getBeanContext().get(SessionManager.class);

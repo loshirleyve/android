@@ -7,6 +7,8 @@ public interface BeanManager {
 
 	public <T> T get(Class<T> clazz);
 
+    public BeanWrapper getBeanWrapper(Class<?> clazz);
+
 	public Context getApplicationContext();
 
 }

@@ -9,23 +9,26 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.util.Xml;
 
+import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.Injection;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.conf.PropertiesParserException;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 
 public class DefaultPropertiesManager implements PropertiesManager, Bean,
-        Initialization, Injection {
+        Initialization {
 	private static final Logger logger = Logger
 			.getLogger(DefaultPropertiesManager.class);
 
 	private Properties properties = null;
 
-	private BeanManager beanManager;
+    @BeanInject
+	private JupiterApplication appContext;
 
 	@Override
 	public Class<?> getType() {
@@ -37,7 +40,8 @@ public class DefaultPropertiesManager implements PropertiesManager, Bean,
 
 		InputStream is = null;
 		try {
-			is = this.beanManager.getApplicationContext().getResources()
+
+			is = appContext.getApplicationContext().getResources()
 					.getAssets().open("conf/app-config.xml");
 			this.parse(is, properties);
 		} catch (XmlPullParserException e) {
@@ -123,13 +127,8 @@ public class DefaultPropertiesManager implements PropertiesManager, Bean,
 
 	@Override
 	public void init(BeanManager beanManager) {
-		logger.d("Properties init.");
+		logger.d("Properties factory init.");
 		this.load();
-	}
-
-	@Override
-	public void injection(BeanManager beanManager) {
-		this.beanManager = beanManager;
 	}
 
 	@Override

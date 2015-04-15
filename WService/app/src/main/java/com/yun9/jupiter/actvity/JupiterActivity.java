@@ -1,21 +1,45 @@
-package com.yun9.jupiter.afinal;
+package com.yun9.jupiter.actvity;
 
 import java.lang.reflect.Field;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
-import com.yun9.jupiter.afinal.annotation.view.EventListener;
-import com.yun9.jupiter.afinal.annotation.view.Select;
-import com.yun9.jupiter.afinal.annotation.view.ViewInject;
+import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.actvity.annotation.EventListener;
+import com.yun9.jupiter.actvity.annotation.Select;
+import com.yun9.jupiter.actvity.annotation.ViewInject;
+import com.yun9.jupiter.bean.BeanManager;
+import com.yun9.jupiter.bean.annotation.BeanInject;
+import com.yun9.jupiter.util.AssertValue;
 
-public abstract class FinalActivity extends Activity {
+public abstract class JupiterActivity extends Activity {
 
+    private ProgressDialog progressDialog;
 
-	public void setContentView(int layoutResID) {
+    private static boolean isShowToast = true;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (AssertValue.isNotNull(progressDialog)) {
+            progressDialog.dismiss();
+        }
+    }
+
+    public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
 		initInjectedView(this);
 	}
@@ -34,12 +58,14 @@ public abstract class FinalActivity extends Activity {
 	
 
 	public static void initInjectedView(Activity activity){
-		initInjectedView(activity, activity.getWindow().getDecorView());
+		initInjectedView(activity,activity.getApplicationContext(), activity.getWindow().getDecorView());
 	}
-	
-	
-	public static void initInjectedView(Object injectedSource,View sourceView){
-		Field[] fields = injectedSource.getClass().getDeclaredFields();
+
+	public static void initInjectedView(Object injectedSource,Context context,View sourceView){
+        JupiterApplication app =  (JupiterApplication)context.getApplicationContext();
+        BeanManager beanManager = app.getBeanManager();
+
+    	Field[] fields = injectedSource.getClass().getDeclaredFields();
 		if(fields!=null && fields.length>0){
 			for(Field field : fields){
 				try {
@@ -65,6 +91,14 @@ public abstract class FinalActivity extends Activity {
 						}
 						
 					}
+
+                    BeanInject beanInject = field.getAnnotation(BeanInject.class);
+
+                    if (beanInject !=null){
+                        Object beanObj = beanManager.get(field.getType());
+                        field.set(injectedSource,beanObj);
+                    }
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -116,5 +150,43 @@ public abstract class FinalActivity extends Activity {
 	public enum Method{
 		Click,LongClick,ItemClick,itemLongClick
 	}
-	
+
+
+    protected void openDialog() {
+        this.openDialog(null);
+    }
+
+    protected void openDialog(String msg) {
+        this.openDialog(msg, false);
+    }
+
+    protected void openDialog(String msg, boolean cancel) {
+        if (!AssertValue.isNotNull(progressDialog)) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage(msg);
+            progressDialog.setCancelable(cancel);
+        }
+
+        progressDialog.show();
+    }
+
+    protected void hideDialog() {
+        if (AssertValue.isNotNull(progressDialog)) {
+            progressDialog.dismiss();
+        }
+    }
+
+    protected void showToast(String msg) {
+        if (isShowToast) {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void showToast(int msg) {
+        if (isShowToast) {
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

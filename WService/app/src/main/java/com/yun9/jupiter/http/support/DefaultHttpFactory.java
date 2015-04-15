@@ -19,9 +19,11 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.SyncHttpClient;
 
 
+import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
-import com.yun9.jupiter.bean.Injection;
+import com.yun9.jupiter.bean.Initialization;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpException;
@@ -43,16 +45,20 @@ import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
 
-public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
+public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 
 	private AsyncHttpClient client;
 	private SyncHttpClient syncHttpClient;
 
-	private BeanManager beanManager;
 
+    @BeanInject
 	private PropertiesManager propertiesManager;
 
+    @BeanInject
 	private SessionManager sessionManger;
+
+    @BeanInject
+    private JupiterApplication appContext;
 
 	private Logger logger = Logger.getLogger(DefaultHttpFactory.class);
 
@@ -81,10 +87,10 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		}
 
 		// 检查网络状态
-		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
-				response.setCause(beanManager.getApplicationContext()
+				response.setCause(appContext.getApplicationContext()
 						.getResources()
 						.getString(com.yun9.wservice.R.string.network_error));
 				response.setCode("300");
@@ -93,7 +99,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 			return;
 		}
 
-		client.post(beanManager.getApplicationContext(), request.getResource()
+		client.post(appContext.getApplicationContext(), request.getResource()
 				.getRepository().getBaseUrl(), entity, request.getResource()
 				.getRepository().getContentType(),
 				new AsyncHttpResponseHandler() {
@@ -145,7 +151,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 			c.setUserAgent(propertiesManager.getString(
 					"app.config.http.useragent", "android app"));
 
-			c.setCookieStore(new PersistentCookieStore(beanManager
+			c.setCookieStore(new PersistentCookieStore(appContext
 					.getApplicationContext()));
 			return c;
 		} else if (client == null) {
@@ -157,7 +163,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 					client.setUserAgent(propertiesManager.getString(
 							"app.config.http.useragent", "android app"));
 
-					client.setCookieStore(new PersistentCookieStore(beanManager
+					client.setCookieStore(new PersistentCookieStore(appContext
 							.getApplicationContext()));
 				}
 			}
@@ -176,7 +182,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 					client.setUserAgent(propertiesManager.getString(
 							"app.config.http.useragent", "android app"));
 
-					client.setCookieStore(new PersistentCookieStore(beanManager
+					client.setCookieStore(new PersistentCookieStore(appContext
 							.getApplicationContext()));
 				}
 			}
@@ -189,12 +195,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		return HttpFactory.class;
 	}
 
-	@Override
-	public void injection(BeanManager beanManager) {
-		this.beanManager = beanManager;
-		this.propertiesManager = this.beanManager.get(PropertiesManager.class);
-		this.sessionManger = this.beanManager.get(SessionManager.class);
-	}
+
 
 	private Request createRequest(Resource resource) {
 		Request request = new DefaultRequest();
@@ -359,10 +360,10 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		AssertArgument.isNotNull(callback, "callback");
 		AssertArgument.isNotNull(file, "file");
 		// 检查网络状态
-		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
-				response.setCause(beanManager.getApplicationContext()
+				response.setCause(appContext.getApplicationContext()
 						.getResources()
 						.getString(com.yun9.wservice.R.string.network_error));
 				response.setCode("300");
@@ -389,7 +390,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 			throw new RuntimeException("never appear");
 		}
 
-		client.post(beanManager.getApplicationContext(), url, params,
+		client.post(appContext.getApplicationContext(), url, params,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -424,10 +425,10 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		AssertArgument.isNotNull(callback, "callback");
 		AssertArgument.isNotNull(file, "file");
 		// 检查网络状态
-		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
-				response.setCause(beanManager.getApplicationContext()
+				response.setCause(appContext.getApplicationContext()
 						.getResources()
 						.getString(com.yun9.wservice.R.string.network_error));
 				response.setCode("300");
@@ -454,7 +455,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 			throw new RuntimeException("never appear");
 		}
 
-		client.post(beanManager.getApplicationContext(), url, params,
+		client.post(appContext.getApplicationContext(), url, params,
 				new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -495,7 +496,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 					syncHttpClient.setUserAgent(propertiesManager.getString(
 							"app.config.http.useragent", "android app"));
 
-					syncHttpClient.setCookieStore(new PersistentCookieStore(beanManager
+					syncHttpClient.setCookieStore(new PersistentCookieStore(appContext
 							.getApplicationContext()));
 				}
 			}
@@ -528,10 +529,10 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 		}
 
 		// 检查网络状态
-		if (!PublicHelp.isOpenNetwork(beanManager.getApplicationContext())) {
+		if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
 			if (AssertValue.isNotNull(callback)) {
 				Response response = new DefaultResponse();
-				response.setCause(beanManager.getApplicationContext()
+				response.setCause(appContext.getApplicationContext()
 						.getResources()
 						.getString(com.yun9.wservice.R.string.network_error));
 				response.setCode("300");
@@ -540,7 +541,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 			return;
 		}
 
-		client.post(beanManager.getApplicationContext(), request.getResource()
+		client.post(appContext.getApplicationContext(), request.getResource()
 				.getRepository().getBaseUrl(), entity, request.getResource()
 				.getRepository().getContentType(),
 				new AsyncHttpResponseHandler() {
@@ -578,4 +579,8 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Injection {
 				});
 	}
 
+    @Override
+    public void init(BeanManager beanManager) {
+        logger.d("Http Factory init.");
+    }
 }

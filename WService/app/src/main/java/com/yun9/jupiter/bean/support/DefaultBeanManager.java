@@ -2,6 +2,7 @@ package com.yun9.jupiter.bean.support;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,16 +14,18 @@ import org.xmlpull.v1.XmlPullParserException;
 import android.content.Context;
 import android.util.Xml;
 
+import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
+import com.yun9.jupiter.bean.BeanWrapper;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.Injection;
 import com.yun9.jupiter.bean.BeanParserException;
 import com.yun9.jupiter.bean.BeanInitException;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 
-public class DefaultBeanManager implements BeanManager {
+public class DefaultBeanManager implements BeanManager,Bean {
 
 	private Map<Class<?>, Object> objects;
 
@@ -56,20 +59,32 @@ public class DefaultBeanManager implements BeanManager {
 			}
 			// 检查对象是否实现了Bean
 			if (object instanceof Bean) {
-				Bean bean = (Bean) object;
-				objects.put(bean.getType(), object);
-			} else {
-				objects.put(object.getClass(), object);
-			}
+                Bean bean = (Bean) object;
+                objects.put(bean.getType(), new BeanWrapper(bean));
+            }else{
+                logger.d("对象："+object.getClass().getName()+"，没有实现Bean接口，已经做忽略处理！");
+            }
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(Class<T> clazz) {
-		return (T) this.objects.get(clazz);
+        BeanWrapper beanWrapper = (BeanWrapper)this.objects.get(clazz);
+
+        if (beanWrapper == null){
+            return null;
+        }else{
+            return (T) beanWrapper.getBean();
+        }
 	}
 
-	public Context getApplicationContext() {
+    @Override
+    public BeanWrapper getBeanWrapper(Class<?> clazz) {
+        BeanWrapper beanWrapper = (BeanWrapper)this.objects.get(clazz);
+        return beanWrapper;
+    }
+
+    public Context getApplicationContext() {
 		return context;
 	}
 
@@ -82,9 +97,8 @@ public class DefaultBeanManager implements BeanManager {
 			this.builderBeans(beans);
 			// 执行注入
 			this.injectionBeans();
-			// 执行初始化
-			this.initBean();
-		} catch (InstantiationException e) {
+
+        } catch (InstantiationException e) {
 			e.printStackTrace();
 			throw new BeanInitException(e);
 		} catch (IllegalAccessException e) {
@@ -107,37 +121,63 @@ public class DefaultBeanManager implements BeanManager {
 		if (AssertValue.isNotNullAndNotEmpty(beans)) {
 			for (Map<String, String> beanInfo : beans) {
 				String className = beanInfo.get("class");
-				Object bean = Class.forName(className).newInstance();
+				Object bean =  Class.forName(className).newInstance();
 				this.put(bean);
 			}
+            //加入应用程序
+            JupiterApplication appContext = (JupiterApplication) this.context.getApplicationContext();
+            this.put(appContext);
+
+            //加入BeanManager
+            this.put(this);
 		}
 	}
 
-	private void injectionBeans() {
+	private void injectionBeans() throws IllegalAccessException {
 		if (AssertValue.isNotNullAndNotEmpty(this.objects)) {
 			for (Map.Entry<Class<?>, Object> entity : this.objects.entrySet()) {
-				Object tempBean = entity.getValue();
-
-				if (tempBean instanceof Injection) {
-					Injection injection = (Injection) tempBean;
-					injection.injection(this);
-				}
+				BeanWrapper beanWrapper = (BeanWrapper) entity.getValue();
+                this.injectBean(beanWrapper);
 			}
 		}
 	}
 
-	private void initBean() {
-		if (AssertValue.isNotNullAndNotEmpty(this.objects)) {
-			for (Map.Entry<Class<?>, Object> entity : this.objects.entrySet()) {
-				Object tempBean = entity.getValue();
+    private void injectBean(BeanWrapper beanWrapper) throws IllegalAccessException {
 
-				if (tempBean instanceof Initialization) {
-					Initialization initialization = (Initialization) tempBean;
-					initialization.init(this);
-				}
-			}
-		}
-	}
+        Field[] fields = beanWrapper.getBean().getClass().getDeclaredFields();
+
+        if(fields!=null && fields.length>0) {
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+                BeanInject beanInject = field.getAnnotation(BeanInject.class);
+                if (beanInject !=null){
+                    BeanWrapper tempBeanWrapper = this.getBeanWrapper(field.getType());
+
+                    if (!tempBeanWrapper.getInjected()){
+                        this.injectBean(tempBeanWrapper);
+                    }
+
+                    field.set(beanWrapper.getBean(),tempBeanWrapper.getBean());
+                }
+            }
+
+            if (!beanWrapper.getInjected()){
+                //注入完成后执行初始化
+                this.initBean(beanWrapper.getBean());
+                //设置为已经注入
+                beanWrapper.setInjected(true);
+            }
+
+        }
+    }
+
+    private void initBean(Object bean){
+        if (bean instanceof Initialization) {
+            Initialization initialization = (Initialization) bean;
+            initialization.init(this);
+        }
+    }
 
 	private List<Map<String, String>> parser(InputStream is)
 			throws IOException, XmlPullParserException {
@@ -179,4 +219,9 @@ public class DefaultBeanManager implements BeanManager {
 
 		return beans;
 	}
+
+    @Override
+    public Class<?> getType() {
+        return BeanManager.class;
+    }
 }

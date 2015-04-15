@@ -1,5 +1,5 @@
 
-package com.yun9.jupiter.afinal.annotation.view;
+package com.yun9.jupiter.actvity.annotation;
 
 import java.lang.reflect.Method;
 
@@ -12,7 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.yun9.jupiter.afinal.exception.ViewException;
+import com.yun9.jupiter.actvity.exception.JupiterActivityException;
 
 public class EventListener implements OnClickListener, OnLongClickListener, OnItemClickListener, OnItemSelectedListener,OnItemLongClickListener {
 
@@ -95,7 +95,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 			if(method!=null)
 				return method.invoke(handler, params);	
 			else
-				throw new ViewException("no such method:"+methodName);
+				throw new JupiterActivityException("no such method:"+methodName);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -116,7 +116,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 				return obj==null?false:Boolean.valueOf(obj.toString());	
 			}
 			else
-				throw new ViewException("no such method:"+methodName);
+				throw new JupiterActivityException("no such method:"+methodName);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -136,7 +136,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 			if(method!=null)
 				return method.invoke(handler, params);	
 			else
-				throw new ViewException("no such method:"+methodName);
+				throw new JupiterActivityException("no such method:"+methodName);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -146,7 +146,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 	
 	
 	private static boolean invokeItemLongClickMethod(Object handler, String methodName,  Object... params){
-		if(handler == null) throw new ViewException("invokeItemLongClickMethod: handler is null :");
+		if(handler == null) throw new JupiterActivityException("invokeItemLongClickMethod: handler is null :");
 		Method method = null;
 		try{   
 			///onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,long arg3)
@@ -156,7 +156,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 				return Boolean.valueOf(obj==null?false:Boolean.valueOf(obj.toString()));	
 			}
 			else
-				throw new ViewException("no such method:"+methodName);
+				throw new JupiterActivityException("no such method:"+methodName);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -174,7 +174,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 			if(method!=null)
 				return method.invoke(handler, params);	
 			else
-				throw new ViewException("no such method:"+methodName);
+				throw new JupiterActivityException("no such method:"+methodName);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -191,7 +191,7 @@ public class EventListener implements OnClickListener, OnLongClickListener, OnIt
 			if(method!=null)
 				return method.invoke(handler, params);	
 			else
-				throw new ViewException("no such method:"+methodName);
+				throw new JupiterActivityException("no such method:"+methodName);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

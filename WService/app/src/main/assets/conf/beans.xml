@@ -4,14 +4,14 @@
     <bean class="com.yun9.jupiter.repository.support.DefaultRepositoryManager"></bean>
     <bean class="com.yun9.jupiter.repository.support.DefaultResourceFactory"></bean>
     <bean class="com.yun9.jupiter.conf.support.DefaultPropertiesManager"></bean>
-
+    <bean class="com.yun9.jupiter.http.support.DefaultHttpFactory"></bean>
 
     <!--
 	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>
 
 
 
-	<bean class="com.yun9.mobile.framework.support.DefaultHttpFactory"></bean>
+
 
 	<bean class="com.yun9.mobile.framework.support.BaiduLocationFactory"></bean>
 	<bean class="com.yun9.mobile.framework.support.BaiduLocation"></bean>

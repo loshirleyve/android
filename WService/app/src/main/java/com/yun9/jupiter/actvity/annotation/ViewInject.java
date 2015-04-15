@@ -1,5 +1,5 @@
 
-package com.yun9.jupiter.afinal.annotation.view;
+package com.yun9.jupiter.actvity.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

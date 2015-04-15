@@ -1,8 +1,8 @@
 package com.yun9.jupiter.bean;
 
-import com.yun9.jupiter.actvity.BaseRuntimeException;
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 
-public class BeanParserException extends BaseRuntimeException {
+public class BeanParserException extends JupiterRuntimeException {
 	/**
 	 * 
 	 */

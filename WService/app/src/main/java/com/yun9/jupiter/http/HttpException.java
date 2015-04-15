@@ -1,8 +1,8 @@
 package com.yun9.jupiter.http;
 
-import com.yun9.jupiter.actvity.BaseRuntimeException;
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 
-public class HttpException extends BaseRuntimeException {
+public class HttpException extends JupiterRuntimeException {
 
 	/**
 	 * 

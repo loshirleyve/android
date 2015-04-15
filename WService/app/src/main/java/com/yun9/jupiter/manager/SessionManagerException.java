@@ -1,8 +1,8 @@
 package com.yun9.jupiter.manager;
 
-import com.yun9.jupiter.actvity.BaseRuntimeException;
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 
-public class SessionManagerException extends BaseRuntimeException {
+public class SessionManagerException extends JupiterRuntimeException {
 
 	/**
 	 * 

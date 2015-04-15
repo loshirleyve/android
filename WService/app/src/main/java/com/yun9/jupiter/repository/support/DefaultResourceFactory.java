@@ -3,7 +3,7 @@ package com.yun9.jupiter.repository.support;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.Injection;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpFactory;
 import com.yun9.jupiter.repository.Repository;
@@ -12,15 +12,17 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.Logger;
 
-public class DefaultResourceFactory implements ResourceFactory, Injection,
+public class DefaultResourceFactory implements ResourceFactory,
         Initialization, Bean {
 
 	private Logger logger = Logger.getLogger(DefaultResourceFactory.class);
 
-	private BeanManager beanManager;
 
+
+    @BeanInject
 	private HttpFactory httpFactory;
 
+    @BeanInject
 	private RepositoryManager repositoryManager;
 
 	@Override
@@ -28,12 +30,6 @@ public class DefaultResourceFactory implements ResourceFactory, Injection,
 		return ResourceFactory.class;
 	}
 
-	@Override
-	public void injection(BeanManager beanManager) {
-		this.beanManager = beanManager;
-		repositoryManager = this.beanManager.get(RepositoryManager.class);
-		httpFactory = this.beanManager.get(HttpFactory.class);
-	}
 
 	@Override
 	public void init(BeanManager beanManager) {

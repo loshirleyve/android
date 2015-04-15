@@ -9,7 +9,7 @@ import android.content.SharedPreferences.Editor;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.Injection;
+import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.model.AuthInfo;
 import com.yun9.jupiter.model.Device;
@@ -22,9 +22,10 @@ import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
 
 
-public class DefaultSessionManager implements SessionManager, Bean, Injection,
+public class DefaultSessionManager implements SessionManager, Bean,
         Initialization {
 
+    @BeanInject
 	private PropertiesManager propertiesManager;
 
 	private AuthInfo authInfo;
@@ -49,11 +50,6 @@ public class DefaultSessionManager implements SessionManager, Bean, Injection,
 	@Override
 	public void setLogin(boolean login) {
 		this.setLocalBoolean(LOGIN, login);
-	}
-
-	@Override
-	public void injection(BeanManager beanManager) {
-		this.propertiesManager = beanManager.get(PropertiesManager.class);
 	}
 
 	public void clean() {

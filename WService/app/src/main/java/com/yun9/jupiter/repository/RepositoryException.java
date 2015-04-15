@@ -1,8 +1,8 @@
 package com.yun9.jupiter.repository;
 
-import com.yun9.jupiter.actvity.BaseRuntimeException;
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 
-public class RepositoryException extends BaseRuntimeException {
+public class RepositoryException extends JupiterRuntimeException {
 
 	/**
 	 * 

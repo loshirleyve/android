@@ -1,8 +1,8 @@
 package com.yun9.jupiter.conf;
 
-import com.yun9.jupiter.actvity.BaseRuntimeException;
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 
-public class PropertiesParserException extends BaseRuntimeException {
+public class PropertiesParserException extends JupiterRuntimeException {
 	/**
 	 *
 	 */
