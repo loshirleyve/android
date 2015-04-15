@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentBottom="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <RelativeLayout style="@style/ButtonBarMain" >
+
+        <ImageButton
+            android:id="@+id/button_bar_main_btn_store"
+            style="@style/ButtonBarMainImgBtn"
+            android:background="@drawable/store_btn"
+            android:contentDescription="@string/app_name" />
+        <TextView
+            style="@style/ButtonBarMainTextView"
+            android:text="商店"
+            android:layout_below="@id/button_bar_main_btn_store"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBarMain" >
+
+        <ImageButton
+            android:id="@+id/button_bar_main_btn_dynamic"
+            style="@style/ButtonBarMainImgBtn"
+            android:background="@drawable/post_btn"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            style="@style/ButtonBarMainTextView"
+            android:text="动态"
+            android:layout_below="@id/button_bar_main_btn_dynamic"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBarMain" >
+
+        <ImageButton
+            android:id="@+id/button_bar_main_btn_microapp"
+            style="@style/ButtonBarMainImgBtn"
+            android:background="@drawable/microapp_btn"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            style="@style/ButtonBarMainTextView"
+            android:text="应用"
+            android:layout_below="@id/button_bar_main_btn_microapp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout style="@style/ButtonBarMain" >
+
+        <ImageButton
+            android:id="@+id/button_bar_main_btn_user"
+            style="@style/ButtonBarMainImgBtn"
+            android:background="@drawable/user_btn"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            style="@style/ButtonBarMainTextView"
+            android:text="我"
+            android:layout_below="@id/button_bar_main_btn_user"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

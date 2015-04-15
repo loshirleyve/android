@@ -2,6 +2,7 @@ package com.yun9.wservice.view;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -41,7 +42,10 @@ public class WelcomeActivity extends JupiterActivity {
 		mImageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-                WelcomeActivity.this.showToast("你好。我打开了！");
+                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+				startActivity(intent);
+				finish();
+
                 //BeanConfig.getInstance().load();
 //				SessionManager sessionManager = BeanConfig.getInstance()
 //						.getBeanContext().get(SessionManager.class);
