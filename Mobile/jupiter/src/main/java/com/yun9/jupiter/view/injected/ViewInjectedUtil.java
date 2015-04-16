@@ -1,4 +1,4 @@
-package com.yun9.jupiter.actvity;
+package com.yun9.jupiter.view.injected;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AbsListView;
 
 
+import com.yun9.jupiter.view.injected.EventListener;
 import com.yun9.mobile.annotation.Select;
 import com.yun9.mobile.annotation.ViewInject;
 
@@ -14,7 +15,7 @@ import java.lang.reflect.Field;
 /**
  * Created by Leon on 15/4/16.
  */
-public class ActivityUtil {
+public class ViewInjectedUtil {
     public static void initInjectedView(Object injectedSource,Context context,View sourceView){
         Field[] fields = injectedSource.getClass().getDeclaredFields();
         if(fields!=null && fields.length>0){

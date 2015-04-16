@@ -1,4 +1,4 @@
-package com.yun9.jupiter.actvity.exception;
+package com.yun9.jupiter.view.exception;
 
 import com.yun9.jupiter.exception.JupiterRuntimeException;
 

@@ -88,28 +88,6 @@ public class DefaultBeanManager implements BeanManager,Bean {
 		return context;
 	}
 
-    @Override
-    public void initInjected(Object bean) throws IllegalAccessException {
-
-        if (AssertValue.isNotNull(bean)) {
-            Field[] fields = bean.getClass().getDeclaredFields();
-
-            if (fields != null && fields.length > 0) {
-                for (Field field : fields) {
-
-                    field.setAccessible(true);
-
-                    BeanInject beanInject = field.getAnnotation(BeanInject.class);
-
-                    if (beanInject !=null){
-                        Object beanObj = this.get(field.getType());
-                            field.set(bean,beanObj);
-                    }
-                }
-            }
-        }
-
-    }
 
     private void loadByConfig() throws IOException, XmlPullParserException {
 		InputStream is = this.context.getAssets().open("conf/beans.xml");

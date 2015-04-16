@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="60dp"
     android:layout_alignParentBottom="true"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
@@ -14,11 +14,7 @@
             style="@style/ButtonBarMainImgBtn"
             android:background="@drawable/store_btn"
             android:contentDescription="@string/app_name" />
-        <TextView
-            style="@style/ButtonBarMainTextView"
-            android:text="@string/app_store"
-            android:layout_below="@id/button_bar_main_btn_store"
-            />
+
     </RelativeLayout>
 
     <RelativeLayout style="@style/ButtonBarMain" >
@@ -28,12 +24,6 @@
             style="@style/ButtonBarMainImgBtn"
             android:background="@drawable/post_btn"
             android:contentDescription="@string/app_name" />
-
-        <TextView
-            style="@style/ButtonBarMainTextView"
-            android:text="@string/app_dynamic"
-            android:layout_below="@id/button_bar_main_btn_dynamic"
-            />
     </RelativeLayout>
 
     <RelativeLayout style="@style/ButtonBarMain" >
@@ -44,11 +34,7 @@
             android:background="@drawable/microapp_btn"
             android:contentDescription="@string/app_name" />
 
-        <TextView
-            style="@style/ButtonBarMainTextView"
-            android:text="@string/app_microapp"
-            android:layout_below="@id/button_bar_main_btn_microapp"
-            />
+
     </RelativeLayout>
 
     <RelativeLayout style="@style/ButtonBarMain" >
@@ -58,12 +44,6 @@
             style="@style/ButtonBarMainImgBtn"
             android:background="@drawable/user_btn"
             android:contentDescription="@string/app_name" />
-
-        <TextView
-            style="@style/ButtonBarMainTextView"
-            android:text="@string/app_user"
-            android:layout_below="@id/button_bar_main_btn_user"
-            />
     </RelativeLayout>
 
 </LinearLayout>

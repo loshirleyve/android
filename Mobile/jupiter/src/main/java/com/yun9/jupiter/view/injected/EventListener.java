@@ -1,5 +1,5 @@
 
-package com.yun9.jupiter.actvity;
+package com.yun9.jupiter.view.injected;
 
 import java.lang.reflect.Method;
 
@@ -12,7 +12,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.yun9.jupiter.actvity.exception.JupiterActivityException;
+import com.yun9.jupiter.view.exception.JupiterActivityException;
 
 public class EventListener implements OnClickListener, OnLongClickListener, OnItemClickListener, OnItemSelectedListener,OnItemLongClickListener {
 

@@ -11,6 +11,4 @@ public interface BeanManager {
 
 	public Context getApplicationContext();
 
-    public void initInjected(Object bean) throws IllegalAccessException;
-
 }

@@ -1,4 +1,4 @@
-package com.yun9.jupiter.actvity;
+package com.yun9.jupiter.view;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -8,7 +8,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
 
 import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.bean.injected.BeanInjectedUtil;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.view.injected.ViewInjectedUtil;
 
 public abstract class JupiterActivity extends Activity {
 
@@ -20,13 +22,7 @@ public abstract class JupiterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        JupiterApplication jupiterApplication = (JupiterApplication) this.getApplicationContext();
 
-        try {
-            jupiterApplication.getBeanManager().initInjected(this);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -39,28 +35,33 @@ public abstract class JupiterActivity extends Activity {
 
     public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
-		initInjectedView(this);
+        initInjected(this);
 	}
 
 
 	public void setContentView(View view, LayoutParams params) {
 		super.setContentView(view, params);
-		initInjectedView(this);
+        initInjected(this);
 	}
 
 
 	public void setContentView(View view) {
 		super.setContentView(view);
-		initInjectedView(this);
+        initInjected(this);
 	}
 	
 
-	public static void initInjectedView(Activity activity){
-		ActivityUtil.initInjectedView(activity, activity.getApplicationContext(), activity.getWindow().getDecorView());
+	public static void initInjected(Activity activity){
+        JupiterApplication jupiterApplication = (JupiterApplication) activity.getApplicationContext();
+
+        try {
+            BeanInjectedUtil.initInjected(activity.getApplicationContext(),activity);
+            ViewInjectedUtil.initInjectedView(activity, activity.getApplicationContext(), activity.getWindow().getDecorView());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
 	}
-
-
-
 
     protected void openDialog() {
         this.openDialog(null);
