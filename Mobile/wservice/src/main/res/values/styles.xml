@@ -7,7 +7,6 @@
 
     <style name="AppThemeActivity">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:background">@color/whites</item>
     </style>
 
     <style name="ButtonBarMain">

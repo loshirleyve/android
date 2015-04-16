@@ -5,7 +5,8 @@
     android:layout_height="60dp"
     android:layout_alignParentBottom="true"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:background="@color/whites">
 
     <RelativeLayout style="@style/ButtonBarMain" >
 

@@ -1,4 +1,4 @@
-package com.yun9.jupiter.view.widget;
+package com.yun9.jupiter.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
