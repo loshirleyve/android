@@ -5,6 +5,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AppThemeActivity">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@color/whites</item>
+    </style>
+
     <style name="ButtonBarMain">
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">0dp</item>
@@ -17,7 +22,6 @@
         <item name="android:layout_width">32dp</item>
         <item name="android:scaleType">fitXY</item>
         <item name="android:layout_centerHorizontal">true</item>
-
     </style>
 
     <style name="ButtonBarMainTextView">
@@ -26,7 +30,13 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">14dp</item>
         <item name="android:layout_centerHorizontal">true</item>
+    </style>
 
+    <style name="title_left">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_marginLeft">10dp</item>
     </style>
 
 </resources>

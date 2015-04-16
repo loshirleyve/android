@@ -9,7 +9,6 @@ import android.content.SharedPreferences.Editor;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.model.AuthInfo;
 import com.yun9.jupiter.model.Device;
@@ -20,6 +19,7 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.mobile.annotation.BeanInject;
 
 
 public class DefaultSessionManager implements SessionManager, Bean,

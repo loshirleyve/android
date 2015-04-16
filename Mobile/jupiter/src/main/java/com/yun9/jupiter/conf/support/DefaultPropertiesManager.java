@@ -13,12 +13,11 @@ import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.conf.PropertiesParserException;
-import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
+import com.yun9.mobile.annotation.BeanInject;
 
 public class DefaultPropertiesManager implements PropertiesManager, Bean,
         Initialization {

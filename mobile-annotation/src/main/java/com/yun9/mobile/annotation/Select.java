@@ -1,5 +1,5 @@
 
-package com.yun9.jupiter.bean.annotation;
+package com.yun9.mobile.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,5 +8,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME) 
-public @interface BeanInject {
+public @interface Select {
+
+	public String selected();
+	public String noSelected() default "";
+	
 }

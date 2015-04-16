@@ -1,5 +1,5 @@
 
-package com.yun9.jupiter.actvity.annotation;
+package com.yun9.jupiter.actvity;
 
 import java.lang.reflect.Method;
 

@@ -13,7 +13,6 @@ import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.repository.Repository;
 import com.yun9.jupiter.repository.RepositoryException;
@@ -21,6 +20,7 @@ import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.repository.RepositoryParam;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
+import com.yun9.mobile.annotation.BeanInject;
 
 
 public class DefaultRepositoryManager implements RepositoryManager, Bean, Initialization {

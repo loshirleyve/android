@@ -16,7 +16,7 @@
             android:contentDescription="@string/app_name" />
         <TextView
             style="@style/ButtonBarMainTextView"
-            android:text="商店"
+            android:text="@string/app_store"
             android:layout_below="@id/button_bar_main_btn_store"
             />
     </RelativeLayout>
@@ -31,7 +31,7 @@
 
         <TextView
             style="@style/ButtonBarMainTextView"
-            android:text="动态"
+            android:text="@string/app_dynamic"
             android:layout_below="@id/button_bar_main_btn_dynamic"
             />
     </RelativeLayout>
@@ -46,7 +46,7 @@
 
         <TextView
             style="@style/ButtonBarMainTextView"
-            android:text="应用"
+            android:text="@string/app_microapp"
             android:layout_below="@id/button_bar_main_btn_microapp"
             />
     </RelativeLayout>
@@ -61,7 +61,7 @@
 
         <TextView
             style="@style/ButtonBarMainTextView"
-            android:text="我"
+            android:text="@string/app_user"
             android:layout_below="@id/button_bar_main_btn_user"
             />
     </RelativeLayout>

@@ -5,5 +5,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
+    <com.yun9.wservice.layout.TitleRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        </com.yun9.wservice.layout.TitleRelativeLayout>
+
     <include android:id="@+id/button_bar_main_group" layout="@layout/button_bar_main"></include>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/devide_line"
+        android:layout_above="@id/button_bar_main_group"/>
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/line" />
 </RelativeLayout>

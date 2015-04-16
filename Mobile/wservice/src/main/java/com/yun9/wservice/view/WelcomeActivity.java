@@ -1,16 +1,14 @@
 package com.yun9.wservice.view;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.yun9.jupiter.actvity.JupiterActivity;
-import com.yun9.jupiter.actvity.annotation.ViewInject;
-import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.repository.RepositoryManager;
+import com.yun9.mobile.annotation.BeanInject;
+import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
 

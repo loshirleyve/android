@@ -23,7 +23,6 @@ import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
-import com.yun9.jupiter.bean.annotation.BeanInject;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpException;
@@ -44,6 +43,7 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.mobile.annotation.BeanInject;
 
 public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 
