@@ -3,35 +3,20 @@ package com.yun9.jupiter.view;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Toast;
 
-import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.injected.BeanInjectedUtil;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.injected.ViewInjectedUtil;
 
-public abstract class JupiterActivity extends Activity {
-
-    private ProgressDialog progressDialog;
+public abstract class JupiterFragmentActivity extends FragmentActivity {
 
     private static boolean isShowToast = true;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (AssertValue.isNotNull(progressDialog)) {
-            progressDialog.dismiss();
-        }
-    }
 
     public void setContentView(int layoutResID) {
 		super.setContentView(layoutResID);
@@ -60,30 +45,6 @@ public abstract class JupiterActivity extends Activity {
         }
 
 	}
-
-    protected void openDialog() {
-        this.openDialog(null);
-    }
-
-    protected void openDialog(String msg) {
-        this.openDialog(msg, false);
-    }
-
-    protected void openDialog(String msg, boolean cancel) {
-        if (!AssertValue.isNotNull(progressDialog)) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage(msg);
-            progressDialog.setCancelable(cancel);
-        }
-
-        progressDialog.show();
-    }
-
-    protected void hideDialog() {
-        if (AssertValue.isNotNull(progressDialog)) {
-            progressDialog.dismiss();
-        }
-    }
 
     protected void showToast(String msg) {
         if (isShowToast) {

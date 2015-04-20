@@ -14,6 +14,8 @@ import java.lang.reflect.Field;
  * Created by Leon on 15/4/16.
  */
 public class BeanInjectedUtil {
+
+
     public static void initInjected(Context context ,Object bean) throws IllegalAccessException {
         JupiterApplication jupiterApplication = (JupiterApplication) context.getApplicationContext();
         BeanManager beanManager =jupiterApplication.getBeanManager();

@@ -23,7 +23,7 @@
         <ImageButton
             android:id="@+id/button_bar_main_btn_dynamic"
             style="@style/ButtonBarMainImgBtn"
-            android:background="@drawable/post_btn"
+            android:background="@drawable/dynamic_btn"
             android:contentDescription="@string/app_name" />
     </RelativeLayout>
 

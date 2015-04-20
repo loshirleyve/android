@@ -39,7 +39,7 @@ public class JupiterRelativeLayout extends RelativeLayout{
         
         try {
             BeanInjectedUtil.initInjected(mContext, this);
-            ViewInjectedUtil.initInjectedView(this, mContext, this);
+            ViewInjectedUtil.initInjected(this, mContext, this);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="devide_line">#CBCED2</color>
-    <color name="whites">#ffffff</color>
-    <color name="blue">#499BF7</color>
-    <color name="red">#FF0000</color>
-    <color name="black">#000000</color>
-    <color name="transparent">#00000000</color>
-    <color name="title">#E94B35</color>
+
 
 </resources>

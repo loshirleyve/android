@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/title"
+    android:background="@color/title_color"
     android:layout_alignParentTop="true">
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:textColor="@color/whites"
             android:layout_gravity="center"
             android:background="@color/transparent"
-            android:text="@string/app_name"/>
+            android:text="@string/app_jupiter"/>
 
         <TextView
             android:id="@+id/title_sutitle_tv"

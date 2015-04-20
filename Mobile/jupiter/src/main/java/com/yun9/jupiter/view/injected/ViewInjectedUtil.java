@@ -1,5 +1,6 @@
 package com.yun9.jupiter.view.injected;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,7 +17,12 @@ import java.lang.reflect.Field;
  * Created by Leon on 15/4/16.
  */
 public class ViewInjectedUtil {
-    public static void initInjectedView(Object injectedSource,Context context,View sourceView){
+
+    public static void initInjected(Activity activity){
+        initInjected(activity, activity.getApplicationContext(), activity.getWindow().getDecorView());
+    }
+
+    public static void initInjected(Object injectedSource,Context context,View sourceView){
         Field[] fields = injectedSource.getClass().getDeclaredFields();
         if(fields!=null && fields.length>0){
             for(Field field : fields){

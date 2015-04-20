@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">移店通</string>
-    <string name="app_logout">注销</string>
-    <string name="app_cancel">取消</string>
-    <string name="app_return">返回</string>
-    <string name="app_complete">完成</string>
     <string name="app_store">商店</string>
     <string name="app_dynamic">动态</string>
     <string name="app_microapp">应用</string>
     <string name="app_user">我</string>
+
 </resources>
