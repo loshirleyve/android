@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.yun9.jupiter.manager.SessionManager;
@@ -15,6 +16,11 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.jupiter.widget.TitleBar;
+import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.model.MsgCardMain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  */
@@ -30,10 +36,10 @@ public class DynamicFragment extends JupiterFragment {
     @BeanInject
     private SessionManager sessionManager;
 
-    @ViewInject(id=R.id.dynamic_title)
+    @ViewInject(id=R.id.dynamic_title_tb)
     private TitleBar titleBar;
 
-    @ViewInject(id=R.id.dynamic_sessions)
+    @ViewInject(id=R.id.dynamic_sessions_lv)
     private ListView dynamicSessionList;
 
     /**
@@ -83,10 +89,15 @@ public class DynamicFragment extends JupiterFragment {
             }
         });
 
-        //titleBar.setTitleText(R.string.app_dynamic);
-//        titleBar.getTitleLeft().setVisibility(View.VISIBLE);
-//        titleBar.getTitleRight().setVisibility(View.VISIBLE);
-//        titleBar.setRightBtnText(R.string.app_cancel);
+        this.dynamicSessionList.setAdapter(new DynamicSessionAdapter(this.mContext,this.initMsgCard()));
+        this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MsgCard msgCard = (MsgCard) view.getTag();
+
+                logger.d("动态会话表格点击。"+msgCard.getMain().getFrom());
+            }
+        });
 
         return view;
     }
@@ -94,5 +105,29 @@ public class DynamicFragment extends JupiterFragment {
     @Override
     protected int getContentView() {
         return R.layout.fragment_dynamic;
+    }
+
+    private List<MsgCard> initMsgCard(){
+        List<MsgCard> msgCards = new ArrayList<MsgCard>();
+
+        for(int i=0;i<10;i++){
+            msgCards.add(this.createMsgCard(i));
+        }
+
+        return msgCards;
+    }
+
+    private MsgCard createMsgCard(int i){
+        MsgCard msgCard = new MsgCard();
+
+        MsgCardMain msgCardMain = new MsgCardMain();
+
+        msgCardMain.setId(i+"");
+        msgCardMain.setContent("测试内容"+i);
+        msgCardMain.setFrom("Leon"+i);
+
+        msgCard.setMain(msgCardMain);
+
+        return msgCard;
     }
 }

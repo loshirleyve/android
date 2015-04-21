@@ -26,7 +26,7 @@
             android:textSize="18dp"
             android:gravity="center"
             android:background="@color/transparent"
-            android:text="@string/app_return"/>
+            android:text="@string/jupiter_return"/>
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:textColor="@color/whites"
             android:layout_gravity="center"
             android:background="@color/transparent"
-            android:text="@string/app_jupiter"/>
+            android:text="@string/jupiter"/>
 
         <TextView
             android:id="@+id/title_sutitle_tv"
@@ -71,7 +71,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:textColor="@color/whites"
-            android:text="@string/app_complete"
+            android:text="@string/jupiter_complete"
             android:textSize="18dp"
             android:gravity="center"
             android:background="@color/transparent"/>

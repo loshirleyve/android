@@ -62,6 +62,8 @@ public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 
 	private Logger logger = Logger.getLogger(DefaultHttpFactory.class);
 
+    private int network_error_resource;
+
 	@Override
 	public void post(Resource resource, final AsyncHttpResponseCallback callback) {
 		AssertArgument.isNotNull(callback, "callback");
@@ -92,7 +94,8 @@ public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 				Response response = new DefaultResponse();
 				response.setCause(appContext.getApplicationContext()
 						.getResources()
-						.getString(com.yun9.jupiter.R.string.network_error));
+						.getString(network_error_resource));
+
 
 				response.setCode("300");
 				callback.onFailure(response);
@@ -366,7 +369,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 				Response response = new DefaultResponse();
 				response.setCause(appContext.getApplicationContext()
 						.getResources()
-						.getString(com.yun9.jupiter.R.string.network_error));
+						.getString(network_error_resource));
 				response.setCode("300");
 				callback.onFailure(response);
 			}
@@ -431,7 +434,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 				Response response = new DefaultResponse();
 				response.setCause(appContext.getApplicationContext()
 						.getResources()
-						.getString(com.yun9.jupiter.R.string.network_error));
+						.getString(network_error_resource));
 				response.setCode("300");
 				callback.onFailure(response);
 			}
@@ -535,7 +538,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
 				Response response = new DefaultResponse();
 				response.setCause(appContext.getApplicationContext()
 						.getResources()
-						.getString(com.yun9.jupiter.R.string.network_error));
+						.getString(network_error_resource));
 				response.setCode("300");
 				callback.onFailure(response);
 			}
@@ -583,5 +586,6 @@ public class DefaultHttpFactory implements HttpFactory, Bean,Initialization {
     @Override
     public void init(BeanManager beanManager) {
         logger.d("Http Factory init.");
+        this.network_error_resource = com.yun9.jupiter.R.string.jupiter_network_error;
     }
 }

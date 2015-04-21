@@ -19,6 +19,7 @@ public class JupiterRelativeLayout extends RelativeLayout{
         super(context);
         mContext = context;
         if (isInEditMode()) { return; }
+        this.beanInitInjected();
 
     }
 
@@ -26,22 +27,28 @@ public class JupiterRelativeLayout extends RelativeLayout{
         super(context, attrs);
         this.mContext = context;
         if (isInEditMode()) { return; }
+        this.beanInitInjected();
     }
 
     public JupiterRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.mContext = context;
         if (isInEditMode()) { return; }
+        this.beanInitInjected();
     }
 
-    public void inflate(int resource){
-        LayoutInflater.from(mContext).inflate(resource, this);
-        
+
+    private void beanInitInjected(){
         try {
             BeanInjectedUtil.initInjected(mContext, this);
-            ViewInjectedUtil.initInjected(this, mContext, this);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
+
+    public void inflate(int resource){
+        LayoutInflater.from(mContext).inflate(resource, this);
+        ViewInjectedUtil.initInjected(this, mContext, this);
+    }
 }
+
