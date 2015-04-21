@@ -28,7 +28,8 @@ public abstract class JupiterFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(this.getContentView(),null);
+        View view =  inflater.inflate(this.getContentView(), container, false);
+
         try {
             BeanInjectedUtil.initInjected( this.getActivity().getApplicationContext(), this);
             ViewInjectedUtil.initInjected(this,this.getActivity(),view);

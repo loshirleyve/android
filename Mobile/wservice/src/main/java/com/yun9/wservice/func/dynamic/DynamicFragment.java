@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
@@ -31,6 +32,9 @@ public class DynamicFragment extends JupiterFragment {
 
     @ViewInject(id=R.id.dynamic_title)
     private TitleBar titleBar;
+
+    @ViewInject(id=R.id.dynamic_sessions)
+    private ListView dynamicSessionList;
 
     /**
      * 使用工厂方法创建一个新的动态实例，
@@ -80,9 +84,9 @@ public class DynamicFragment extends JupiterFragment {
         });
 
         //titleBar.setTitleText(R.string.app_dynamic);
-        titleBar.getTitleLeft().setVisibility(View.VISIBLE);
-        titleBar.getTitleRight().setVisibility(View.VISIBLE);
-        titleBar.setRightBtnText(R.string.app_cancel);
+//        titleBar.getTitleLeft().setVisibility(View.VISIBLE);
+//        titleBar.getTitleRight().setVisibility(View.VISIBLE);
+//        titleBar.setRightBtnText(R.string.app_cancel);
 
         return view;
     }

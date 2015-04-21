@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.yun9.jupiter.util.Logger;
+import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.dynamic.DynamicFragment;
+import com.yun9.wservice.func.microapp.MicroAppFragment;
+import com.yun9.wservice.func.store.StoreFragment;
+import com.yun9.wservice.func.user.UserFragment;
 
 
 public class MainActivity extends JupiterFragmentActivity {
@@ -38,6 +42,8 @@ public class MainActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.initView();
+
+        storeBtn.performClick();
     }
 
     private void initView(){
@@ -53,6 +59,9 @@ public class MainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("商店被点击！");
+
+            StoreFragment storeFragment = StoreFragment.newInstance(null);
+            pushFragment(storeFragment);
             setButton(v);
         }
     };
@@ -63,11 +72,7 @@ public class MainActivity extends JupiterFragmentActivity {
             logger.d("动态按钮点击！");
 
             DynamicFragment dynamicFragment = DynamicFragment.newInstance(null);
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.main_fl_content, dynamicFragment,
-                    MainActivity.class.getName());
-            ft.commit();
+            pushFragment(dynamicFragment);
             setButton(v);
         }
     };
@@ -76,6 +81,7 @@ public class MainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("应用被点击！");
+            pushFragment(MicroAppFragment.newInstance(null));
             setButton(v);
         }
     };
@@ -84,6 +90,7 @@ public class MainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("我被点击！");
+            pushFragment(UserFragment.newInstance(null));
             setButton(v);
         }
     };
@@ -94,5 +101,13 @@ public class MainActivity extends JupiterFragmentActivity {
         }
         v.setEnabled(false);
         currentButton = v;
+    }
+
+    private void pushFragment(JupiterFragment fragment){
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.main_fl_content, fragment,
+                MainActivity.class.getName());
+        ft.commit();
     }
 }
