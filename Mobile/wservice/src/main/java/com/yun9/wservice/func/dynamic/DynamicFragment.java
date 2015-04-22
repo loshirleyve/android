@@ -15,7 +15,7 @@ import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.jupiter.widget.TitleBar;
+import com.yun9.jupiter.widget.TitleBarLayout;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardMain;
 
@@ -37,7 +37,7 @@ public class DynamicFragment extends JupiterFragment {
     private SessionManager sessionManager;
 
     @ViewInject(id=R.id.dynamic_title_tb)
-    private TitleBar titleBar;
+    private TitleBarLayout titleBarLayout;
 
     @ViewInject(id=R.id.dynamic_sessions_lv)
     private ListView dynamicSessionList;
@@ -68,21 +68,21 @@ public class DynamicFragment extends JupiterFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
 
-        titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("点击了返回");
             }
         });
 
-        titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
+        titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("点击了右边按钮");
             }
         });
 
-        titleBar.getTitleCenter().setOnClickListener(new View.OnClickListener() {
+        titleBarLayout.getTitleCenter().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("点击了标题。");

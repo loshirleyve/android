@@ -11,15 +11,14 @@ import com.yun9.jupiter.R;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.mobile.annotation.BeanInject;
-import com.yun9.mobile.annotation.ViewInject;
 
 
 /**
  * Created by Leon on 15/4/16.
  */
-public class TitleBar extends JupiterRelativeLayout {
+public class TitleBarLayout extends JupiterRelativeLayout {
 
-    private static final Logger logger = Logger.getLogger(TitleBar.class);
+    private static final Logger logger = Logger.getLogger(TitleBarLayout.class);
 
     private LinearLayout titleLeft;
 
@@ -46,19 +45,19 @@ public class TitleBar extends JupiterRelativeLayout {
     @BeanInject
     private PropertiesManager propertiesManager;
 
-    public TitleBar(Context context) {
+    public TitleBarLayout(Context context) {
         super(context);
         if (isInEditMode()) { return; }
         this.initView(null);
     }
 
-    public TitleBar(Context context, AttributeSet attrs) {
+    public TitleBarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         if (isInEditMode()) { return; }
         this.initView(attrs);
     }
 
-    public TitleBar(Context context, AttributeSet attrs, int defStyle) {
+    public TitleBarLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if (isInEditMode()) { return; }
         this.initView(attrs);
@@ -90,10 +89,10 @@ public class TitleBar extends JupiterRelativeLayout {
 
 
     private void initAttr(AttributeSet attrs){
-        TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.TitleBar);
+        TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.TitleBarLayout);
 
-        if (a.hasValue(R.styleable.TitleBar_titleText)) {
-            this.titleText = a.getString(R.styleable.TitleBar_titleText);
+        if (a.hasValue(R.styleable.TitleBarLayout_titleText)) {
+            this.titleText = a.getString(R.styleable.TitleBarLayout_titleText);
         }
 
         a.recycle();

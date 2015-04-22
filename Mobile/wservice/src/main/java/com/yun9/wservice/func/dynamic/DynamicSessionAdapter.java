@@ -8,7 +8,7 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
-import com.yun9.jupiter.widget.RowCell;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 
 import java.util.List;
 
@@ -55,11 +55,11 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
                     R.layout.fragment_dynamic_session_item, null);
         }
 
-        RowCell rowCell  = (RowCell) convertView
+        JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView
                 .findViewById(R.id.msg_card_session_rc);
 
-        rowCell.setTag(msgCard);
-        rowCell.getTitleTV().setText(msgCard.getMain().getFrom());
+        jupiterRowStyleSutitleLayout.setTag(msgCard);
+        jupiterRowStyleSutitleLayout.getTitleTV().setText(msgCard.getMain().getFrom());
         convertView.setTag(msgCard);
 
 //        holder.msgCardView.load(msgCard);

@@ -4,6 +4,7 @@
     <string name="jupiter_return">返回</string>
     <string name="jupiter_logout">注销</string>
     <string name="jupiter_complete">完成</string>
+    <string name="jupiter_ne_version">发现新版本</string>
     <string name="jupiter_network_error">你的网络似乎有些问题，请检查一下网络设置。</string>
 
     <string name="jupiter_row_cell_title">测试标题内容</string>

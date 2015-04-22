@@ -10,13 +10,10 @@ import com.yun9.jupiter.R;
 /**
  * Created by Leon on 15/4/21.
  */
-public class RowCell extends JupiterRelativeLayout{
-
-    private Object tag;
+public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
+    private TextView titleTV;
 
     private ImageView mainIV;
-
-    private TextView titleTV;
 
     private TextView sutitleTv;
 
@@ -24,29 +21,32 @@ public class RowCell extends JupiterRelativeLayout{
 
     private ImageView arrowRightIV;
 
-    public RowCell(Context context) {
+    public JupiterRowStyleSutitleLayout(Context context) {
         super(context);
         this.initViews();
     }
 
-    public RowCell(Context context, AttributeSet attrs) {
+    public JupiterRowStyleSutitleLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.initViews();
     }
 
-    public RowCell(Context context, AttributeSet attrs, int defStyle) {
+    public JupiterRowStyleSutitleLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.initViews();
     }
 
     private void initViews(){
-        this.inflate(R.layout.row_cell);
+        this.inflate(R.layout.row_style_sutitle);
 
         this.mainIV = (ImageView) this.findViewById(R.id.main_iv);
-        this.titleTV = (TextView) this.findViewById(R.id.title_tv);
+        this.setTitleTV((TextView) this.findViewById(R.id.title_tv));
         this.sutitleTv = (TextView) this.findViewById(R.id.sutitle_tv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.timeTv = (TextView) this.findViewById(R.id.time_tv);
+
+        if (isInEditMode()) { return; }
+
     }
 
     public ImageView getMainIV() {
@@ -57,13 +57,6 @@ public class RowCell extends JupiterRelativeLayout{
         this.mainIV = mainIV;
     }
 
-    public TextView getTitleTV() {
-        return titleTV;
-    }
-
-    public void setTitleTV(TextView titleTV) {
-        this.titleTV = titleTV;
-    }
 
     public TextView getSutitleTv() {
         return sutitleTv;
@@ -89,13 +82,12 @@ public class RowCell extends JupiterRelativeLayout{
         this.timeTv = timeTv;
     }
 
-    @Override
-    public Object getTag() {
-        return tag;
+
+    public TextView getTitleTV() {
+        return titleTV;
     }
 
-    @Override
-    public void setTag(Object tag) {
-        this.tag = tag;
+    public void setTitleTV(TextView titleTV) {
+        this.titleTV = titleTV;
     }
 }

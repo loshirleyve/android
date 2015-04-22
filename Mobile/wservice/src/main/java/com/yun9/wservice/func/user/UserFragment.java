@@ -20,6 +20,7 @@ public class UserFragment extends JupiterFragment {
     public static UserFragment newInstance( Bundle args ) {
         UserFragment fragment = new UserFragment();
         fragment.setArguments(args);
+
         return fragment;
     }
 

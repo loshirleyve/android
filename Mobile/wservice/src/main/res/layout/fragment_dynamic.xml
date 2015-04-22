@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context=".func.dynamic.Dynamic">
 
-    <com.yun9.jupiter.widget.TitleBar
+    <com.yun9.jupiter.widget.TitleBarLayout
         xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/dynamic_title_tb"
         android:layout_width="wrap_content"

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/user_head_iv"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/user_head"/>
+
+    <LinearLayout
+        android:id="@+id/user_info_ll"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/user_head_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/user_head_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:text="@string/user_head_name"/>
+        <TextView
+            android:id="@+id/user_head_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/user_company_name"/>
+        <TextView
+            android:id="@+id/user_head_dept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="研发部"/>
+
+        <TextView
+            android:id="@+id/user_head_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:text="个性签名"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/user_status_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_below="@id/user_info_ll">
+
+        <LinearLayout
+            android:id="@+id/getDynamicNum"
+            android:layout_width="1dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="收到的动态"
+                android:textColor="@color/title_color"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/title_color"
+                android:textSize="18dp"
+                android:text="99"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/devide_line"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentTop="true"/>
+
+
+        <LinearLayout
+            android:id="@+id/sendDynamicNum"
+            android:layout_width="1dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/title_color"
+                android:text="发布的动态"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/title_color"
+                android:textSize="18dp"
+                android:text="99"/>
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/devide_line"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentTop="true"/>
+
+
+        <LinearLayout
+            android:id="@+id/todoDynamicNum"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/title_color"
+
+                android:text="我的待办"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:textColor="@color/title_color"
+                android:text="99"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line_top_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/devide_line"
+        android:layout_alignParentTop="true"/>
+
+    <View
+        android:id="@+id/line_bottom_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/devide_line"
+        android:layout_below="@id/user_status_num"/>
+
+</RelativeLayout>

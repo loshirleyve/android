@@ -1,18 +1,57 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.yun9.wservice.func.user.UserFragment">
 
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".func.user.UserFragment"
+    android:background="@color/groupbackground">
 
-    <com.yun9.jupiter.widget.TitleBar
+    <com.yun9.jupiter.widget.TitleBarLayout
         xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/user_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tb:titleText="@string/app_user" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/user_title">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" android:layout_below="@id/user_title"/>
+        <com.yun9.wservice.func.user.UserHeadLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
+
+        </com.yun9.wservice.func.user.UserHeadLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/about1"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/about2"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/about3"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+    </LinearLayout>
+
+
 
 </RelativeLayout>

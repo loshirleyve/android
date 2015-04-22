@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="TitleBar">
+    <declare-styleable name="TitleBarLayout">
         <attr name="titleText" format="string"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="JupiterRowStyleSutitleLayout">
+        <attr name="styleType" format="enum">
+            <enum name="StyleTitle" value="0"></enum>
+            <enum name="StyleSutitle" value="1"></enum>
+            <enum name="StyleSetting" value="2"></enum>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="JupiterRowStyleTitleLayout">
+        <attr name="row_style_titleText" format="string"></attr>
+        <attr name="showHotText" format="enum">
+            <enum name="yes" value="1"></enum>
+            <enum name="no" value="0"></enum>
+        </attr>
+        <attr name="showArrow" format="enum">
+            <enum name="yes" value="1"></enum>
+            <enum name="no" value="0"></enum>
+        </attr>
     </declare-styleable>
 </resources>

@@ -7,5 +7,6 @@
     <color name="transparent">#00000000</color>
     <color name="title_color">#E94B35</color>
     <color name="devide_line">#CBCED2</color>
+    <color name="groupbackground">#EEF0EF</color>
 
 </resources>
