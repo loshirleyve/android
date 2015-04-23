@@ -6,9 +6,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.dynamic.DynamicFragment;
@@ -35,6 +37,9 @@ public class MainActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.button_bar_main_btn_user)
     private ImageButton userBtn;
 
+    @BeanInject
+    private RepositoryManager repositoryManager;
+
     private View currentButton;
 
     @Override
@@ -45,6 +50,8 @@ public class MainActivity extends JupiterFragmentActivity {
 
         storeBtn.performClick();
     }
+
+
 
     private void initView(){
         logger.d("初始化MainActivity");
@@ -71,7 +78,9 @@ public class MainActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             logger.d("动态按钮点击！");
 
-            DynamicFragment dynamicFragment = DynamicFragment.newInstance(null);
+            Bundle bundle = new Bundle();
+            bundle.putString(DynamicFragment.ARG_PARAM1,"测试参数");
+            DynamicFragment dynamicFragment = DynamicFragment.newInstance(bundle);
             pushFragment(dynamicFragment);
             setButton(v);
         }

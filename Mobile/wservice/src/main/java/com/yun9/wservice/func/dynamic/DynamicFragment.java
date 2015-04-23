@@ -23,13 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 
  */
 public class DynamicFragment extends JupiterFragment {
 
     private static final Logger logger = Logger.getLogger(DynamicFragment.class);
 
     //动态页面需要传递参数的Key
-    private static final String ARG_PARAM1 = "param1";
+    public static final String ARG_PARAM1 = "param1";
 
     private String mParam1 ;
 
@@ -41,6 +42,7 @@ public class DynamicFragment extends JupiterFragment {
 
     @ViewInject(id=R.id.dynamic_sessions_lv)
     private ListView dynamicSessionList;
+
 
     /**
      * 使用工厂方法创建一个新的动态实例，
@@ -64,14 +66,20 @@ public class DynamicFragment extends JupiterFragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
+
+        this.titleBarLayout.getTitleLeft().setVisibility(View.VISIBLE);
+
 
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("点击了返回");
+                logger.d("参数："+mParam1);
             }
         });
 

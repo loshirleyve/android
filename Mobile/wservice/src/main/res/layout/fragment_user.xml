@@ -31,24 +31,21 @@
             android:id="@+id/about1"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
+            android:layout_height="wrap_content">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about2"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
+            android:layout_height="wrap_content">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about3"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
+            android:layout_height="wrap_content">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
     </LinearLayout>
 
