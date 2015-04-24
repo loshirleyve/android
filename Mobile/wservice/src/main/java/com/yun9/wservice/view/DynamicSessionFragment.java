@@ -56,8 +56,15 @@ public class DynamicSessionFragment extends JupiterFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    protected int getContentView() {
+        return R.layout.fragment_dynamic;
+    }
 
+    @Override
+    protected void initViews(View view) {
         this.dynamicSessionList.setAdapter(new DynamicSessionAdapter(this.mContext,this.initMsgCard()));
         this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,21 +80,6 @@ public class DynamicSessionFragment extends JupiterFragment {
                 MsgCardListActivity.start(DynamicSessionFragment.this.mContext,bundle);
             }
         });
-
-    }
-
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
-
-        return view;
-    }
-
-    @Override
-    protected int getContentView() {
-        return R.layout.fragment_dynamic;
     }
 
     private List<MsgCard> initMsgCard(){

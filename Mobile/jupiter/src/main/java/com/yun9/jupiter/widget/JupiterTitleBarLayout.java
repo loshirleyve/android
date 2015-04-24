@@ -47,24 +47,23 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
     public JupiterTitleBarLayout(Context context) {
         super(context);
-        this.initView(null);
     }
 
     public JupiterTitleBarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.initView(attrs);
     }
 
     public JupiterTitleBarLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.initView(attrs);
     }
 
+    @Override
+    protected int getContextView() {
+        return R.layout.title_bar;
+    }
 
-    private void initView(AttributeSet attrs){
-        this.inflate(R.layout.title_bar);
-        if (isInEditMode()) { return; }
-
+    @Override
+    protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         this.titleLeft = (LinearLayout) this.findViewById(R.id.title_left_ll);
         this.titleRight = (LinearLayout) this.findViewById(R.id.title_right_ll);
         this.titleCenter = (LinearLayout) this.findViewById(R.id.title_center_ll);
@@ -83,7 +82,6 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
         logger.d("title 初始化完成！");
     }
-
 
     private void initAttr(AttributeSet attrs){
         TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterTitleBarLayout);

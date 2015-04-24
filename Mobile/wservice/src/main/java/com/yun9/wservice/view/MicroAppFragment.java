@@ -37,5 +37,10 @@ public class MicroAppFragment extends JupiterFragment {
         return R.layout.fragment_micro_app;
     }
 
+    @Override
+    protected void initViews(View view) {
+
+    }
+
 
 }

@@ -23,29 +23,27 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
 
     public JupiterRowStyleSutitleLayout(Context context) {
         super(context);
-        this.initViews();
     }
 
     public JupiterRowStyleSutitleLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.initViews();
     }
 
     public JupiterRowStyleSutitleLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.initViews();
     }
 
-    private void initViews(){
-        this.inflate(R.layout.row_style_sutitle);
+    @Override
+    protected int getContextView() {
+        return R.layout.row_style_sutitle;
+    }
 
+    protected void initViews(Context context, AttributeSet attrs, int defStyle){
         this.mainIV = (ImageView) this.findViewById(R.id.main_iv);
         this.setTitleTV((TextView) this.findViewById(R.id.title_tv));
         this.sutitleTv = (TextView) this.findViewById(R.id.sutitle_tv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.timeTv = (TextView) this.findViewById(R.id.time_tv);
-
-        if (isInEditMode()) { return; }
 
     }
 

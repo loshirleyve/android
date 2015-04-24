@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,29 +7,30 @@ import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 
 /**
- * Created by Leon on 15/4/22.
+ * Created by Leon on 15/4/24.
  */
-public class UserHeadLayout extends JupiterRelativeLayout {
-    public UserHeadLayout(Context context) {
+public class MsgCard extends JupiterRelativeLayout {
+    public MsgCard(Context context) {
         super(context);
     }
 
-    public UserHeadLayout(Context context, AttributeSet attrs) {
+    public MsgCard(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public UserHeadLayout(Context context, AttributeSet attrs, int defStyle) {
+    public MsgCard(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
     protected int getContextView() {
-        return R.layout.fragment_user_header;
+        return R.layout.widget_msgcard;
     }
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
 
     }
+
 
 }

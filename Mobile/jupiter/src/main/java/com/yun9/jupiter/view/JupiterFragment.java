@@ -37,8 +37,11 @@ public abstract class JupiterFragment extends Fragment {
             e.printStackTrace();
         }
 
+        this.initViews(view);
         return view;
     }
 
     protected abstract int getContentView();
+
+    protected abstract void initViews(View view);
 }
