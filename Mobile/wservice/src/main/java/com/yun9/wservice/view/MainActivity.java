@@ -13,10 +13,6 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.func.dynamic.DynamicFragment;
-import com.yun9.wservice.func.microapp.MicroAppFragment;
-import com.yun9.wservice.func.store.StoreFragment;
-import com.yun9.wservice.func.user.UserFragment;
 
 
 public class MainActivity extends JupiterFragmentActivity {
@@ -79,9 +75,9 @@ public class MainActivity extends JupiterFragmentActivity {
             logger.d("动态按钮点击！");
 
             Bundle bundle = new Bundle();
-            bundle.putString(DynamicFragment.ARG_PARAM1,"测试参数");
-            DynamicFragment dynamicFragment = DynamicFragment.newInstance(bundle);
-            pushFragment(dynamicFragment);
+            bundle.putString(DynamicSessionFragment.ARG_PARAM1,"测试参数");
+            DynamicSessionFragment dynamicSessionFragment = DynamicSessionFragment.newInstance(bundle);
+            pushFragment(dynamicSessionFragment);
             setButton(v);
         }
     };

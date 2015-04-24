@@ -1,8 +1,7 @@
-package com.yun9.wservice.func.microapp;
+package com.yun9.wservice.view;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;

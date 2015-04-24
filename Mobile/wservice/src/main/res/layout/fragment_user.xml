@@ -20,12 +20,12 @@
         android:orientation="vertical"
         android:layout_below="@+id/user_title">
 
-        <com.yun9.wservice.func.user.UserHeadLayout
+        <com.yun9.wservice.view.UserHeadLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/whites">
 
-        </com.yun9.wservice.func.user.UserHeadLayout>
+        </com.yun9.wservice.view.UserHeadLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about1"

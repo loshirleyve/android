@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.dynamic;
+package com.yun9.wservice.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,9 +25,9 @@ import java.util.List;
 /**
  * 
  */
-public class DynamicFragment extends JupiterFragment {
+public class DynamicSessionFragment extends JupiterFragment {
 
-    private static final Logger logger = Logger.getLogger(DynamicFragment.class);
+    private static final Logger logger = Logger.getLogger(DynamicSessionFragment.class);
 
     //动态页面需要传递参数的Key
     public static final String ARG_PARAM1 = "param1";
@@ -49,8 +49,8 @@ public class DynamicFragment extends JupiterFragment {
      * 这个动态的使用必须使用此方法创建实例
      *
      */
-    public static DynamicFragment newInstance(Bundle args) {
-        DynamicFragment fragment = new DynamicFragment();
+    public static DynamicSessionFragment newInstance(Bundle args) {
+        DynamicSessionFragment fragment = new DynamicSessionFragment();
         if (AssertValue.isNotNull(args)) {
             fragment.setArguments(args);
         }

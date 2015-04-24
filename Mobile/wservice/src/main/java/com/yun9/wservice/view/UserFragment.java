@@ -1,11 +1,7 @@
-package com.yun9.wservice.func.user;
+package com.yun9.wservice.view;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.R;

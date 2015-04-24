@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.dynamic;
+package com.yun9.wservice.view;
 
 import android.content.Context;
 import android.view.View;
