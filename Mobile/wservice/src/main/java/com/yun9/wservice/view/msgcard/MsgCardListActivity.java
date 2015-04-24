@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
@@ -26,6 +28,8 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     private String mType;
 
     private String mValue;
+
+    private Logger logger = Logger.getLogger(MsgCardListActivity.class);
 
     @ViewInject(id=R.id.msg_card_list_title)
     private JupiterTitleBarLayout titleBar;
@@ -63,8 +67,23 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
         MsgCardListAdapter msgCardListAdapter = new MsgCardListAdapter(this,this.initMsgCard());
         msgCardList.setAdapter(msgCardListAdapter);
+        msgCardList.setOnItemClickListener(msgCardOnItemClickListener);
 
    }
+
+
+    private AdapterView.OnItemClickListener msgCardOnItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            MsgCard msgCard = (MsgCard) view.getTag();
+
+            logger.d("消息卡片点击！"+msgCard.getMain().getFrom());
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(MsgCardDetailActivity.ARG_MSG_CARD,msgCard);
+            MsgCardDetailActivity.start(MsgCardListActivity.this,bundle);
+        }
+    };
 
     @Override
     protected int getContentView() {

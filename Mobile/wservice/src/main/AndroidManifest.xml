@@ -33,11 +33,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"
             android:name=".view.msgcard.MsgCardListActivity"
-            android:label="@string/title_activity_msg_card_list" >
+            android:label="@string/activity_msg_card_list_title" >
+        </activity>
+
+        <activity
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"
+            android:name=".view.msgcard.MsgCardDetailActivity"
+            android:label="@string/activity_msg_card_detail_title" >
         </activity>
     </application>
 

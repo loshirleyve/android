@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.wservice.R;
@@ -21,6 +22,8 @@ public class MsgCardListAdapter extends JupiterAdapter {
     private List<MsgCard> msgCardList;
 
     private Context mContext;
+
+    private static final Logger logger = Logger.getLogger(MsgCardListAdapter.class);
 
     public MsgCardListAdapter(Context context,List<MsgCard> msgCardList){
         this.msgCardList = msgCardList;
@@ -57,6 +60,34 @@ public class MsgCardListAdapter extends JupiterAdapter {
 
         MsgCardLayout msgCardLayout = (MsgCardLayout) convertView
                 .findViewById(R.id.msg_card_list_item);
+
+        msgCardLayout.getPraiseRL().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logger.d("点赞！");
+            }
+        });
+
+        msgCardLayout.getFwRL().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logger.d("转发！");
+            }
+        });
+
+        msgCardLayout.getCommentRL().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logger.d("评论！");
+            }
+        });
+
+        msgCardLayout.getActionRL().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logger.d("动作！");
+            }
+        });
 
         msgCardLayout.setTag(msgCard);
 
