@@ -1,5 +1,7 @@
 package com.yun9.wservice.view;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.yun9.jupiter.repository.RepositoryManager;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -38,15 +41,26 @@ public class MainActivity extends JupiterFragmentActivity {
 
     private View currentButton;
 
+    public static void start(Context context,Bundle bundle){
+        Intent intent = new Intent(context,MainActivity.class);
+        if (AssertValue.isNotNull(bundle)){
+            intent.putExtras(bundle);
+        }
+        context.startActivity(intent);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         this.initView();
-
         storeBtn.performClick();
     }
 
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_main;
+    }
 
 
     private void initView(){
@@ -75,7 +89,6 @@ public class MainActivity extends JupiterFragmentActivity {
             logger.d("动态按钮点击！");
 
             Bundle bundle = new Bundle();
-            bundle.putString(DynamicSessionFragment.ARG_PARAM1,"测试参数");
             DynamicSessionFragment dynamicSessionFragment = DynamicSessionFragment.newInstance(bundle);
             pushFragment(dynamicSessionFragment);
             setButton(v);

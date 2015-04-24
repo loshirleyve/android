@@ -16,9 +16,9 @@ import com.yun9.mobile.annotation.BeanInject;
 /**
  * Created by Leon on 15/4/16.
  */
-public class TitleBarLayout extends JupiterRelativeLayout {
+public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
-    private static final Logger logger = Logger.getLogger(TitleBarLayout.class);
+    private static final Logger logger = Logger.getLogger(JupiterTitleBarLayout.class);
 
     private LinearLayout titleLeft;
 
@@ -45,27 +45,25 @@ public class TitleBarLayout extends JupiterRelativeLayout {
     @BeanInject
     private PropertiesManager propertiesManager;
 
-    public TitleBarLayout(Context context) {
+    public JupiterTitleBarLayout(Context context) {
         super(context);
-        if (isInEditMode()) { return; }
         this.initView(null);
     }
 
-    public TitleBarLayout(Context context, AttributeSet attrs) {
+    public JupiterTitleBarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (isInEditMode()) { return; }
         this.initView(attrs);
     }
 
-    public TitleBarLayout(Context context, AttributeSet attrs, int defStyle) {
+    public JupiterTitleBarLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        if (isInEditMode()) { return; }
         this.initView(attrs);
     }
 
 
     private void initView(AttributeSet attrs){
         this.inflate(R.layout.title_bar);
+        if (isInEditMode()) { return; }
 
         this.titleLeft = (LinearLayout) this.findViewById(R.id.title_left_ll);
         this.titleRight = (LinearLayout) this.findViewById(R.id.title_right_ll);
@@ -83,16 +81,15 @@ public class TitleBarLayout extends JupiterRelativeLayout {
         this.setSutitleText(this.sutitleText);
         this.setRightBtnText(this.rightBtnText);
 
-
         logger.d("title 初始化完成！");
     }
 
 
     private void initAttr(AttributeSet attrs){
-        TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.TitleBarLayout);
+        TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterTitleBarLayout);
 
-        if (a.hasValue(R.styleable.TitleBarLayout_titleText)) {
-            this.titleText = a.getString(R.styleable.TitleBarLayout_titleText);
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleText)) {
+            this.titleText = a.getString(R.styleable.JupiterTitleBarLayout_titleText);
         }
 
         a.recycle();

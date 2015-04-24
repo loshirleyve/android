@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="TitleBarLayout">
+    <declare-styleable name="JupiterTitleBarLayout">
         <attr name="titleText" format="string"></attr>
     </declare-styleable>
 
