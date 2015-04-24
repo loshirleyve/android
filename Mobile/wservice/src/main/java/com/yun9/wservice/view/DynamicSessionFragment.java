@@ -1,10 +1,7 @@
 package com.yun9.wservice.view;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -16,8 +13,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
-import com.yun9.wservice.model.MsgCard;
-import com.yun9.wservice.model.MsgCardMain;
+import com.yun9.wservice.model.MsgSession;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
 
 import java.util.ArrayList;
@@ -65,13 +61,13 @@ public class DynamicSessionFragment extends JupiterFragment {
 
     @Override
     protected void initViews(View view) {
-        this.dynamicSessionList.setAdapter(new DynamicSessionAdapter(this.mContext,this.initMsgCard()));
+        this.dynamicSessionList.setAdapter(new DynamicSessionAdapter(this.mContext,this.initMsgSession()));
         this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MsgCard msgCard = (MsgCard) view.getTag();
+                MsgSession msgSession = (MsgSession) view.getTag();
 
-                logger.d("动态会话表格点击。"+msgCard.getMain().getFrom());
+                logger.d("动态会话表格点击。"+msgSession.getFromusername());
 
                 Bundle bundle = new Bundle();
                 bundle.putString(MsgCardListActivity.ARG_TYPE,"toUser");
@@ -82,27 +78,17 @@ public class DynamicSessionFragment extends JupiterFragment {
         });
     }
 
-    private List<MsgCard> initMsgCard(){
-        List<MsgCard> msgCards = new ArrayList<MsgCard>();
+    private List<MsgSession> initMsgSession(){
+        List<MsgSession> msgSessions = new ArrayList<>();
 
-        for(int i=0;i<10;i++){
-            msgCards.add(this.createMsgCard(i));
+        for(int i = 0;i<20;i++){
+            MsgSession msgSession = new MsgSession();
+            msgSession.setFromusername("Leon"+i);
+            msgSessions.add(msgSession);
         }
 
-        return msgCards;
+        return msgSessions;
     }
 
-    private MsgCard createMsgCard(int i){
-        MsgCard msgCard = new MsgCard();
 
-        MsgCardMain msgCardMain = new MsgCardMain();
-
-        msgCardMain.setId(i+"");
-        msgCardMain.setContent("测试内容"+i);
-        msgCardMain.setFrom("Leon"+i);
-
-        msgCard.setMain(msgCardMain);
-
-        return msgCard;
-    }
 }

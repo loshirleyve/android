@@ -1,10 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="15dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_centerVertical="true"
+    android:background="@color/whites">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="@string/app_dynamic"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/msg_card_content_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:text="@string/msg_card_context"/>
+
+        <FrameLayout
+            android:id="@+id/msg_card_image_fl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="60dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true">
+
+                <ImageView
+                    android:id="@+id/location_ico_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/landmark"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/msg_card_location_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14dp"
+                    android:textColor="@color/devide_line"
+                    android:text="@string/msg_card_location"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true">
+                <TextView
+                    android:id="@+id/msg_card_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textSize="14dp"
+                    android:textColor="@color/devide_line"
+                    android:text="@string/msg_card_time" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout style="@style/msg_card_btn">
+                    <ImageView
+                        style="@style/msg_card_btn_ico"
+                        android:id="@+id/praise_iv"
+                        android:src="@drawable/star1"/>
+                    <TextView
+                        android:layout_toRightOf="@+id/praise_iv"
+                        style="@style/msg_card_btn_text"
+                        android:text="99"/>
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/msg_card_btn">
+                    <ImageView
+                        android:id="@+id/fw_iv"
+                        style="@style/msg_card_btn_ico"
+                        android:src="@drawable/fw1"/>
+                    <TextView
+                        android:layout_toRightOf="@+id/fw_iv"
+                        style="@style/msg_card_btn_text"
+                        android:text="99"/>
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/msg_card_btn">
+                    <ImageView
+                        android:id="@+id/comm_iv"
+                        style="@style/msg_card_btn_ico"
+                        android:src="@drawable/com2"/>
+                    <TextView
+                        android:layout_toRightOf="@+id/comm_iv"
+                        style="@style/msg_card_btn_text"
+                        android:text="99"/>
+                </RelativeLayout>
+
+                <RelativeLayout style="@style/msg_card_btn">
+                    <ImageView
+                        android:id="@+id/action_iv"
+                        style="@style/msg_card_btn_ico"
+                        android:src="@drawable/act2"/>
+                    <TextView
+                        android:layout_toRightOf="@+id/action_iv"
+                        style="@style/msg_card_btn_text"
+                        android:text="99"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/main_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/devide_line"/>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/msg_card_lastcomment_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/devide_line"
+                android:text="@string/msg_card_lastcomment"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/devide_line"
+                android:id="@+id/msg_card_lastcomment_user_tv"
+                android:text="@string/msg_card_lastcomment_user"/>
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/msg_card_lastcomment_content_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/devide_line"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/msg_card_lastcomment_context"/>
+         </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

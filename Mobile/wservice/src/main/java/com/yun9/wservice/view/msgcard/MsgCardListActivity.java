@@ -4,12 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ListView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.model.MsgCardMain;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MsgCardListActivity extends JupiterFragmentActivity {
 
@@ -23,6 +29,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     @ViewInject(id=R.id.msg_card_list_title)
     private JupiterTitleBarLayout titleBar;
+
+    @ViewInject(id=R.id.msg_card_lv)
+    private ListView msgCardList;
 
     public static void start(Context context,Bundle bundle){
         Intent intent = new Intent(context,MsgCardListActivity.class);
@@ -51,10 +60,38 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             }
         });
 
+
+        MsgCardListAdapter msgCardListAdapter = new MsgCardListAdapter(this,this.initMsgCard());
+        msgCardList.setAdapter(msgCardListAdapter);
+
    }
 
     @Override
     protected int getContentView() {
         return R.layout.activity_msg_card_list;
+    }
+
+    private List<MsgCard> initMsgCard(){
+        List<MsgCard> msgCards = new ArrayList<MsgCard>();
+
+        for(int i=0;i<10;i++){
+            msgCards.add(this.createMsgCard(i));
+        }
+
+        return msgCards;
+    }
+
+    private MsgCard createMsgCard(int i){
+        MsgCard msgCard = new MsgCard();
+
+        MsgCardMain msgCardMain = new MsgCardMain();
+
+        msgCardMain.setId(i+"");
+        msgCardMain.setContent("测试内容"+i);
+        msgCardMain.setFrom("Leon"+i);
+
+        msgCard.setMain(msgCardMain);
+
+        return msgCard;
     }
 }

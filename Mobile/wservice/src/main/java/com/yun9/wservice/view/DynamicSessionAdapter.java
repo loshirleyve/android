@@ -9,6 +9,7 @@ import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.wservice.model.MsgSession;
 
 import java.util.List;
 
@@ -17,20 +18,21 @@ import java.util.List;
  */
 public class DynamicSessionAdapter  extends JupiterAdapter{
 
-    private List<MsgCard> msgCardList;
+    private List<MsgSession> msgSessionList;
+
     private Context mContext;
 
 
-    public DynamicSessionAdapter(Context context ,List<MsgCard> msgCardList){
-        this.msgCardList = msgCardList;
+    public DynamicSessionAdapter(Context context ,List<MsgSession> msgSessionList){
+        this.msgSessionList = msgSessionList;
         this.mContext = context;
     }
 
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNullAndNotEmpty(this.msgCardList)){
-            return this.msgCardList.size();
+        if (AssertValue.isNotNullAndNotEmpty(this.msgSessionList)){
+            return this.msgSessionList.size();
         }else {
             return 0;
         }
@@ -38,7 +40,7 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
 
     @Override
     public Object getItem(int position) {
-        return msgCardList.get(position);
+        return msgSessionList.get(position);
     }
 
     @Override
@@ -48,7 +50,7 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        MsgCard msgCard = this.msgCardList.get(position);
+        MsgSession msgSession = this.msgSessionList.get(position);
 
         if (convertView == null) {
             convertView = View.inflate(mContext,
@@ -58,12 +60,9 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
         JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView
                 .findViewById(R.id.msg_card_session_rc);
 
-        jupiterRowStyleSutitleLayout.setTag(msgCard);
-        jupiterRowStyleSutitleLayout.getTitleTV().setText(msgCard.getMain().getFrom());
-        convertView.setTag(msgCard);
-
-//        holder.msgCardView.load(msgCard);
-//        holder.msgCardOtherView.load(msgCard);
+        jupiterRowStyleSutitleLayout.setTag(msgSession);
+        jupiterRowStyleSutitleLayout.getTitleTV().setText(msgSession.getFromusername());
+        convertView.setTag(msgSession);
         return convertView;
     }
 

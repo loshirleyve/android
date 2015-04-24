@@ -9,16 +9,16 @@ import com.yun9.wservice.R;
 /**
  * Created by Leon on 15/4/24.
  */
-public class MsgCard extends JupiterRelativeLayout {
-    public MsgCard(Context context) {
+public class MsgCardLayout extends JupiterRelativeLayout {
+    public MsgCardLayout(Context context) {
         super(context);
     }
 
-    public MsgCard(Context context, AttributeSet attrs) {
+    public MsgCardLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MsgCard(Context context, AttributeSet attrs, int defStyle) {
+    public MsgCardLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
