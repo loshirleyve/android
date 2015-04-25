@@ -10,7 +10,8 @@
         android:id="@+id/msg_card_detail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tb:titleText="@string/activity_msg_card_detail_title" />
+        tb:titleText="@string/activity_msg_card_detail_title"
+        tb:titleLeftVisibility="true"/>
 
     <LinearLayout
         android:layout_below="@+id/msg_card_detail_title"

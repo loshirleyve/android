@@ -10,7 +10,8 @@
         android:id="@+id/title_left_ll"
         style="@style/title_left"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:visibility="gone">
         <ImageView
             android:id="@+id/title_left_iv"
             android:layout_width="32dp"
@@ -54,6 +55,7 @@
             android:gravity="center"
             android:textColor="@color/whites"
             android:background="@color/transparent"
+            android:visibility="gone"
             android:text="选中了3个图片，2个文件"
             android:layout_gravity="center"/>
     </LinearLayout>
@@ -65,10 +67,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
+        android:visibility="gone"
         android:background="@color/transparent">
         <TextView
             android:id="@+id/title_right_tv"
-            android:layout_width="50dp"
+            android:layout_width="80dp"
             android:layout_height="50dp"
             android:textColor="@color/whites"
             android:text="@string/jupiter_complete"

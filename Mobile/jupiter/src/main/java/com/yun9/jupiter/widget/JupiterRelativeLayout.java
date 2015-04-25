@@ -20,9 +20,10 @@ public abstract class JupiterRelativeLayout extends RelativeLayout{
         super(context);
         mContext = context;
         this.inflate();
+        this.initViews(context,null,-1);
         if (isInEditMode()) { return; }
         this.beanInitInjected();
-        this.initViews(context,null,-1);
+
 
     }
 
@@ -30,18 +31,19 @@ public abstract class JupiterRelativeLayout extends RelativeLayout{
         super(context, attrs);
         this.mContext = context;
         this.inflate();
+        this.initViews(context,attrs, -1);
         if (isInEditMode()) { return; }
         this.beanInitInjected();
-        this.initViews(context,attrs, -1);
+
     }
 
     public JupiterRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         this.mContext = context;
         this.inflate();
+        this.initViews(context,attrs,defStyle);
         if (isInEditMode()) { return; }
         this.beanInitInjected();
-        this.initViews(context,attrs,defStyle);
     }
 
 

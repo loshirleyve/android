@@ -41,7 +41,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity{
             msgCard = (MsgCard) this.getIntent().getExtras().getSerializable(ARG_MSG_CARD);
         }
 
-        titleBar.getTitleLeft().setVisibility(View.VISIBLE);
         titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

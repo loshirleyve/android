@@ -34,13 +34,6 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
     private TextView titleLeftTv;
 
-    private String titleText = "";
-
-    private String sutitleText ="";
-
-    private String rightBtnText = "";
-
-    private String leftBtnText = "";
 
     @BeanInject
     private PropertiesManager propertiesManager;
@@ -73,13 +66,6 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         this.titleRightTv = (TextView) this.findViewById(R.id.title_right_tv);
 
         this.initAttr(attrs);
-
-        this.getTitleLeft().setVisibility(View.GONE);
-        this.getTitleRight().setVisibility(View.GONE);
-        this.setTitleText(this.titleText);
-        this.setSutitleText(this.sutitleText);
-        this.setRightBtnText(this.rightBtnText);
-
         logger.d("title 初始化完成！");
     }
 
@@ -87,7 +73,59 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterTitleBarLayout);
 
         if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleText)) {
-            this.titleText = a.getString(R.styleable.JupiterTitleBarLayout_titleText);
+            String titleText = a.getString(R.styleable.JupiterTitleBarLayout_titleText);
+            this.getTitleTv().setText(titleText);
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_sutitleText)){
+            String sutitleText = a.getString(R.styleable.JupiterTitleBarLayout_sutitleText);
+            this.getTitleSutitleTv().setText(sutitleText);
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleLeftText)){
+            String leftText = a.getString(R.styleable.JupiterTitleBarLayout_titleLeftText);
+            this.getTitleLeftTv().setText(leftText);
+        }
+
+        if(a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightText)){
+            String rightText = a.getString(R.styleable.JupiterTitleBarLayout_titleRightText);
+            this.getTitleRightTv().setText(rightText);
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleTextVisibility)){
+            boolean titleTextVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleLeftVisibility,false);
+            if (titleTextVisibility){
+                this.getTitleTv().setVisibility(View.VISIBLE);
+            }else{
+                this.getTitleTv().setVisibility(View.GONE);
+            }
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_sutitleTextVisibility)){
+            boolean sutitleTextVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_sutitleTextVisibility,false);
+            if (sutitleTextVisibility){
+                this.getTitleSutitleTv().setVisibility(View.VISIBLE);
+            }else{
+                this.getTitleSutitleTv().setVisibility(View.GONE);
+            }
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleLeftVisibility)){
+            boolean leftVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleLeftVisibility,false);
+            if (leftVisibility){
+                this.getTitleLeft().setVisibility(View.VISIBLE);
+            }else{
+                this.getTitleLeft().setVisibility(View.GONE);
+            }
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightVisibility)){
+            boolean rightVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleRightVisibility,false);
+            if (rightVisibility){
+                this.getTitleRight().setVisibility(View.VISIBLE);
+            }else{
+                this.getTitleRight().setVisibility(View.GONE);
+            }
         }
 
         a.recycle();
@@ -97,62 +135,55 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         return titleLeft;
     }
 
+    public void setTitleLeft(LinearLayout titleLeft) {
+        this.titleLeft = titleLeft;
+    }
+
     public LinearLayout getTitleRight() {
         return titleRight;
+    }
+
+    public void setTitleRight(LinearLayout titleRight) {
+        this.titleRight = titleRight;
     }
 
     public LinearLayout getTitleCenter() {
         return titleCenter;
     }
 
-    public String getSutitleText() {
-        return sutitleText;
+    public void setTitleCenter(LinearLayout titleCenter) {
+        this.titleCenter = titleCenter;
     }
 
-    public void setSutitleText(int sutitleTextId) {
-        this.setSutitleText(this.getContext().getString(sutitleTextId));
+    public TextView getTitleTv() {
+        return titleTv;
     }
 
-    public void setSutitleText(String sutitleText) {
-        this.sutitleText = sutitleText;
-        this.titleSutitleTv.setText(sutitleText);
+    public void setTitleTv(TextView titleTv) {
+        this.titleTv = titleTv;
     }
 
-    public String getTitleText() {
-        return titleText;
+    public TextView getTitleSutitleTv() {
+        return titleSutitleTv;
     }
 
-    public void setTitleText(int titleTextId) {
-        this.setTitleText(this.getContext().getResources().getString(titleTextId));
+    public void setTitleSutitleTv(TextView titleSutitleTv) {
+        this.titleSutitleTv = titleSutitleTv;
     }
 
-    public void setTitleText(String titleText) {
-        this.titleText = titleText;
-        this.titleTv.setText(titleText);
+    public TextView getTitleRightTv() {
+        return titleRightTv;
     }
 
-    public String getRightBtnText() {
-        return rightBtnText;
+    public void setTitleRightTv(TextView titleRightTv) {
+        this.titleRightTv = titleRightTv;
     }
 
-    public void setRightBtnText(int rightBtnTextId) {
-        this.setRightBtnText(this.getContext().getResources().getString(rightBtnTextId));
+    public TextView getTitleLeftTv() {
+        return titleLeftTv;
     }
 
-    public void setRightBtnText(String rightBtnText) {
-        this.rightBtnText = rightBtnText;
-        this.titleRightTv.setText(rightBtnText);
-
-    }
-
-    public String getLeftBtnText() {
-        return leftBtnText;
-    }
-    public void setLeftBtnText(int leftBtnTextId) {
-        this.setLeftBtnText(this.getContext().getString(leftBtnTextId));
-    }
-    public void setLeftBtnText(String leftBtnText) {
-        this.leftBtnText = leftBtnText;
-        this.titleLeftTv.setText(leftBtnText);
+    public void setTitleLeftTv(TextView titleLeftTv) {
+        this.titleLeftTv = titleLeftTv;
     }
 }

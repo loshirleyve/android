@@ -56,14 +56,12 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             mValue = this.getIntent().getExtras().getString(ARG_VALUE);
         }
 
-        titleBar.getTitleLeft().setVisibility(View.VISIBLE);
         titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MsgCardListActivity.this.finish();
             }
         });
-
 
         MsgCardListAdapter msgCardListAdapter = new MsgCardListAdapter(this,this.initMsgCard());
         msgCardList.setAdapter(msgCardListAdapter);

@@ -3,6 +3,14 @@
 
     <declare-styleable name="JupiterTitleBarLayout">
         <attr name="titleText" format="string"></attr>
+        <attr name="sutitleText" format="string"></attr>
+        <attr name="titleLeftText" format="string"></attr>
+        <attr name="titleRightText" format="string"></attr>
+
+        <attr name="titleTextVisibility" format="boolean"></attr>
+        <attr name="sutitleTextVisibility" format="boolean"></attr>
+        <attr name="titleLeftVisibility" format="boolean"></attr>
+        <attr name="titleRightVisibility" format="boolean"></attr>
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleSutitleLayout">
