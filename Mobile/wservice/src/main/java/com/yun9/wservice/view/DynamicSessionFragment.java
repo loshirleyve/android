@@ -11,6 +11,7 @@ import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
+import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.wservice.model.MsgSession;
@@ -33,7 +34,7 @@ public class DynamicSessionFragment extends JupiterFragment {
     private JupiterTitleBarLayout jupiterTitleBarLayout;
 
     @ViewInject(id=R.id.dynamic_sessions_lv)
-    private ListView dynamicSessionList;
+    private PullToRefreshListView dynamicSessionList;
 
 
     /**

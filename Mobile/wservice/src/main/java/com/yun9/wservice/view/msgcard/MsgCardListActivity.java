@@ -12,6 +12,7 @@ import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
+import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardMain;
@@ -35,7 +36,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     private JupiterTitleBarLayout titleBar;
 
     @ViewInject(id=R.id.msg_card_lv)
-    private ListView msgCardList;
+    private PullToRefreshListView msgCardList;
 
     public static void start(Context context,Bundle bundle){
         Intent intent = new Intent(context,MsgCardListActivity.class);
