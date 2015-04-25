@@ -8,7 +8,7 @@
     <string name="user_head_name">黄小明</string>
     <string name="user_company_name">深圳市顶聚科技有限公司</string>
 
-
+    <string name="activity_dynamice_category">分类</string>
 
     <string name="msg_card_context">#巡店报告#\n日期:2015年4月24日(星期五)\n地点：深圳市南山区沙河西路\n\卖场气氛:活跃\n卖场活动:买100送换100</string>
     <string name="msg_card_location">深圳市南山区西丽镇茶光路1003号</string>
@@ -16,6 +16,7 @@
     <string name="msg_card_lastcomment">最后回复</string>
     <string name="msg_card_lastcomment_user">黄小明</string>
     <string name="msg_card_lastcomment_context">这个巡店报告写的不错！继续加油！</string>
+
 
     <string name="activity_msg_card_list_title">消息卡片列表</string>
     <string name="activity_msg_card_detail_title">消息详情</string>

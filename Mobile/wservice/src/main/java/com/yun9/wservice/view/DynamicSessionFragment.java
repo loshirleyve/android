@@ -31,7 +31,7 @@ public class DynamicSessionFragment extends JupiterFragment {
     private SessionManager sessionManager;
 
     @ViewInject(id=R.id.dynamic_title_tb)
-    private JupiterTitleBarLayout jupiterTitleBarLayout;
+    private JupiterTitleBarLayout titleBar;
 
     @ViewInject(id=R.id.dynamic_sessions_lv)
     private PullToRefreshListView dynamicSessionList;
@@ -75,6 +75,13 @@ public class DynamicSessionFragment extends JupiterFragment {
                 bundle.putString(MsgCardListActivity.ARG_VALUE,"186");
 
                 MsgCardListActivity.start(DynamicSessionFragment.this.mContext,bundle);
+            }
+        });
+
+        this.titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

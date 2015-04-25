@@ -9,6 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/jupiter" />
+            <option value="$PROJECT_DIR$/menudrawer" />
+            <option value="$PROJECT_DIR$/menudrawersample" />
             <option value="$PROJECT_DIR$/pulltorefresh" />
             <option value="$PROJECT_DIR$/pulltorefreshsample" />
             <option value="$PROJECT_DIR$/wservice" />

@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Mobile.iml" filepath="$PROJECT_DIR$/Mobile.iml" />
       <module fileurl="file://$PROJECT_DIR$/jupiter/jupiter.iml" filepath="$PROJECT_DIR$/jupiter/jupiter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/menudrawer/menudrawer.iml" filepath="$PROJECT_DIR$/menudrawer/menudrawer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/menudrawersample/menudrawersample.iml" filepath="$PROJECT_DIR$/menudrawersample/menudrawersample.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" filepath="$PROJECT_DIR$/pulltorefresh/pulltorefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/pulltorefreshsample/pulltorefreshsample.iml" filepath="$PROJECT_DIR$/pulltorefreshsample/pulltorefreshsample.iml" />
       <module fileurl="file://$PROJECT_DIR$/wservice/wservice.iml" filepath="$PROJECT_DIR$/wservice/wservice.iml" />
