@@ -12,82 +12,198 @@
         android:layout_height="wrap_content"
         tb:titleText="@string/activity_msg_card_detail_title"
         tb:titleLeftVisibility="true"/>
-
-    <LinearLayout
-        android:layout_below="@+id/msg_card_detail_title"
+    
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/msg_card_content_tv"
+        android:layout_below="@+id/msg_card_detail_title"
+        android:scrollbars="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/devide_line">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:text="@string/msg_card_context"/>
-
-        <FrameLayout
-            android:id="@+id/msg_card_image_fl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/msg_card_content_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="60dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true">
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:text="@string/msg_card_context"/>
 
-                <ImageView
-                    android:id="@+id/location_ico_iv"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/landmark"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center_vertical"/>
+            <FrameLayout
+                android:id="@+id/msg_card_image_fl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/msg_card_location_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textSize="14dp"
-                    android:textColor="@color/devide_line"
-                    android:text="@string/msg_card_location"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true">
-                <TextView
-                    android:id="@+id/msg_card_time_tv"
+                android:layout_marginTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true">
+
+                    <ImageView
+                        android:id="@+id/location_ico_iv"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/landmark"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center_vertical"/>
+
+                    <TextView
+                        android:id="@+id/msg_card_location_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="14dp"
+                        android:textColor="@color/devide_line"
+                        android:text="@string/msg_card_location"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:textSize="14dp"
-                    android:textColor="@color/devide_line"
-                    android:text="@string/msg_card_time" />
-            </LinearLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true">
+                    <TextView
+                        android:id="@+id/msg_card_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:textSize="14dp"
+                        android:textColor="@color/devide_line"
+                        android:text="@string/msg_card_time" />
+                </LinearLayout>
 
-        </RelativeLayout>
+            </RelativeLayout>
 
-        <View
-            android:id="@+id/main_line"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/devide_line"/>
-    </LinearLayout>
+            <View
+                android:id="@+id/main_line"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/devide_line"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_dynamic"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"/>
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
 </RelativeLayout>
