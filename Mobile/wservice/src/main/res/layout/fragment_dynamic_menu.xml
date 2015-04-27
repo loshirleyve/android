@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            xmlns:row="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/my_todo"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            row:rowStyleTitleText="@string/app_name">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            xmlns:row="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/my_already"
+            android:layout_marginTop="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            row:rowStyleTitleShowArrow="false">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/whites"
+            android:text="热门话题"/>
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/hotTopic1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/hotTopic2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/hotTopic3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/hotTopic4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/hotTopic5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+
+    </LinearLayout>
+</ScrollView>

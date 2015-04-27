@@ -12,7 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tb:titleText="@string/app_dynamic"
-        tb:titleLeftVisibility="true"/>
+        tb:titleRightText="@string/activity_dynamice_category"
+        tb:titleLeftTextVisibility="true"
+        tb:titleLeftIcoVisibility="true"/>
 
 
     <LinearLayout

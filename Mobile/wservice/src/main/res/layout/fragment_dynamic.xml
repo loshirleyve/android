@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         tb:titleText="@string/app_dynamic"
         tb:titleLeftText="@string/activity_dynamice_category"
-        tb:titleLeftVisibility="true"/>
+        tb:titleLeftTextVisibility="true"/>
 
     <com.yun9.pulltorefresh.PullToRefreshListView
         xmlns:ptr="http://schemas.android.com/apk/res-auto"

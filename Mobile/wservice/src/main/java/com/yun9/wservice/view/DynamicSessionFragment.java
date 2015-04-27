@@ -9,6 +9,7 @@ import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
+import com.yun9.jupiter.view.JupiterFragmentMenuActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.pulltorefresh.PullToRefreshListView;
@@ -16,6 +17,9 @@ import com.yun9.wservice.R;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.wservice.model.MsgSession;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
+
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +63,21 @@ public class DynamicSessionFragment extends JupiterFragment {
     protected int getContentView() {
         return R.layout.fragment_dynamic;
     }
+
+//    @Override
+//    protected int getMenuContentView() {
+//        return R.layout.fragment_dynamic_menu;
+//    }
+//
+//    @Override
+//    protected Position getMenuPosition() {
+//        return Position.RIGHT;
+//    }
+//
+//    @Override
+//    protected MenuDrawer.Type getMenuType() {
+//        return MenuDrawer.Type.BEHIND;
+//    }
 
     @Override
     protected void initViews(View view) {

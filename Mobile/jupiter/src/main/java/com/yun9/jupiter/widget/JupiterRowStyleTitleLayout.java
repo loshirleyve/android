@@ -1,7 +1,9 @@
 package com.yun9.jupiter.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +45,44 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
         this.mainIV = (ImageView) this.findViewById(R.id.main_iv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
+        this.initAttr(attrs);
+    }
+
+
+    private void initAttr(AttributeSet attrs){
+        TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterRowStyleTitleLayout);
+
+        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleText)){
+            String titleText = typedArray.getString(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleText);
+            this.titleTV.setText(titleText);
+        }
+
+        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowArrow)){
+            boolean showArrow = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowArrow, false);
+            if (showArrow){
+                this.arrowRightIV.setVisibility(View.VISIBLE);
+            }else{
+                this.arrowRightIV.setVisibility(View.GONE);
+            }
+        }
+
+        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowHotText)){
+            boolean showHotText = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowHotText,false);
+            if (showHotText){
+                this.hotNitoceTV.setVisibility(View.VISIBLE);
+            }else{
+                this.hotNitoceTV.setVisibility(View.GONE);
+            }
+        }
+
+        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowMainImage)){
+            boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowMainImage,false);
+            if (showMainImage){
+                this.mainIV.setVisibility(View.VISIBLE);
+            }else{
+                this.mainIV.setVisibility(View.GONE);
+            }
+        }
     }
 
 

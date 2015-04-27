@@ -10,13 +10,13 @@
         android:id="@+id/title_left_ll"
         style="@style/title_left"
         android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
+        android:focusable="true">
         <ImageView
             android:id="@+id/title_left_iv"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
+            android:visibility="gone"
             android:src="@drawable/title_left_btn_return"
             android:background="#00000000"/>
         <TextView
@@ -26,6 +26,7 @@
             android:textColor="@color/whites"
             android:textSize="18dp"
             android:gravity="center"
+            android:visibility="gone"
             android:background="@color/transparent"
             android:text="@string/jupiter_return"/>
     </LinearLayout>

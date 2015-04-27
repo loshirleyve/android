@@ -47,6 +47,7 @@
             android:name=".view.msgcard.MsgCardDetailActivity"
             android:label="@string/activity_msg_card_detail_title" >
         </activity>
+
     </application>
 
 </manifest>

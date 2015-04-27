@@ -9,27 +9,23 @@
 
         <attr name="titleTextVisibility" format="boolean"></attr>
         <attr name="sutitleTextVisibility" format="boolean"></attr>
-        <attr name="titleLeftVisibility" format="boolean"></attr>
+        <attr name="titleLeftTextVisibility" format="boolean"></attr>
+        <attr name="titleLeftIcoVisibility" format="boolean"></attr>
         <attr name="titleRightVisibility" format="boolean"></attr>
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleSutitleLayout">
-        <attr name="styleType" format="enum">
-            <enum name="StyleTitle" value="0"></enum>
-            <enum name="StyleSutitle" value="1"></enum>
-            <enum name="StyleSetting" value="2"></enum>
-        </attr>
+        <attr name="rowStyleSutitleTitleText" format="string"></attr>
+        <attr name="rowStyleSutitleText" format="string"></attr>
+        <attr name="rowStyleSutitleShowArrow" format="boolean" />
+        <attr name="rowStyleSutitleShowMainImage" format="boolean" />
+        <attr name="rowStyleSutitleShowTimeText" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleTitleLayout">
-        <attr name="row_style_titleText" format="string"></attr>
-        <attr name="showHotText" format="enum">
-            <enum name="yes" value="1"></enum>
-            <enum name="no" value="0"></enum>
-        </attr>
-        <attr name="showArrow" format="enum">
-            <enum name="yes" value="1"></enum>
-            <enum name="no" value="0"></enum>
-        </attr>
+        <attr name="rowStyleTitleText" format="string"></attr>
+        <attr name="rowStyleTitleShowHotText" format="boolean"/>
+        <attr name="rowStyleTitleShowArrow" format="boolean" />
+        <attr name="rowStyleTitleShowMainImage" format="boolean" />
     </declare-styleable>
 </resources>

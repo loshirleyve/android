@@ -5,17 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.view.JupiterFragmentMenuActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardMain;
+
+import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.menudrawer.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,8 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,13 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 MsgCardListActivity.this.finish();
             }
         });
+
+//        titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MsgCardListActivity.this.mMenuDrawer.toggleMenu();
+//            }
+//        });
 
         MsgCardListAdapter msgCardListAdapter = new MsgCardListAdapter(this,this.initMsgCard());
         msgCardList.setAdapter(msgCardListAdapter);
