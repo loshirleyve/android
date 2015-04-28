@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.R;
@@ -23,7 +24,7 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
     private LinearLayout titleLeft;
 
-    private LinearLayout titleRight;
+    private RelativeLayout titleRight;
 
     private LinearLayout titleCenter;
 
@@ -32,6 +33,8 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
     private TextView titleSutitleTv;
 
     private TextView titleRightTv;
+
+    private ImageView titleRightIV;
 
     private TextView titleLeftTv;
 
@@ -61,12 +64,13 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         this.titleLeft = (LinearLayout) this.findViewById(R.id.title_left_ll);
-        this.titleRight = (LinearLayout) this.findViewById(R.id.title_right_ll);
+        this.titleRight = (RelativeLayout) this.findViewById(R.id.title_right_ll);
         this.titleCenter = (LinearLayout) this.findViewById(R.id.title_center_ll);
         this.titleTv = (TextView) this.findViewById(R.id.title_tv);
         this.titleSutitleTv = (TextView) this.findViewById(R.id.title_sutitle_tv);
         this.titleLeftTv = (TextView) this.findViewById(R.id.title_left_tv);
         this.titleRightTv = (TextView) this.findViewById(R.id.title_right_tv);
+        this.titleRightIV = (ImageView) this.findViewById(R.id.title_right_iv);
         this.titleLeftIV = (ImageView) this.findViewById(R.id.title_left_iv);
 
         this.initAttr(attrs);
@@ -132,13 +136,33 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
             }
         }
 
-        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightVisibility)){
-            boolean rightVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleRightVisibility,false);
-            if (rightVisibility){
-                this.getTitleRight().setVisibility(View.VISIBLE);
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightTextVisibility)){
+            boolean rightTextVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleRightTextVisibility,false);
+            if (rightTextVisibility){
+                this.getTitleRightTv().setVisibility(View.VISIBLE);
             }else{
-                this.getTitleRight().setVisibility(View.GONE);
+                this.getTitleRightTv().setVisibility(View.GONE);
             }
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightIcoVisibility)){
+            boolean rightIcoVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleRightIcoVisibility,false);
+            if (rightIcoVisibility){
+                this.getTitleRightIV().setVisibility(View.VISIBLE);
+            }else{
+                this.getTitleRightIV().setVisibility(View.GONE);
+            }
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc)){
+            int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc,R.drawable.title_left_btn_return);
+            this.getTitleLeftIV().setImageResource(resourceid);
+        }
+
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightIcoSrc)){
+            int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleRightIcoSrc,R.drawable.classification);
+            this.getTitleRightIV().setImageResource(resourceid);
         }
 
         a.recycle();
@@ -152,11 +176,11 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         this.titleLeft = titleLeft;
     }
 
-    public LinearLayout getTitleRight() {
+    public RelativeLayout getTitleRight() {
         return titleRight;
     }
 
-    public void setTitleRight(LinearLayout titleRight) {
+    public void setTitleRight(RelativeLayout titleRight) {
         this.titleRight = titleRight;
     }
 
@@ -206,5 +230,13 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
     public void setTitleLeftIV(ImageView titleLeftIV) {
         this.titleLeftIV = titleLeftIV;
+    }
+
+    public ImageView getTitleRightIV() {
+        return titleRightIV;
+    }
+
+    public void setTitleRightIV(ImageView titleRightIV) {
+        this.titleRightIV = titleRightIV;
     }
 }

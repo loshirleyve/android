@@ -6,30 +6,44 @@
     android:layout_alignParentTop="true">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:background="@color/transparent"
         android:id="@+id/title_left_ll"
-        style="@style/title_left"
         android:clickable="true"
         android:focusable="true">
-        <ImageView
-            android:id="@+id/title_left_iv"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            android:src="@drawable/title_left_btn_return"
-            android:background="#00000000"/>
-        <TextView
-            android:id="@+id/title_left_tv"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:textColor="@color/whites"
-            android:textSize="18dp"
-            android:gravity="center"
-            android:visibility="gone"
-            android:background="@color/transparent"
-            android:text="@string/jupiter_return"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/transparent">
+            <ImageView
+                android:id="@+id/title_left_iv"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/title_left_btn_return"
+                android:visibility="gone"
+                android:background="#00000000"/>
+            <TextView
+                android:id="@+id/title_left_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/whites"
+                android:textSize="18dp"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:background="@color/transparent"
+                android:text="@string/jupiter_return"/>
+        </LinearLayout>
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/title_center_ll"
@@ -61,23 +75,40 @@
             android:layout_gravity="center"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/title_right_ll"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:visibility="gone"
-        android:background="@color/transparent">
-        <TextView
-            android:id="@+id/title_right_tv"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:textColor="@color/whites"
-            android:text="@string/jupiter_complete"
-            android:textSize="18dp"
-            android:gravity="center"
-            android:background="@color/transparent"/>
-    </LinearLayout>
+        android:background="@color/transparent"
+        android:id="@+id/title_right_ll"
+        android:clickable="true"
+        android:focusable="true">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true">
+            <ImageView
+                android:id="@+id/title_right_iv"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/classification"
+                android:background="@color/transparent"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/title_right_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/whites"
+                android:text="@string/jupiter_complete"
+                android:textSize="18dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"
+                android:background="@color/transparent"/>
+        </LinearLayout>
+    </RelativeLayout>
+
 </RelativeLayout>

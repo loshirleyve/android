@@ -83,6 +83,8 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
                 this.mainIV.setVisibility(View.GONE);
             }
         }
+
+        typedArray.recycle();
     }
 
 

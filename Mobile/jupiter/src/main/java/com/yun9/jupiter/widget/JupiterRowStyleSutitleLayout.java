@@ -97,6 +97,9 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
                 this.arrowRightIV.setVisibility(View.GONE);
             }
         }
+
+        typedArray.recycle();
+
     }
 
     public ImageView getMainIV() {

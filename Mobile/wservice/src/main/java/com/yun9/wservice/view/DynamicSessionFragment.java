@@ -1,9 +1,11 @@
 package com.yun9.wservice.view;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
@@ -40,6 +42,8 @@ public class DynamicSessionFragment extends JupiterFragment {
     @ViewInject(id=R.id.dynamic_sessions_lv)
     private PullToRefreshListView dynamicSessionList;
 
+    private MenuDrawer mMenuDrawer;
+
 
     /**
      * 使用工厂方法创建一个新的动态实例，
@@ -57,6 +61,8 @@ public class DynamicSessionFragment extends JupiterFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -81,6 +87,9 @@ public class DynamicSessionFragment extends JupiterFragment {
 
     @Override
     protected void initViews(View view) {
+        mMenuDrawer = (MenuDrawer) view.findViewById(R.id.drawerMenu);
+        mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
+
         this.dynamicSessionList.setAdapter(new DynamicSessionAdapter(this.mContext,this.initMsgSession()));
         this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,10 +109,17 @@ public class DynamicSessionFragment extends JupiterFragment {
         this.titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mMenuDrawer.toggleMenu();
             }
         });
+
+
     }
+
+    private int dpToPx(int dp) {
+        return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
+    }
+
 
     private List<MsgSession> initMsgSession(){
         List<MsgSession> msgSessions = new ArrayList<>();
