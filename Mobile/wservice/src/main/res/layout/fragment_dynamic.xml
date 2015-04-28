@@ -85,7 +85,8 @@
             tb:titleLeftIcoVisibility="true"
             tb:titleLeftIcoSrc="@drawable/classification"
             tb:titleLeftTextVisibility="false"
-            tb:titleRightIcoVisibility="true"/>
+            tb:titleRightIcoVisibility="true"
+            tb:titleRightIcoSrc="@drawable/write"/>
 
         <com.yun9.pulltorefresh.PullToRefreshListView
             xmlns:ptr="http://schemas.android.com/apk/res-auto"
