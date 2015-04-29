@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.yun9.wservice.view.msgcard.MsgCardLayout
+    <com.yun9.wservice.view.msgcard.MsgCardWidget
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/msg_card_list_item">
 
-        </com.yun9.wservice.view.msgcard.MsgCardLayout>
+        </com.yun9.wservice.view.msgcard.MsgCardWidget>
 </RelativeLayout>

@@ -24,6 +24,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity{
     @ViewInject(id = R.id.msg_card_detail_title)
     private JupiterTitleBarLayout titleBar;
 
+    @ViewInject(id= R.id.msg_card_detail)
+    private MsgCardInDetailWidget msgCardInDetailWidget;
+
     public static void start(Context context,Bundle bundle){
         Intent intent = new Intent(context,MsgCardDetailActivity.class);
         if (AssertValue.isNotNull(bundle)){

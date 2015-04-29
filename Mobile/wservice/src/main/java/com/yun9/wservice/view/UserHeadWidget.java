@@ -9,22 +9,22 @@ import com.yun9.wservice.R;
 /**
  * Created by Leon on 15/4/22.
  */
-public class UserHeadLayout extends JupiterRelativeLayout {
-    public UserHeadLayout(Context context) {
+public class UserHeadWidget extends JupiterRelativeLayout {
+    public UserHeadWidget(Context context) {
         super(context);
     }
 
-    public UserHeadLayout(Context context, AttributeSet attrs) {
+    public UserHeadWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public UserHeadLayout(Context context, AttributeSet attrs, int defStyle) {
+    public UserHeadWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
     protected int getContextView() {
-        return R.layout.fragment_user_header;
+        return R.layout.widget_user_header;
     }
 
     @Override

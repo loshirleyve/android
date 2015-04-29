@@ -1,20 +1,18 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
-import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
 /**
  * Created by Leon on 15/4/24.
  */
-public class MsgCardLayout extends JupiterRelativeLayout {
+public class MsgCardWidget extends JupiterRelativeLayout {
 
     private TextView contentTV;
     private TextView locationTV;
@@ -33,21 +31,21 @@ public class MsgCardLayout extends JupiterRelativeLayout {
 
     private ImageView praiseIV;
 
-    public MsgCardLayout(Context context) {
+    public MsgCardWidget(Context context) {
         super(context);
     }
 
-    public MsgCardLayout(Context context, AttributeSet attrs) {
+    public MsgCardWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MsgCardLayout(Context context, AttributeSet attrs, int defStyle) {
+    public MsgCardWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
     protected int getContextView() {
-        return R.layout.widget_msgcard;
+        return R.layout.widget_msg_card;
     }
 
     @Override
