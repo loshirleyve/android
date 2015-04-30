@@ -52,39 +52,43 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
     private void initAttr(AttributeSet attrs){
         TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterRowStyleTitleLayout);
 
-        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleText)){
-            String titleText = typedArray.getString(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleText);
-            this.titleTV.setText(titleText);
-        }
-
-        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowArrow)){
-            boolean showArrow = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowArrow, false);
-            if (showArrow){
-                this.arrowRightIV.setVisibility(View.VISIBLE);
-            }else{
-                this.arrowRightIV.setVisibility(View.GONE);
+        try{
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleText)){
+                String titleText = typedArray.getString(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleText);
+                this.titleTV.setText(titleText);
             }
-        }
 
-        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowHotText)){
-            boolean showHotText = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowHotText,false);
-            if (showHotText){
-                this.hotNitoceTV.setVisibility(View.VISIBLE);
-            }else{
-                this.hotNitoceTV.setVisibility(View.GONE);
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowArrow)){
+                boolean showArrow = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowArrow, false);
+                if (showArrow){
+                    this.arrowRightIV.setVisibility(View.VISIBLE);
+                }else{
+                    this.arrowRightIV.setVisibility(View.GONE);
+                }
             }
-        }
 
-        if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowMainImage)){
-            boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowMainImage,false);
-            if (showMainImage){
-                this.mainIV.setVisibility(View.VISIBLE);
-            }else{
-                this.mainIV.setVisibility(View.GONE);
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowHotText)){
+                boolean showHotText = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowHotText,false);
+                if (showHotText){
+                    this.hotNitoceTV.setVisibility(View.VISIBLE);
+                }else{
+                    this.hotNitoceTV.setVisibility(View.GONE);
+                }
             }
+
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowMainImage)){
+                boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleTitleLayout_rowStyleTitleShowMainImage,false);
+                if (showMainImage){
+                    this.mainIV.setVisibility(View.VISIBLE);
+                }else{
+                    this.mainIV.setVisibility(View.GONE);
+                }
+            }
+        }finally{
+            typedArray.recycle();
         }
 
-        typedArray.recycle();
+
     }
 
 

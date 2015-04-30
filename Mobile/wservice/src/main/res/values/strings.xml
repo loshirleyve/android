@@ -4,6 +4,7 @@
     <string name="app_dynamic">动态</string>
     <string name="app_microapp">应用</string>
     <string name="app_user">我</string>
+    
 
     <string name="user_head_name">黄小明</string>
     <string name="user_company_name">深圳市顶聚科技有限公司</string>
@@ -16,6 +17,11 @@
     <string name="msg_card_lastcomment">最后回复</string>
     <string name="msg_card_lastcomment_user">黄小明</string>
     <string name="msg_card_lastcomment_context">这个巡店报告写的不错！继续加油！</string>
+    
+    <string name="msg_card_comment">评论</string>
+    <string name="msg_card_fw">转发</string>
+    <string name="msg_card_praise">点赞</string>
+    <string name="msg_card_share">分享</string>
 
 
     <string name="activity_msg_card_list_title">消息卡片列表</string>

@@ -39,4 +39,14 @@
         <attr name="checked_text_color" format="color" />
     </declare-styleable>
 
+
+    <declare-styleable name="JupiterSegmentedItem">
+        <attr name="segmented_item_titleText" format="string"></attr>
+        <attr name="segmented_item_descText" format="string"></attr>
+        <attr name="segmented_item_ico" format="reference"></attr>
+        <attr name="segmented_item_ico_selected" format="reference"></attr>
+        <attr name="segmented_item_text_color_selected" format="color"></attr>
+        <attr name="segmented_item_text_color" format="color"></attr>
+    </declare-styleable>
+
 </resources>
