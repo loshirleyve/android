@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/whites">
-
-
+    
     <com.yun9.jupiter.widget.JupiterTitleBarLayout
         xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/msg_card_detail_title"
@@ -14,27 +13,27 @@
         tb:titleLeftIcoVisibility="true"
         tb:titleLeftTextVisibility="true"/>
 
-
-
-
-    <com.yun9.pulltorefresh.PullToRefreshScrollView
-        xmlns:ptr="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/pull_refresh_scrollview"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        ptr:ptrAnimationStyle="flip"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/msg_card_detail_title">
 
         <com.yun9.wservice.view.msgcard.MsgCardInDetailWidget
             android:id="@+id/msg_card_detail"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
         </com.yun9.wservice.view.msgcard.MsgCardInDetailWidget>
 
-    </com.yun9.pulltorefresh.PullToRefreshScrollView>
+    </LinearLayout>
 
-
-
+    <!--<com.yun9.pulltorefresh.PullToRefreshScrollView-->
+    <!--xmlns:ptr="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/pull_refresh_scrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--ptr:ptrAnimationStyle="flip"-->
+    <!-->-->
+    <!--</com.yun9.pulltorefresh.PullToRefreshScrollView>-->
 
 </RelativeLayout>

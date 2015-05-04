@@ -61,13 +61,17 @@ public class JupiterSegmentedGroup extends LinearLayout {
         this.onClickListener = onClickListener;
     }
 
+    public void selectItem(int position){
+        this.updateState(position);
+    }
+
     public void onItemClick(View view){
         if (view != null && view instanceof JupiterSegmentedItem){
-            currItem = (JupiterSegmentedItem) view;
+            JupiterSegmentedItem tempItemView = (JupiterSegmentedItem) view;
             logger.d("分段选择Item被点击");
 
             //更新界面状态
-            this.updateState();
+            this.updateState(tempItemView);
             //执行事件监听
             if (this.onClickListener !=null){
                 this.onClickListener.onClick(view);
@@ -76,7 +80,7 @@ public class JupiterSegmentedGroup extends LinearLayout {
         }
     }
 
-    private void updateState(){
+    private void updateState(JupiterSegmentedItem view){
         //将所有对象设置为未点击
         if(this.items !=null){
             for(JupiterSegmentedItem item :this.items){
@@ -84,7 +88,26 @@ public class JupiterSegmentedGroup extends LinearLayout {
             }
         }
 
+        this.currItem = view;
         //将当前项目设置为已经点击
-        this.currItem.setClicked(true);
+        view.setClicked(true);
     }
+
+    private void updateState(int viewPosition){
+        if (viewPosition > this.items.size() - 1 || viewPosition < 0){
+            return;
+        }
+
+        for(JupiterSegmentedItem item :this.items){
+            item.setClicked(false);
+        }
+
+        JupiterSegmentedItem tempView = this.items.get(viewPosition);
+
+
+        this.currItem = tempView;
+        //将当前项目设置为已经点击
+        tempView.setClicked(true);
+    }
+
 }

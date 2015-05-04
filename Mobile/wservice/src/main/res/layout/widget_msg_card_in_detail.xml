@@ -74,10 +74,11 @@
 
     <LinearLayout
         android:layout_below="@+id/msg_card_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <com.yun9.jupiter.widget.JupiterSegmentedGroup
+            android:id="@+id/msg_card_detail_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -122,5 +123,18 @@
             </com.yun9.jupiter.widget.JupiterSegmentedItem>
 
         </com.yun9.jupiter.widget.JupiterSegmentedGroup>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/drak"
+            android:flipInterval="30"
+            android:persistentDrawingCache="animation" />
     </LinearLayout>
+
+
+
 </RelativeLayout>
