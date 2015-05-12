@@ -3,10 +3,14 @@ package com.yun9.jupiter.widget;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
+import com.yun9.jupiter.R;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 
 import java.util.ArrayList;
@@ -16,6 +20,8 @@ import java.util.List;
  * Created by Leon on 15/4/30.
  */
 public class JupiterSegmentedGroup extends LinearLayout {
+
+    private JupiterSegmentedGroupAdapter adapter;
 
     private JupiterSegmentedItem currItem;
 
@@ -31,6 +37,32 @@ public class JupiterSegmentedGroup extends LinearLayout {
 
     public JupiterSegmentedGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    private void initView(){
+        this.setOrientation(LinearLayout.VERTICAL);
+    }
+
+    public void setAdapter(JupiterSegmentedGroupAdapter adapter){
+        this.adapter = adapter;
+        this.builderView();
+    }
+
+    private void builderView(){
+        if (adapter == null)
+            return;
+
+        for(int i = 0;i<adapter.getCount();i++){
+
+        }
+    }
+
+    private JupiterSegmentedItem createItem() {
+
+        View itemWrapperView = LayoutInflater.from(this.getContext()).inflate(R.layout.segmented_item_wrapper,null);
+        JupiterSegmentedItem item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
+
+        return item;
     }
 
     @Override

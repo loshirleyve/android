@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <com.yun9.jupiter.widget.JupiterSegmentedItem
+        xmlns:segitem="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/segmented_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        segitem:segmented_item_titleText="@string/jupiter"
+        segitem:segmented_item_descText="99+"
+        segitem:segmented_item_text_color="@color/black"
+        segitem:segmented_item_text_color_selected="@color/title_color"
+        segitem:segmented_item_ico="@drawable/write"
+        segitem:segmented_item_ico_selected="@drawable/write">
+    </com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+
+</RelativeLayout>
