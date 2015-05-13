@@ -40,32 +40,8 @@ public class WelcomeActivity extends JupiterActivity {
 		mImageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-				startActivity(intent);
+                MainActivity.start(WelcomeActivity.this,null);
 				finish();
-
-                //BeanConfig.getInstance().load();
-//				SessionManager sessionManager = BeanConfig.getInstance()
-//						.getBeanContext().get(SessionManager.class);
-
-//				boolean isFirst = sessionManager.isFirst();
-//				boolean isLogin = sessionManager.isLogin();
-
-				// 第一次打开，转到登录界面
-//				if (isFirst) {
-////					Intent intent = new Intent(context, LoginActivity.class);
-////					startActivity(intent);
-////					finish();
-//				} else if (!isFirst && isLogin) { // 已经打开过，并且已经登录
-//					sessionManager.setFirst(false);
-//					Intent intent = new Intent(context, MainActivity.class);
-//					startActivity(intent);
-//					finish();
-//				} else { // 其他情况
-////					Intent intent = new Intent(context, LoginActivity.class);
-////					startActivity(intent);
-////					finish();
-//				}
 			}
 		}, 1000);
 	}

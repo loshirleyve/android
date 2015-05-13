@@ -8,5 +8,9 @@
     <color name="title_color">#E94B35</color>
     <color name="devide_line">#CBCED2</color>
     <color name="groupbackground">#EEF0EF</color>
+    <color name="drak">#DEDEDE</color>
+
+    <color name="radio_button_selected_color">#ff33b5e5</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
 
 </resources>

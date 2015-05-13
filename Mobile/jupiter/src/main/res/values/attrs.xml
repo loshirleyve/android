@@ -1,27 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="TitleBarLayout">
+    <declare-styleable name="JupiterTitleBarLayout">
         <attr name="titleText" format="string"></attr>
+        <attr name="sutitleText" format="string"></attr>
+        <attr name="titleLeftText" format="string"></attr>
+        <attr name="titleRightText" format="string"></attr>
+
+        <attr name="titleTextVisibility" format="boolean"></attr>
+        <attr name="sutitleTextVisibility" format="boolean"></attr>
+        <attr name="titleLeftTextVisibility" format="boolean"></attr>
+        <attr name="titleLeftIcoVisibility" format="boolean"></attr>
+        <attr name="titleLeftIcoSrc" format="reference"></attr>
+        <attr name="titleRightTextVisibility" format="boolean"></attr>
+        <attr name="titleRightIcoVisibility" format="boolean"></attr>
+        <attr name="titleRightIcoSrc" format="reference"></attr>
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleSutitleLayout">
-        <attr name="styleType" format="enum">
-            <enum name="StyleTitle" value="0"></enum>
-            <enum name="StyleSutitle" value="1"></enum>
-            <enum name="StyleSetting" value="2"></enum>
-        </attr>
+        <attr name="rowStyleSutitleTitleText" format="string"></attr>
+        <attr name="rowStyleSutitleText" format="string"></attr>
+        <attr name="rowStyleSutitleShowArrow" format="boolean" />
+        <attr name="rowStyleSutitleShowMainImage" format="boolean" />
+        <attr name="rowStyleSutitleShowTimeText" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleTitleLayout">
-        <attr name="row_style_titleText" format="string"></attr>
-        <attr name="showHotText" format="enum">
-            <enum name="yes" value="1"></enum>
-            <enum name="no" value="0"></enum>
-        </attr>
-        <attr name="showArrow" format="enum">
-            <enum name="yes" value="1"></enum>
-            <enum name="no" value="0"></enum>
-        </attr>
+        <attr name="rowStyleTitleText" format="string"></attr>
+        <attr name="rowStyleTitleShowHotText" format="boolean"/>
+        <attr name="rowStyleTitleShowArrow" format="boolean" />
+        <attr name="rowStyleTitleShowMainImage" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="SegmentedGroup">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="tint_color" format="color" />
+        <attr name="checked_text_color" format="color" />
+    </declare-styleable>
+
+
+    <declare-styleable name="JupiterSegmentedItem">
+        <attr name="segmented_item_titleText" format="string"></attr>
+        <attr name="segmented_item_descText" format="string"></attr>
+        <attr name="segmented_item_ico" format="reference"></attr>
+        <attr name="segmented_item_ico_selected" format="reference"></attr>
+        <attr name="segmented_item_text_color_selected" format="color"></attr>
+        <attr name="segmented_item_text_color" format="color"></attr>
+    </declare-styleable>
+
 </resources>

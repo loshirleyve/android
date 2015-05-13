@@ -2,6 +2,7 @@ package com.yun9.wservice.view;
 
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.R;
@@ -25,5 +26,10 @@ public class UserFragment extends JupiterFragment {
     protected int getContentView() {
 
         return R.layout.fragment_user;
+    }
+
+    @Override
+    protected void initViews(View view) {
+
     }
 }

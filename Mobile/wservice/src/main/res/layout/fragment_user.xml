@@ -7,7 +7,7 @@
     tools:context=".func.user.UserFragment"
     android:background="@color/groupbackground">
 
-    <com.yun9.jupiter.widget.TitleBarLayout
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
         xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/user_title"
         android:layout_width="wrap_content"
@@ -20,18 +20,23 @@
         android:orientation="vertical"
         android:layout_below="@+id/user_title">
 
-        <com.yun9.wservice.view.UserHeadLayout
+        <com.yun9.wservice.view.UserHeadWidget
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/whites">
 
-        </com.yun9.wservice.view.UserHeadLayout>
+        </com.yun9.wservice.view.UserHeadWidget>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about1"
+            xmlns:row="http://schemas.android.com/apk/res-auto"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            row:rowStyleTitleText="@string/app_name"
+            row:rowStyleTitleShowArrow="false"
+
+            row:rowStyleTitleShowMainImage="false">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout

@@ -1,1 +1,1 @@
-include ':wservice', ':jupiter'
+include ':wservice', ':jupiter', ':pulltorefresh', ':pulltorefreshsample', ':menudrawer', ':menudrawersample'

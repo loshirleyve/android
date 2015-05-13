@@ -27,4 +27,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile files('libs/async-http.jar')
     compile files('libs/mobile-annotation-1.0-SNAPSHOT.jar')
+    compile project(':menudrawer')
 }
+

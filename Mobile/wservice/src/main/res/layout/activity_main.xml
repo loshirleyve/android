@@ -18,8 +18,52 @@
         android:background="@color/devide_line"
         android:layout_above="@+id/button_bar_main_group"/>
 
+    <LinearLayout android:id="@+id/button_bar_main_group"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@color/whites">
 
-    <include android:id="@+id/button_bar_main_group"  layout="@layout/button_bar_main"></include>
+        <RelativeLayout style="@style/ButtonBarMain" >
+
+            <ImageButton
+                android:id="@+id/button_bar_main_btn_store"
+                style="@style/ButtonBarMainImgBtn"
+                android:background="@drawable/store_btn"
+                android:contentDescription="@string/app_name" />
+
+        </RelativeLayout>
+
+        <RelativeLayout style="@style/ButtonBarMain" >
+
+            <ImageButton
+                android:id="@+id/button_bar_main_btn_dynamic"
+                style="@style/ButtonBarMainImgBtn"
+                android:background="@drawable/dynamic_btn"
+                android:contentDescription="@string/app_name" />
+        </RelativeLayout>
+
+        <RelativeLayout style="@style/ButtonBarMain" >
+
+            <ImageButton
+                android:id="@+id/button_bar_main_btn_microapp"
+                style="@style/ButtonBarMainImgBtn"
+                android:background="@drawable/microapp_btn"
+                android:contentDescription="@string/app_name" />
 
 
+        </RelativeLayout>
+
+        <RelativeLayout style="@style/ButtonBarMain" >
+
+            <ImageButton
+                android:id="@+id/button_bar_main_btn_user"
+                style="@style/ButtonBarMainImgBtn"
+                android:background="@drawable/user_btn"
+                android:contentDescription="@string/app_name" />
+        </RelativeLayout>
+
+    </LinearLayout>
 </RelativeLayout>
