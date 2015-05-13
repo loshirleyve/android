@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whites">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/segmented_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.yun9.jupiter.widget.JupiterSegmentedItem
+            xmlns:segitem="http://schemas.android.com/apk/res-auto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            segitem:segmented_item_titleText="@string/jupiter"
+            segitem:segmented_item_descText="99+"
+            segitem:segmented_item_text_color="@color/drak"
+            segitem:segmented_item_text_color_selected="@color/title_color"
+            segitem:segmented_item_ico="@drawable/write"
+            segitem:segmented_item_ico_selected="@drawable/write">
+        </com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+        <com.yun9.jupiter.widget.JupiterSegmentedItem
+            xmlns:segitem="http://schemas.android.com/apk/res-auto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            segitem:segmented_item_titleText="@string/jupiter"
+            segitem:segmented_item_descText="99+"
+            segitem:segmented_item_ico="@drawable/write"
+            segitem:segmented_item_text_color="@color/drak"
+            segitem:segmented_item_text_color_selected="@color/title_color"
+            segitem:segmented_item_ico_selected="@drawable/write">
+        </com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+        <com.yun9.jupiter.widget.JupiterSegmentedItem
+            xmlns:segitem="http://schemas.android.com/apk/res-auto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            segitem:segmented_item_titleText="@string/jupiter"
+            segitem:segmented_item_descText="99+"
+            segitem:segmented_item_ico="@drawable/write"
+            segitem:segmented_item_text_color="@color/drak"
+            segitem:segmented_item_text_color_selected="@color/title_color"
+            segitem:segmented_item_ico_selected="@drawable/write">
+        </com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/drak"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation" />
+
+</LinearLayout>
