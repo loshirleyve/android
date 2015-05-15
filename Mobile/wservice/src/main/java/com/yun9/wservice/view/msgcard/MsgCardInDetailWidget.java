@@ -13,8 +13,6 @@ import com.yun9.wservice.R;
  */
 public class MsgCardInDetailWidget extends JupiterRelativeLayout {
 
-    private ViewPager viewPager;
-
     private JupiterSegmentedGroup segmentedGroup;
 
     public MsgCardInDetailWidget(Context context) {
@@ -36,16 +34,11 @@ public class MsgCardInDetailWidget extends JupiterRelativeLayout {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
         this.segmentedGroup = (JupiterSegmentedGroup) this.findViewById(R.id.msg_card_detail_tab);
-    }
-
-    public ViewPager getViewPager() {
-        return viewPager;
-    }
-
-    public void setViewPager(ViewPager viewPager) {
-        this.viewPager = viewPager;
+        MsgCardDetailSegmentedItemAdapter segmentedItemAdapter = new MsgCardDetailSegmentedItemAdapter(this.getContext());
+        MsgCardDetailViewPagerAdapter viewPagerAdapter = new MsgCardDetailViewPagerAdapter(this.getContext());
+        this.segmentedGroup.setAdapter(segmentedItemAdapter);
+        this.segmentedGroup.setTabItemAdapter(viewPagerAdapter);
     }
 
     public JupiterSegmentedGroup getSegmentedGroup() {

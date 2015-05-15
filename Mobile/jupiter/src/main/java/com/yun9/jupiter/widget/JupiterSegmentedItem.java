@@ -107,21 +107,9 @@ public class JupiterSegmentedItem extends JupiterRelativeLayout {
     }
 
     private void initEvents(){
-        this.setOnClickListener(onClickListener);
     }
 
-    private OnClickListener onClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ViewParent parentView = v.getParent();
 
-            if(parentView instanceof JupiterSegmentedGroup){
-                JupiterSegmentedGroup jupiterSegmentedGroup = (JupiterSegmentedGroup)parentView;
-                jupiterSegmentedGroup.onItemClick(v);
-            }
-
-        }
-    };
 
     public void setClicked(boolean clicked){
         this.clicked = clicked;

@@ -2,12 +2,15 @@ package com.yun9.jupiter.widget;
 
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.util.AssertValue;
@@ -19,7 +22,12 @@ import java.util.List;
 /**
  * Created by Leon on 15/4/30.
  */
-public class JupiterSegmentedGroup extends LinearLayout {
+public class JupiterSegmentedGroup extends JupiterRelativeLayout {
+
+    // tab容器
+    private LinearLayout tabContainer;
+    // ViewPager
+    private ViewPager viewPager;
 
     private JupiterSegmentedGroupAdapter adapter;
 
@@ -28,6 +36,14 @@ public class JupiterSegmentedGroup extends LinearLayout {
     private List<JupiterSegmentedItem> items;
 
     private OnClickListener onClickListener;
+
+    // 内置的基本tab点击事件监听器
+    private OnClickListener basicOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            JupiterSegmentedGroup.this.onItemClick(v);
+        }
+    };
 
     private static final Logger logger = Logger.getLogger(JupiterSegmentedGroup.class);
 
@@ -39,8 +55,36 @@ public class JupiterSegmentedGroup extends LinearLayout {
         super(context, attrs);
     }
 
-    private void initView(){
-        this.setOrientation(LinearLayout.VERTICAL);
+    @Override
+    protected int getContextView() {
+        return R.layout.segmented_group;
+    }
+
+    @Override
+    protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+        items = new ArrayList<>();
+        this.tabContainer = (LinearLayout) this.findViewById(R.id.segmented_tab);
+        this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
+        bindViewPagerListener();
+    }
+
+    private void bindViewPagerListener() {
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                JupiterSegmentedGroup.this.selectItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public void setAdapter(JupiterSegmentedGroupAdapter adapter){
@@ -48,12 +92,21 @@ public class JupiterSegmentedGroup extends LinearLayout {
         this.builderView();
     }
 
+    public  void setTabItemAdapter(PagerAdapter pagerAdapter) {
+        if (viewPager != null) {
+            viewPager.setAdapter(pagerAdapter);
+        }
+    }
+
     private void builderView(){
         if (adapter == null)
             return;
 
         for(int i = 0;i<adapter.getCount();i++){
-
+            JupiterSegmentedItem item = adapter.getTab(i);
+            item.setOnClickListener(this.basicOnClickListener);
+            tabContainer.addView(item);
+            items.add(item);
         }
     }
 
@@ -68,25 +121,6 @@ public class JupiterSegmentedGroup extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        logger.d("onFinishInflate!");
-
-        items = new ArrayList<>();
-
-        //完成后记录所有子对象
-        int childCount = this.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
-            View child = getChildAt(i);
-            if (child instanceof JupiterSegmentedItem){
-                JupiterSegmentedItem item = (JupiterSegmentedItem) child;
-                this.items.add((JupiterSegmentedItem) item);
-                item.setClicked(false);
-            }
-        }
-
-        if (items.size()>0){
-            items.get(0).setClicked(true);
-        }
     }
 
     public void setOnTabClickListener(OnClickListener onClickListener){

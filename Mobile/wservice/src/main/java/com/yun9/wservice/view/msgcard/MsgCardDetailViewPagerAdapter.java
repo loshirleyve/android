@@ -1,9 +1,14 @@
 package com.yun9.wservice.view.msgcard;
 
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yun9.wservice.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +18,15 @@ public class MsgCardDetailViewPagerAdapter extends PagerAdapter {
 
     private List<View> mListViews;
 
-    public MsgCardDetailViewPagerAdapter(List<View> viewList){
-        this.mListViews = viewList;
+    public MsgCardDetailViewPagerAdapter(Context ctx){
+        // 评论，点赞，分享
+        View commentView =  LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_comments, null);
+        View praiseView = LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_praise, null);
+        View shareView = LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_share, null);
+        mListViews = new ArrayList<View>();
+        mListViews.add(commentView);
+        mListViews.add(praiseView);
+        mListViews.add(shareView);
     }
 
     @Override
