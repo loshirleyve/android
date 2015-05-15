@@ -28,18 +28,24 @@ public class MsgCardDetailSegmentedItemAdapter implements JupiterSegmentedGroupA
         JupiterSegmentedItem item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
         itemWrapperView.removeView(item);
         item.getTitleTextTV().setText(R.string.msg_card_comment);
+        item.setIcoImage(R.drawable.com1);
+        item.setIcoImageSelected(R.drawable.com2);
         itemList.add(item);
         itemWrapperView = (ViewGroup) LayoutInflater.from(context)
                 .inflate(R.layout.segmented_item_wrapper, null);
         item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
         itemWrapperView.removeView(item);
         item.getTitleTextTV().setText(R.string.msg_card_praise);
+        item.setIcoImage(R.drawable.star1);
+        item.setIcoImageSelected(R.drawable.star2);
         itemList.add(item);
         itemWrapperView = (ViewGroup) LayoutInflater.from(context)
                 .inflate(R.layout.segmented_item_wrapper, null);
         item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
         itemWrapperView.removeView(item);
         item.getTitleTextTV().setText(R.string.msg_card_share);
+        item.setIcoImage(R.drawable.fw1);
+        item.setIcoImageSelected(R.drawable.fw2);
         itemList.add(item);
 
 

@@ -149,4 +149,12 @@ public class JupiterSegmentedItem extends JupiterRelativeLayout {
     public void setDescTextTV(TextView descTextTV) {
         this.descTextTV = descTextTV;
     }
+
+    public void setIcoImage(int icoImage) {
+        this.icoImage = icoImage;
+    }
+
+    public void setIcoImageSelected(int icoImageSelected) {
+        this.icoImageSelected = icoImageSelected;
+    }
 }
