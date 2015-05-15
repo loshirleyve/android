@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -89,38 +90,42 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         });
     }
 
-    public void setAdapter(JupiterSegmentedGroupAdapter adapter){
+    public void setAdapter(JupiterSegmentedGroupAdapter adapter) {
         this.adapter = adapter;
         this.builderView();
+
+
     }
 
-    public  void setTabItemAdapter(PagerAdapter pagerAdapter) {
+    public void setTabItemAdapter(PagerAdapter pagerAdapter) {
         if (viewPager != null) {
             viewPager.setAdapter(pagerAdapter);
         }
     }
 
-    private void builderView(){
+    private void builderView() {
         if (adapter == null)
             return;
 
-        for(int i = 0;i<adapter.getCount();i++){
-            JupiterSegmentedItem item = adapter.getTab(i);
-            item.setOnClickListener(this.basicOnClickListener);
-            tabContainer.addView(item);
-            items.add(item);
+        for (int i = 0; i < adapter.getCount(); i++) {
+            this.createItem(adapter.getTabInfo(i));
         }
         if (items.size() > 0) {
             this.selectItem(0);
         }
     }
 
-    private JupiterSegmentedItem createItem() {
+    private void createItem(JupiterSegmentedItemModel model) {
 
-        View itemWrapperView = LayoutInflater.from(this.getContext()).inflate(R.layout.segmented_item_wrapper,null);
-        JupiterSegmentedItem item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
-
-        return item;
+        ViewGroup itemWrapper = (ViewGroup) LayoutInflater.from(this.getContext()).inflate(R.layout.segmented_item_wrapper, null);
+        JupiterSegmentedItem item = (JupiterSegmentedItem) itemWrapper.findViewById(R.id.segmented_item);
+        item.getTitleTextTV().setText(model.getTitle());
+        item.setIcoImage(model.getIcoImage());
+        item.setIcoImageSelected(model.getIcoImageSelected());
+        item.setOnClickListener(this.basicOnClickListener);
+        itemWrapper.removeView(item);
+        this.tabContainer.addView(item);
+        items.add(item);
     }
 
     @Override
@@ -128,22 +133,22 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         super.onFinishInflate();
     }
 
-    public void setOnTabClickListener(OnClickListener onClickListener){
+    public void setOnTabClickListener(OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
 
-    public void selectItem(int position){
+    public void selectItem(int position) {
         this.updateState(position);
     }
 
-    public void onItemClick(View view){
-        if (view != null && view instanceof JupiterSegmentedItem){
+    public void onItemClick(View view) {
+        if (view != null && view instanceof JupiterSegmentedItem) {
             JupiterSegmentedItem tempItemView = (JupiterSegmentedItem) view;
             logger.d("分段选择Item被点击");
 
             //更新界面状态
             int positon = 0;
-            for (int i = 0;i < items.size();i++) {
+            for (int i = 0; i < items.size(); i++) {
                 JupiterSegmentedItem item = items.get(i);
                 if (view == item) {
                     positon = i;
@@ -152,17 +157,17 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
             }
             this.selectItem(positon);
             //执行事件监听
-            if (this.onClickListener !=null){
+            if (this.onClickListener != null) {
                 this.onClickListener.onClick(view);
             }
 
         }
     }
 
-    private void updateState(JupiterSegmentedItem view){
+    private void updateState(JupiterSegmentedItem view) {
         //将所有对象设置为未点击
-        if(this.items !=null){
-            for(JupiterSegmentedItem item :this.items){
+        if (this.items != null) {
+            for (JupiterSegmentedItem item : this.items) {
                 item.setClicked(false);
             }
         }
@@ -173,17 +178,17 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         view.setClicked(true);
     }
 
-    private void updateState(int viewPosition){
-        if (viewPosition > this.items.size() - 1 || viewPosition < 0){
+    private void updateState(int viewPosition) {
+        if (viewPosition > this.items.size() - 1 || viewPosition < 0) {
             return;
         }
 
-        for(JupiterSegmentedItem item :this.items){
+        for (JupiterSegmentedItem item : this.items) {
             item.setClicked(false);
         }
 
         JupiterSegmentedItem tempView = this.items.get(viewPosition);
-        this.viewPager.setCurrentItem(viewPosition,true);
+        this.viewPager.setCurrentItem(viewPosition, true);
 
         this.currItem = tempView;
         //将当前项目设置为已经点击

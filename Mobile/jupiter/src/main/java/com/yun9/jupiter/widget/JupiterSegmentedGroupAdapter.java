@@ -8,8 +8,6 @@ import android.view.View;
 public interface JupiterSegmentedGroupAdapter {
     public int getCount();
 
-    public JupiterSegmentedItem getTab(int position);
-
-    public View getView(int position);
+    public JupiterSegmentedItemModel getTabInfo(int position);
 
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.yun9.jupiter.widget.JupiterSegmentedGroup;
 import com.yun9.jupiter.widget.JupiterSegmentedGroupAdapter;
 import com.yun9.jupiter.widget.JupiterSegmentedItem;
+import com.yun9.jupiter.widget.JupiterSegmentedItemModel;
 import com.yun9.wservice.R;
 
 import java.util.ArrayList;
@@ -19,35 +20,19 @@ import java.util.List;
  */
 public class MsgCardDetailSegmentedItemAdapter implements JupiterSegmentedGroupAdapter {
 
-    private List<JupiterSegmentedItem> itemList;
+    private List<JupiterSegmentedItemModel> itemList;
 
     public MsgCardDetailSegmentedItemAdapter(Context context) {
         itemList = new ArrayList<>();
-        ViewGroup itemWrapperView = (ViewGroup) LayoutInflater.from(context)
-                                                .inflate(R.layout.segmented_item_wrapper, null);
-        JupiterSegmentedItem item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
-        itemWrapperView.removeView(item);
-        item.getTitleTextTV().setText(R.string.msg_card_comment);
-        item.setIcoImage(R.drawable.com1);
-        item.setIcoImageSelected(R.drawable.com2);
-        itemList.add(item);
-        itemWrapperView = (ViewGroup) LayoutInflater.from(context)
-                .inflate(R.layout.segmented_item_wrapper, null);
-        item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
-        itemWrapperView.removeView(item);
-        item.getTitleTextTV().setText(R.string.msg_card_praise);
-        item.setIcoImage(R.drawable.star1);
-        item.setIcoImageSelected(R.drawable.star2);
-        itemList.add(item);
-        itemWrapperView = (ViewGroup) LayoutInflater.from(context)
-                .inflate(R.layout.segmented_item_wrapper, null);
-        item = (JupiterSegmentedItem) itemWrapperView.findViewById(R.id.segmented_item);
-        itemWrapperView.removeView(item);
-        item.getTitleTextTV().setText(R.string.msg_card_share);
-        item.setIcoImage(R.drawable.fw1);
-        item.setIcoImageSelected(R.drawable.fw2);
-        itemList.add(item);
-
+        JupiterSegmentedItemModel model =
+                new JupiterSegmentedItemModel(R.string.msg_card_comment,R.drawable.com1,R.drawable.com2);
+        itemList.add(model);
+        model =
+                new JupiterSegmentedItemModel(R.string.msg_card_praise,R.drawable.star1,R.drawable.star2);
+        itemList.add(model);
+        model =
+                new JupiterSegmentedItemModel(R.string.msg_card_share,R.drawable.fw1,R.drawable.fw2);
+        itemList.add(model);
 
     }
 
@@ -57,12 +42,7 @@ public class MsgCardDetailSegmentedItemAdapter implements JupiterSegmentedGroupA
     }
 
     @Override
-    public JupiterSegmentedItem getTab(int position) {
+    public JupiterSegmentedItemModel getTabInfo(int position) {
         return itemList.get(position);
-    }
-
-    @Override
-    public View getView(int position) {
-        return null;
     }
 }
