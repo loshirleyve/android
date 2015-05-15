@@ -16,6 +16,8 @@ import com.yun9.jupiter.R;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +110,9 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
             tabContainer.addView(item);
             items.add(item);
         }
+        if (items.size() > 0) {
+            this.selectItem(0);
+        }
     }
 
     private JupiterSegmentedItem createItem() {
@@ -137,7 +142,15 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
             logger.d("分段选择Item被点击");
 
             //更新界面状态
-            this.updateState(tempItemView);
+            int positon = 0;
+            for (int i = 0;i < items.size();i++) {
+                JupiterSegmentedItem item = items.get(i);
+                if (view == item) {
+                    positon = i;
+                    break;
+                }
+            }
+            this.selectItem(positon);
             //执行事件监听
             if (this.onClickListener !=null){
                 this.onClickListener.onClick(view);
@@ -154,6 +167,7 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
             }
         }
 
+
         this.currItem = view;
         //将当前项目设置为已经点击
         view.setClicked(true);
@@ -169,7 +183,7 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         }
 
         JupiterSegmentedItem tempView = this.items.get(viewPosition);
-
+        this.viewPager.setCurrentItem(viewPosition,true);
 
         this.currItem = tempView;
         //将当前项目设置为已经点击
