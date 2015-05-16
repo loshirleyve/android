@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whites">
+    <View
+        android:id="@+id/line_top_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/devide_line"/>
+    <LinearLayout
+        android:id="@+id/main_tabs_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/line_top_v">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:id="@+id/praise_rl"
+                android:clickable="true">
+                <ImageView
+                    style="@style/msg_card_btn_ico"
+                    android:id="@+id/praise_iv"
+                    android:src="@drawable/star1"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:id="@+id/fw_rl"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/fw_iv"
+                    style="@style/msg_card_btn_ico"
+                    android:src="@drawable/fw1"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:id="@+id/comm_rl"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/comm_iv"
+                    style="@style/msg_card_btn_ico"
+                    android:src="@drawable/com1"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:id="@+id/action_rl"
+                android:clickable="true">
+                <ImageView
+                    android:id="@+id/action_iv"
+                    style="@style/msg_card_btn_ico"
+                    android:src="@drawable/action1"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:id="@+id/line_bottom_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/devide_line"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

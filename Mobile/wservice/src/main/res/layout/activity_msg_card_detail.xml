@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/whites">
+    android:background="@color/groupbackground">
     
     <com.yun9.jupiter.widget.JupiterTitleBarLayout
         xmlns:tb="http://schemas.android.com/apk/res-auto"
@@ -14,6 +14,7 @@
         tb:titleLeftTextVisibility="true"/>
 
     <LinearLayout
+        android:id="@+id/ll_msg_card_detail"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,14 +27,12 @@
         </com.yun9.wservice.view.msgcard.MsgCardInDetailWidget>
 
     </LinearLayout>
+    <com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget
+        android:id="@+id/msg_card_detail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-    <!--<com.yun9.pulltorefresh.PullToRefreshScrollView-->
-    <!--xmlns:ptr="http://schemas.android.com/apk/res-auto"-->
-    <!--android:id="@+id/pull_refresh_scrollview"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--ptr:ptrAnimationStyle="flip"-->
-    <!-->-->
-    <!--</com.yun9.pulltorefresh.PullToRefreshScrollView>-->
+    </com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget>
 
 </RelativeLayout>

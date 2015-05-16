@@ -10,6 +10,5 @@
         android:text="@string/msg_card_comment"
         android:textSize="30dp"
         android:gravity="center"
-        android:textColor="@color/whites"
-        android:background="@color/whites"/>
+        android:textColor="@color/whites"/>
 </LinearLayout>
