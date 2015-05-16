@@ -11,5 +11,5 @@
         android:textSize="30dp"
         android:gravity="center"
         android:textColor="@color/whites"
-        android:background="@color/title_color"/>
+        android:background="@color/whites"/>
 </LinearLayout>

@@ -123,6 +123,11 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         item.setIcoImage(model.getIcoImage());
         item.setIcoImageSelected(model.getIcoImageSelected());
         item.setOnClickListener(this.basicOnClickListener);
+        if (model.getDesc() > 99) {
+            item.getDescTextTV().setText("99+");
+        } else {
+            item.getDescTextTV().setText(""+model.getDesc());
+        }
         itemWrapper.removeView(item);
         this.tabContainer.addView(item);
         items.add(item);
