@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/row_style_background">
@@ -19,12 +18,13 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:visibility="visible">
+
             <ImageView
                 android:id="@+id/main_iv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:src="@drawable/user_head"/>
+                android:src="@drawable/user_head" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -36,6 +36,7 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/title_tv"
                         android:layout_width="wrap_content"
@@ -43,7 +44,7 @@
                         android:layout_alignParentLeft="true"
                         android:textColor="@color/black"
                         android:textSize="16dp"
-                        android:text="@string/jupiter_row_cell_title"/>
+                        android:text="@string/jupiter_row_cell_title" />
 
                     <TextView
                         android:id="@+id/time_tv"
@@ -51,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:textSize="12dp"
-                        android:text="@string/jupiter_row_cell_time"/>
+                        android:text="@string/jupiter_row_cell_time" />
                 </RelativeLayout>
 
 
@@ -60,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
-                    android:text="@string/jupiter_row_cell_sutitle"/>
+                    android:text="@string/jupiter_row_cell_sutitle" />
             </LinearLayout>
 
 
@@ -74,12 +75,13 @@
             android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp">
+
             <ImageView
                 android:id="@+id/arrow_right_iv"
                 android:layout_gravity="center"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/arrow_right"/>
+                android:src="@drawable/arrow_right" />
         </LinearLayout>
 
         <View
@@ -87,6 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/devide_line"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 </RelativeLayout>

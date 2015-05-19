@@ -1,11 +1,8 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -62,15 +59,26 @@ public class MsgCardDetailToolbarWidget extends JupiterRelativeLayout {
 
             @Override
             public void onActionClick(RelativeLayout relativeLayout) {
-                ImageView imageView = (ImageView) relativeLayout.findViewById(R.id.action_iv);
                 if (panelsWidget.getVisibility() == View.VISIBLE) {
-                    panelsWidget.setVisibility(View.GONE);
-                    imageView.setImageResource(R.drawable.action1);
+                    hidePanels();
                 } else {
-                    panelsWidget.setVisibility(View.VISIBLE);
-                    imageView.setImageResource(R.drawable.action2);
+                    showPanels();
                 }
             }
         });
+    }
+
+    /**
+     * 显示动作面板
+     */
+    public void showPanels() {
+        panelsWidget.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 隐藏动作面板
+     */
+    public void hidePanels() {
+        panelsWidget.setVisibility(View.GONE);
     }
 }

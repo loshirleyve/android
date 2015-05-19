@@ -21,6 +21,8 @@ public class MsgCardDetailToolbarTabsWidget extends JupiterRelativeLayout{
     private RelativeLayout commentLayout;
     private RelativeLayout actionLayout;
 
+    private  boolean isFirstClickOfActionLayout = true;// 是否第一次点击动作按钮，默认true
+
     public MsgCardDetailToolbarTabsWidget(Context context) {
         super(context);
     }
@@ -48,15 +50,12 @@ public class MsgCardDetailToolbarTabsWidget extends JupiterRelativeLayout{
         forwardLayout= (RelativeLayout) this.findViewById(R.id.fw_rl);
         commentLayout = (RelativeLayout) this.findViewById(R.id.comm_rl);
         actionLayout = (RelativeLayout) this.findViewById(R.id.action_rl);
+        initEvent();
 
         // 设置点击事件
         OnClickListener onClickListener = new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 没设定事件监听，什么也不操作
-                if (onTabClickListener == null) {
-                    return;
-                }
                 if (v.getId() == praiseLayout.getId()) {
                     onTabClickListener.onPraiseClick(praiseLayout);
                 } else if (v.getId() == forwardLayout.getId()) {
@@ -64,6 +63,15 @@ public class MsgCardDetailToolbarTabsWidget extends JupiterRelativeLayout{
                 } else if (v.getId() == commentLayout.getId()) {
                     onTabClickListener.onCommentClick(commentLayout);
                 } else if (v.getId() == actionLayout.getId()) {
+                    // 改变图标
+                    ImageView imageView = (ImageView) actionLayout.findViewById(R.id.action_iv);
+                    if (isFirstClickOfActionLayout) {
+                        isFirstClickOfActionLayout = false;
+                        imageView.setImageResource(R.drawable.action2);
+                    } else {
+                        isFirstClickOfActionLayout = true;
+                        imageView.setImageResource(R.drawable.action1);
+                    }
                     onTabClickListener.onActionClick(actionLayout);
                 }
             }
@@ -74,6 +82,58 @@ public class MsgCardDetailToolbarTabsWidget extends JupiterRelativeLayout{
         actionLayout.setOnClickListener(onClickListener);
     }
 
+    // 初始化tab点击监听器，默认什么都不执行
+    private void initEvent() {
+        this.onTabClickListener = new TabOnClickListener() {
+            @Override
+            public void onPraiseClick(RelativeLayout relativeLayout) {
+            }
+
+            @Override
+            public void onForwardClick(RelativeLayout relativeLayout) {
+            }
+
+            @Override
+            public void onCommentClick(RelativeLayout relativeLayout) {
+            }
+
+            @Override
+            public void onActionClick(RelativeLayout relativeLayout) {
+            }
+        };
+    }
+
+    /**
+     * 点击点赞按钮
+     */
+    public void clickPraiseBtn() {
+        praiseLayout.callOnClick();
+    }
+
+    /**
+     * 点击转发按钮
+     */
+    public void clickForwardBtn() {
+        forwardLayout.callOnClick();
+    }
+
+    /**
+     * 点击评论按钮
+     */
+    public void clickCommentBtn() {
+        commentLayout.callOnClick();
+    }
+
+    /**
+     * 点击动作按钮
+     */
+    public void clickActionBtn() {
+        actionLayout.callOnClick();
+    }
+
+    /**
+     * 接口定义，4个按钮被点击时的不同处理回调
+     */
     public interface TabOnClickListener {
         public void onPraiseClick(RelativeLayout relativeLayout);
         public void onForwardClick(RelativeLayout relativeLayout);

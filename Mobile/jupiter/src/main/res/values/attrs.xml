@@ -27,7 +27,7 @@
 
     <declare-styleable name="JupiterRowStyleTitleLayout">
         <attr name="rowStyleTitleText" format="string"></attr>
-        <attr name="rowStyleTitleShowHotText" format="boolean"/>
+        <attr name="rowStyleTitleShowHotText" format="boolean" />
         <attr name="rowStyleTitleShowArrow" format="boolean" />
         <attr name="rowStyleTitleShowMainImage" format="boolean" />
     </declare-styleable>

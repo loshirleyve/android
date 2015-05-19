@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/row_style_background"
@@ -24,13 +23,14 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/user_head"/>
+                android:src="@drawable/user_head" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center">
+
                 <TextView
                     android:id="@+id/title_tv"
                     android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
                     android:layout_alignParentLeft="true"
                     android:textColor="@color/black"
                     android:textSize="16dp"
-                    android:text="@string/jupiter_row_cell_title"/>
+                    android:text="@string/jupiter_row_cell_title" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -58,7 +58,7 @@
                 android:background="@color/title_color"
                 android:text="@string/jupiter_ne_version"
                 android:textColor="@color/whites"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/arrow_right_iv"
@@ -66,7 +66,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/arrow_right"/>
+                android:src="@drawable/arrow_right" />
         </LinearLayout>
 
         <View
@@ -74,14 +74,14 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/devide_line"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true" />
 
         <View
             android:id="@+id/line_bottom_v"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@color/devide_line"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
 </RelativeLayout>

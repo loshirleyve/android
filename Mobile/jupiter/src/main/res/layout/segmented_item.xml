@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="35dp"
     android:background="@color/whites">
@@ -9,18 +8,21 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:id="@+id/tab_header">
+
             <ImageView
                 android:id="@+id/segmented_item_ico_iv"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
-                android:src="@drawable/user_head"/>
+                android:src="@drawable/user_head" />
+
             <TextView
                 android:id="@+id/segmented_item_title_tv"
                 android:layout_marginLeft="5dp"
@@ -28,13 +30,14 @@
                 android:layout_height="match_parent"
                 android:text="@string/jupiter"
                 android:gravity="center" />
+
             <TextView
                 android:id="@+id/segmented_item_desc_tv"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="99"
-                android:gravity="center"/>
+                android:gravity="center" />
         </LinearLayout>
 
         <LinearLayout
@@ -48,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="1dp"
-                android:background="@color/drak"/>
+                android:background="@color/drak" />
 
             <ImageView
                 android:id="@+id/bootom_direction"
@@ -56,21 +59,18 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/direction"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <View
                 android:layout_gravity="bottom"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="1dp"
-                android:background="@color/drak"/>
+                android:background="@color/drak" />
         </LinearLayout>
 
 
     </RelativeLayout>
-
-
-
 
 
 </RelativeLayout>
