@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/groupbackground">
+    <LinearLayout
+        android:id="@+id/action_container1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:clickable="true">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/msg_card_action_turns"
+                    style="@style/msg_card_action_btn_ico"
+                    android:src="@drawable/turns"/>
+                <TextView
+                    android:layout_below="@id/msg_card_action_turns"
+                    android:layout_marginTop="5dp"
+                    style="@style/msg_card_btn_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:textColor="@color/black"
+                    android:text="掷骰子"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:clickable="true">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/msg_card_action_savefill"
+                    style="@style/msg_card_action_btn_ico"
+                    android:src="@drawable/save_fill"/>
+                <TextView
+                    android:layout_below="@id/msg_card_action_savefill"
+                    android:layout_marginTop="5dp"
+                    style="@style/msg_card_btn_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:textColor="@color/black"
+                    android:text="保存表单"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:clickable="true">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/msg_card_action_agreed"
+                    style="@style/msg_card_action_btn_ico"
+                    android:src="@drawable/agreed"/>
+                <TextView
+                    android:layout_below="@id/msg_card_action_agreed"
+                    android:layout_marginTop="5dp"
+                    style="@style/msg_card_btn_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:textColor="@color/black"
+                    android:text="同意"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:clickable="true">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/msg_card_action_reject"
+                    style="@style/msg_card_action_btn_ico"
+                    android:src="@drawable/rejected"/>
+                <TextView
+                    android:layout_below="@id/msg_card_action_reject"
+                    android:layout_marginTop="5dp"
+                    style="@style/msg_card_btn_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:textColor="@color/black"
+                    android:text="驳回"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/action_container2"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/action_container1"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:clickable="true">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/msg_card_action_reject1"
+                    style="@style/msg_card_action_btn_ico"
+                    android:src="@drawable/rejected1"/>
+                <TextView
+                    android:layout_below="@id/msg_card_action_reject1"
+                    android:layout_marginTop="5dp"
+                    style="@style/msg_card_btn_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:textColor="@color/black"
+                    android:text="驳回到"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn"
+                android:clickable="true">
+                <ImageView
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/msg_card_action_undo"
+                    style="@style/msg_card_action_btn_ico"
+                    android:src="@drawable/undo"/>
+                <TextView
+                    android:layout_below="@id/msg_card_action_undo"
+                    android:layout_marginTop="5dp"
+                    style="@style/msg_card_btn_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="false"
+                    android:textColor="@color/black"
+                    android:text="撤销"/>
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn">
+            </RelativeLayout>
+
+            <RelativeLayout style="@style/msg_card_btn">
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

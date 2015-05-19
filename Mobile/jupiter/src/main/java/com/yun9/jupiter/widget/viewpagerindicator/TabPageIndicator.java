@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yun9.jupiter.viewpagerindicator;
+package com.yun9.jupiter.widget.viewpagerindicator;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -28,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.viewpagerindicator.PageIndicator;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;

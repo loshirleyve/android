@@ -2,6 +2,7 @@ package com.yun9.jupiter.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -96,6 +97,12 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
                     this.arrowRightIV.setVisibility(View.VISIBLE);
                 }else{
                     this.arrowRightIV.setVisibility(View.GONE);
+                }
+            }
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage)){
+                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage);
+                if (mainImage != null){
+                    this.mainIV.setImageDrawable(mainImage);
                 }
             }
         }finally{

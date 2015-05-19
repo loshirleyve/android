@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yun9.jupiter.viewpagerindicator;
+package com.yun9.jupiter.widget.viewpagerindicator;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

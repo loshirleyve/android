@@ -23,6 +23,7 @@
         <attr name="rowStyleSutitleShowArrow" format="boolean" />
         <attr name="rowStyleSutitleShowMainImage" format="boolean" />
         <attr name="rowStyleSutitleShowTimeText" format="boolean" />
+        <attr name="rowStyleSutitleMainImage" format="reference"></attr>
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleTitleLayout">
@@ -30,6 +31,7 @@
         <attr name="rowStyleTitleShowHotText" format="boolean" />
         <attr name="rowStyleTitleShowArrow" format="boolean" />
         <attr name="rowStyleTitleShowMainImage" format="boolean" />
+        <attr name="rowStyleTitleMainImage" format="reference"></attr>
     </declare-styleable>
 
     <declare-styleable name="SegmentedGroup">

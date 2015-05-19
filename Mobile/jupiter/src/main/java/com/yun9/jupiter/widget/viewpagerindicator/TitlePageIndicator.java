@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yun9.jupiter.viewpagerindicator;
+package com.yun9.jupiter.widget.viewpagerindicator;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.viewpagerindicator.PageIndicator;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,6 @@
-package com.yun9.wservice.view.msgcard;
+package com.yun9.wservice.view.msgcard.model;
+
+import android.view.View;
 
 /**
  * Created by huangbinglong on 15/5/19.
@@ -19,25 +21,40 @@ public class MsgCardDetailToolbarActionItem {
     private int type;
 
     /**
+     * 绑定的点击事件
+     */
+    private View.OnClickListener onClickListener;
+
+    public MsgCardDetailToolbarActionItem(String title, int pic, int type) {
+        this.title = title;
+        this.pic = pic;
+        this.type = type;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    /**
      * 定义动作的类型
      */
     public interface ActionItemType {
         /**
          * 掷骰子
          */
-        public static int TYPE_TURNS =  0;
+        public static final int TYPE_TURNS =  0;
         /**
          * 保存表单
          */
-        public static int TYPE_SAVE_FORM = 1;
+        public static final int TYPE_SAVE_FORM = 1;
         /**
          * 流程操作，同意
          */
-        public static int TYPE_BPM_AGREE = 2;
+        public static final int TYPE_BPM_AGREE = 2;
         /**
          * 流程操作，驳回
          */
-        public static int TYPE_BPM_REJECT = 3;
+        public static final int TYPE_BPM_REJECT = 3;
         /**
          * 流程操作，驳回到
          */

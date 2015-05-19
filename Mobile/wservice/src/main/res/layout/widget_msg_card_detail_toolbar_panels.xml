@@ -9,7 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <com.yun9.jupiter.viewpagerindicator.CirclePageIndicator
+    <com.yun9.jupiter.widget.viewpagerindicator.CirclePageIndicator
         android:id="@+id/pageindicator"
         android:padding="10dip"
         android:layout_height="wrap_content"

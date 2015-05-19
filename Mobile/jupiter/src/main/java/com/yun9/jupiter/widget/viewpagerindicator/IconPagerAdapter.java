@@ -1,4 +1,4 @@
-package com.yun9.jupiter.viewpagerindicator;
+package com.yun9.jupiter.widget.viewpagerindicator;
 
 public interface IconPagerAdapter {
     /**

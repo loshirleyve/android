@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.yun9.jupiter.viewpagerindicator;
+package com.yun9.jupiter.widget.viewpagerindicator;
 
 import android.support.v4.view.ViewPager;
 

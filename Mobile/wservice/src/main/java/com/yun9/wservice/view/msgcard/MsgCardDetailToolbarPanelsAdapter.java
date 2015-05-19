@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.msgcard.model.MsgCardDetailToolbarActionItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,19 @@ public class MsgCardDetailToolbarPanelsAdapter extends PagerAdapter {
     public MsgCardDetailToolbarPanelsAdapter(Context ctx) {
         mListViews = new ArrayList<>();
         View pageWrapper = LayoutInflater.from(ctx)
-                                                        .inflate(R.layout.widget_msg_card_detail_toolbar_panels_page_wrapper, null);
+                .inflate(R.layout.widget_msg_card_detail_toolbar_panels_page_wrapper, null);
         MsgCardDetailToolbarPanelsPageWidget page = (MsgCardDetailToolbarPanelsPageWidget) pageWrapper.findViewById(R.id.panelspage);
         mListViews.add(page);
+        View shareView = LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_share, null);
+        mListViews.add(shareView);
+    }
+
+    // 创建些假数据，这些数据应该根据消息卡片的状态，类型
+    // 等信息进行构建
+    private List<MsgCardDetailToolbarActionItem> fakeData() {
+        List<MsgCardDetailToolbarActionItem> items = new ArrayList<>();
+        items.add(new MsgCardDetailToolbarActionItem("", R.drawable.com1, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_AGREE));
+        return items;
     }
 
     @Override
