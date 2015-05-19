@@ -7,50 +7,66 @@
     tools:context=".func.user.UserFragment"
     android:background="@color/groupbackground">
 
-    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+<!--    <com.yun9.jupiter.widget.TitleBarLayout
         xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/user_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tb:titleText="@string/app_user" />
+        tb:titleText="@string/app_user"
+        android:layout_alignParentTop="true" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/user_title">
+        >
+        <!--android:layout_below="@+id/user_title"-->
 
-        <com.yun9.wservice.view.UserHeadWidget
+        <com.yun9.wservice.func.user.UserHeadLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/whites">
 
-        </com.yun9.wservice.view.UserHeadWidget>
+        </com.yun9.wservice.func.user.UserHeadLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about1"
-            xmlns:row="http://schemas.android.com/apk/res-auto"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            row:rowStyleTitleText="@string/app_name"
-            row:rowStyleTitleShowArrow="false"
-
-            row:rowStyleTitleShowMainImage="false">
+            android:background="@color/whites">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about2"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/about3"
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/about4"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+            android:id="@+id/about5"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/whites">
         </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
     </LinearLayout>
 

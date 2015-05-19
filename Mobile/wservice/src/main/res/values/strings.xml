@@ -9,6 +9,12 @@
     <string name="user_head_name">黄小明</string>
     <string name="user_company_name">深圳市顶聚科技有限公司</string>
 
+<string name="user_organize_name">研发部</string>
+
+    <string name="user_buyer">购买管理</string>
+    <string name="user_file">文件</string>
+    <string name="user_org">组织架构</string>
+    <string name="user_contact">联系人/组</string>
     <string name="activity_dynamice_category">分类</string>
 
     <string name="msg_card_context">#巡店报告#\n日期:2015年4月24日(星期五)\n地点：深圳市南山区沙河西路\n\卖场气氛:活跃\n卖场活动:买100送换100</string>
