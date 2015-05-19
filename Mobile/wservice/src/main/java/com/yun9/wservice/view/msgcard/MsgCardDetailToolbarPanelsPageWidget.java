@@ -2,6 +2,7 @@ package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -32,6 +33,9 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
 
     private MsgCardDetailToolbarWidget toolbarWidget;
 
+    // 界面引用对象,动作容器View
+    LinearLayout actionItemContainer;
+
     public MsgCardDetailToolbarPanelsPageWidget(Context context) {
         super(context);
     }
@@ -61,7 +65,7 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-
+        actionItemContainer = (LinearLayout) this.findViewById(R.id.action_item_container);
     }
 
     /**
