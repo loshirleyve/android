@@ -2,6 +2,11 @@ package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -31,10 +36,8 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
      */
     public static final int MAX_LINE_NUMS = 2;
 
-    private MsgCardDetailToolbarWidget toolbarWidget;
-
-    // 界面引用对象,动作容器View
-    LinearLayout actionItemContainer;
+    // 界面引用对象,动作容器GridView
+    GridView actionGridView;
 
     public MsgCardDetailToolbarPanelsPageWidget(Context context) {
         super(context);
@@ -54,8 +57,40 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
      * 每个item的模板为：widget_msg_card_detail_toolbar_panels_page_item.xml
      * @param items 实体数据列表
      */
-    public void buildView(List<MsgCardDetailToolbarActionItem> items) {
+    public void buildView(final List<MsgCardDetailToolbarActionItem> items) {
+        // 设置动作监听
+        actionGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (items.get(position).getOnClickListener() != null) {
+                    items.get(position).getOnClickListener().onClick(view);
+                }
+            }
+        });
+        // 设置GridViewAdapter
+        actionGridView.setAdapter(new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return items.size();
+            }
 
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                MsgCardDetailToolbarPanelsPageItemWidget itemWidget = new MsgCardDetailToolbarPanelsPageItemWidget(getContext());
+                itemWidget.buildWithData(items.get(position));
+                return itemWidget;
+            }
+        });
     }
 
     @Override
@@ -65,16 +100,7 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        actionItemContainer = (LinearLayout) this.findViewById(R.id.action_item_container);
+        actionGridView = (GridView) this.findViewById(R.id.grid);
     }
 
-    /**
-     * 改方法用户设置联通上下文的MsgCardDetailToolbarWidget对象，即工具条对象本身；
-     * 用户每个item点击后对工具条的回调操作
-     * 改方法必须被调用，并传入正确的对象
-     * @param toolbarWidget 工具条对象
-     */
-    public void setToolbarWidget(MsgCardDetailToolbarWidget toolbarWidget) {
-        this.toolbarWidget = toolbarWidget;
-    }
 }
