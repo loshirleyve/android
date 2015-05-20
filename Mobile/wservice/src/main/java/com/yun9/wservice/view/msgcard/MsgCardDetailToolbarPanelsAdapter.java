@@ -5,7 +5,6 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.msgcard.model.MsgCardDetailToolbarActionItem;
 
@@ -21,9 +20,9 @@ public class MsgCardDetailToolbarPanelsAdapter extends PagerAdapter {
 
     public MsgCardDetailToolbarPanelsAdapter(Context ctx) {
         mListViews = new ArrayList<>();
-        View pageWrapper = LayoutInflater.from(ctx)
-                .inflate(R.layout.widget_msg_card_detail_toolbar_panels_page_wrapper, null);
-        MsgCardDetailToolbarPanelsPageWidget page = (MsgCardDetailToolbarPanelsPageWidget) pageWrapper.findViewById(R.id.panelspage);
+        // TODO 需要根据实际的item个数，分成多个MsgCardDetailToolbarPanelsPageWidget实例
+        MsgCardDetailToolbarPanelsPageWidget page = new MsgCardDetailToolbarPanelsPageWidget(ctx);
+        page.buildView(fakeData());
         mListViews.add(page);
         View shareView = LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_share, null);
         mListViews.add(shareView);
@@ -33,7 +32,12 @@ public class MsgCardDetailToolbarPanelsAdapter extends PagerAdapter {
     // 等信息进行构建
     private List<MsgCardDetailToolbarActionItem> fakeData() {
         List<MsgCardDetailToolbarActionItem> items = new ArrayList<>();
-        items.add(new MsgCardDetailToolbarActionItem("", R.drawable.com111, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_AGREE));
+        items.add(new MsgCardDetailToolbarActionItem("掷骰子", R.drawable.turns, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_TURNS));
+        items.add(new MsgCardDetailToolbarActionItem("保存表单", R.drawable.save_fill, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_SAVE_FORM));
+        items.add(new MsgCardDetailToolbarActionItem("同意", R.drawable.agreed, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_AGREE));
+        items.add(new MsgCardDetailToolbarActionItem("驳回", R.drawable.rejected, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_REJECT));
+        items.add(new MsgCardDetailToolbarActionItem("驳回到", R.drawable.rejected1, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_REJECT_TO));
+        items.add(new MsgCardDetailToolbarActionItem("撤销", R.drawable.undo, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_UNDO));
         return items;
     }
 
