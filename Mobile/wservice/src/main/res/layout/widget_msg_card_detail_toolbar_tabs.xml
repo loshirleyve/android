@@ -44,7 +44,7 @@
                 <ImageView
                     android:id="@+id/comm_iv"
                     style="@style/msg_card_btn_ico"
-                    android:src="@drawable/com1"/>
+                    android:src="@drawable/com111"/>
             </RelativeLayout>
 
             <RelativeLayout style="@style/msg_card_btn"

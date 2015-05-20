@@ -33,7 +33,7 @@ public class MsgCardDetailToolbarPanelsAdapter extends PagerAdapter {
     // 等信息进行构建
     private List<MsgCardDetailToolbarActionItem> fakeData() {
         List<MsgCardDetailToolbarActionItem> items = new ArrayList<>();
-        items.add(new MsgCardDetailToolbarActionItem("", R.drawable.com1, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_AGREE));
+        items.add(new MsgCardDetailToolbarActionItem("", R.drawable.com111, MsgCardDetailToolbarActionItem.ActionItemType.TYPE_BPM_AGREE));
         return items;
     }
 

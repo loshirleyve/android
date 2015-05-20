@@ -25,7 +25,7 @@ public class MsgCardDetailSegmentedItemAdapter implements JupiterSegmentedGroupA
     public MsgCardDetailSegmentedItemAdapter(Context context) {
         itemList = new ArrayList<>();
         JupiterSegmentedItemModel model =
-                new JupiterSegmentedItemModel(R.string.msg_card_comment,R.drawable.com1,R.drawable.com2);
+                new JupiterSegmentedItemModel(R.string.msg_card_comment,R.drawable.com111,R.drawable.com222);
         model.setDesc(20);
         itemList.add(model);
         model =
