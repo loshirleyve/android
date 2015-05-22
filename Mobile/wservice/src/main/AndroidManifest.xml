@@ -48,6 +48,13 @@
             android:label="@string/activity_msg_card_detail_title" >
         </activity>
 
+        <activity
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"
+            android:name=".view.common.SimpleImageActivity"
+            android:label="@string/preview_image" >
+        </activity>
+
     </application>
 
 </manifest>

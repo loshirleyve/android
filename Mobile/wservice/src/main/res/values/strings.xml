@@ -32,5 +32,6 @@
 
     <string name="activity_msg_card_list_title">消息卡片列表</string>
     <string name="activity_msg_card_detail_title">消息详情</string>
+    <string name="preview_image">图片预览</string>
 
 </resources>

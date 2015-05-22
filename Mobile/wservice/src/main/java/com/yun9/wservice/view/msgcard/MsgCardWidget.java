@@ -1,13 +1,19 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.common.ImagePagerFragment;
 
 /**
  * Created by Leon on 15/4/24.
@@ -69,6 +75,10 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         lastCommentContentTV = (TextView) this.findViewById(R.id.msg_card_lastcomment_content_tv);
 
+        String tag = MsgCardImageFragment.class.getSimpleName();
+        JupiterFragmentActivity fragmentActivity = (JupiterFragmentActivity) getContext();
+        Fragment fr = new MsgCardImageFragment();
+        fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.msg_card_image_fl, fr, tag).commit();
     }
 
 

@@ -73,5 +73,6 @@
         <item name="android:text">Sample Item</item>
     </style>
 
+    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal"/>
 
 </resources>
