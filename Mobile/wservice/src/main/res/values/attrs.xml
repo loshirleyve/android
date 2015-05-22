@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MsgCardWidget">
+        <attr name="showLocation" format="boolean"></attr>
+        <attr name="showAttachment" format="boolean" />
+        <attr name="showToolbar" format="boolean" />
+        <attr name="showLastComment" format="boolean" />
+    </declare-styleable>
+</resources>

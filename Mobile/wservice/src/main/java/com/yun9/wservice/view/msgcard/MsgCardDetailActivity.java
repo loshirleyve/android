@@ -49,7 +49,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNull(this.getIntent().getExtras())){
             msgCard = (MsgCard) this.getIntent().getExtras().getSerializable(ARG_MSG_CARD);
         }
-
+        msgCardInDetailWidget.buildWithData(msgCard);
         titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

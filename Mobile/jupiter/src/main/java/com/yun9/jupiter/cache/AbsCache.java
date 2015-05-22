@@ -30,6 +30,15 @@ public abstract class AbsCache {
 	public void put(String key,Object value) {
 		mCache.put(key, JsonUtil.beanToJson(value));
 	}
+
+	/**
+	 * 保存单纯的字符串
+	 * @param key
+	 * @param value
+	 */
+	public void put(String key,String value) {
+		mCache.put(key,value);
+	}
 	
 	/**
 	 * 加入缓存，会将value转换为json字符串

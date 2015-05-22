@@ -6,7 +6,7 @@
 	<ImageView
 		android:id="@+id/image"
 		android:layout_width="match_parent"
-		android:layout_height="100dip"
+		android:layout_height="70dip"
 		android:adjustViewBounds="true"
 		android:contentDescription="@string/app_name"/>
 

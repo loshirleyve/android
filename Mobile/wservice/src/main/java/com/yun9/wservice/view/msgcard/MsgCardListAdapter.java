@@ -51,36 +51,31 @@ public class MsgCardListAdapter extends JupiterAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         MsgCard msgCard = this.msgCardList.get(position);
 
-        if (convertView == null) {
-            convertView = View.inflate(mContext,
+        convertView = View.inflate(mContext,
                     R.layout.activity_msg_card_list_item, null);
-        }
 
         MsgCardWidget msgCardWidget = (MsgCardWidget) convertView
                 .findViewById(R.id.msg_card_list_item);
 
-        msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
+        msgCard.setOnPraiseClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("点赞！");
             }
         });
-
-        msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
+        msgCard.setOnForwardClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("转发！");
             }
         });
-
-        msgCardWidget.getCommentRL().setOnClickListener(new View.OnClickListener() {
+        msgCard.setOnCommentClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("评论！");
             }
         });
-
-        msgCardWidget.getActionRL().setOnClickListener(new View.OnClickListener() {
+        msgCard.setOnActionClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logger.d("动作！");
@@ -88,6 +83,7 @@ public class MsgCardListAdapter extends JupiterAdapter {
         });
 
         msgCardWidget.setTag(msgCard);
+        msgCardWidget.buildWithData(msgCard);
 
         convertView.setTag(msgCard);
         return convertView;

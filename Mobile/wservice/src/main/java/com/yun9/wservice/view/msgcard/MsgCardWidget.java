@@ -1,6 +1,8 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.view.common.ImagePagerFragment;
 
 /**
@@ -36,6 +39,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     private TextView lastCommentContentTV;
 
     private ImageView praiseIV;
+
+    // 数据实体
+    private MsgCard msgCard;
 
     public MsgCardWidget(Context context) {
         super(context);
@@ -75,12 +81,71 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         lastCommentContentTV = (TextView) this.findViewById(R.id.msg_card_lastcomment_content_tv);
 
-        String tag = MsgCardImageFragment.class.getSimpleName();
-        JupiterFragmentActivity fragmentActivity = (JupiterFragmentActivity) getContext();
-        Fragment fr = new MsgCardImageFragment();
-        fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.msg_card_image_fl, fr, tag).commit();
+        this.initAttr(attrs);
     }
 
+    private void initAttr(AttributeSet attrs) {
+        TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.MsgCardWidget);
+
+        try{
+            if (typedArray.hasValue(R.styleable.MsgCardWidget_showAttachment)){
+                boolean showMainImage = typedArray.getBoolean(R.styleable.MsgCardWidget_showAttachment,false);
+                View view = this.findViewById(R.id.msg_card_image_fl);
+                if (showMainImage){
+                    view.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.GONE);
+                }
+            }
+            if (typedArray.hasValue(R.styleable.MsgCardWidget_showLocation)){
+                boolean showMainImage = typedArray.getBoolean(R.styleable.MsgCardWidget_showLocation,false);
+                View view = this.findViewById(R.id.location_rl);
+                if (showMainImage){
+                    view.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.GONE);
+                }
+            }
+            if (typedArray.hasValue(R.styleable.MsgCardWidget_showToolbar)){
+                boolean showMainImage = typedArray.getBoolean(R.styleable.MsgCardWidget_showToolbar,false);
+                View view = this.findViewById(R.id.toolbar);
+                if (showMainImage){
+                    view.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.GONE);
+                }
+            }
+            if (typedArray.hasValue(R.styleable.MsgCardWidget_showLastComment)){
+                boolean showMainImage = typedArray.getBoolean(R.styleable.MsgCardWidget_showLastComment,false);
+                View view = this.findViewById(R.id.msg_card_lastcomment_ll);
+                View line = this.findViewById(R.id.main_line);
+                if (showMainImage){
+                    view.setVisibility(View.VISIBLE);
+                    line.setVisibility(View.VISIBLE);
+                }else{
+                    view.setVisibility(View.GONE);
+                    line.setVisibility(View.GONE);
+                }
+            }
+        }finally{
+            typedArray.recycle();
+        }
+    }
+
+    public void buildWithData (MsgCard msgCard) {
+        this.msgCard = msgCard;
+        this.getPraiseRL().setOnClickListener(msgCard.getOnPraiseClickListener());
+
+        // 处理图片
+        if (msgCard.getAttachments() != null
+                && msgCard.getAttachments().size() > 0) {
+            String tag = MsgCardImageFragment.class.getSimpleName();
+            JupiterFragmentActivity fragmentActivity = (JupiterFragmentActivity) getContext();
+            MsgCardImageFragment fr = new MsgCardImageFragment();
+            fr.setAttachments(msgCard.getAttachments());
+            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.msg_card_image_fl, fr, tag).commit();
+        }
+    }
 
     public TextView getContentTV() {
         return contentTV;

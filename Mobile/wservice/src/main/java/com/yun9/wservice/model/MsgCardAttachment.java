@@ -12,6 +12,16 @@ public class MsgCardAttachment implements java.io.Serializable {
 
 	private String desc;
 
+	public MsgCardAttachment() {
+	}
+
+	public MsgCardAttachment(String id, String msgcardid, String fileid, String desc) {
+		this.id = id;
+		this.msgcardid = msgcardid;
+		this.fileid = fileid;
+		this.desc = desc;
+	}
+
 	public String getId() {
 		return id;
 	}

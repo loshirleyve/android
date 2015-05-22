@@ -32,6 +32,7 @@
             android:layout_height="wrap_content" />
 
         <RelativeLayout
+            android:id="@+id/location_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
@@ -79,6 +80,7 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp">
@@ -143,6 +145,7 @@
             android:background="@color/devide_line"/>
 
         <LinearLayout
+            android:id="@+id/msg_card_lastcomment_ll"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

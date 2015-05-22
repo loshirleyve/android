@@ -1,30 +1,52 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.common.AbsListViewBaseFragment;
+import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.view.common.Constants;
+import com.yun9.wservice.view.common.SimpleImageActivity;
+
+import java.util.List;
 
 /**
  * Created by huangbinglong on 15/5/21.
  */
-public class MsgCardImageFragment extends AbsListViewBaseFragment{
+public class MsgCardImageFragment extends Fragment {
+
+    private List<MsgCardAttachment> attachments;
+
+    protected static final String STATE_PAUSE_ON_SCROLL = "STATE_PAUSE_ON_SCROLL";
+    protected static final String STATE_PAUSE_ON_FLING = "STATE_PAUSE_ON_FLING";
+
+    protected AbsListView listView;
+
+    protected boolean pauseOnScroll = false;
+    protected boolean pauseOnFling = true;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        applyScrollListener();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,9 +62,7 @@ public class MsgCardImageFragment extends AbsListViewBaseFragment{
         return rootView;
     }
 
-    private static class ImageAdapter extends BaseAdapter {
-
-        private static final String[] IMAGE_URLS = Constants.IMAGES;
+    private class ImageAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
 
@@ -64,7 +84,7 @@ public class MsgCardImageFragment extends AbsListViewBaseFragment{
 
         @Override
         public int getCount() {
-            return IMAGE_URLS.length;
+            return attachments.size();
         }
 
         @Override
@@ -93,7 +113,7 @@ public class MsgCardImageFragment extends AbsListViewBaseFragment{
             }
 
             ImageLoader.getInstance()
-                    .displayImage(IMAGE_URLS[position], holder.imageView, options, new SimpleImageLoadingListener() {
+                    .displayImage(attachments.get(position).getFileid(), holder.imageView, options, new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
                             holder.progressBar.setProgress(0);
@@ -123,5 +143,33 @@ public class MsgCardImageFragment extends AbsListViewBaseFragment{
     static class ViewHolder {
         ImageView imageView;
         ProgressBar progressBar;
+    }
+
+    protected void startImagePagerActivity(int position) {
+        Intent intent = new Intent(getActivity(), SimpleImageActivity.class);
+        intent.putExtra(Constants.IMAGE.IMAGE_POSITION, position);
+        String[] images = getImageIdsFromAttachments();
+        intent.putExtra(Constants.IMAGE.IMAGE_LIST, images);
+        startActivity(intent);
+    }
+
+    private String[] getImageIdsFromAttachments() {
+        String[] imageIds = new String[getAttachments().size()];
+        for (int i = 0;i < attachments.size();i++) {
+            imageIds[i] = attachments.get(i).getMsgcardid();
+        }
+        return imageIds;
+    }
+
+    private void applyScrollListener() {
+        listView.setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), pauseOnScroll, pauseOnFling));
+    }
+
+    public List<MsgCardAttachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<MsgCardAttachment> attachments) {
+        this.attachments = attachments;
     }
 }

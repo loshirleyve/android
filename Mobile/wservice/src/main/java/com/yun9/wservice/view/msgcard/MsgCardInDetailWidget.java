@@ -7,11 +7,14 @@ import android.util.AttributeSet;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterSegmentedGroup;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.MsgCard;
 
 /**
  * Created by Leon on 15/4/29.
  */
 public class MsgCardInDetailWidget extends JupiterRelativeLayout {
+
+    private MsgCardWidget msgCardWidget;
 
     private JupiterSegmentedGroup segmentedGroup;
 
@@ -34,11 +37,16 @@ public class MsgCardInDetailWidget extends JupiterRelativeLayout {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+        this.msgCardWidget = (MsgCardWidget) this.findViewById(R.id.msg_card_info);
         this.segmentedGroup = (JupiterSegmentedGroup) this.findViewById(R.id.msg_card_detail_tab);
         MsgCardDetailSegmentedItemAdapter segmentedItemAdapter = new MsgCardDetailSegmentedItemAdapter(this.getContext());
         MsgCardDetailViewPagerAdapter viewPagerAdapter = new MsgCardDetailViewPagerAdapter(this.getContext());
         this.segmentedGroup.setAdapter(segmentedItemAdapter);
         this.segmentedGroup.setTabItemAdapter(viewPagerAdapter);
+    }
+
+    public void buildWithData(MsgCard msgCard) {
+        msgCardWidget.buildWithData(msgCard);
     }
 
     public JupiterSegmentedGroup getSegmentedGroup() {

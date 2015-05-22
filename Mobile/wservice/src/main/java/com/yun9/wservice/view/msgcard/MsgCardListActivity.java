@@ -14,7 +14,9 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
+import com.yun9.wservice.cache.FileIdCache;
 import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.model.MsgCardMain;
 
 import net.simonvt.menudrawer.MenuDrawer;
@@ -103,7 +105,13 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     private List<MsgCard> initMsgCard(){
         List<MsgCard> msgCards = new ArrayList<MsgCard>();
-
+        // 预先缓冲一些测试图片
+        FileIdCache.getInstance().put("0","http://tabletpcssource.com/wp-content/uploads/2011/05/android-logo.png");
+        FileIdCache.getInstance().put("2","http://radiotray.sourceforge.net/radio.png");
+        FileIdCache.getInstance().put("3","http://wrong.site.com/corruptedLink");
+        FileIdCache.getInstance().put("4","http://bit.ly/soBiXr");
+        FileIdCache.getInstance().put("5","http://img001.us.expono.com/100001/100001-1bc30-2d736f_m.jpg");
+        FileIdCache.getInstance().put("7","");
         for(int i=0;i<10;i++){
             msgCards.add(this.createMsgCard(i));
         }
@@ -121,6 +129,13 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         msgCardMain.setFrom("Leon"+i);
 
         msgCard.setMain(msgCardMain);
+
+        // 伪造一些图片
+        List<MsgCardAttachment> attachments = new ArrayList<>();
+        for (int j = 0;j < 7;j++) {
+            attachments.add(new MsgCardAttachment(i+"",i+"",j+"",i+""));
+        }
+        msgCard.setAttachments(attachments);
 
         return msgCard;
     }
