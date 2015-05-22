@@ -33,9 +33,9 @@ public class ImagePagerFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_image_pager, container, false);
 		ViewPager pager = (ViewPager) rootView.findViewById(R.id.pager);
-		pager.setAdapter(new ImageAdapter(getActivity()));
         pager.setCurrentItem(getArguments().getInt(Constants.IMAGE.IMAGE_POSITION, 0));
         this.imageIds = getArguments().getStringArray(Constants.IMAGE.IMAGE_LIST);
+		pager.setAdapter(new ImageAdapter(getActivity()));
 		return rootView;
 	}
 

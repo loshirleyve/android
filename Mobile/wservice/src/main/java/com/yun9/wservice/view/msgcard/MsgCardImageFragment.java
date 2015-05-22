@@ -156,7 +156,7 @@ public class MsgCardImageFragment extends Fragment {
     private String[] getImageIdsFromAttachments() {
         String[] imageIds = new String[getAttachments().size()];
         for (int i = 0;i < attachments.size();i++) {
-            imageIds[i] = attachments.get(i).getMsgcardid();
+            imageIds[i] = attachments.get(i).getFileid();
         }
         return imageIds;
     }
