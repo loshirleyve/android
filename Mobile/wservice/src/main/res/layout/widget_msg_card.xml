@@ -26,8 +26,8 @@
             android:textSize="16dp"
             android:text="@string/msg_card_context"/>
 
-        <FrameLayout
-            android:id="@+id/msg_card_image_fl"
+        <com.yun9.wservice.view.msgcard.MsgCardImageLayout
+            android:id="@+id/msg_card_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

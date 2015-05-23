@@ -51,8 +51,10 @@ public class MsgCardListAdapter extends JupiterAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         MsgCard msgCard = this.msgCardList.get(position);
 
-        convertView = View.inflate(mContext,
+        if (convertView == null) {
+            convertView = View.inflate(mContext,
                     R.layout.activity_msg_card_list_item, null);
+        }
 
         MsgCardWidget msgCardWidget = (MsgCardWidget) convertView
                 .findViewById(R.id.msg_card_list_item);

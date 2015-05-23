@@ -2,12 +2,8 @@ package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,7 +12,6 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
-import com.yun9.wservice.view.common.ImagePagerFragment;
 
 /**
  * Created by Leon on 15/4/24.
@@ -90,7 +85,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         try{
             if (typedArray.hasValue(R.styleable.MsgCardWidget_showAttachment)){
                 boolean showMainImage = typedArray.getBoolean(R.styleable.MsgCardWidget_showAttachment,false);
-                View view = this.findViewById(R.id.msg_card_image_fl);
+                View view = this.findViewById(R.id.msg_card_image);
                 if (showMainImage){
                     view.setVisibility(View.VISIBLE);
                 }else{
@@ -135,15 +130,18 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     public void buildWithData (MsgCard msgCard) {
         this.msgCard = msgCard;
         this.getPraiseRL().setOnClickListener(msgCard.getOnPraiseClickListener());
+        this.getFwRL().setOnClickListener(msgCard.getOnForwardClickListener());
+        this.getCommentRL().setOnClickListener(msgCard.getOnCommentClickListener());
+        this.getActionRL().setOnClickListener(msgCard.getOnActionClickListener());
 
         // 处理图片
         if (msgCard.getAttachments() != null
                 && msgCard.getAttachments().size() > 0) {
-            String tag = MsgCardImageFragment.class.getSimpleName();
-            JupiterFragmentActivity fragmentActivity = (JupiterFragmentActivity) getContext();
-            MsgCardImageFragment fr = new MsgCardImageFragment();
-            fr.setAttachments(msgCard.getAttachments());
-            fragmentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.msg_card_image_fl, fr, tag).commit();
+            MsgCardImageLayout fr = (MsgCardImageLayout) this.findViewById(R.id.msg_card_image);
+            if (fr == null) {
+                fr = new MsgCardImageLayout(getContext());
+            }
+            fr.buildWithData(msgCard.getAttachments());
         }
     }
 

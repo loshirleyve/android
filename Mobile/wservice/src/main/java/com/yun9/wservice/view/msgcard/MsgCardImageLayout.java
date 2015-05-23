@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.view.common.Constants;
@@ -30,7 +32,7 @@ import java.util.List;
 /**
  * Created by huangbinglong on 15/5/21.
  */
-public class MsgCardImageFragment extends Fragment {
+public class MsgCardImageLayout extends JupiterRelativeLayout {
 
     private List<MsgCardAttachment> attachments;
 
@@ -42,24 +44,42 @@ public class MsgCardImageFragment extends Fragment {
     protected boolean pauseOnScroll = false;
     protected boolean pauseOnFling = true;
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        applyScrollListener();
+    public MsgCardImageLayout(Context context) {
+        super(context);
+    }
+
+    public MsgCardImageLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MsgCardImageLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_msg_card_image_grid, container, false);
-        listView = (GridView) rootView.findViewById(R.id.grid);
-        ((GridView) listView).setAdapter(new ImageAdapter(getActivity()));
+    protected int getContextView() {
+        return R.layout.fragment_msg_card_image_grid;
+    }
+
+    @Override
+    protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+        listView = (GridView) this.findViewById(R.id.grid);
+    }
+
+    /**
+     * 必须手动设置这个值，图片才能正常显示
+     * @param attachments
+     */
+    public void buildWithData(List<MsgCardAttachment> attachments) {
+        this.attachments =attachments;
+        ((GridView) listView).setAdapter(new ImageAdapter(getContext()));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 startImagePagerActivity(position);
             }
         });
-        return rootView;
+        applyScrollListener();
     }
 
     private class ImageAdapter extends BaseAdapter {
@@ -146,11 +166,11 @@ public class MsgCardImageFragment extends Fragment {
     }
 
     protected void startImagePagerActivity(int position) {
-        Intent intent = new Intent(getActivity(), SimpleImageActivity.class);
+        Intent intent = new Intent(getContext(), SimpleImageActivity.class);
         intent.putExtra(Constants.IMAGE.IMAGE_POSITION, position);
         String[] images = getImageIdsFromAttachments();
         intent.putExtra(Constants.IMAGE.IMAGE_LIST, images);
-        startActivity(intent);
+        getContext().startActivity(intent);
     }
 
     private String[] getImageIdsFromAttachments() {
