@@ -138,10 +138,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         if (msgCard.getAttachments() != null
                 && msgCard.getAttachments().size() > 0) {
             MsgCardImageLayout fr = (MsgCardImageLayout) this.findViewById(R.id.msg_card_image);
-            if (fr == null) {
-                fr = new MsgCardImageLayout(getContext());
+            if (fr != null) {
+                fr.buildWithData(msgCard.getAttachments());
             }
-            fr.buildWithData(msgCard.getAttachments());
         }
     }
 
