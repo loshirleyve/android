@@ -15,6 +15,7 @@
         <attr name="titleRightTextVisibility" format="boolean"></attr>
         <attr name="titleRightIcoVisibility" format="boolean"></attr>
         <attr name="titleRightIcoSrc" format="reference"></attr>
+        <attr name="backgroungColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleSutitleLayout">

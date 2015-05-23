@@ -101,7 +101,7 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         }
 
         if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleTextVisibility)){
-            boolean titleTextVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleTextVisibility,false);
+            boolean titleTextVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleTextVisibility, false);
             if (titleTextVisibility){
                 this.getTitleTv().setVisibility(View.VISIBLE);
             }else{
@@ -155,7 +155,7 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         }
 
         if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc)){
-            int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc,R.drawable.title_left_btn_return);
+            int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc, R.drawable.title_left_btn_return);
             this.getTitleLeftIV().setImageResource(resourceid);
         }
 
@@ -163,6 +163,11 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleRightIcoSrc)){
             int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleRightIcoSrc,R.drawable.classification);
             this.getTitleRightIV().setImageResource(resourceid);
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_backgroungColor)){
+            int resourceid = a.getColor(R.styleable.JupiterTitleBarLayout_backgroungColor,R.color.title_color);
+            this.findViewById(R.id.title_bar_rl).setBackgroundColor(resourceid);
         }
 
         a.recycle();
