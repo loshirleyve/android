@@ -6,9 +6,8 @@ import android.view.ViewGroup;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
-import com.yun9.wservice.R;
-import com.yun9.wservice.model.MsgCard;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgSession;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
 
     private List<MsgSession> msgSessionList;
 
-    private Context mContext;
+    private Context     mContext;
 
 
     public DynamicSessionAdapter(Context context ,List<MsgSession> msgSessionList){

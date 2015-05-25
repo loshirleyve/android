@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.R;
+import com.yun9.wservice.func.login.LoginMainActivity;
 
 /**
  *
@@ -27,9 +28,8 @@ public class UserFragment extends JupiterFragment {
 
         return R.layout.fragment_user;
     }
-
     @Override
     protected void initViews(View view) {
-
+        LoginMainActivity.start(view.getContext(), new Bundle());
     }
 }

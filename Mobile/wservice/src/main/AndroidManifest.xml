@@ -48,6 +48,18 @@
             android:label="@string/activity_msg_card_detail_title" >
         </activity>
 
+        <activity android:name=".func.login.LoginActivity">
+        </activity>
+
+        <activity android:name=".func.login.LoginMainActivity">
+        </activity>
+
+        <activity android:name=".func.login.MailRegisterMainActivity">
+        </activity>
+
+        <activity android:name=".func.login.MailRegisterActivity">
+        </activity>
+
         <activity
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"

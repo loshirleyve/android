@@ -11,16 +11,16 @@
         android:background="@color/title_color">
     <ImageView
         android:id="@+id/user_head_iv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="12dp"
         android:layout_marginLeft="10dp"
         android:src="@drawable/user_head"/>
 
     <LinearLayout
         android:id="@+id/user_info_ll"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@id/user_head_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/whites"
-            android:textSize="18dp"
+            android:textSize="20dp"
             android:text="@string/user_head_name"/>
         <TextView
             android:id="@+id/user_head_company"
@@ -38,12 +38,15 @@
             android:layout_height="wrap_content"
             android:textColor="@color/whites"
             android:text="@string/user_company_name"
-            android:layout_marginTop="5dp"/>
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"/>
         <TextView
             android:id="@+id/user_head_dept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/whites"
+            android:layout_marginTop="5dp"
+            android:textSize="15dp"
             android:text="@string/user_organize_name"/>
 
         <TextView
@@ -53,7 +56,9 @@
             android:layout_marginBottom="10dp"
             android:textColor="@color/whites"
             android:text="个性签名"
-            android:layout_marginTop="5dp"/>
+            android:textSize="15dp"
+            android:layout_marginTop="10dp"
+            />
     </LinearLayout>
     </LinearLayout>
 
@@ -94,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/title_color"
-                android:textSize="18dp"
+                android:textSize="15dp"
                 android:text="@string/user_buyer"/>
 
         </LinearLayout>
@@ -134,7 +139,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="@color/title_color"
-                android:textSize="18dp"
+                android:textSize="15dp"
                 android:text="@string/user_file"/>
 
         </LinearLayout>
@@ -175,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="18dp"
+                android:textSize="15dp"
                 android:textColor="@color/title_color"
                 android:text="@string/user_org"/>
 
@@ -208,7 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="18dp"
+                android:textSize="15dp"
                 android:textColor="@color/title_color"
                 android:text="@string/user_contact"/>
 

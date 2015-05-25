@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.view.JupiterFragmentMenuActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.pulltorefresh.PullToRefreshListView;
@@ -18,9 +17,6 @@ import com.yun9.wservice.cache.FileIdCache;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.model.MsgCardMain;
-
-import net.simonvt.menudrawer.MenuDrawer;
-import net.simonvt.menudrawer.Position;
 
 import java.util.ArrayList;
 import java.util.List;

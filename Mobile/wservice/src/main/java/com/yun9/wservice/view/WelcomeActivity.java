@@ -1,12 +1,11 @@
 package com.yun9.wservice.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.yun9.jupiter.view.JupiterActivity;
 import com.yun9.jupiter.repository.RepositoryManager;
+import com.yun9.jupiter.view.JupiterActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -22,7 +21,7 @@ public class WelcomeActivity extends JupiterActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.activity_welcome);
+        setContentView(R.layout.activity_welcome);
         super.onCreate(savedInstanceState);
 		init();
 		enterAPP();
