@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
+import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.jupiter.view.JupiterPagerAdapter;
 
 import org.w3c.dom.Text;
 
@@ -39,6 +41,8 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
     private List<JupiterSegmentedItem> items;
 
     private OnClickListener onClickListener;
+
+    private JupiterPagerAdapter viewPagerAdapter;
 
     // 内置的基本tab点击事件监听器
     private OnClickListener basicOnClickListener = new OnClickListener() {
@@ -97,9 +101,14 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
 
     }
 
-    public void setTabItemAdapter(PagerAdapter pagerAdapter) {
+    public void setTabItemAdapter(JupiterPagerAdapter pagerAdapter) {
         if (viewPager != null) {
+            this.viewPagerAdapter = pagerAdapter;
             viewPager.setAdapter(pagerAdapter);
+        }
+        // 当设置有ViewPager的Adapter时才初始化选择第一页
+        if (items.size() > 0) {
+            this.selectItem(0);
         }
     }
 
@@ -109,9 +118,6 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
 
         for (int i = 0; i < adapter.getCount(); i++) {
             this.createItem(adapter.getTabInfo(i));
-        }
-        if (items.size() > 0) {
-            this.selectItem(0);
         }
     }
 
@@ -126,7 +132,7 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         if (model.getDesc() > 99) {
             item.getDescTextTV().setText("99+");
         } else {
-            item.getDescTextTV().setText(""+model.getDesc());
+            item.getDescTextTV().setText("" + model.getDesc());
         }
         itemWrapper.removeView(item);
         this.tabContainer.addView(item);
@@ -142,7 +148,14 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
         this.onClickListener = onClickListener;
     }
 
+    /**
+     * 无论是点击tab还是滑动Viewpager都会经这儿方法
+     * @param position
+     */
     public void selectItem(int position) {
+        this.viewPager.getLayoutParams().height = PublicHelp
+                .dip2px(getContext()
+                        ,this.viewPagerAdapter.getDipHeight(position));
         this.updateState(position);
     }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yun9.jupiter.view.JupiterPagerAdapter;
 import com.yun9.wservice.R;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Created by Leon on 15/5/4.
  */
-public class MsgCardDetailViewPagerAdapter extends PagerAdapter {
+public class MsgCardDetailViewPagerAdapter extends JupiterPagerAdapter {
 
     private List<View> mListViews;
 
@@ -53,4 +54,8 @@ public class MsgCardDetailViewPagerAdapter extends PagerAdapter {
         return mListViews.get(position);
     }
 
+    @Override
+    public int getDipHeight(int position) {
+        return 100 + 100*position;
+    }
 }
