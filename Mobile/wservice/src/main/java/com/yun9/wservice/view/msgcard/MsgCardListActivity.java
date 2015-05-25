@@ -17,6 +17,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.cache.FileIdCache;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardAttachment;
+import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardMain;
 
 import net.simonvt.menudrawer.MenuDrawer;
@@ -136,6 +137,12 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             attachments.add(new MsgCardAttachment(i+"",i+"",j+"",i+""));
         }
         msgCard.setAttachments(attachments);
+
+        List<MsgCardComment> comments = new ArrayList<>();
+        for (int k = 0;k < 5;k++) {
+            comments.add(new MsgCardComment());
+        }
+        msgCard.setCommentlist(comments);
 
         return msgCard;
     }
