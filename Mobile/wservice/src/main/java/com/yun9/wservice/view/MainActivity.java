@@ -19,7 +19,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.func.microapp.MicroAppFragment;
 
 
-public class MainActivity extends JupiterFragmentActivity {
+public class MainActivity extends JupiterFragmentActivity  {
 
     private static final Logger logger = Logger.getLogger(MainActivity.class);
 

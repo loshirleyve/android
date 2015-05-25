@@ -44,7 +44,7 @@ public class MicroAppFragment extends JupiterFragment {
     public static MicroAppFragment newInstance(Bundle args) {
         MicroAppFragment fragment = new MicroAppFragment();
         if(AssertValue.isNotNull(args)) {
-            fragment.setArguments(args);//���ݲ���,�������ù��캯��������
+            fragment.setArguments(args);//传递参数
         }
         return fragment;
     }
@@ -74,8 +74,9 @@ public class MicroAppFragment extends JupiterFragment {
         // TODO 加载页面
         if (AssertValue.isNotNullAndNotEmpty(microAppBeans)){
             //microAppBeans.size() / PAGE_NUM;
-            int pageSize = 3;
-
+            /*int pageSize = ((microAppBeans.size() % PAGE_NUM == 0) ? (microAppBeans.size() / PAGE_NUM) : (microAppBeans.size() / PAGE_NUM + 1));*/
+            /*int pageSize = 3;*/
+            int pageSize = (microAppBeans.size() / PAGE_NUM) - 1;
             for(int i=0;i<pageSize;i++){
                 View tempView = this.builderView(i,microAppBeans);
                 viewList.add(tempView);

@@ -24,18 +24,18 @@ public class MicroAppAdapter extends PagerAdapter {
         if (AssertValue.isNotNull(mListViews)){
             return this.mListViews.size();
         }else{
-            return 0;
+            return  0;
         }
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object)   {
-        ((ViewPager)container).removeView(mListViews.get(position));//É¾³ýÒ³¿¨
+        ((ViewPager)container).removeView(mListViews.get(position));//É¾ï¿½ï¿½Ò³ï¿½ï¿½
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {  //Õâ¸ö·½·¨ÓÃÀ´ÊµÀý»¯Ò³¿¨
-        ((ViewPager)container).addView(mListViews.get(position));//Ìí¼ÓÒ³¿¨
+    public Object instantiateItem(ViewGroup container, int position) {  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Ò³ï¿½ï¿½
+        ((ViewPager)container).addView(mListViews.get(position));//ï¿½ï¿½ï¿½Ò³ï¿½ï¿½
         return mListViews.get(position);
     }
 

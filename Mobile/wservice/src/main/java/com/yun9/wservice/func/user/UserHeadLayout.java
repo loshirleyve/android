@@ -9,7 +9,7 @@ import com.yun9.wservice.R;
 /**
  * Created by Leon on 15/4/22.
  */
-public class UserHeadLayout extends JupiterRelativeLayout {
+public class UserHeadLayout extends JupiterRelativeLayout  {
     public UserHeadLayout(Context context) {
         super(context);
     }

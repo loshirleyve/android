@@ -18,7 +18,7 @@ public class MailRegisterMainActivity extends JupiterActivity {
     private JupiterTitleBarLayout mailreg01_title;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail_register_first);
         mailreg01_title.getTitleLeft().setOnClickListener(new View.OnClickListener() {

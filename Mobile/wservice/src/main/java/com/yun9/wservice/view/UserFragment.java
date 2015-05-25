@@ -11,7 +11,7 @@ import com.yun9.wservice.func.login.LoginMainActivity;
 /**
  *
  */
-public class UserFragment extends JupiterFragment {
+public class UserFragment extends JupiterFragment  {
 
 
 

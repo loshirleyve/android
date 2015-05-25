@@ -56,7 +56,7 @@ public class MicroAppGridViewAdapter extends JupiterAdapter {
         return convertView;*/
   /*    return mListViews.get(position);*/
         View view = this.mListViews.get(position);
-        return view;
+        return  view;
 
     }
 }
