@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.yun9.jupiter.form.FormActivity;
-import com.yun9.jupiter.form.FormLayout;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
