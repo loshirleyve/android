@@ -62,7 +62,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
             }
 
             if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleText)){
-                String sutitleText= typedArray.getString(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleTitleText);
+                String sutitleText= typedArray.getString(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleText);
                 this.getSutitleTv().setText(sutitleText);
             }
 

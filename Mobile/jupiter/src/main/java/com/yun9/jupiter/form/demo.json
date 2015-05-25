@@ -1,0 +1,38 @@
+{
+  "title":"新增客户",
+  "key":"addclient",
+  "cells":[
+    {
+      "readOnly": "NO",
+      "required": "YES",
+      "label": "客户简称",
+      "key": "name",
+      "type": "text", //取值范围 text|img|file|user|dept|ctrlcode|details
+      "default":"", //可选，当设置后在表单初始化时填写
+      "filenum": "0" //用于在类型为img|file
+    },
+    {
+      "readOnly": "NO",
+      "required": "YES",
+      "label": "联系方式",
+      "key": "contents",
+      "type": "details", //取值范围 text|img|file|user|dept|ctrlcode|details
+      "default":"", //可选，当设置后在表单初始化时填写
+      "filenum": "0", //用于在类型为img|file
+      "detailtitle":["contenttype"], //当类型为details的时显示列表标题字段
+      "detailsutitle":[], //当类型为details的时显示列表子标题字段
+      "cells":[
+        {
+          "readOnly": "NO",
+          "required": "YES",
+          "label": "联系方式",
+          "key": "contenttype",
+          "type": "text", //取值范围 text|img|file|user|dept|ctrlcode|details
+          "default":"", //可选，当设置后在表单初始化时填写
+          "filenum": "0" //用于在类型为img|file
+        }
+      ]
+    }
+
+  ]
+}

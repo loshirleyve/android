@@ -56,6 +56,7 @@ public class MainActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         this.initView();
         storeBtn.performClick();
+        DemoFormActivity.start(this,null);
     }
 
     @Override

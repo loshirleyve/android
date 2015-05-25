@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/groupbackground">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleText="测试表单"
+        tb:titleLeftIcoVisibility="true">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+        xmlns:row="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/demoform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        row:rowStyleSutitleText="测试表单"
+        row:rowStyleSutitleTitleText="测试表单明细"
+        row:rowStyleSutitleShowTimeText="false">
+
+    </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+
+</RelativeLayout>
