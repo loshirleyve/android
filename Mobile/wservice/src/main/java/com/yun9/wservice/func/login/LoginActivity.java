@@ -30,7 +30,7 @@ public class LoginActivity extends JupiterActivity {
         login03Title.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginActivity.this.finish();
+                LoginActivity. this.finish();
             }
         });
 
