@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/login_fl_content"
+    tools:context=".LoginActivity">
+
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/login_title"
+        android:layout_width="wrap_content"
+        tb:titleLeftIcoSrc="@drawable/left_white"
+        tb:titleLeftIcoVisibility="true"
+        android:layout_height="wrap_content"
+        tb:titleText=" "
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/login_picture"
+        android:layout_below="@+id/login_title"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/title_color"
+        android:layout_below="@+id/imageView"
+        android:id="@+id/linearLayout"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/login_button_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/whites"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:text="@string/login"
+            android:textColor="@color/black"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/free_reg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="免费注册"
+                android:textColor="@color/whites"
+                android:layout_marginRight="5dp"/>
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/devide_line"
+                android:layout_alignParentTop="true"/>
+            <TextView
+                android:id="@+id/virtual_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="模拟账户"
+                android:textColor="@color/whites"
+                android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,13 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.yun9.wservice.view.StoreFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yun9.wservice.view.StoreFragment">
 
 
-    <com.yun9.jupiter.widget.JupiterTitleBarLayout
-        xmlns:tb="http://schemas.android.com/apk/res-auto"
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/store_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tb:titleLeftIcoVisibility="true"
+        tb:titleLeftText="@string/app_name"
+        tb:titleLeftTextVisibility="true"
+        tb:titleRightText="@string/login"
+        tb:titleRightTextVisibility="true"
         tb:titleText="@string/app_store" />
+
+    <LinearLayout
+        android:id="@+id/category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/store_title">
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/store_title"></android.support.v4.view.ViewPager>
+
+    <com.yun9.pulltorefresh.PullToRefreshListView
+        android:id="@+id/productlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewpager"></com.yun9.pulltorefresh.PullToRefreshListView>
 
 </RelativeLayout>
