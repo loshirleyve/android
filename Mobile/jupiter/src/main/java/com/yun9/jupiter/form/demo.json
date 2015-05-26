@@ -1,6 +1,7 @@
 {
   "title":"新增客户",
   "key":"addclient",
+  "bizExpression":"客户：${name}",
   "cells":[
     {
       "readOnly": "NO",
