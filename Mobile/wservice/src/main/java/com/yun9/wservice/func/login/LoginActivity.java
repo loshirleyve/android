@@ -1,6 +1,7 @@
 package com.yun9.wservice.func.login;
 
 import android.annotation.TargetApi;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -57,7 +58,9 @@ public class LoginActivity extends JupiterActivity {
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         @Override
         public void onClick(View v) {
-                    loginButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.waiting),null);
+            Drawable drawable = getResources().getDrawable(R.drawable.waiting);
+            drawable.setBounds(1,1,40,40);
+            loginButton.setCompoundDrawablesRelative(null,null,drawable,null);
         }
     };
 
