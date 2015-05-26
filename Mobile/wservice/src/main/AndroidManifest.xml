@@ -62,16 +62,29 @@
             android:label="@string/app_name" >
         </activity>
 
-        <activity android:name=".func.login.LoginActivity">
+        <activity android:name=".func.login.LoginActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            >
         </activity>
 
-        <activity android:name=".func.login.LoginMainActivity">
+        <activity android:name=".func.login.LoginMainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
         </activity>
 
-        <activity android:name=".func.login.MailRegisterMainActivity">
+        <activity android:name=".func.login.MailRegisterMainActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
         </activity>
 
-        <activity android:name=".func.login.MailRegisterActivity">
+        <activity android:name=".func.login.MailRegisterActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
         </activity>
 
         <activity

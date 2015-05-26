@@ -41,7 +41,6 @@ public class StoreFragment extends JupiterFragment {
     @Override
     protected void initViews(View view) {
 
-        //ÉèÖÃ·ÖÀàĞÅÏ¢
         List<ProductCategory> productCategories = this.builderProductCategory();
 
 
@@ -51,10 +50,10 @@ public class StoreFragment extends JupiterFragment {
     private List<ProductCategory> builderProductCategory(){
         List<ProductCategory> productCategories = new ArrayList<ProductCategory>();
 
-        productCategories.add(new ProductCategory("¾«Ñ¡"));
-        productCategories.add(new ProductCategory("²ÆÎñ"));
-        productCategories.add(new ProductCategory("ĞĞÕş"));
-        productCategories.add(new ProductCategory("Àí²Æ"));
+        productCategories.add(new ProductCategory("ç²¾é€‰"));
+        productCategories.add(new ProductCategory("è´¢åŠ¡"));
+        productCategories.add(new ProductCategory("è¡Œæ”¿"));
+        productCategories.add(new ProductCategory("ç†è´¢"));
 
         return productCategories;
     }
