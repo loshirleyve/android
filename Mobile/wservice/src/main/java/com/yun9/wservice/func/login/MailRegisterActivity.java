@@ -16,8 +16,9 @@ public class MailRegisterActivity extends JupiterActivity {
 
     @ViewInject(id= R.id.mailreg02_title)
     private JupiterTitleBarLayout mailreg02_title;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mail_register_second);
 

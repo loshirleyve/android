@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by xia on 2015/5/22.
  */
-public class MicroAppBean {
+public class MicroAppBean  {
     private String type;
     private String parentid;
     private String device;

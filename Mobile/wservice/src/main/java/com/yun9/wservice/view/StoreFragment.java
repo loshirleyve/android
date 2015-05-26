@@ -9,7 +9,7 @@ import com.yun9.wservice.R;
 /**
  *
  */
-public class StoreFragment extends JupiterFragment {
+public class StoreFragment extends JupiterFragment  {
 
 
     public static StoreFragment newInstance(Bundle args) {

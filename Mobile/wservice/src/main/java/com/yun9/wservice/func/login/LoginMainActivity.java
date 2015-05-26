@@ -35,7 +35,7 @@ public class LoginMainActivity extends JupiterActivity{
     private View.OnClickListener loginOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            logger.d("µÇÂ¼°´Å¥±»µã»÷£¡");
+            logger.d("ç™»å½•æŒ‰é’®è¢«ç‚¹å‡»ï¼");
             Intent i = new Intent(LoginMainActivity.this, LoginActivity.class);
             startActivity(i);
         }
@@ -44,7 +44,7 @@ public class LoginMainActivity extends JupiterActivity{
     private View.OnClickListener freeOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            logger.d("Ãâ·Ñ×¢²á°´Å¥±»µã»÷£¡");
+            logger.d("å…è´¹æ³¨å†ŒæŒ‰é’®è¢«ç‚¹å‡»ï¼");
             Intent i = new Intent(LoginMainActivity.this, MailRegisterMainActivity.class);
             startActivity(i);
         }
@@ -52,7 +52,7 @@ public class LoginMainActivity extends JupiterActivity{
     private View.OnClickListener virtualOnClickListener = new View.OnClickListener(){
         @Override
         public void onClick(View v) {
-            logger.d("ĞéÄâÕËºÅ°´Å¥±»µã»÷£¡");
+            logger.d("æ¨¡æ‹Ÿè´¦æˆ·æŒ‰é’®è¢«ç‚¹å‡»ï¼");
             Intent i = new Intent(LoginMainActivity.this, MailRegisterActivity.class);
             startActivity(i);
         }
@@ -72,7 +72,7 @@ public class LoginMainActivity extends JupiterActivity{
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_login_main);
         super.onCreate(savedInstanceState);
-        logger.d("³õÊ¼»¯LoginActivity");
+        logger.d("LoginActivity");
         loginButton.setOnClickListener(loginOnClickListener);
          this.freeReg.setOnClickListener(freeOnClickListener);
         this.virtualAccount.setOnClickListener(virtualOnClickListener);

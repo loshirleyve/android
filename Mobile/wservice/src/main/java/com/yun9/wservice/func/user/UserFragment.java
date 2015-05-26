@@ -10,7 +10,7 @@ import com.yun9.wservice.R;
 /**
  *
  */
-public class UserFragment extends JupiterFragment {
+public class UserFragment extends JupiterFragment  {
 
 
 
