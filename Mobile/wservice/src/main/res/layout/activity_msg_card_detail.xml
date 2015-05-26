@@ -13,11 +13,10 @@
         tb:titleLeftIcoVisibility="true"
         tb:titleLeftTextVisibility="true"/>
 
-    <ScrollView
+    <com.yun9.jupiter.widget.JupiterScrollView
         android:id="@+id/ll_msg_card_detail"
-        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:scrollbars="none"
         android:layout_below="@+id/msg_card_detail_title">
 
@@ -27,11 +26,11 @@
             android:layout_height="wrap_content">
         </com.yun9.wservice.view.msgcard.MsgCardInDetailWidget>
 
-    </ScrollView>
+    </com.yun9.jupiter.widget.JupiterScrollView>
     <com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget
         android:id="@+id/msg_card_detail_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true">
 
     </com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget>

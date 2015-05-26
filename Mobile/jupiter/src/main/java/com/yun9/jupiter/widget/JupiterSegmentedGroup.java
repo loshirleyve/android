@@ -153,9 +153,6 @@ public class JupiterSegmentedGroup extends JupiterRelativeLayout {
      * @param position
      */
     public void selectItem(int position) {
-        this.viewPager.getLayoutParams().height = PublicHelp
-                .dip2px(getContext()
-                        ,this.viewPagerAdapter.getDipHeight(position));
         this.updateState(position);
     }
 
