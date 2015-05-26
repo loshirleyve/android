@@ -5,9 +5,11 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yun9.jupiter.view.JupiterPagerAdapter;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.MsgCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,10 @@ public class MsgCardDetailViewPagerAdapter extends JupiterPagerAdapter {
 
     private List<View> mListViews;
 
-    public MsgCardDetailViewPagerAdapter(Context ctx){
+    public MsgCardDetailViewPagerAdapter(Context ctx,MsgCard msgCard){
         // 评论，点赞，分享
-        View commentView =  LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_comments, null);
+        MsgCardCommentListWidget commentView =  new MsgCardCommentListWidget(ctx);
+        commentView.buildWithData(msgCard);
         View praiseView = LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_praise, null);
         View shareView = LayoutInflater.from(ctx).inflate(R.layout.widget_msg_card_in_detail_share, null);
         mListViews = new ArrayList<View>();
@@ -56,6 +59,6 @@ public class MsgCardDetailViewPagerAdapter extends JupiterPagerAdapter {
 
     @Override
     public int getDipHeight(int position) {
-        return 100 + 100*position;
+        return 500;
     }
 }
