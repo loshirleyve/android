@@ -3,8 +3,11 @@ package com.yun9.wservice.func.login;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.yun9.jupiter.view.JupiterActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -22,11 +25,23 @@ public class LoginActivity extends JupiterActivity {
     @ViewInject(id=R.id.login_button)
     private Button loginButton;
 
+    @ViewInject(id = R.id.login)
+    private RelativeLayout login;
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        login.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                return inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+            }
+        });
         login03Title.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,6 +51,7 @@ public class LoginActivity extends JupiterActivity {
 
         this.loginButton.setOnClickListener(loginButtonOnClickListener);
     }
+
 
     private View.OnClickListener loginButtonOnClickListener = new View.OnClickListener() {
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
