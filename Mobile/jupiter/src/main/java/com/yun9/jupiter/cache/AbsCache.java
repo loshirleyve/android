@@ -1,13 +1,14 @@
 package com.yun9.jupiter.cache;
 
-import java.util.List;
-
-import org.json.JSONException;
 import android.util.Log;
 
-import com.yun9.jupiter.app.support.DefaultJupiterApplication;
+import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
+
+import org.json.JSONException;
+
+import java.util.List;
 
 /**
  * 抽取一些缓存的公共方法，属性
@@ -19,7 +20,7 @@ public abstract class AbsCache {
 	private ACache mCache;
 	
 	protected AbsCache(String cacheKey) {
-		mCache = ACache.get(DefaultJupiterApplication.mInstance.getApplicationContext(),cacheKey);
+		mCache = ACache.get(JupiterApplication.mInstance.getApplicationContext(),cacheKey);
 	}
 	
 	/**

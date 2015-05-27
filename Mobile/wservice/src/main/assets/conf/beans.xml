@@ -5,7 +5,8 @@
     <bean class="com.yun9.jupiter.repository.support.DefaultResourceFactory"></bean>
     <bean class="com.yun9.jupiter.conf.support.DefaultPropertiesManager"></bean>
     <bean class="com.yun9.jupiter.http.support.DefaultHttpFactory"></bean>
-    <bean class="com.yun9.jupiter.push.support.BaiduPushFactory"></bean>
+    <bean class="com.yun9.jupiter.push.support.XiaoMiPushFactory"></bean>
+    <bean class="com.yun9.wservice.support.MessageReceiverFactory"></bean>
 
     <!--
 	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>

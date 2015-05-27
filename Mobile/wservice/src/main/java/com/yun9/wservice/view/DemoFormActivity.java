@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.util.AssertValue;
@@ -24,6 +25,9 @@ public class DemoFormActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
+    @ViewInject(id = R.id.content)
+    private TextView contentTV;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_form_demo;
@@ -35,6 +39,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(bundle)) {
             intent.putExtras(bundle);
         }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 
     }
@@ -55,5 +60,16 @@ public class DemoFormActivity extends JupiterFragmentActivity {
                 FormActivity.start(DemoFormActivity.this, new DemoFormAdapter());
             }
         });
+
+
+        if (AssertValue.isNotNull(this.getIntent().getExtras())) {
+            String title = this.getIntent().getExtras().getString("title");
+            String content = this.getIntent().getExtras().getString("content");
+            String desc = this.getIntent().getExtras().getString("desc");
+
+            titleBarLayout.getTitleTv().setText(title);
+            titleBarLayout.getTitleSutitleTv().setText(desc);
+            contentTV.setText(content);
+        }
     }
 }

@@ -38,6 +38,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNull(bundle)){
             intent.putExtras(bundle);
         }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 
     }

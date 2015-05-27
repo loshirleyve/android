@@ -10,13 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tb:titleText="测试表单"
+        tb:sutitleText="测试表单描述"
+        tb:sutitleTextVisibility="true"
         tb:titleLeftIcoVisibility="true">
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
+    <TextView
+        android:layout_below="@+id/titlebar"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
         xmlns:row="http://schemas.android.com/apk/res-auto"
         android:id="@+id/demoform"
+        android:layout_below="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         row:rowStyleSutitleText="测试表单"

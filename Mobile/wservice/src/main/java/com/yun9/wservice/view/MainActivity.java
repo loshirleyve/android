@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
@@ -40,6 +41,9 @@ public class MainActivity extends JupiterFragmentActivity  {
     @BeanInject
     private RepositoryManager repositoryManager;
 
+    @BeanInject
+    private PushFactory pushFactory;
+
     private View currentButton;
 
     public static void start(Context context,Bundle bundle){
@@ -56,7 +60,6 @@ public class MainActivity extends JupiterFragmentActivity  {
         super.onCreate(savedInstanceState);
         this.initView();
         storeBtn.performClick();
-        //DemoFormActivity.start(this,null);
     }
 
     @Override
@@ -67,6 +70,9 @@ public class MainActivity extends JupiterFragmentActivity  {
 
     private void initView(){
         logger.d("初始化MainActivity");
+
+        //启动push
+        //pushFactory.start(this.getApplicationContext());
 
         this.storeBtn.setOnClickListener(storeOnClickListener);
         this.dynamicBtn.setOnClickListener(dynamicOnClickListener);

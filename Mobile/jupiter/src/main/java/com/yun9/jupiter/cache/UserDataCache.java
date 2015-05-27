@@ -1,7 +1,6 @@
 package com.yun9.jupiter.cache;
 
 import com.yun9.jupiter.app.JupiterApplication;
-import com.yun9.jupiter.app.support.DefaultJupiterApplication;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.manager.SessionManager;
 
@@ -21,7 +20,7 @@ public class UserDataCache extends AbsCache{
 
 	public static UserDataCache getInstance() {
 		synchronized (UserDataCache.class) {
-			JupiterApplication jupiterApplication = DefaultJupiterApplication.mInstance;
+			JupiterApplication jupiterApplication = JupiterApplication.mInstance;
 			BeanManager beanManager =jupiterApplication.getBeanManager();
 			SessionManager sessionManger = null;
 			String currUserId = sessionManger.getAuthInfo().getUserinfo().getId();

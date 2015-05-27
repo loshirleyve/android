@@ -19,6 +19,8 @@ public class BeanWrapper {
 
     private Boolean injected = false;
 
+    private Boolean inited =false;
+
     public BeanWrapper(Object bean){
         this.bean = bean;
         this.name = bean.getClass().getName();
@@ -26,5 +28,13 @@ public class BeanWrapper {
 
     public Object getBean(){
         return bean;
+    }
+
+    public Boolean getInited() {
+        return inited;
+    }
+
+    public void setInited(Boolean inited) {
+        this.inited = inited;
     }
 }

@@ -140,6 +140,11 @@ public class DefaultBeanManager implements BeanManager,Bean {
 				BeanWrapper beanWrapper = (BeanWrapper) entity.getValue();
                 this.injectBean(beanWrapper);
 			}
+
+			for (Map.Entry<Class<?>, Object> entity : this.objects.entrySet()) {
+				BeanWrapper beanWrapper = (BeanWrapper) entity.getValue();
+
+			}
 		}
 	}
 
@@ -162,15 +167,18 @@ public class DefaultBeanManager implements BeanManager,Bean {
                     field.set(beanWrapper.getBean(),tempBeanWrapper.getBean());
                 }
             }
-
-            if (!beanWrapper.getInjected()){
-                //注入完成后执行初始化
-                this.initBean(beanWrapper.getBean());
-                //设置为已经注入
-                beanWrapper.setInjected(true);
-            }
-
         }
+
+		//注入完成后执行初始化
+		if (!beanWrapper.getInited()) {
+			this.initBean(beanWrapper.getBean());
+			beanWrapper.setInited(true);
+		}
+
+		if (!beanWrapper.getInjected()){
+			//设置为已经注入
+			beanWrapper.setInjected(true);
+		}
     }
 
     private void initBean(Object bean){
