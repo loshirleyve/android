@@ -74,9 +74,8 @@ public class MicroAppFragment extends JupiterFragment {
         // TODO 加载页面
         if (AssertValue.isNotNullAndNotEmpty(microAppBeans)){
             //microAppBeans.size() / PAGE_NUM;
-            /*int pageSize = ((microAppBeans.size() % PAGE_NUM == 0) ? (microAppBeans.size() / PAGE_NUM) : (microAppBeans.size() / PAGE_NUM + 1));*/
+            int pageSize = ((microAppBeans.size() % PAGE_NUM == 0) ? (microAppBeans.size() / PAGE_NUM) : (microAppBeans.size() / PAGE_NUM + 1));
             /*int pageSize = 3;*/
-            int pageSize = (microAppBeans.size() / PAGE_NUM) - 1;
             for(int i=0;i<pageSize;i++){
                 View tempView = this.builderView(i,microAppBeans);
                 viewList.add(tempView);
@@ -93,8 +92,8 @@ public class MicroAppFragment extends JupiterFragment {
 
         List<View> viewList=  new ArrayList<View>();
 
-        //��ʼ����ͼ
-        for(int i= beginIndex;i<beginIndex+PAGE_NUM;i++){
+        //循环显示
+        for(int i= beginIndex;i<beginIndex+PAGE_NUM && i < microAppBeans.size();i++){
             MicroAppBean microAppBean = microAppBeans.get(i);
             View view = this.builderItemView(microAppBean);
             viewList.add(view);
