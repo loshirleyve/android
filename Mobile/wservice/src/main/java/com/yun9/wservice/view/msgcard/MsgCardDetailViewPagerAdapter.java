@@ -56,9 +56,4 @@ public class MsgCardDetailViewPagerAdapter extends JupiterPagerAdapter {
         container.addView(mListViews.get(position), 0);//添加页卡
         return mListViews.get(position);
     }
-
-    @Override
-    public int getDipHeight(int position) {
-        return 500;
-    }
 }
