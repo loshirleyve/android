@@ -16,6 +16,7 @@ import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.func.demo.LocationActivity;
 import com.yun9.wservice.model.MicroAppBean;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class MicroAppFragment extends JupiterFragment {
 
     public static MicroAppFragment newInstance(Bundle args) {
         MicroAppFragment fragment = new MicroAppFragment();
-        if(AssertValue.isNotNull(args)) {
+        if (AssertValue.isNotNull(args)) {
             fragment.setArguments(args);//传递参数
         }
         return fragment;
@@ -66,18 +67,18 @@ public class MicroAppFragment extends JupiterFragment {
         return R.layout.fragment_micro_app;
     }
 
-      @Override
+    @Override
     protected void initViews(View view) {
-        List<MicroAppBean> microAppBeans= this.builderData();
-        List<View> viewList= new ArrayList<View>();
-         // List<GridView> gridViewList = new ArrayList<GridView>();
+        List<MicroAppBean> microAppBeans = this.builderData();
+        List<View> viewList = new ArrayList<View>();
+        // List<GridView> gridViewList = new ArrayList<GridView>();
         // TODO 加载页面
-        if (AssertValue.isNotNullAndNotEmpty(microAppBeans)){
+        if (AssertValue.isNotNullAndNotEmpty(microAppBeans)) {
             //microAppBeans.size() / PAGE_NUM;
             int pageSize = ((microAppBeans.size() % PAGE_NUM == 0) ? (microAppBeans.size() / PAGE_NUM) : (microAppBeans.size() / PAGE_NUM + 1));
             /*int pageSize = 3;*/
-            for(int i=0;i<pageSize;i++){
-                View tempView = this.builderView(i,microAppBeans);
+            for (int i = 0; i < pageSize; i++) {
+                View tempView = this.builderView(i, microAppBeans);
                 viewList.add(tempView);
             }
         }
@@ -86,40 +87,51 @@ public class MicroAppFragment extends JupiterFragment {
         logger.d("进入应用界面！aaa");
     }
 
-     private View builderView(int pageNum,List<MicroAppBean> microAppBeans){
+    private View builderView(int pageNum, List<MicroAppBean> microAppBeans) {
 
         int beginIndex = pageNum * PAGE_NUM;
 
-        List<View> viewList=  new ArrayList<View>();
+        List<View> viewList = new ArrayList<View>();
 
         //循环显示
-        for(int i= beginIndex;i<beginIndex+PAGE_NUM && i < microAppBeans.size();i++){
+        for (int i = beginIndex; i < beginIndex + PAGE_NUM && i < microAppBeans.size(); i++) {
             MicroAppBean microAppBean = microAppBeans.get(i);
             View view = this.builderItemView(microAppBean);
             viewList.add(view);
         }
 
-        View view = LayoutInflater.from(this.getActivity()).inflate(R.layout.widget_micro_app_gridview,null);
+        View view = LayoutInflater.from(this.getActivity()).inflate(R.layout.widget_micro_app_gridview, null);
         GridView gridView = (GridView) view.findViewById(R.id.gridview);
         gridView.setAdapter(new MicroAppGridViewAdapter(viewList));
 
         return view;
     }
 
-    private View builderItemView(MicroAppBean microAppBean){
+    private View builderItemView(MicroAppBean microAppBean) {
         View view = LayoutInflater.from(this.getActivity())
                 .inflate(R.layout.widget_micro_app_gridview_item, null);
         TextView textView1 = (TextView) view.findViewById(R.id.textView);
         textView1.setText(microAppBean.getName());
+        if (AssertValue.isNotNull(microAppBean.getOnClickListener())) {
+            view.setOnClickListener(microAppBean.getOnClickListener());
+        }
+
         return view;
     }
 
-    private List<MicroAppBean> builderData(){
+    private List<MicroAppBean> builderData() {
         List<MicroAppBean> microAppBeanList = new ArrayList<MicroAppBean>();
-        for (int i=0;i<30;i++){
-            MicroAppBean microAppBean =  new MicroAppBean();
-            microAppBean.setName("应用" + (i+1));
+        for (int i = 0; i < 30; i++) {
+            MicroAppBean microAppBean = new MicroAppBean();
+            microAppBean.setName("应用" + (i + 1));
             microAppBeanList.add(microAppBean);
+
+            microAppBean.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LocationActivity.start(MicroAppFragment.this.getActivity(), null);
+                }
+            });
         }
 
         return microAppBeanList;

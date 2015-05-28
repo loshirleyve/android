@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.func.demo;
 
 import com.yun9.jupiter.form.Form;
 import com.yun9.jupiter.form.FormAdapter;

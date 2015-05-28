@@ -1,5 +1,7 @@
 package com.yun9.wservice.model;
 
+import android.view.View;
+
 import java.util.List;
 
 /**
@@ -18,6 +20,8 @@ public class MicroAppBean  {
     private String name;
     private String actionparams;
     List<MicroAppBean> children;
+
+    private View.OnClickListener onClickListener;
 
     public String getType() {
         return type;
@@ -113,5 +117,13 @@ public class MicroAppBean  {
 
     public void setChildren(List<MicroAppBean> children) {
         this.children = children;
+    }
+
+    public View.OnClickListener getOnClickListener() {
+        return onClickListener;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 }

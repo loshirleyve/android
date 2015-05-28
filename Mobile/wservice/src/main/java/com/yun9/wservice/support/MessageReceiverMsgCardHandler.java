@@ -6,9 +6,7 @@ import android.os.Bundle;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.wservice.handler.MessageReceiverHandler;
 import com.yun9.wservice.model.PushMessageBean;
-import com.yun9.wservice.view.DemoFormActivity;
-
-import junit.framework.Assert;
+import com.yun9.wservice.func.demo.DemoFormActivity;
 
 /**
  * Created by Leon on 15/5/27.

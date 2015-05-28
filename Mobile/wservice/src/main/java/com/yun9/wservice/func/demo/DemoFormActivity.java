@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.func.demo;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_form_demo;
+        return R.layout.activity_demo_form;
     }
 
 

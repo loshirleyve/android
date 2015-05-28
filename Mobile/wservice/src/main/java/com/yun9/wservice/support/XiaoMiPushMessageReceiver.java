@@ -1,14 +1,8 @@
 package com.yun9.wservice.support;
 
-import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.google.gson.JsonObject;
-import com.thoughtworks.xstream.core.BaseException;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
@@ -18,13 +12,6 @@ import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.wservice.MainApplication;
 import com.yun9.wservice.model.PushMessageBean;
-import com.yun9.wservice.view.DemoFormActivity;
-
-import junit.framework.Assert;
-
-import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Created by Leon on 15/5/26.

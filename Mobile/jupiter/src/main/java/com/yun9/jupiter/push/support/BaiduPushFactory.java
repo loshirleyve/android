@@ -5,8 +5,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import com.baidu.android.pushservice.PushConstants;
-import com.baidu.android.pushservice.PushManager;
+//import com.baidu.android.pushservice.PushConstants;
+//import com.baidu.android.pushservice.PushManager;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
@@ -36,9 +36,9 @@ public class BaiduPushFactory implements PushFactory, Bean, Initialization {
         // "api_key")
         //请将AndroidManifest.xml 128 api_key 字段值修改为自己的 api_key 方可使用 ！！
         //ATTENTION：You need to modify the value of api_key to your own at row 128 in AndroidManifest.xml to use this Demo !!
-        PushManager.startWork(context,
-                PushConstants.LOGIN_TYPE_API_KEY,
-                this.getMetaValue(context, "api_key"));
+//        PushManager.startWork(context,
+//                PushConstants.LOGIN_TYPE_API_KEY,
+//                this.getMetaValue(context, "api_key"));
         // Push: 如果想基于地理位置推送，可以打开支持地理位置的推送的开关
         // PushManager.enableLbs(getApplicationContext());
     }
