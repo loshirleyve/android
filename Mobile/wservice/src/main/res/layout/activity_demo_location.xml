@@ -4,53 +4,121 @@
     android:layout_height="wrap_content"
     android:background="@color/groupbackground">
 
-    <com.yun9.jupiter.widget.JupiterTitleBarLayout
-        xmlns:tb="http://schemas.android.com/apk/res-auto"
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tb:titleText="测试定位"
         tb:sutitleText="请求次数：0"
         tb:sutitleTextVisibility="true"
-        tb:titleLeftIcoVisibility="true">
-    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+        tb:titleLeftIcoVisibility="true"
+        tb:titleText="测试定位"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonbar"
-        android:layout_below="@+id/titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/start"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="开始"/>
-
-        <Button
-            android:id="@+id/stop"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="停止"/>
-
-        <Button
-            android:id="@+id/requestlocation"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="请求地理位置"/>
-    </LinearLayout>
-
-    <TextView
-        android:layout_below="@+id/buttonbar"
-        android:id="@+id/locationinfo"
+    <com.yun9.jupiter.widget.JupiterScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"/>
+        android:layout_below="@+id/titlebar">
 
-    <TextView
-        android:layout_below="@+id/locationinfo"
-        android:id="@+id/poiinfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/keywordll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="周边搜索关键字：" />
+
+                <EditText
+                    android:id="@+id/keyword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="写字楼"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="周边搜索距离：" />
+
+                <EditText
+                    android:id="@+id/radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="3000"
+                    android:numeric="integer"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="结果数量：" />
+
+                <EditText
+                    android:id="@+id/pageNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:numeric="integer"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttonbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="开始" />
+
+                <Button
+                    android:id="@+id/stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="停止" />
+
+                <Button
+                    android:id="@+id/requestlocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="请求地理位置" />
+
+                <Button
+                    android:id="@+id/poisearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="POI" />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="定位信息"/>
+            <TextView
+                android:id="@+id/locationinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="POI信息"/>
+            <TextView
+                android:id="@+id/poiinfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterScrollView>
 </RelativeLayout>
