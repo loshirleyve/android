@@ -57,13 +57,13 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="结果数量：" />
+                    android:text="显示页号：" />
 
                 <EditText
                     android:id="@+id/pageNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="0"
                     android:numeric="integer"/>
             </LinearLayout>
 
