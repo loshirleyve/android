@@ -1,146 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/user_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/user_head"
         android:background="@color/title_color">
-    <ImageView
-        android:id="@+id/user_head_iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="10dp"
-        android:src="@drawable/user_head"/>
 
-    <LinearLayout
-        android:id="@+id/user_info_ll"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@id/user_head_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/user_head_name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whites"
-            android:textSize="20dp"
-            android:text="@string/user_head_name"/>
-        <TextView
-            android:id="@+id/user_head_company"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whites"
-            android:text="@string/user_company_name"
-            android:textSize="15dp"
-            android:layout_marginTop="10dp"/>
-        <TextView
-            android:id="@+id/user_head_dept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whites"
-            android:layout_marginTop="5dp"
-            android:textSize="15dp"
-            android:text="@string/user_organize_name"/>
+        <ImageView
+            android:id="@+id/user_head_iv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/user_head" />
 
-        <TextView
-            android:id="@+id/user_head_sign"
+        <LinearLayout
+            android:id="@+id/user_info_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textColor="@color/whites"
-            android:text="个性签名"
-            android:textSize="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            />
-    </LinearLayout>
+            android:layout_toRightOf="@id/user_head_iv"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/user_head_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_head_name"
+                android:textColor="@color/whites"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/user_head_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/user_company_name"
+                android:textColor="@color/whites"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/user_head_dept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/user_organize_name"
+                android:textColor="@color/whites"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/user_head_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="个性签名"
+                android:textColor="@color/whites"
+                android:textSize="15dp" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/user_status_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_below="@id/user_head"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_below="@id/user_head">
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/getUserBuyer"
-            android:layout_width="1dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-<!--
-            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="收到的动态"
-                android:textColor="@color/title_color"
-                android:layout_gravity="center"/>-->
+            style="@style/user_hader_btnbar">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/buyer"
-                android:layout_gravity="center"/>
+                style="@style/user_hader_btnbar_img"
+                android:src="@drawable/buyer" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/title_color"
-                android:textSize="15dp"
-                android:text="@string/user_buyer"/>
-
+                style="@style/user_hader_btnbar_text"
+                android:text="@string/user_buyer" />
         </LinearLayout>
 
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="@color/devide_line"
+            android:layout_alignParentTop="true"
             android:layout_marginBottom="5dp"
-            android:layout_alignParentTop="true"/>
+            android:background="@color/devide_line" />
 
 
         <LinearLayout
             android:id="@+id/sendUserFile"
-            android:layout_width="1dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-<!--            <TextView
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/title_color"
-                android:text="发布的动态"
-                android:layout_gravity="center"/>-->
+            style="@style/user_hader_btnbar">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/file"
-                android:layout_gravity="center"/>
+                style="@style/user_hader_btnbar_img"
+                android:src="@drawable/file" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textColor="@color/title_color"
-                android:textSize="15dp"
-                android:text="@string/user_file"/>
+                style="@style/user_hader_btnbar_text"
+                android:text="@string/user_file" />
 
         </LinearLayout>
 
@@ -148,41 +113,22 @@
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="@color/devide_line"
+            android:layout_alignParentTop="true"
             android:layout_marginBottom="5dp"
-            android:layout_alignParentTop="true"/>
+            android:background="@color/devide_line" />
 
 
         <LinearLayout
             android:id="@+id/todoUserOrg"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <!--            <TextView
-                            android:layout_centerHorizontal="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/title_color"
-
-                            android:text="我的待办"
-                            android:layout_gravity="center"/>-->
+            style="@style/user_hader_btnbar">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/user_org"
-                android:layout_gravity="center"/>
+                style="@style/user_hader_btnbar_img"
+                android:src="@drawable/user_org" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="15dp"
-                android:textColor="@color/title_color"
-                android:text="@string/user_org"/>
+                style="@style/user_hader_btnbar_text"
+                android:text="@string/user_org" />
 
         </LinearLayout>
 
@@ -190,32 +136,22 @@
         <View
             android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:background="@color/devide_line"
+            android:layout_alignParentTop="true"
             android:layout_marginBottom="5dp"
-            android:layout_alignParentTop="true"/>
+            android:background="@color/devide_line" />
 
 
         <LinearLayout
             android:id="@+id/todoUserContact"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
+            style="@style/user_hader_btnbar">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/contact"
-                android:layout_gravity="center"/>
+                style="@style/user_hader_btnbar_img"
+                android:src="@drawable/contact" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="15dp"
-                android:textColor="@color/title_color"
-                android:text="@string/user_contact"/>
+                style="@style/user_hader_btnbar_text"
+                android:text="@string/user_contact" />
 
         </LinearLayout>
     </LinearLayout>
@@ -224,14 +160,14 @@
         android:id="@+id/line_top_v"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/devide_line"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true"
+        android:background="@color/devide_line" />
 
     <View
         android:id="@+id/line_bottom_v"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/devide_line"
-        android:layout_below="@id/user_status_num"/>
+        android:layout_below="@id/user_status_num"
+        android:background="@color/devide_line" />
 
 </RelativeLayout>

@@ -1,84 +1,83 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".func.user.UserFragment"
-    android:background="@color/groupbackground">
+    android:background="@color/groupbackground"
+    tools:context=".func.user.UserFragment">
 
-<!--    <com.yun9.jupiter.widget.TitleBarLayout
-        xmlns:tb="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/user_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tb:titleText="@string/app_user"
-        android:layout_alignParentTop="true" />-->
-
-    <LinearLayout
+    <!--    <com.yun9.jupiter.widget.TitleBarLayout
+            xmlns:tb="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/user_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tb:titleText="@string/app_user"
+            android:layout_alignParentTop="true" />-->
+    <com.yun9.jupiter.widget.JupiterScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <!--android:layout_below="@+id/user_title"-->
+        android:layout_height="wrap_content">
 
-        <com.yun9.wservice.func.user.UserHeadLayout
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/whites">
+            android:orientation="vertical">
+            <!--android:layout_below="@+id/user_title"-->
 
-        </com.yun9.wservice.func.user.UserHeadLayout>
+            <com.yun9.wservice.func.user.UserHeadLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/whites">
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            app:rowStyleTitleMainImage="@drawable/discover"
-            app:rowStyleTitleText="@string/user_discover"
-            android:id="@+id/about1"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            </com.yun9.wservice.func.user.UserHeadLayout>
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            app:rowStyleTitleMainImage="@drawable/contact"
-            app:rowStyleTitleText="@string/user_mycontact"
-            android:id="@+id/about2"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/about5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/scan_frame_2"
+                app:rowStyleTitleText="@string/scan_frame"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            app:rowStyleTitleMainImage="@drawable/setting"
-            app:rowStyleTitleText="@string/setting"
-            android:id="@+id/about3"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/about1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/discover"
+                app:rowStyleTitleText="@string/user_discover"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            app:rowStyleTitleMainImage="@drawable/switch_acc"
-            app:rowStyleTitleText="@string/switch_acc"
-            android:id="@+id/about4"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/about2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/contact"
+                app:rowStyleTitleText="@string/user_mycontact"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            app:rowStyleTitleMainImage="@drawable/scan_frame_2"
-            app:rowStyleTitleText="@string/scan_frame"
-            android:id="@+id/about5"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/whites">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-    </LinearLayout>
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/about3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/setting"
+                app:rowStyleTitleText="@string/setting"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/about4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/switch_acc"
+                app:rowStyleTitleText="@string/switch_acc"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
 
+        </LinearLayout>
+
+    </com.yun9.jupiter.widget.JupiterScrollView>
 
 </RelativeLayout>
