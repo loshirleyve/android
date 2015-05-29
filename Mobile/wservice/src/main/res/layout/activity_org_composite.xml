@@ -23,7 +23,10 @@
             android:layout_height="wrap_content"
             row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleText="@string/app_name"
-            row:rowStyleSutitleTitleText="@string/org_composite_myself"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+            row:rowStyleSutitleTitleText="@string/org_composite_myself"
+            android:clickable="true">
+
+        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
