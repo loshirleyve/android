@@ -32,6 +32,7 @@
             row:rowStyleSutitleMainImage="@drawable/user_group"
             row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleText="@string/app_name"
+            android:id="@+id/org_hr"
             row:rowStyleSutitleTitleText="@string/org_composite_org_hr"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
@@ -41,6 +42,7 @@
             row:rowStyleSutitleMainImage="@drawable/user_group"
             row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleText="@string/app_name"
+            android:id="@+id/org_group"
             row:rowStyleSutitleTitleText="@string/org_composite_org_group"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
         <ListView
