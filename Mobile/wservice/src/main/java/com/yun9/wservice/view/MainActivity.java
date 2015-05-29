@@ -18,6 +18,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.microapp.MicroAppFragment;
+import com.yun9.wservice.view.demo.DemoFormActivity;
 
 
 public class MainActivity extends JupiterFragmentActivity  {
@@ -60,6 +61,7 @@ public class MainActivity extends JupiterFragmentActivity  {
         super.onCreate(savedInstanceState);
         this.initView();
         storeBtn.performClick();
+        DemoFormActivity.start(this, new Bundle());
     }
 
     @Override

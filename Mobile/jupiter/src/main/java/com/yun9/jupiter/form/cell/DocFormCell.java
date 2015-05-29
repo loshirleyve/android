@@ -12,10 +12,14 @@ import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.model.DocFormCellBean;
+import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterBadgeView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,25 +29,26 @@ public class DocFormCell extends FormCell {
 
     public static final int DEFAULT_DOC_NUM_LIMIT = 3;
 
-    transient
     private Context context;
 
-    transient
     private LinearLayout docContainer;
 
-    transient
     private ImageButton addDocButton;
 
     private TextView titleDesc;
 
-    transient
     private List<LinearLayout> docViews;
 
-    transient
     private List<JupiterBadgeView> badgeViews;
 
-    transient
     private List<String> docIds;
+
+    private DocFormCellBean cellBean;
+
+    public DocFormCell(FormCellBean cellBean) {
+        super(cellBean);
+        this.cellBean = (DocFormCellBean) cellBean;
+    }
 
 
     @Override
@@ -56,15 +61,23 @@ public class DocFormCell extends FormCell {
         addDocButton = (ImageButton) rootView.findViewById(R.id.addDoc_ib);
         docContainer = (LinearLayout) rootView.findViewById(R.id.doc_container_ll);
         titleDesc = (TextView) rootView.findViewById(R.id.title_desc);
-        titleDesc.setText(getLabel());
+        titleDesc.setText(cellBean.getLabel());
         addDocButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startUploadDoc();
             }
         });
-        this.edit(false);
+        restore();
         return rootView;
+    }
+
+    private void restore() {
+        if (cellBean.getValue() == null) {
+            return;
+        }
+        String[] ids = ((String)cellBean.getValue()).split(",");
+        rebuildContainer(ids);
     }
 
     private void rebuildContainer(String[] ids) {
@@ -89,7 +102,6 @@ public class DocFormCell extends FormCell {
     private void appendBadges() {
         badgeViews.clear();
         for (int i = 0; i < docViews.size(); i++) {
-            ImageView imageView = new ImageView(context);
             JupiterBadgeView badgeView = new JupiterBadgeView(context, docViews.get(i));
             badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
             badgeView.setBackgroundResource(R.drawable.icn_delete);
@@ -157,5 +169,22 @@ public class DocFormCell extends FormCell {
             addDocButton.setOnClickListener(null);
         }
         toggleBadges(edit);
+    }
+
+    @Override
+    public Object getValue() {
+        StringBuffer sb = new StringBuffer();
+        for (String id : docIds) {
+            sb.append(id).append(",");
+        }
+        if (sb.length() > 0) {
+            return sb.substring(0,sb.length() - 1);
+        }
+        return sb;
+    }
+
+    @Override
+    public FormCellBean getFormCellBean() {
+        return cellBean;
     }
 }
