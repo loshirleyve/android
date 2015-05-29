@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 
 /**
@@ -16,11 +18,17 @@ import com.yun9.jupiter.util.AssertValue;
  */
 public class TextFormCell extends FormCell {
 
-    private String defaultValue;
-
     private TextView labelTV;
 
     private EditText inputTextET;
+
+    private TextFormCellBean cellBean;
+
+    public TextFormCell(FormCellBean cellBean) {
+        super(cellBean);
+        this.cellBean = (TextFormCellBean) cellBean;
+    }
+
 
     @Override
     public void init() {
@@ -34,17 +42,20 @@ public class TextFormCell extends FormCell {
         this.inputTextET = (EditText) view.findViewById(R.id.textInput);
 
         //检查是否存在默认值
-        if (AssertValue.isNotNullAndNotEmpty(defaultValue)){
-            inputTextET.setText(defaultValue);
+        if (AssertValue.isNotNullAndNotEmpty(cellBean.getDefaultValue())){
+            inputTextET.setText(cellBean.getDefaultValue());
         }
-
         //设置label
-        labelTV.setText(this.getLabel());
-
-        //默认为非编辑状态
-        this.edit(false);
-
+        labelTV.setText(cellBean.getLabel());
+        restore();
         return view;
+    }
+
+    private void restore() {
+        if (cellBean.getValue() == null) {
+            return;
+        }
+        inputTextET.setText((String) cellBean.getValue());
     }
 
     @Override
@@ -52,11 +63,13 @@ public class TextFormCell extends FormCell {
         inputTextET.setEnabled(edit);
     }
 
-    public String getDefaultValue() {
-        return defaultValue;
+    @Override
+    public Object getValue() {
+        return String.valueOf(inputTextET.getText());
     }
 
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
+    @Override
+    public FormCellBean getFormCellBean() {
+        return cellBean;
     }
 }

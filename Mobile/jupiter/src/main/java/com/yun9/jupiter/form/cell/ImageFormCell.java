@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterBadgeView;
@@ -26,25 +28,26 @@ public class ImageFormCell extends FormCell {
 
     public static final int DEFAULT_IMAGE_NUM_LIMIT = 3;
 
-    transient
     private Context context;
 
-    transient
     private LinearLayout imageContainer;
 
-    transient
     private ImageButton imageButton;
 
     private TextView titleDesc;
 
-    transient
     private List<ImageView> imageViews;
 
-    transient
     private List<JupiterBadgeView> badgeViews;
 
-    transient
     private List<String> imageIds;
+
+    private ImageFormCellBean cellBean;
+
+    public ImageFormCell(FormCellBean cellBean) {
+        super(cellBean);
+        this.cellBean = (ImageFormCellBean) cellBean;
+    }
 
 
     @Override
@@ -57,15 +60,23 @@ public class ImageFormCell extends FormCell {
         imageButton = (ImageButton) rootView.findViewById(R.id.addimage_ib);
         imageContainer = (LinearLayout) rootView.findViewById(R.id.image_container_ll);
         titleDesc = (TextView) rootView.findViewById(R.id.title_desc);
-        titleDesc.setText(getLabel());
+        titleDesc.setText(cellBean.getLabel());
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startUploadImage();
             }
         });
-        this.edit(false);
+        restore();
         return rootView;
+    }
+
+    private void restore() {
+        if (cellBean.getValue() == null) {
+            return;
+        }
+        String[] ids = ((String)cellBean.getValue()).split(",");
+        rebuildContainer(ids);
     }
 
     private void rebuildContainer(String[] ids) {
@@ -148,6 +159,23 @@ public class ImageFormCell extends FormCell {
             imageButton.setOnClickListener(null);
         }
         toggleBadges(edit);
+    }
+
+    @Override
+    public Object getValue() {
+        StringBuffer sb = new StringBuffer();
+        for (String id : imageIds) {
+            sb.append(id).append(",");
+        }
+        if (sb.length() > 0) {
+            return sb.substring(0,sb.length() - 1);
+        }
+        return sb;
+    }
+
+    @Override
+    public FormCellBean getFormCellBean() {
+        return cellBean;
     }
 
 }
