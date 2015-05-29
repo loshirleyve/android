@@ -16,7 +16,7 @@ import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.func.demo.LocationActivity;
+import com.yun9.wservice.view.demo.LocationActivity;
 import com.yun9.wservice.model.MicroAppBean;
 
 import java.util.ArrayList;

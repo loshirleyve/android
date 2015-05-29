@@ -133,13 +133,13 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".func.demo.DemoFormActivity"
+            android:name=".view.demo.DemoFormActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".func.demo.LocationActivity"
+            android:name=".view.demo.LocationActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
@@ -177,6 +177,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.org.OrgCompositeActivity"
+            android:label="@string/org_composite_title"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     </application>
 
 </manifest>

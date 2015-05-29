@@ -12,6 +12,7 @@
     <string name="app_dynamic">动态</string>
     <string name="app_microapp">应用</string>
     <string name="app_user">我</string>
+    <string name="app_send_msgcard">发动态</string>
     
 
     <string name="user_head_name">黄小明</string>
@@ -47,4 +48,8 @@
     <string name="activity_msg_card_detail_title">消息详情</string>
     <string name="preview_image">图片预览</string>
 
+    <string name="org_composite_title">联系人</string>
+    <string name="org_composite_myself">我</string>
+    <string name="org_composite_org_hr">部门</string>
+    <string name="org_composite_org_group">小组</string>
 </resources>

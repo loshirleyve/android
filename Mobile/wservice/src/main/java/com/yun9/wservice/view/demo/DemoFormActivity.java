@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.demo;
+package com.yun9.wservice.view.demo;
 
 import android.content.Context;
 import android.content.Intent;

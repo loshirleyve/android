@@ -52,4 +52,9 @@
         <attr name="segmented_item_text_color" format="color"></attr>
     </declare-styleable>
 
+    <declare-styleable name="JupiterImageButtonLayout">
+        <attr name="imageButtonIcoSrc" format="reference"></attr>
+        <attr name="imageButtonText" format="string"></attr>
+
+    </declare-styleable>
 </resources>

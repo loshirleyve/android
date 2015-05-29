@@ -2,6 +2,7 @@ package com.yun9.wservice.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.LinearLayout;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -10,6 +11,9 @@ import com.yun9.wservice.R;
  * Created by Leon on 15/4/22.
  */
 public class UserHeadWidget extends JupiterRelativeLayout  {
+
+    private LinearLayout orgLL;
+
     public UserHeadWidget(Context context) {
         super(context);
     }
@@ -29,7 +33,9 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-
+        this.orgLL = (LinearLayout) this.findViewById(R.id.org);
     }
-
+    public LinearLayout getOrgLL() {
+        return orgLL;
+    }
 }
