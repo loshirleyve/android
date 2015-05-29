@@ -109,9 +109,29 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
             typedArray.recycle();
         }
 
+    }
 
+    public void setShowTime(boolean isShow) {
+        int show = isShow?View.VISIBLE:View.GONE;
+        this.getTimeTv().setVisibility(show);
+    }
 
+    public void setShowMainImage(boolean isShow) {
+        int show = isShow?View.VISIBLE:View.GONE;
+        this.getMainIV().setVisibility(show);
+    }
 
+    public void setShowArrow(boolean isShow) {
+        int show = isShow?View.VISIBLE:View.GONE;
+        this.getArrowRightIV().setVisibility(show);
+    }
+
+    public void setTitleText(String text) {
+        this.getTitleTV().setText(text);
+    }
+
+    public void setSubTitleText(String text) {
+        this.getSutitleTv().setText(text);
     }
 
     public ImageView getMainIV() {
@@ -121,7 +141,6 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
     public void setMainIV(ImageView mainIV) {
         this.mainIV = mainIV;
     }
-
 
     public TextView getSutitleTv() {
         return sutitleTv;

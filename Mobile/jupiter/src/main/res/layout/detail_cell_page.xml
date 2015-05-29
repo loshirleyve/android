@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,7 @@
         tb:titleText="表单"
         tb:titleLeftIcoVisibility="true"
         tb:titleRightTextVisibility="true"
-        tb:titleRightText="@string/jupiter_edit">
+        tb:titleRightText="@string/jupiter_new">
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
     <ScrollView
@@ -34,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="提交"
+                android:text="保存"
                 android:background="@color/whites"
                 android:padding="10dp"/>
         </LinearLayout>

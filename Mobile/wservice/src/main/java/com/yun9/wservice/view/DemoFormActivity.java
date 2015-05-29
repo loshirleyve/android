@@ -6,7 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yun9.jupiter.form.Form;
 import com.yun9.jupiter.form.FormActivity;
+import com.yun9.jupiter.form.cell.DetailFormCell;
+import com.yun9.jupiter.form.cell.DocFormCell;
+import com.yun9.jupiter.form.cell.ImageFormCell;
+import com.yun9.jupiter.form.cell.TextFormCell;
+import com.yun9.jupiter.form.model.DetailFormCellBean;
+import com.yun9.jupiter.form.model.DocFormCellBean;
+import com.yun9.jupiter.form.model.FormBean;
+import com.yun9.jupiter.form.model.ImageFormCellBean;
+import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
@@ -57,7 +67,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         formitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FormActivity.start(DemoFormActivity.this, new DemoFormAdapter());
+                FormActivity.start(DemoFormActivity.this, FormActivity.REQUEST_CODE.NORMAL, fakeData());
             }
         });
 
@@ -71,5 +81,69 @@ public class DemoFormActivity extends JupiterFragmentActivity {
             titleBarLayout.getTitleSutitleTv().setText(desc);
             contentTV.setText(content);
         }
+    }
+
+    public FormBean fakeData() {
+        FormBean formBean = FormBean.getInstance();
+        formBean.setTitle("测试表单");
+        formBean.setKey("demoform");
+
+        TextFormCellBean textFormCell = new TextFormCellBean();
+        textFormCell.setType(TextFormCell.class);
+        textFormCell.setKey("testText");
+        textFormCell.setDefaultValue("hello");
+        textFormCell.setLabel("测试文本输入");
+        textFormCell.setRequired(true);
+        formBean.putCellBean(textFormCell);
+
+        ImageFormCellBean imageFormCell = new ImageFormCellBean();
+        imageFormCell.setKey("testImage");
+        imageFormCell.setValue("1,2");
+        imageFormCell.setType(ImageFormCell.class);
+        imageFormCell.setLabel("测试图片选择");
+        formBean.putCellBean(imageFormCell);
+
+        DocFormCellBean docFormCell= new DocFormCellBean();
+        docFormCell.setKey("testDoc");
+        docFormCell.setType(DocFormCell.class);
+        docFormCell.setValue("1");
+        docFormCell.setLabel("测试文档选择");
+        formBean.putCellBean(docFormCell);
+
+        DetailFormCellBean detailFormCell = new DetailFormCellBean();
+        detailFormCell.setLabel("测试子项目");
+        detailFormCell.setKey("testDetail");
+        detailFormCell.setFormBean(this.builderSubForm());
+        detailFormCell.setType(DetailFormCell.class);
+        detailFormCell.setTitlekey("testsubinput");
+        detailFormCell.setSubtitlekey("testsubinput2");
+        formBean.putCellBean(detailFormCell);
+        return formBean;
+    }
+
+    private FormBean builderSubForm(){
+        FormBean subform = FormBean.getInstance();
+
+        subform.setKey("subform");
+        subform.setTitle("测试子项目");
+        TextFormCellBean textFormCell = new TextFormCellBean();
+        textFormCell.setLabel("测试子项目文本输入");
+        textFormCell.setKey("testsubinput");
+        textFormCell.setType(TextFormCell.class);
+        subform.putCellBean(textFormCell);
+
+        TextFormCellBean textFormCell2 = new TextFormCellBean();
+        textFormCell2.setLabel("测试子项目文本输入Sub");
+        textFormCell2.setKey("testsubinput2");
+        textFormCell2.setType(TextFormCell.class);
+        subform.putCellBean(textFormCell2);
+        return subform;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
     }
 }

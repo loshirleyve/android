@@ -98,5 +98,27 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
 
     }
 
+    public TextView getTitleTV() {
+        return titleTV;
+    }
 
+    public void setTitleTV(TextView titleTV) {
+        this.titleTV = titleTV;
+    }
+
+    public ImageView getMainIV() {
+        return mainIV;
+    }
+
+    public void setMainIV(ImageView mainIV) {
+        this.mainIV = mainIV;
+    }
+
+    public ImageView getArrowRightIV() {
+        return arrowRightIV;
+    }
+
+    public void setArrowRightIV(ImageView arrowRightIV) {
+        this.arrowRightIV = arrowRightIV;
+    }
 }
