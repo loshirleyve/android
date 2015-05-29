@@ -1,12 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context=".func.dynamic.Dynamic">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".func.dynamic.Dynamic">
 
     <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+        android:id="@+id/msg_card_session_rc"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/msg_card_session_rc">
+        android:layout_height="wrap_content">
 
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+    </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
 </RelativeLayout>
