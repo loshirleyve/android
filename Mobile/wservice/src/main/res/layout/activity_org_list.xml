@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleText="@string/org_composite_org_hr">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            row:rowStyleTitleShowMainImage="false"
+            row:rowStyleTitleText="@string/app_new"
+            android:layout_marginBottom="5dp">
+
+        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+        <ListView
+            android:id="@+id/orglist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+    </LinearLayout>
+
+</RelativeLayout>
