@@ -3,9 +3,12 @@ package com.yun9.wservice.view.org;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ListView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
 /**
@@ -15,6 +18,17 @@ import com.yun9.wservice.R;
 
 public class OrgCompositeActivity extends JupiterFragmentActivity {
 
+    @ViewInject(id = R.id.myself)
+    private JupiterRowStyleSutitleLayout myselfLL;
+
+    @ViewInject(id = R.id.org_hr)
+    private JupiterRowStyleSutitleLayout orgHrLL;
+
+    @ViewInject(id = R.id.org_group)
+    private JupiterRowStyleSutitleLayout orgGroupLL;
+
+    @ViewInject(id = R.id.userlist)
+    private ListView userListView;
 
     public static void start(Context context, Bundle bundle) {
         Intent intent = new Intent(context, OrgCompositeActivity.class);
