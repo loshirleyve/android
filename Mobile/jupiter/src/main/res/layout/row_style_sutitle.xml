@@ -77,11 +77,21 @@
             android:layout_marginRight="10dp">
 
             <ImageView
+                android:id="@+id/selectmode_iv"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:src="@drawable/selector_empty"/>
+
+            <ImageView
                 android:id="@+id/arrow_right_iv"
                 android:layout_gravity="center"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/arrow_right" />
+
+
         </LinearLayout>
 
         <View

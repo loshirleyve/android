@@ -25,6 +25,7 @@
         <attr name="rowStyleSutitleShowMainImage" format="boolean" />
         <attr name="rowStyleSutitleShowTimeText" format="boolean" />
         <attr name="rowStyleSutitleMainImage" format="reference"></attr>
+        <attr name="rowStyleSutitleSelectModel" format="boolean"></attr>
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleTitleLayout">

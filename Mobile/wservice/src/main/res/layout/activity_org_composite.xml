@@ -8,7 +8,9 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tb:titleText="@string/org_composite_title"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+        tb:titleText="@string/org_composite_title">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

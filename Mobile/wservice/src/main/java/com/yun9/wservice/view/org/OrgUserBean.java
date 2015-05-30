@@ -13,6 +13,8 @@ public class OrgUserBean implements java.io.Serializable{
 
     private boolean selected;
 
+    private boolean selectMode;
+
     private boolean top;
 
     public String getId() {
@@ -53,5 +55,13 @@ public class OrgUserBean implements java.io.Serializable{
 
     public void setTop(boolean top) {
         this.top = top;
+    }
+
+    public boolean isSelectMode() {
+        return selectMode;
+    }
+
+    public void setSelectMode(boolean selectMode) {
+        this.selectMode = selectMode;
     }
 }

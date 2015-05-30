@@ -8,6 +8,7 @@ import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.login.LoginMainActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
+import com.yun9.wservice.view.org.OrgCompositeCommand;
 
 /**
  *
@@ -36,7 +37,7 @@ public class UserFragment extends JupiterFragment  {
         userHeadWidget.getOrgLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrgCompositeActivity.start(UserFragment.this.getActivity(),null);
+                OrgCompositeActivity.start(UserFragment.this.getActivity(),new OrgCompositeCommand().setEdit(false));
             }
         });
     }

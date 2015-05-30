@@ -7,13 +7,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.util.AssertValue;
 
 
 /**
  * Created by Leon on 15/4/21.
  */
-public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
+public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout {
     private TextView titleTV;
 
     private ImageView mainIV;
@@ -23,6 +26,13 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
     private TextView timeTv;
 
     private ImageView arrowRightIV;
+
+    private ImageView selectModeIV;
+
+    private boolean selected;
+
+    private OnSelectListener onSelectListener;
+
 
     public JupiterRowStyleSutitleLayout(Context context) {
         super(context);
@@ -41,37 +51,38 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
         return R.layout.row_style_sutitle;
     }
 
-    protected void initViews(Context context, AttributeSet attrs, int defStyle){
+    protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         this.mainIV = (ImageView) this.findViewById(R.id.main_iv);
         this.setTitleTV((TextView) this.findViewById(R.id.title_tv));
         this.sutitleTv = (TextView) this.findViewById(R.id.sutitle_tv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.timeTv = (TextView) this.findViewById(R.id.time_tv);
+        this.selectModeIV = (ImageView) this.findViewById(R.id.selectmode_iv);
 
         this.initAttr(attrs);
     }
 
-    private void initAttr(AttributeSet attrs){
+    private void initAttr(AttributeSet attrs) {
         TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterRowStyleSutitleLayout);
 
-        try{
-            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleTitleText)){
+        try {
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleTitleText)) {
                 String titleText = typedArray.getString(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleTitleText);
 
                 this.getTitleTV().setText(titleText);
             }
 
-            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleText)){
-                String sutitleText= typedArray.getString(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleText);
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleText)) {
+                String sutitleText = typedArray.getString(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleText);
                 this.getSutitleTv().setText(sutitleText);
             }
 
-            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage)){
-                boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage,false);
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage)) {
+                boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage, false);
 
-                if (showMainImage){
+                if (showMainImage) {
                     this.mainIV.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     this.mainIV.setVisibility(View.GONE);
                 }
             }
@@ -80,50 +91,79 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
 //            boolean showHotText = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowHotText,false);
 //        }
 
-            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowTimeText)){
-                boolean showTimeText = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowTimeText,false);
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowTimeText)) {
+                boolean showTimeText = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowTimeText, false);
 
-                if (showTimeText){
+                if (showTimeText) {
                     this.timeTv.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     this.timeTv.setVisibility(View.GONE);
                 }
             }
 
-            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowArrow)){
-                boolean showArrowImage = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowArrow,false);
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowArrow)) {
+                boolean showArrowImage = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowArrow, false);
 
-                if (showArrowImage){
+                if (showArrowImage) {
                     this.arrowRightIV.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     this.arrowRightIV.setVisibility(View.GONE);
                 }
             }
-            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage)){
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage)) {
                 Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage);
-                if (mainImage != null){
+                if (mainImage != null) {
                     this.mainIV.setImageDrawable(mainImage);
                 }
             }
-        }finally{
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleSelectModel)) {
+                boolean selectMode = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleSelectModel, false);
+                this.setSelectMode(selectMode);
+            }
+        } finally {
             typedArray.recycle();
         }
 
     }
 
     public void setShowTime(boolean isShow) {
-        int show = isShow?View.VISIBLE:View.GONE;
+        int show = isShow ? View.VISIBLE : View.GONE;
         this.getTimeTv().setVisibility(show);
     }
 
     public void setShowMainImage(boolean isShow) {
-        int show = isShow?View.VISIBLE:View.GONE;
+        int show = isShow ? View.VISIBLE : View.GONE;
         this.getMainIV().setVisibility(show);
     }
 
     public void setShowArrow(boolean isShow) {
-        int show = isShow?View.VISIBLE:View.GONE;
+        int show = isShow ? View.VISIBLE : View.GONE;
         this.getArrowRightIV().setVisibility(show);
+    }
+
+    public void setSelectMode(boolean mode) {
+        if (mode) {
+            selected = false;
+
+            this.selectModeIV.setVisibility(View.VISIBLE);
+            this.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = !selected;
+                    if (selected) {
+                        selectModeIV.setImageResource(R.drawable.selector);
+                    } else {
+                        selectModeIV.setImageResource(R.drawable.selector_empty);
+                    }
+                    if (AssertValue.isNotNull(onSelectListener)) {
+                        onSelectListener.onSelect(JupiterRowStyleSutitleLayout.this, selected);
+                    }
+                }
+            });
+        } else {
+            this.selectModeIV.setVisibility(View.GONE);
+            this.setOnClickListener(null);
+        }
     }
 
     public void setTitleText(String text) {
@@ -173,5 +213,17 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
 
     public void setTitleTV(TextView titleTV) {
         this.titleTV = titleTV;
+    }
+
+    public ImageView getSelectModeIV() {
+        return selectModeIV;
+    }
+
+    public void setSelectModeIV(ImageView selectModeIV) {
+        this.selectModeIV = selectModeIV;
+    }
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
     }
 }

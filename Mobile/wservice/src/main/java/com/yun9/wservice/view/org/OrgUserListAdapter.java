@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 
@@ -30,20 +31,16 @@ public class OrgUserListAdapter extends BaseAdapter {
         this.mContext = context;
     }
 
-    public View.OnClickListener getHrOnClickListener() {
-        return hrOnClickListener;
-    }
-
     public void setHrOnClickListener(View.OnClickListener hrOnClickListener) {
         this.hrOnClickListener = hrOnClickListener;
     }
 
-    public View.OnClickListener getGroupOnClickListener() {
-        return groupOnClickListener;
-    }
-
     public void setGroupOnClickListener(View.OnClickListener groupOnClickListener) {
         this.groupOnClickListener = groupOnClickListener;
+    }
+
+    public void setMyselfOnClickListener(View.OnClickListener myselfOnClickListener) {
+        this.myselfOnClickListener = myselfOnClickListener;
     }
 
     @Override
@@ -82,12 +79,30 @@ public class OrgUserListAdapter extends BaseAdapter {
             if (AssertValue.isNotNull(myselfOnClickListener)) {
                 orgCompositeTopWidget.getMyselfLL().setOnClickListener(myselfOnClickListener);
             }
+            orgCompositeTopWidget.setTag(orgUserBean);
             return orgCompositeTopWidget;
         } else {
             JupiterRowStyleSutitleLayout tempView = new JupiterRowStyleSutitleLayout(mContext);
-            tempView.getTitleTV().setText(orgUserBean.getName());
+            String title = orgUserBean.getName();
+            if (orgUserBean.isSelectMode()){
+                title = title+" 选择模式";
+
+                tempView.setSelectMode(true);
+                tempView.setOnSelectListener(new OnSelectListener() {
+                    @Override
+                    public void onSelect(View view, boolean mode) {
+                        OrgUserBean tempOrgUserBean = (OrgUserBean) view.getTag();
+                        tempOrgUserBean.setSelected(mode);
+                    }
+                });
+            }
+            tempView.getTitleTV().setText(title);
+
             tempView.getSutitleTv().setText(orgUserBean.getNo() + " " + orgUserBean.getName());
             tempView.getTimeTv().setVisibility(View.GONE);
+            tempView.getArrowRightIV().setVisibility(View.GONE);
+            tempView.setTag(orgUserBean);
+
             return tempView;
         }
     }

@@ -8,6 +8,8 @@ public class OrgListCommand implements java.io.Serializable {
 
     private String title;
 
+    private boolean edit;
+
     public String getDimType() {
         return dimType;
     }
@@ -24,5 +26,13 @@ public class OrgListCommand implements java.io.Serializable {
     public OrgListCommand setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
     }
 }
