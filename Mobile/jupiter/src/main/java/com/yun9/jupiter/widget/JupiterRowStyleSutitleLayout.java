@@ -150,11 +150,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout {
                 @Override
                 public void onClick(View v) {
                     selected = !selected;
-                    if (selected) {
-                        selectModeIV.setImageResource(R.drawable.selector);
-                    } else {
-                        selectModeIV.setImageResource(R.drawable.selector_empty);
-                    }
+                    select(selected);
                     if (AssertValue.isNotNull(onSelectListener)) {
                         onSelectListener.onSelect(JupiterRowStyleSutitleLayout.this, selected);
                     }
@@ -163,6 +159,16 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout {
         } else {
             this.selectModeIV.setVisibility(View.GONE);
             this.setOnClickListener(null);
+        }
+    }
+
+    public void select(boolean selected){
+        this.selected = selected;
+
+        if (this.selected) {
+            selectModeIV.setImageResource(R.drawable.selector);
+        } else {
+            selectModeIV.setImageResource(R.drawable.selector_empty);
         }
     }
 

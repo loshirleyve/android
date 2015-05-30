@@ -26,9 +26,20 @@ public class OrgUserListAdapter extends BaseAdapter {
 
     private View.OnClickListener myselfOnClickListener;
 
-    public OrgUserListAdapter(Context context, List<OrgUserBean> orgUserBeans) {
+    private boolean selectMode;
+
+    public OrgUserListAdapter(Context context, List<OrgUserBean> orgUserBeans,boolean selectMode) {
         this.mOrgUserBeans = orgUserBeans;
         this.mContext = context;
+        this.selectMode = selectMode;
+    }
+
+    public boolean isSelectMode() {
+        return selectMode;
+    }
+
+    public void setSelectMode(boolean selectMode) {
+        this.selectMode = selectMode;
     }
 
     public void setHrOnClickListener(View.OnClickListener hrOnClickListener) {
@@ -83,10 +94,8 @@ public class OrgUserListAdapter extends BaseAdapter {
             return orgCompositeTopWidget;
         } else {
             JupiterRowStyleSutitleLayout tempView = new JupiterRowStyleSutitleLayout(mContext);
-            String title = orgUserBean.getName();
-            if (orgUserBean.isSelectMode()){
-                title = title+" 选择模式";
 
+            if (this.selectMode){
                 tempView.setSelectMode(true);
                 tempView.setOnSelectListener(new OnSelectListener() {
                     @Override
@@ -95,9 +104,10 @@ public class OrgUserListAdapter extends BaseAdapter {
                         tempOrgUserBean.setSelected(mode);
                     }
                 });
+                tempView.select(orgUserBean.isSelected());
             }
-            tempView.getTitleTV().setText(title);
 
+            tempView.getTitleTV().setText(orgUserBean.getName());
             tempView.getSutitleTv().setText(orgUserBean.getNo() + " " + orgUserBean.getName());
             tempView.getTimeTv().setVisibility(View.GONE);
             tempView.getArrowRightIV().setVisibility(View.GONE);

@@ -74,7 +74,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     private void refresh() {
         this.builderUserInfo();
         if (!AssertValue.isNotNull(this.orgUserListAdapter)){
-            this.orgUserListAdapter = new OrgUserListAdapter(this, orgUserBeans);
+            this.orgUserListAdapter = new OrgUserListAdapter(this, orgUserBeans,false);
             orgUserListAdapter.setGroupOnClickListener(groupOnClickListener);
             orgUserListAdapter.setHrOnClickListener(hrOnClickListener);
             userListView.setAdapter(orgUserListAdapter);
@@ -147,11 +147,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     }
 
     private void selectMode(boolean mode){
-        if (AssertValue.isNotNullAndNotEmpty(this.orgUserBeans)){
-            for(OrgUserBean orgUserBean:this.orgUserBeans){
-                orgUserBean.setSelectMode(mode);
-            }
-        }
+        this.orgUserListAdapter.setSelectMode(mode);
         this.orgUserListAdapter.notifyDataSetChanged();
 
     }
