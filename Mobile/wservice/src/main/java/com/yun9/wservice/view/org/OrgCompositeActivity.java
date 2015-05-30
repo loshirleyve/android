@@ -22,17 +22,11 @@ import java.util.List;
 
 public class OrgCompositeActivity extends JupiterFragmentActivity {
 
-    @ViewInject(id = R.id.myself)
-    private JupiterRowStyleSutitleLayout myselfLL;
-
-    @ViewInject(id = R.id.org_hr)
-    private JupiterRowStyleSutitleLayout orgHrLL;
-
-    @ViewInject(id = R.id.org_group)
-    private JupiterRowStyleSutitleLayout orgGroupLL;
 
     @ViewInject(id = R.id.userlist)
     private ListView userListView;
+
+    private List<OrgUserBean> orgUserBeans;
 
     public static void start(Context context, Bundle bundle) {
         Intent intent = new Intent(context, OrgCompositeActivity.class);
@@ -51,43 +45,49 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        orgHrLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrgListActivity.startByHr(OrgCompositeActivity.this, new OrgListCommand());
-            }
-        });
-
-        orgGroupLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand());
-            }
-        });
-
         //刷新界面数据
         this.refresh();
     }
 
-    private void refresh(){
-        List<OrgUserBean> orgUserBeans = this.builderUserInfo();
+    private void refresh() {
+        this.builderUserInfo();
+        OrgUserListAdapter adapter = new OrgUserListAdapter(this,orgUserBeans);
+        adapter.setGroupOnClickListener(groupOnClickListener);
+        adapter.setHrOnClickListener(hrOnClickListener);
 
-
+        userListView.setAdapter(adapter);
     }
 
-    private List<OrgUserBean> builderUserInfo(){
-        List<OrgUserBean> orgUserBeans = new ArrayList<OrgUserBean>();
+    private List<OrgUserBean> builderUserInfo() {
+        orgUserBeans = new ArrayList<OrgUserBean>();
+        OrgUserBean orgUserBeanTop = new OrgUserBean();
+        orgUserBeanTop.setTop(true);
+        orgUserBeans.add(orgUserBeanTop);
 
-        for(int i=0;i<20;i++){
+        for (int i = 0; i < 20; i++) {
             OrgUserBean orgUserBean = new OrgUserBean();
-            orgUserBean.setId(i+"");
+            orgUserBean.setId(i + "");
             orgUserBean.setName("测试用户" + i);
             orgUserBean.setNo("00" + i);
             orgUserBean.setSelected(false);
+            orgUserBean.setTop(false);
             orgUserBeans.add(orgUserBean);
         }
 
         return orgUserBeans;
     }
+
+    private View.OnClickListener hrOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgListActivity.startByHr(OrgCompositeActivity.this, new OrgListCommand());
+        }
+    };
+
+    private View.OnClickListener groupOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand());
+        }
+    };
 }

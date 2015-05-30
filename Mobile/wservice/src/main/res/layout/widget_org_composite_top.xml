@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/myself"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleText="@string/app_name"
+            row:rowStyleSutitleTitleText="@string/org_composite_myself">
+
+        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/org_hr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            row:rowStyleSutitleMainImage="@drawable/user_group"
+            row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleText="@string/app_name"
+            row:rowStyleSutitleTitleText="@string/org_composite_org_hr"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/org_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            row:rowStyleSutitleMainImage="@drawable/user_group"
+            row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleText="@string/app_name"
+            row:rowStyleSutitleTitleText="@string/org_composite_org_group"
+            android:layout_marginBottom="5dp">
+
+        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+    </LinearLayout>
+</RelativeLayout>
