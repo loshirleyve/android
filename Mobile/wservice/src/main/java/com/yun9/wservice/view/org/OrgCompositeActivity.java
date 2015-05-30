@@ -12,6 +12,9 @@ import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Leon on 15/5/29.
  * 组织结构综合显示界面。
@@ -62,5 +65,29 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                 OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand());
             }
         });
+
+        //刷新界面数据
+        this.refresh();
+    }
+
+    private void refresh(){
+        List<OrgUserBean> orgUserBeans = this.builderUserInfo();
+
+
+    }
+
+    private List<OrgUserBean> builderUserInfo(){
+        List<OrgUserBean> orgUserBeans = new ArrayList<OrgUserBean>();
+
+        for(int i=0;i<20;i++){
+            OrgUserBean orgUserBean = new OrgUserBean();
+            orgUserBean.setId(i+"");
+            orgUserBean.setName("测试用户" + i);
+            orgUserBean.setNo("00" + i);
+            orgUserBean.setSelected(false);
+            orgUserBeans.add(orgUserBean);
+        }
+
+        return orgUserBeans;
     }
 }
