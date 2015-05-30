@@ -12,15 +12,17 @@ public class OrgListCommand implements java.io.Serializable {
         return dimType;
     }
 
-    public void setDimType(String dimType) {
+    public OrgListCommand setDimType(String dimType) {
         this.dimType = dimType;
+        return this;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public OrgListCommand setTitle(String title) {
         this.title = title;
+        return this;
     }
 }

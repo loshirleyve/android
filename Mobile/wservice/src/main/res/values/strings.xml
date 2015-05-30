@@ -53,4 +53,8 @@
     <string name="org_composite_myself">我</string>
     <string name="org_composite_org_hr">部门</string>
     <string name="org_composite_org_group">小组</string>
+
+    <string name="org_list_title_hr">部门</string>
+    <string name="org_list_title_group">小组</string>
+
 </resources>

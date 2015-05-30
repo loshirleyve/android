@@ -3,6 +3,7 @@ package com.yun9.wservice.view.org;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import com.yun9.jupiter.util.AssertValue;
@@ -37,11 +38,29 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
-
     }
 
     @Override
     protected int getContentView() {
         return R.layout.activity_org_composite;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        orgHrLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrgListActivity.startByHr(OrgCompositeActivity.this, new OrgListCommand());
+            }
+        });
+
+        orgGroupLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand());
+            }
+        });
     }
 }
