@@ -14,8 +14,28 @@
         tb:titleRightText="@string/jupiter_edit">
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+    <TextView
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/jupiter_complete"
+        android:background="@color/whites"
+        android:textColor="@color/red"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:padding="12dp"/>
+    <View
+        android:id="@+id/line_v"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/devide_line"
+        android:layout_above="@id/submit"/>
     <ScrollView
+        android:id="@+id/form_sv"
         android:layout_below="@+id/titlebar"
+        android:layout_above="@id/line_v"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -28,15 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </LinearLayout>
-            <TextView
-                android:id="@+id/submit"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="提交"
-                android:background="@color/whites"
-                android:padding="10dp"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

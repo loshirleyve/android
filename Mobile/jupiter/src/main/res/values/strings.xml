@@ -4,6 +4,7 @@
     <string name="jupiter_return">返回</string>
     <string name="jupiter_logout">注销</string>
     <string name="jupiter_complete">完成</string>
+    <string name="jupiter_undo">撤销</string>
     <string name="jupiter_cancel_edit">取消编辑</string>
     <string name="jupiter_edit">编辑</string>
     <string name="jupiter_new">新增</string>

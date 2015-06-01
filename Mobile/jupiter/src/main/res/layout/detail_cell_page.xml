@@ -29,15 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </LinearLayout>
-            <TextView
-                android:id="@+id/submit"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="保存"
-                android:background="@color/whites"
-                android:padding="10dp"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -32,8 +32,6 @@ public class DetailFormCellActivity extends JupiterActivity {
 
     private LinearLayout formLL;
 
-    private TextView submitTv;
-
     private DetailFormCellBean cellBean;
 
     private Form form;
@@ -62,7 +60,6 @@ public class DetailFormCellActivity extends JupiterActivity {
     private void initView(){
         titleBarLayout = (JupiterTitleBarLayout) this.findViewById(R.id.titlebar);
         formLL = (LinearLayout) this.findViewById(R.id.formpage);
-        submitTv = (TextView) this.findViewById(R.id.submit);
     }
 
     private void builder() {
@@ -74,7 +71,9 @@ public class DetailFormCellActivity extends JupiterActivity {
         this.titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DetailFormCellActivity.this.setResult(RESPONSE_CODE.CANCEL,getIntent());
+                Intent intent = getIntent();
+                intent.putExtra("forms", (Serializable) formBeans);
+                DetailFormCellActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
                 DetailFormCellActivity.this.finish();
             }
         });
@@ -83,27 +82,13 @@ public class DetailFormCellActivity extends JupiterActivity {
         this.titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FormActivity.start(DetailFormCellActivity.this, FormActivity.REQUEST_CODE.NORMAL,DetailFormCellActivity.this.cellBean.getFormBean());
+                FormActivity.start(DetailFormCellActivity.this, FormActivity.REQUEST_CODE.NORMAL, DetailFormCellActivity.this.cellBean.getFormBean());
 
             }
         });
 
         //设置标题
         this.titleBarLayout.getTitleTv().setText(form.getTitle());
-
-        //添加cell
-
-
-        // 设置提交事件
-        submitTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = getIntent();
-                intent.putExtra("forms", (Serializable) formBeans);
-                DetailFormCellActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-                DetailFormCellActivity.this.finish();
-            }
-        });
 
     }
 
