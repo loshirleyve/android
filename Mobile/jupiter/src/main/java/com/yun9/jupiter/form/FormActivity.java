@@ -130,7 +130,7 @@ public class FormActivity extends JupiterFragmentActivity {
     public void toggleState() {
         FormActivity.this.edit(!edit);
         if (edit){
-            FormActivity.this.titleBarLayout.getTitleRightTv().setText(R.string.jupiter_complete);
+            FormActivity.this.titleBarLayout.getTitleRightTv().setText(R.string.jupiter_cancel_edit);
         }else{
             FormActivity.this.titleBarLayout.getTitleRightTv().setText(R.string.jupiter_edit);
         }
