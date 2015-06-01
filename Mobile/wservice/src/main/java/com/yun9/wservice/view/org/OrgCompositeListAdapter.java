@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Created by Leon on 15/5/30.
  */
-public class OrgUserListAdapter extends BaseAdapter {
+public class OrgCompositeListAdapter extends BaseAdapter {
 
-    private List<OrgUserBean> mOrgUserBeans;
+    private List<OrgCompositeUserListBean> mOrgCompositeUserListBeans;
 
     private Context mContext;
 
@@ -28,8 +28,8 @@ public class OrgUserListAdapter extends BaseAdapter {
 
     private boolean selectMode;
 
-    public OrgUserListAdapter(Context context, List<OrgUserBean> orgUserBeans,boolean selectMode) {
-        this.mOrgUserBeans = orgUserBeans;
+    public OrgCompositeListAdapter(Context context, List<OrgCompositeUserListBean> orgCompositeUserListBeans, boolean selectMode) {
+        this.mOrgCompositeUserListBeans = orgCompositeUserListBeans;
         this.mContext = context;
         this.selectMode = selectMode;
     }
@@ -56,8 +56,8 @@ public class OrgUserListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNullAndNotEmpty(mOrgUserBeans)) {
-            return mOrgUserBeans.size();
+        if (AssertValue.isNotNullAndNotEmpty(mOrgCompositeUserListBeans)) {
+            return mOrgCompositeUserListBeans.size();
         } else {
             return 0;
         }
@@ -65,7 +65,7 @@ public class OrgUserListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mOrgUserBeans.get(position);
+        return mOrgCompositeUserListBeans.get(position);
     }
 
     @Override
@@ -78,8 +78,8 @@ public class OrgUserListAdapter extends BaseAdapter {
 
         //由于会根据不同的类型决定显示不同的view,所以不能重用convertView,必须每次创建新的view
 
-        OrgUserBean orgUserBean = mOrgUserBeans.get(position);
-        if (orgUserBean.isTop()) {
+        OrgCompositeUserListBean orgCompositeUserListBean = mOrgCompositeUserListBeans.get(position);
+        if (orgCompositeUserListBean.isTop()) {
             OrgCompositeTopWidget orgCompositeTopWidget  = new OrgCompositeTopWidget(mContext);
             if (AssertValue.isNotNull(groupOnClickListener)) {
                 orgCompositeTopWidget.getOrgGroupLL().setOnClickListener(groupOnClickListener);
@@ -90,7 +90,7 @@ public class OrgUserListAdapter extends BaseAdapter {
             if (AssertValue.isNotNull(myselfOnClickListener)) {
                 orgCompositeTopWidget.getMyselfLL().setOnClickListener(myselfOnClickListener);
             }
-            orgCompositeTopWidget.setTag(orgUserBean);
+            orgCompositeTopWidget.setTag(orgCompositeUserListBean);
             return orgCompositeTopWidget;
         } else {
             JupiterRowStyleSutitleLayout tempView = new JupiterRowStyleSutitleLayout(mContext);
@@ -100,18 +100,18 @@ public class OrgUserListAdapter extends BaseAdapter {
                 tempView.setOnSelectListener(new OnSelectListener() {
                     @Override
                     public void onSelect(View view, boolean mode) {
-                        OrgUserBean tempOrgUserBean = (OrgUserBean) view.getTag();
-                        tempOrgUserBean.setSelected(mode);
+                        OrgCompositeUserListBean tempOrgCompositeUserListBean = (OrgCompositeUserListBean) view.getTag();
+                        tempOrgCompositeUserListBean.setSelected(mode);
                     }
                 });
-                tempView.select(orgUserBean.isSelected());
+                tempView.select(orgCompositeUserListBean.isSelected());
             }
 
-            tempView.getTitleTV().setText(orgUserBean.getName());
-            tempView.getSutitleTv().setText(orgUserBean.getNo() + " " + orgUserBean.getName());
+            tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
+            tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getNo() + " " + orgCompositeUserListBean.getUser().getName());
             tempView.getTimeTv().setVisibility(View.GONE);
             tempView.getArrowRightIV().setVisibility(View.GONE);
-            tempView.setTag(orgUserBean);
+            tempView.setTag(orgCompositeUserListBean);
 
             return tempView;
         }

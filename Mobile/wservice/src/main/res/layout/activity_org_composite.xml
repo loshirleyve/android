@@ -35,10 +35,18 @@
         android:background="@color/whites">
 
         <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            button:imageButtonText="@string/app_complete"/>
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
             android:id="@+id/sendmsgcard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            button:imageButtonShowIco="true"
             button:imageButtonText="@string/app_send_msgcard"
             button:imageButtonIcoSrc="@drawable/newpost">
 

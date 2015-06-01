@@ -3,7 +3,10 @@ package com.yun9.jupiter.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.R;
@@ -15,6 +18,10 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
     private ImageView icoIV;
 
     private TextView textTV;
+
+    private LinearLayout buttonLL;
+
+    private RelativeLayout buttonBarRL;
 
     public JupiterImageButtonLayout(Context context) {
         super(context);
@@ -37,6 +44,9 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         icoIV = (ImageView) findViewById(R.id.ico_iv);
         textTV = (TextView) findViewById(R.id.text_tv);
+        buttonLL = (LinearLayout) findViewById(R.id.button_ll);
+        buttonBarRL = (RelativeLayout) findViewById(R.id.button_rl);
+
 
         this.initAttr(attrs);
     }
@@ -44,15 +54,30 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
     private void initAttr(AttributeSet attrs) {
         TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterImageButtonLayout);
 
-        if (a.hasValue(R.styleable.JupiterImageButtonLayout_imageButtonIcoSrc)) {
-            int icosrc = a.getResourceId(R.styleable.JupiterImageButtonLayout_imageButtonIcoSrc,R.drawable.newpost);
-            this.icoIV.setImageResource(icosrc);
+        try{
+            if (a.hasValue(R.styleable.JupiterImageButtonLayout_imageButtonIcoSrc)) {
+                int icosrc = a.getResourceId(R.styleable.JupiterImageButtonLayout_imageButtonIcoSrc,R.drawable.newpost);
+                this.icoIV.setImageResource(icosrc);
+            }
+
+            if (a.hasValue(R.styleable.JupiterImageButtonLayout_imageButtonText)){
+                String text = a.getString(R.styleable.JupiterImageButtonLayout_imageButtonText);
+                this.textTV.setText(text);
+            }
+
+            if (a.hasValue(R.styleable.JupiterImageButtonLayout_imageButtonShowIco)){
+                boolean showIco  = a.getBoolean(R.styleable.JupiterImageButtonLayout_imageButtonShowIco,false);
+
+                if (showIco){
+                    icoIV.setVisibility(View.VISIBLE);
+                }else{
+                    icoIV.setVisibility(View.GONE);
+                }
+            }
+        }finally{
+            a.recycle();
         }
 
-        if (a.hasValue(R.styleable.JupiterImageButtonLayout_imageButtonText)){
-            String text = a.getString(R.styleable.JupiterImageButtonLayout_imageButtonText);
-            this.textTV.setText(text);
-        }
     }
 
     public ImageView getIcoIV() {
@@ -61,5 +86,19 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
 
     public TextView getTextTV() {
         return textTV;
+    }
+
+    public LinearLayout getButtonLL() {
+        return buttonLL;
+    }
+
+    public void setButtonLL(LinearLayout buttonLL) {
+        this.buttonLL = buttonLL;
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        super.setOnClickListener(l);
+        this.buttonBarRL.setOnClickListener(l);
     }
 }
