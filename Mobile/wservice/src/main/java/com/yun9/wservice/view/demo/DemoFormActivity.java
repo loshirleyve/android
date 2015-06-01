@@ -131,7 +131,8 @@ public class DemoFormActivity extends JupiterFragmentActivity {
 
     private FormBean builderSubForm(){
         FormBean subform = FormBean.getInstance();
-
+        subform.setEditableWhenLoaded(true);
+        subform.setSaveFormWhenGoBack(true);
         subform.setKey("subform");
         subform.setTitle("测试子项目");
         TextFormCellBean textFormCell = new TextFormCellBean();

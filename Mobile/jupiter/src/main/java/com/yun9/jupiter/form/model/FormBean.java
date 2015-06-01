@@ -12,6 +12,10 @@ public class FormBean implements java.io.Serializable{
 
     private String key;
 
+    private boolean editableWhenLoaded;
+
+    private boolean saveFormWhenGoBack;
+
     private Map<String,Object> value;
 
     private List<FormCellBean> cellBeanList;
@@ -62,5 +66,21 @@ public class FormBean implements java.io.Serializable{
 
     public Object getCellBeanValue(String key) {
         return this.value.get(key);
+    }
+
+    public boolean isEditableWhenLoaded() {
+        return editableWhenLoaded;
+    }
+
+    public void setEditableWhenLoaded(boolean editableWhenLoaded) {
+        this.editableWhenLoaded = editableWhenLoaded;
+    }
+
+    public boolean isSaveFormWhenGoBack() {
+        return saveFormWhenGoBack;
+    }
+
+    public void setSaveFormWhenGoBack(boolean saveFormWhenGoBack) {
+        this.saveFormWhenGoBack = saveFormWhenGoBack;
     }
 }
