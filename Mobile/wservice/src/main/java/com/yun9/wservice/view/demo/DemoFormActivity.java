@@ -12,11 +12,13 @@ import com.yun9.jupiter.form.cell.DetailFormCell;
 import com.yun9.jupiter.form.cell.DocFormCell;
 import com.yun9.jupiter.form.cell.ImageFormCell;
 import com.yun9.jupiter.form.cell.TextFormCell;
+import com.yun9.jupiter.form.cell.UserFormCell;
 import com.yun9.jupiter.form.model.DetailFormCellBean;
 import com.yun9.jupiter.form.model.DocFormCellBean;
 import com.yun9.jupiter.form.model.FormBean;
 import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
+import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
@@ -109,6 +111,12 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         docFormCell.setValue("1");
         docFormCell.setLabel("测试文档选择");
         formBean.putCellBean(docFormCell);
+
+        UserFormCellBean userFormCellBean = new UserFormCellBean();
+        userFormCellBean.setKey("testUser");
+        userFormCellBean.setType(UserFormCell.class);
+        userFormCellBean.setLabel("测试选择用户");
+        formBean.putCellBean(userFormCellBean);
 
         DetailFormCellBean detailFormCell = new DetailFormCellBean();
         detailFormCell.setLabel("测试子项目");
