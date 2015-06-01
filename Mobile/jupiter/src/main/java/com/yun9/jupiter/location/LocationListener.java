@@ -33,13 +33,13 @@ public class LocationListener implements BDLocationListener {
             if (location.getLocType() == BDLocation.TypeGpsLocation) {
                 locationBean.setSpeed(location.getSpeed());
                 locationBean.setSatelliteNumber(location.getSatelliteNumber());
-                locationBean.setLocType(LocationFactory.LocType_GPS);
+                locationBean.setLocType(BaiduLocationFactory.LocType_GPS);
             } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
                 locationBean.setProvince(location.getProvince());
                 locationBean.setCity(location.getCity());
                 locationBean.setDistrict(location.getDistrict());
                 locationBean.setAddr(location.getAddrStr());
-                locationBean.setLocType(LocationFactory.LocType_NETWORK);
+                locationBean.setLocType(BaiduLocationFactory.LocType_NETWORK);
             }
             onLocationListener.onReceiveLocation(locationBean);
         }

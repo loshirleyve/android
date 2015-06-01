@@ -1,7 +1,5 @@
 package com.yun9.jupiter.location;
 
-import com.baidu.location.BDLocation;
-
 /**
  * Created by Leon on 15/5/28.
  */
@@ -34,12 +32,12 @@ public class LocationBean {
         sb.append(this.getLontitude());
         sb.append("\nradius : ");
         sb.append(this.getRadius());
-        if (this.getLocType() == LocationFactory.LocType_GPS) {
+        if (this.getLocType() == BaiduLocationFactory.LocType_GPS) {
             sb.append("\nspeed : ");
             sb.append(this.getSpeed());
             sb.append("\nsatellite : ");
             sb.append(this.getSatelliteNumber());
-        } else if (this.getLocType() == LocationFactory.LocType_NETWORK) {
+        } else if (this.getLocType() == BaiduLocationFactory.LocType_NETWORK) {
             sb.append("\naddr : ");
             sb.append(this.getAddr());
             sb.append("\nProvince : ");

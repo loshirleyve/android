@@ -293,17 +293,23 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
         for (Map.Entry<String, ArrayList<Org>> entity : onSelectOrgMaps.entrySet()) {
             if (AssertValue.isNotNullAndNotEmpty(entity.getValue())) {
-                if (!AssertValue.isNotNullAndNotEmpty(sutitles.get(entity.getKey()))) {
-                    sutitles.put(entity.getKey(), "已选择");
-                } else {
+
+                if (edit){
+                    if (!AssertValue.isNotNullAndNotEmpty(sutitles.get(entity.getKey()))) {
+                        sutitles.put(entity.getKey(), "已选择");
+                    } else {
+                        sutitles.put(entity.getKey(), "");
+                    }
+
+                    for (Org org : entity.getValue()) {
+                        String temptitle = sutitles.get(entity.getKey());
+                        temptitle = temptitle + " " + org.getName();
+                        sutitles.put(entity.getKey(), temptitle);
+                    }
+                }else {
                     sutitles.put(entity.getKey(), "");
                 }
 
-                for (Org org : entity.getValue()) {
-                    String temptitle = sutitles.get(entity.getKey());
-                    temptitle = temptitle + " " + org.getName();
-                    sutitles.put(entity.getKey(), temptitle);
-                }
             }
 
         }
@@ -371,6 +377,11 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             titleBarLayout.getTitleSutitleTv().setVisibility(View.GONE);
             this.setSutitle();
         }
+
+        //设置Item sutitle
+        this.setItemSutitle();
+        //设置sutitle
+        this.setSutitle();
     }
 
     private void selectMode(boolean mode) {

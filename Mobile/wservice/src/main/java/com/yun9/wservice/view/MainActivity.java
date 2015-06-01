@@ -79,9 +79,6 @@ public class MainActivity extends JupiterFragmentActivity  {
     private void initView(){
         logger.d("初始化MainActivity");
 
-        //启动push
-        //pushFactory.start(this.getApplicationContext());
-
         this.storeBtn.setOnClickListener(storeOnClickListener);
         this.dynamicBtn.setOnClickListener(dynamicOnClickListener);
         this.microappBtn.setOnClickListener(microAppOnClickListener);
