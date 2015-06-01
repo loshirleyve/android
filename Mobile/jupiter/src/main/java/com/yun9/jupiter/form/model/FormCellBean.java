@@ -16,7 +16,7 @@ public class FormCellBean implements java.io.Serializable{
     private boolean readonly;
     private boolean required;
     private Object value;
-    private Class<? extends FormCell> type;
+    private String type;
 
     public String getLabel() {
         return label;
@@ -50,11 +50,11 @@ public class FormCellBean implements java.io.Serializable{
         this.readonly = readonly;
     }
 
-    public Class<? extends FormCell> getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Class<? extends FormCell> type) {
+    public void setType(String type) {
         this.type = type;
     }
 

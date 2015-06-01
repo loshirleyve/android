@@ -121,4 +121,12 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
     public void setArrowRightIV(ImageView arrowRightIV) {
         this.arrowRightIV = arrowRightIV;
     }
+
+    public TextView getHotNitoceTV() {
+        return hotNitoceTV;
+    }
+
+    public void setHotNitoceTV(TextView hotNitoceTV) {
+        this.hotNitoceTV = hotNitoceTV;
+    }
 }

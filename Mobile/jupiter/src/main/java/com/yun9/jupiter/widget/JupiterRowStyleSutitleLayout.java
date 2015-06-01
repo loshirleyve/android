@@ -5,9 +5,15 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.yun9.jupiter.R;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -23,6 +29,10 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
     private TextView timeTv;
 
     private ImageView arrowRightIV;
+
+    private TextView hotNitoceTV;
+
+    private LinearLayout subItemContainer;
 
     public JupiterRowStyleSutitleLayout(Context context) {
         super(context);
@@ -47,6 +57,8 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
         this.sutitleTv = (TextView) this.findViewById(R.id.sutitle_tv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.timeTv = (TextView) this.findViewById(R.id.time_tv);
+        this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
+        this.subItemContainer = (LinearLayout) this.findViewById(R.id.subtitle_item_container);
 
         this.initAttr(attrs);
     }
@@ -126,6 +138,32 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
         this.getArrowRightIV().setVisibility(show);
     }
 
+    public void showSubItems(Collection<String> items) {
+        subItemContainer.removeAllViews();
+        subItemContainer.setVisibility(VISIBLE);
+        sutitleTv.setVisibility(GONE);
+        Iterator<String> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            TextView textView = new TextView(getContext());
+            textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+            textView.setTextSize(11);
+            textView.setPadding(2,2,2,2);
+            textView.setBackgroundResource(R.drawable.textview_border_blue);
+            textView.setText(iterator.next());
+            subItemContainer.addView(textView);
+        }
+    }
+
+    public void toggleSubItems() {
+        if (subItemContainer.getVisibility() == View.GONE) {
+            subItemContainer.setVisibility(VISIBLE);
+            sutitleTv.setVisibility(GONE);
+        } else {
+            subItemContainer.setVisibility(GONE);
+            sutitleTv.setVisibility(VISIBLE);
+        }
+    }
+
     public void setTitleText(String text) {
         this.getTitleTV().setText(text);
     }
@@ -173,5 +211,21 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
 
     public void setTitleTV(TextView titleTV) {
         this.titleTV = titleTV;
+    }
+
+    public TextView getHotNitoceTV() {
+        return hotNitoceTV;
+    }
+
+    public void setHotNitoceTV(TextView hotNitoceTV) {
+        this.hotNitoceTV = hotNitoceTV;
+    }
+
+    public LinearLayout getSubItemContainer() {
+        return subItemContainer;
+    }
+
+    public void setSubItemContainer(LinearLayout subItemContainer) {
+        this.subItemContainer = subItemContainer;
     }
 }
