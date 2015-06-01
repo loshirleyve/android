@@ -194,6 +194,14 @@
             android:label="@string/org_list_title_hr"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+
+        <activity
+            android:name=".view.doc.DocCompositeActivity"
+            android:label="@string/doc_composite_title"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
     </application>
 
 </manifest>

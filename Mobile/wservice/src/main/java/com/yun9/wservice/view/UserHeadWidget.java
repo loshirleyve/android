@@ -14,6 +14,8 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     private LinearLayout orgLL;
 
+    private LinearLayout docLL;
+
     public UserHeadWidget(Context context) {
         super(context);
     }
@@ -34,8 +36,15 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         this.orgLL = (LinearLayout) this.findViewById(R.id.org);
+        this.docLL = (LinearLayout) this.findViewById(R.id.sendUserFile);
     }
+
+
     public LinearLayout getOrgLL() {
         return orgLL;
+    }
+
+    public LinearLayout getDocLL() {
+        return docLL;
     }
 }

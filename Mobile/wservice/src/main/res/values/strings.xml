@@ -62,4 +62,6 @@
     <string name="org_list_title_hr">部门</string>
     <string name="org_list_title_group">小组</string>
 
+    <string name="doc_composite_title">文件列表</string>
+
 </resources>

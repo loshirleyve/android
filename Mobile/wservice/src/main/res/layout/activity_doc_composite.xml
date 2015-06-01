@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/groupbackground">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleLeftIcoVisibility="true"
+        tb:titleText="@string/doc_composite_title">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonbar"
+        android:layout_below="@+id/titlebar"
+        android:orientation="vertical">
+
+
+        <ListView
+            android:id="@+id/doclist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"></ListView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whites">
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            button:imageButtonText="@string/app_complete"/>
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sendmsgcard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            button:imageButtonShowIco="true"
+            button:imageButtonText="@string/app_send_msgcard"
+            button:imageButtonIcoSrc="@drawable/newpost">
+
+        </com.yun9.jupiter.widget.JupiterImageButtonLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

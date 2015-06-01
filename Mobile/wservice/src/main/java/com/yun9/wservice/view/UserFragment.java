@@ -7,6 +7,7 @@ import android.view.View;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 
@@ -43,7 +44,16 @@ public class UserFragment extends JupiterFragment {
                 OrgCompositeActivity.start(UserFragment.this.getActivity(), new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).putSelectUser("1").putSelectUser("2").putSelectOrgs("1").putSelectOrgs("5"));
             }
         });
+
+        userHeadWidget.getDocLL().setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                DocCompositeActivity.start(UserFragment.this.getActivity());
+            }
+        });
     }
+
 
 
 }
