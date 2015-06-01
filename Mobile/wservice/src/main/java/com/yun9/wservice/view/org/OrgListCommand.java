@@ -1,14 +1,28 @@
 package com.yun9.wservice.view.org;
 
+import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.util.AssertValue;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Leon on 15/5/29.
  */
-public class OrgListCommand implements java.io.Serializable {
+public class OrgListCommand extends JupiterCommand{
     private String dimType;
 
     private String title;
 
     private boolean edit;
+
+    public static final String PARAM_ORG = "org";
+
+    public static final int REQUEST_CODE = 1002;
+
+    private String instid;
+
+    private List<String> selectOrgs;
 
     public String getDimType() {
         return dimType;
@@ -32,7 +46,39 @@ public class OrgListCommand implements java.io.Serializable {
         return edit;
     }
 
-    public void setEdit(boolean edit) {
+    public OrgListCommand setEdit(boolean edit) {
         this.edit = edit;
+
+        return this;
+    }
+
+    @Override
+    public int getRequestCode() {
+        return REQUEST_CODE;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public OrgListCommand setInstid(String instid) {
+        this.instid = instid;
+        return this;
+    }
+
+    public List<String> getSelectOrgs() {
+        return selectOrgs;
+    }
+
+    public void setSelectOrgs(List<String> selectOrgs) {
+        this.selectOrgs = selectOrgs;
+    }
+
+    public OrgListCommand putSelectOrgs(String orgid){
+        if(!AssertValue.isNotNull(selectOrgs)){
+            selectOrgs = new ArrayList<>();
+        }
+        selectOrgs.add(orgid);
+        return this;
     }
 }

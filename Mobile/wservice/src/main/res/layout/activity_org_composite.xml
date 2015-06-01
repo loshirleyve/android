@@ -8,6 +8,7 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tb:titleLeftIcoVisibility="true"
         tb:titleText="@string/org_composite_title">
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>

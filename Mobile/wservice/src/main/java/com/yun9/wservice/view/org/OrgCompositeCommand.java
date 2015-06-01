@@ -23,6 +23,8 @@ public class OrgCompositeCommand extends JupiterCommand {
 
     private List<String> selectOrgs;
 
+    private String instid;
+
     private boolean edit;
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
@@ -46,7 +48,7 @@ public class OrgCompositeCommand extends JupiterCommand {
     }
 
     @Override
-    protected int getRequestCode() {
+    public int getRequestCode() {
         return REQUEST_CODE;
     }
 
@@ -64,6 +66,16 @@ public class OrgCompositeCommand extends JupiterCommand {
 
     public void setSelectOrgs(List<String> selectOrgs) {
         this.selectOrgs = selectOrgs;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public OrgCompositeCommand setInstid(String instid) {
+        this.instid = instid;
+
+        return this;
     }
 
     public OrgCompositeCommand putSelectUser(String userid){

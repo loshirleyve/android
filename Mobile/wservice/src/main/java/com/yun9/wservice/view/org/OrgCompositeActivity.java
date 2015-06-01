@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class OrgCompositeActivity extends JupiterFragmentActivity {
 
+    private static final Logger logger = Logger.getLogger(OrgCompositeActivity.class);
 
     private OrgCompositeCommand command;
 
@@ -44,6 +47,8 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     private JupiterTitleBarLayout titleBarLayout;
 
     private List<OrgCompositeUserListBean> orgCompositeUserListBeans;
+
+    private List<Org> onSelectOrgs;
 
     private OrgCompositeListAdapter orgCompositeListAdapter;
 
@@ -69,6 +74,9 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         //获取参数
         command = (OrgCompositeCommand) this.getIntent().getSerializableExtra("command");
 
+        //设置界面
+        this.initViews();
+
         //刷新界面数据
         this.refresh();
 
@@ -87,6 +95,19 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             sendMsgCardButton.setVisibility(View.GONE);
             completeButton.setOnClickListener(onClickCompletionListener);
         }
+
+        //处理返回事件
+        titleBarLayout.getTitleLeftIV().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(OrgCompositeCommand.RESULT_CODE_CANCEL);
+                finish();
+            }
+        });
+    }
+
+    private void initViews() {
+
     }
 
     private void refresh() {
@@ -102,11 +123,13 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     }
 
     private List<OrgCompositeUserListBean> builderUserInfo() {
-        orgCompositeUserListBeans = new ArrayList<>();
-        OrgCompositeUserListBean topOrgCompositeUserListBean = new OrgCompositeUserListBean();
-        topOrgCompositeUserListBean.setTop(true);
-        orgCompositeUserListBeans.add(topOrgCompositeUserListBean);
 
+        if (!AssertValue.isNotNull(orgCompositeUserListBeans)) {
+            orgCompositeUserListBeans = new ArrayList<>();
+            OrgCompositeUserListBean topOrgCompositeUserListBean = new OrgCompositeUserListBean();
+            topOrgCompositeUserListBean.setTop(true);
+            orgCompositeUserListBeans.add(topOrgCompositeUserListBean);
+        }
 
         for (int i = 0; i < 20; i++) {
             OrgCompositeUserListBean orgCompositeUserListBean = new OrgCompositeUserListBean();
@@ -119,9 +142,9 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             orgCompositeUserListBean.setSelected(false);
 
             //处理参数中已经选择的Userid
-            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectUsers())){
-                for(String userid : command.getSelectUsers()){
-                    if (AssertValue.isNotNullAndNotEmpty(userid) && userid.equals(orgCompositeUserListBean.getUser().getId())){
+            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectUsers())) {
+                for (String userid : command.getSelectUsers()) {
+                    if (AssertValue.isNotNullAndNotEmpty(userid) && userid.equals(orgCompositeUserListBean.getUser().getId())) {
                         orgCompositeUserListBean.setSelected(true);
                     }
                 }
@@ -136,16 +159,36 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     private View.OnClickListener hrOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgListActivity.startByHr(OrgCompositeActivity.this, new OrgListCommand());
+            OrgListActivity.startByHr(OrgCompositeActivity.this, new OrgListCommand().setEdit(edit));
         }
     };
 
     private View.OnClickListener groupOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand());
+            OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand().setEdit(edit));
         }
     };
+
+    private OrgListCommand builderListCommand() {
+        OrgListCommand orgListCommand = new OrgListCommand();
+
+        orgListCommand.setEdit(this.edit);
+
+        //如果已经存在选择的组织，则使用选择组织传递，否则使用初始参数
+        if (AssertValue.isNotNullAndNotEmpty(this.onSelectOrgs)) {
+            for (Org org : this.onSelectOrgs) {
+                orgListCommand.putSelectOrgs(org.getId());
+            }
+        } else {
+            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectOrgs())){
+                for(String orgid:command.getSelectOrgs()){
+                    orgListCommand.putSelectOrgs(orgid);
+                }
+            }
+        }
+        return orgListCommand;
+    }
 
     private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
         @Override
@@ -173,7 +216,17 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
     }
 
-    public void edit(boolean edit) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OrgListCommand.REQUEST_CODE && resultCode == OrgListCommand.RESULT_CODE_OK) {
+            List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgListCommand.PARAM_ORG);
+
+            logger.d("选择组织数量：" + orgs.size());
+        }
+    }
+
+    private void edit(boolean edit) {
         this.edit = edit;
 
         if (this.edit) {
