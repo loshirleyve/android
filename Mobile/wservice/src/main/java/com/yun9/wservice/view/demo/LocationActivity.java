@@ -130,7 +130,6 @@ public class LocationActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View v) {
                 LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
-
                 int radius = Integer.valueOf(poiRadius.getText().toString());
                 int pageNum = Integer.valueOf(pageNumET.getText().toString());
 
@@ -155,7 +154,7 @@ public class LocationActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNullAndNotEmpty(poiInfoBeans)) {
                 StringBuffer sb = new StringBuffer();
 
-                sb.append("共检索出"+poiInfoBeans.size()+"个结果！");
+                sb.append("共检索出" + poiInfoBeans.size() + "个结果！");
                 sb.append("\n");
                 for (PoiInfoBean poiInfoBean : poiInfoBeans) {
                     sb.append(poiInfoBean.toString());
