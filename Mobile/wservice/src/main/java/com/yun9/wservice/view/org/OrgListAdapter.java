@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
@@ -65,6 +66,13 @@ public class OrgListAdapter extends JupiterAdapter {
             item.setShowTime(false);
             item.setShowArrow(false);
             item.getMainIV().setImageResource(R.drawable.user_group);
+            item.setOnSelectListener(new OnSelectListener() {
+                @Override
+                public void onSelect(View view, boolean mode) {
+                    OrgListBean tempBean = (OrgListBean) view.getTag();
+                    tempBean.setSelected(mode);
+                }
+            });
         } else {
             item = (JupiterRowStyleSutitleLayout) convertView;
         }
@@ -72,8 +80,8 @@ public class OrgListAdapter extends JupiterAdapter {
         item.setSelectMode(selectMode);
         item.getTitleTV().setText(orgListBean.getOrg().getName());
         item.getSutitleTv().setText(orgListBean.getOrg().getNo()+" "+orgListBean.getOrg().getName());
-        item.setSelected(orgListBean.isSelected());
-
+        item.select(orgListBean.isSelected());
+        item.setTag(orgListBean);
 
         return item;
     }

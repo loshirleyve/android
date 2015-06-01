@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -26,28 +28,20 @@ public class OrgListActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
+    @ViewInject(id = R.id.complete)
+    private JupiterImageButtonLayout completeButton;
+
     @ViewInject(id = R.id.orglist)
     private ListView orgListView;
+
+    @ViewInject(id = R.id.buttonbar)
+    private LinearLayout buttonBar;
 
     private List<OrgListBean> orgs;
 
     private OrgListAdapter orgListAdapter;
 
     private boolean edit = false;
-
-    public static void startByHr(Activity activity, OrgListCommand command) {
-        String title = activity.getResources().getString(R.string.org_list_title_hr);
-        command.setDimType("hr");
-        command.setTitle(title);
-        start(activity, command);
-    }
-
-    public static void startByGroup(Activity activity, OrgListCommand command) {
-        String title = activity.getResources().getString(R.string.org_list_title_group);
-        command.setTitle(title);
-        command.setDimType("group");
-        start(activity, command);
-    }
 
     public static void start(Activity activity, OrgListCommand command) {
         Intent intent = new Intent(activity, OrgListActivity.class);
@@ -56,7 +50,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
         bundle.putSerializable("command", command);
         intent.putExtras(bundle);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivityForResult(intent, command.getRequestCode());
+        activity.startActivityForResult(intent, OrgListCommand.REQUEST_CODE);
     }
 
     @Override
@@ -87,7 +81,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
     }
 
-    private void initViews(){
+    private void initViews() {
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +89,16 @@ public class OrgListActivity extends JupiterFragmentActivity {
                 OrgListActivity.this.setEdit(!edit);
             }
         });
+
+        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(OrgListCommand.RESULT_CODE_CANCEL);
+                finish();
+            }
+        });
+
+        this.completeButton.setOnClickListener(onClickCompletionListener);
     }
 
     private void refresh() {
@@ -113,8 +117,10 @@ public class OrgListActivity extends JupiterFragmentActivity {
         if (this.edit) {
             String cancel = this.getResources().getString(R.string.app_cancel);
             titleBarLayout.getTitleRightTv().setText(cancel);
+            this.buttonBar.setVisibility(View.VISIBLE);
         } else {
             String editStr = this.getResources().getString(R.string.app_select);
+            this.buttonBar.setVisibility(View.GONE);
             titleBarLayout.getTitleRightTv().setText(editStr);
         }
         this.selectMode(edit);
@@ -132,6 +138,28 @@ public class OrgListActivity extends JupiterFragmentActivity {
         super.onBackPressed();
     }
 
+    private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<Org> selectOrg = new ArrayList<>();
+
+            if (AssertValue.isNotNullAndNotEmpty(orgs)) {
+                for (OrgListBean orgListBean : orgs) {
+                    if (orgListBean.isSelected()) {
+                        selectOrg.add(orgListBean.getOrg());
+                    }
+                }
+            }
+            Intent intent = new Intent();
+            intent.putExtra(OrgListCommand.PARAM_ORG, selectOrg);
+            if (AssertValue.isNotNull(command)) {
+                intent.putExtra(OrgListCommand.PARAM_DIMTYPE, command.getDimType());
+            }
+            setResult(OrgListCommand.RESULT_CODE_OK, intent);
+            finish();
+        }
+    };
+
     private void builderData() {
         if (!AssertValue.isNotNull(orgs)) {
             orgs = new ArrayList<>();
@@ -144,7 +172,17 @@ public class OrgListActivity extends JupiterFragmentActivity {
             org.setId(i + "");
             org.setName("测试组织" + i);
             org.setNo("00" + i);
+            org.setDimType(command.getDimType());
             orgListBean.setOrg(org);
+
+            //根据代入参数设置已经选中的项目
+            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectOrgs())) {
+                for (String orgid : command.getSelectOrgs()) {
+                    if (AssertValue.isNotNull(orgid) && orgid.equals(org.getId())) {
+                        orgListBean.setSelected(true);
+                    }
+                }
+            }
 
             orgs.add(orgListBean);
         }

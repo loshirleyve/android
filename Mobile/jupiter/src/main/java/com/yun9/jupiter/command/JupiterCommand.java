@@ -10,6 +10,5 @@ public abstract class JupiterCommand  implements  java.io.Serializable{
 
     public static final int RESULT_CODE_ERROR = - 1;
 
-    public abstract int getRequestCode();
 
 }

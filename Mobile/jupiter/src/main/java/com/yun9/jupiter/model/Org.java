@@ -7,7 +7,9 @@ public class Org implements java.io.Serializable{
     private String id;
     private String name;
     private String no;
-    private String demid;
+    private String dimid;
+    private String dimno;
+    private String dimType;
     private String desc;
     private String parentid;
     private int sort;
@@ -37,14 +39,6 @@ public class Org implements java.io.Serializable{
 
     public void setNo(String no) {
         this.no = no;
-    }
-
-    public String getDemid() {
-        return demid;
-    }
-
-    public void setDemid(String demid) {
-        this.demid = demid;
     }
 
     public String getDesc() {
@@ -93,5 +87,29 @@ public class Org implements java.io.Serializable{
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getDimid() {
+        return dimid;
+    }
+
+    public void setDimid(String dimid) {
+        this.dimid = dimid;
+    }
+
+    public String getDimno() {
+        return dimno;
+    }
+
+    public void setDimno(String dimno) {
+        this.dimno = dimno;
+    }
+
+    public String getDimType() {
+        return dimType;
+    }
+
+    public void setDimType(String dimType) {
+        this.dimType = dimType;
     }
 }

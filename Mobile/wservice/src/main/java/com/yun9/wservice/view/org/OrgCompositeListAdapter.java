@@ -26,6 +26,8 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 
     private View.OnClickListener myselfOnClickListener;
 
+    private OnSelectListener onSelectListener;
+
     private boolean selectMode;
 
     public OrgCompositeListAdapter(Context context, List<OrgCompositeUserListBean> orgCompositeUserListBeans, boolean selectMode) {
@@ -52,6 +54,14 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 
     public void setMyselfOnClickListener(View.OnClickListener myselfOnClickListener) {
         this.myselfOnClickListener = myselfOnClickListener;
+    }
+
+    public OnSelectListener getOnSelectListener() {
+        return onSelectListener;
+    }
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
     }
 
     @Override
@@ -90,6 +100,9 @@ public class OrgCompositeListAdapter extends BaseAdapter {
             if (AssertValue.isNotNull(myselfOnClickListener)) {
                 orgCompositeTopWidget.getMyselfLL().setOnClickListener(myselfOnClickListener);
             }
+            orgCompositeTopWidget.getOrgHrLL().getSutitleTv().setText(orgCompositeUserListBean.getHrSutitle());
+            orgCompositeTopWidget.getOrgGroupLL().getSutitleTv().setText(orgCompositeUserListBean.getGroupSutitle());
+
             orgCompositeTopWidget.setTag(orgCompositeUserListBean);
             return orgCompositeTopWidget;
         } else {
@@ -97,13 +110,7 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 
             if (this.selectMode){
                 tempView.setSelectMode(true);
-                tempView.setOnSelectListener(new OnSelectListener() {
-                    @Override
-                    public void onSelect(View view, boolean mode) {
-                        OrgCompositeUserListBean tempOrgCompositeUserListBean = (OrgCompositeUserListBean) view.getTag();
-                        tempOrgCompositeUserListBean.setSelected(mode);
-                    }
-                });
+                tempView.setOnSelectListener(onSelectListener);
                 tempView.select(orgCompositeUserListBean.isSelected());
             }
 

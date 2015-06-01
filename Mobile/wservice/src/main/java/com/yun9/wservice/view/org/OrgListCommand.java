@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Leon on 15/5/29.
  */
-public class OrgListCommand extends JupiterCommand{
+public class OrgListCommand extends JupiterCommand {
     private String dimType;
 
     private String title;
@@ -17,6 +17,8 @@ public class OrgListCommand extends JupiterCommand{
     private boolean edit;
 
     public static final String PARAM_ORG = "org";
+
+    public static final String PARAM_DIMTYPE = "dimtype";
 
     public static final int REQUEST_CODE = 1002;
 
@@ -52,11 +54,6 @@ public class OrgListCommand extends JupiterCommand{
         return this;
     }
 
-    @Override
-    public int getRequestCode() {
-        return REQUEST_CODE;
-    }
-
     public String getInstid() {
         return instid;
     }
@@ -74,8 +71,8 @@ public class OrgListCommand extends JupiterCommand{
         this.selectOrgs = selectOrgs;
     }
 
-    public OrgListCommand putSelectOrgs(String orgid){
-        if(!AssertValue.isNotNull(selectOrgs)){
+    public OrgListCommand putSelectOrgs(String orgid) {
+        if (!AssertValue.isNotNull(selectOrgs)) {
             selectOrgs = new ArrayList<>();
         }
         selectOrgs.add(orgid);

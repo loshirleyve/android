@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
@@ -159,8 +160,10 @@ public class MainActivity extends JupiterFragmentActivity  {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK){
-            List<User> users = (List<User>) data.getSerializableExtra("org");
-            logger.d("选择了："+ users.size());
+            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
+            List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
+            logger.d("选择用户数量："+ users.size());
+            logger.d("选择组织数量："+orgs.size());
         }
 
     }

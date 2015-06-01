@@ -13,6 +13,26 @@ public class OrgCompositeUserListBean implements java.io.Serializable{
 
     private boolean top;
 
+    private String hrSutitle;
+
+    private String groupSutitle;
+
+    public String getHrSutitle() {
+        return hrSutitle;
+    }
+
+    public void setHrSutitle(String hrSutitle) {
+        this.hrSutitle = hrSutitle;
+    }
+
+    public String getGroupSutitle() {
+        return groupSutitle;
+    }
+
+    public void setGroupSutitle(String groupSutitle) {
+        this.groupSutitle = groupSutitle;
+    }
+
     public boolean isSelected() {
         return selected;
     }

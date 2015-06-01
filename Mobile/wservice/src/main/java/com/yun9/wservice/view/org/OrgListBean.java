@@ -8,6 +8,7 @@ import com.yun9.jupiter.model.Org;
 public class OrgListBean implements java.io.Serializable {
 
     private boolean selected;
+
     private Org org;
 
     public boolean isSelected() {

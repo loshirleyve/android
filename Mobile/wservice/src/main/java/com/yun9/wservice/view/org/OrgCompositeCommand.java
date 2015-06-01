@@ -17,6 +17,10 @@ public class OrgCompositeCommand extends JupiterCommand {
     public static final String PARAM_USER = "user";
     public static final String PARAM_ORG = "org";
 
+    public static final String DIM_TYPE_GROUP = "group";
+
+    public static final String DIM_TYPE_HR = "hr";
+
     public static final int REQUEST_CODE = 1001;
 
     private List<String> selectUsers;
@@ -45,11 +49,6 @@ public class OrgCompositeCommand extends JupiterCommand {
     public OrgCompositeCommand setCompleteType(String completeType) {
         this.completeType = completeType;
         return this;
-    }
-
-    @Override
-    public int getRequestCode() {
-        return REQUEST_CODE;
     }
 
     public List<String> getSelectUsers() {
