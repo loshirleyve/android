@@ -1,15 +1,16 @@
 package com.yun9.wservice.view.org;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -33,22 +34,28 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.buttonbar)
     private LinearLayout buttonbarLL;
 
+    @ViewInject(id = R.id.complete)
+    private JupiterImageButtonLayout completeButton;
+
+    @ViewInject(id = R.id.sendmsgcard)
+    private JupiterImageButtonLayout sendMsgCardButton;
+
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    private List<OrgUserBean> orgUserBeans;
+    private List<OrgCompositeUserListBean> orgCompositeUserListBeans;
 
-    private OrgUserListAdapter orgUserListAdapter;
+    private OrgCompositeListAdapter orgCompositeListAdapter;
 
     private boolean edit;
 
-    public static void start(Context context, OrgCompositeCommand command) {
-        Intent intent = new Intent(context, OrgCompositeActivity.class);
+    public static void start(Activity activity, OrgCompositeCommand command) {
+        Intent intent = new Intent(activity, OrgCompositeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
@@ -69,37 +76,61 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(command)) {
             this.edit(command.isEdit());
         }
+
+        //处理完成模式
+        if (OrgCompositeCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
+            completeButton.setVisibility(View.GONE);
+            sendMsgCardButton.setVisibility(View.VISIBLE);
+
+        } else if (OrgCompositeCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
+            completeButton.setVisibility(View.VISIBLE);
+            sendMsgCardButton.setVisibility(View.GONE);
+            completeButton.setOnClickListener(onClickCompletionListener);
+        }
     }
 
     private void refresh() {
         this.builderUserInfo();
-        if (!AssertValue.isNotNull(this.orgUserListAdapter)){
-            this.orgUserListAdapter = new OrgUserListAdapter(this, orgUserBeans,false);
-            orgUserListAdapter.setGroupOnClickListener(groupOnClickListener);
-            orgUserListAdapter.setHrOnClickListener(hrOnClickListener);
-            userListView.setAdapter(orgUserListAdapter);
-        }else{
-            this.orgUserListAdapter.notifyDataSetChanged();
+        if (!AssertValue.isNotNull(this.orgCompositeListAdapter)) {
+            this.orgCompositeListAdapter = new OrgCompositeListAdapter(this, orgCompositeUserListBeans, false);
+            orgCompositeListAdapter.setGroupOnClickListener(groupOnClickListener);
+            orgCompositeListAdapter.setHrOnClickListener(hrOnClickListener);
+            userListView.setAdapter(orgCompositeListAdapter);
+        } else {
+            this.orgCompositeListAdapter.notifyDataSetChanged();
         }
     }
 
-    private List<OrgUserBean> builderUserInfo() {
-        orgUserBeans = new ArrayList<OrgUserBean>();
-        OrgUserBean orgUserBeanTop = new OrgUserBean();
-        orgUserBeanTop.setTop(true);
-        orgUserBeans.add(orgUserBeanTop);
+    private List<OrgCompositeUserListBean> builderUserInfo() {
+        orgCompositeUserListBeans = new ArrayList<>();
+        OrgCompositeUserListBean topOrgCompositeUserListBean = new OrgCompositeUserListBean();
+        topOrgCompositeUserListBean.setTop(true);
+        orgCompositeUserListBeans.add(topOrgCompositeUserListBean);
+
 
         for (int i = 0; i < 20; i++) {
-            OrgUserBean orgUserBean = new OrgUserBean();
-            orgUserBean.setId(i + "");
-            orgUserBean.setName("测试用户" + i);
-            orgUserBean.setNo("00" + i);
-            orgUserBean.setSelected(false);
-            orgUserBean.setTop(false);
-            orgUserBeans.add(orgUserBean);
+            OrgCompositeUserListBean orgCompositeUserListBean = new OrgCompositeUserListBean();
+            User user = new User();
+            user.setNo("00" + i);
+            user.setName("测试用户" + i);
+            user.setId(i + "");
+
+            orgCompositeUserListBean.setUser(user);
+            orgCompositeUserListBean.setSelected(false);
+
+            //处理参数中已经选择的Userid
+            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectUsers())){
+                for(String userid : command.getSelectUsers()){
+                    if (AssertValue.isNotNullAndNotEmpty(userid) && userid.equals(orgCompositeUserListBean.getUser().getId())){
+                        orgCompositeUserListBean.setSelected(true);
+                    }
+                }
+            }
+            orgCompositeUserListBeans.add(orgCompositeUserListBean);
         }
 
-        return orgUserBeans;
+
+        return orgCompositeUserListBeans;
     }
 
     private View.OnClickListener hrOnClickListener = new View.OnClickListener() {
@@ -115,6 +146,32 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             OrgListActivity.startByGroup(OrgCompositeActivity.this, new OrgListCommand());
         }
     };
+
+    private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<User> selectUsers = new ArrayList<>();
+
+            if (AssertValue.isNotNullAndNotEmpty(orgCompositeUserListBeans)) {
+                for (OrgCompositeUserListBean orgCompositeUserListBean : orgCompositeUserListBeans) {
+                    if (orgCompositeUserListBean.isSelected()) {
+                        selectUsers.add(orgCompositeUserListBean.getUser());
+                    }
+                }
+            }
+            Intent intent = new Intent();
+            intent.putExtra(OrgCompositeCommand.PARAM_ORG, selectUsers);
+            setResult(OrgCompositeCommand.RESULT_CODE_OK, intent);
+            finish();
+        }
+    };
+
+    @Override
+    public void onBackPressed() {
+        setResult(OrgCompositeCommand.RESULT_CODE_CANCEL);
+        super.onBackPressed();
+
+    }
 
     public void edit(boolean edit) {
         this.edit = edit;
@@ -146,9 +203,9 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void selectMode(boolean mode){
-        this.orgUserListAdapter.setSelectMode(mode);
-        this.orgUserListAdapter.notifyDataSetChanged();
+    private void selectMode(boolean mode) {
+        this.orgCompositeListAdapter.setSelectMode(mode);
+        this.orgCompositeListAdapter.notifyDataSetChanged();
 
     }
 }

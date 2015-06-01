@@ -16,7 +16,8 @@ public class User implements java.io.Serializable {
 	private String state;
 	private String onlinestate;
 	private long registerdate;
-	private String headerfileid;;
+	private String headerfileid;
+	private String headerURL;
 	private String signature;
 	private long createdata;
 	private String createby;
@@ -136,5 +137,13 @@ public class User implements java.io.Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getHeaderURL() {
+		return headerURL;
+	}
+
+	public void setHeaderURL(String headerURL) {
+		this.headerURL = headerURL;
 	}
 }

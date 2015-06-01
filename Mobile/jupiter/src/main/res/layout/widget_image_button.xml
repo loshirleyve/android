@@ -3,10 +3,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:id="@+id/button_rl"
     android:background="@drawable/touch_background"
     android:clickable="true">
 
     <LinearLayout
+        android:id="@+id/button_ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
@@ -16,7 +18,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:src="@drawable/newpost" />
+            android:src="@drawable/newpost"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/text_tv"
@@ -24,7 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:text="@string/jupiter" />
+            android:text="@string/jupiter"
+            android:textSize="16dp" />
     </LinearLayout>
 
 </RelativeLayout>
