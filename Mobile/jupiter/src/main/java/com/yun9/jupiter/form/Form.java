@@ -44,9 +44,10 @@ public class Form implements java.io.Serializable {
         }
     }
 
-    private  <T extends FormCell> T createCell(Class<T> type,FormCellBean bean) {
+    private  <T extends FormCell> T createCell(String typeName,FormCellBean bean) {
 
         try {
+            Class<T> type = (Class<T>) Class.forName(typeName);
             FormCell formCell = type.getConstructor(FormCellBean.class).newInstance(bean);
             formCell.init();
             return (T) formCell;
@@ -60,6 +61,9 @@ public class Form implements java.io.Serializable {
             e.printStackTrace();
             throw new JupiterRuntimeException(e);
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            throw new JupiterRuntimeException(e);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new JupiterRuntimeException(e);
         }

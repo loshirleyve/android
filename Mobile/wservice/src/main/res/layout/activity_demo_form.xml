@@ -16,30 +16,32 @@
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
-    <TextView
-        android:layout_below="@+id/titlebar"
-        android:id="@+id/content"
+    <ScrollView
+        android:layout_below="@id/titlebar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/content">
-        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-            xmlns:row="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/demoform"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            row:rowStyleSutitleText="测试表单"
-            row:rowStyleSutitleTitleText="测试表单明细"
-            android:clickable="true"
-            android:background="@drawable/touch_background"
-            row:rowStyleSutitleShowTimeText="false">
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_below="@+id/titlebar"
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                xmlns:row="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/demoform"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                row:rowStyleSutitleText="测试表单"
+                row:rowStyleSutitleTitleText="测试表单明细"
+                android:clickable="true"
+                android:background="@drawable/touch_background"
+                row:rowStyleSutitleShowTimeText="false">
 
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
-    </LinearLayout>
-
-
+            </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

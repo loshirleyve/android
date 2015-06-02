@@ -136,9 +136,27 @@ public class FormActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View view) {
                 if (edit) {
-                    rebuildForm();
+                    new AlertDialog.Builder(FormActivity.this).setTitle("确认放弃修改？")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“确认”后的操作
+                                    rebuildForm();
+                                    toggleState();
+                                }
+                            })
+                            .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // 点击“返回”后的操作,这里不设置没有任何操作
+                                }
+                            }).show();
+                } else {
+                    toggleState();
                 }
-                toggleState();
 
             }
         });
@@ -212,7 +230,7 @@ public class FormActivity extends JupiterFragmentActivity {
         submitTv.setEnabled(edit);
         if (edit) {
             submitTv.setTextColor(getResources().getColor(R.color.red));
-            FormActivity.this.titleBarLayout.getTitleRightTv().setText(R.string.jupiter_undo);
+            FormActivity.this.titleBarLayout.getTitleRightTv().setText(R.string.jupiter_cancel);
         } else {
             submitTv.setTextColor(getResources().getColor(R.color.dim_foreground_disabled_material_dark));
             FormActivity.this.titleBarLayout.getTitleRightTv().setText(R.string.jupiter_edit);
