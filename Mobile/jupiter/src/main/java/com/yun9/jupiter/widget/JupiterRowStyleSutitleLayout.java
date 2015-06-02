@@ -181,7 +181,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
     public void showSubItems(Collection<String> items) {
         subItemContainer.removeAllViews();
         subItemContainer.setVisibility(VISIBLE);
-        sutitleTv.setVisibility(GONE);
+        //sutitleTv.setVisibility(GONE);
         Iterator<String> iterator = items.iterator();
         while (iterator.hasNext()) {
             TextView textView = new TextView(getContext());
