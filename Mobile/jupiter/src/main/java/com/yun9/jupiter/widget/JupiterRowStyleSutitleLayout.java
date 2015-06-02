@@ -5,9 +5,16 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.util.AssertValue;
+
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
