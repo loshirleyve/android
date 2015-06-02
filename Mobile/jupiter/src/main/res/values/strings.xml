@@ -9,6 +9,8 @@
     <string name="jupiter_edit">编辑</string>
     <string name="jupiter_new">新增</string>
     <string name="jupiter_add">添加</string>
+    <string name="jupiter_single_choice">单选</string>
+    <string name="jupiter_multi_choice">多选</string>
     <string name="jupiter_ne_version">发现新版本</string>
     <string name="jupiter_network_error">你的网络似乎有些问题，请检查一下网络设置。</string>
 

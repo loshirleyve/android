@@ -60,6 +60,14 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:id="@+id/selectmode_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:src="@drawable/selector_empty"/>
+
+            <ImageView
                 android:id="@+id/arrow_right_iv"
                 android:layout_gravity="center"
                 android:layout_width="16dp"
