@@ -103,7 +103,7 @@ public class DocFormCell extends FormCell {
         badgeViews.clear();
         for (int i = 0; i < docViews.size(); i++) {
             JupiterBadgeView badgeView = new JupiterBadgeView(context, docViews.get(i));
-            badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
+            badgeView.setBadgePosition(JupiterBadgeView.POSITION_BOTTOM_RIGHT);
             badgeView.setBackgroundResource(R.drawable.icn_delete);
             badgeView.setBadgeSize(20,20);
             final int finalI = i;
@@ -134,8 +134,8 @@ public class DocFormCell extends FormCell {
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER_VERTICAL);
         ImageView imageView = new ImageView(this.context);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(PublicHelp.dip2px(context, 60), PublicHelp.dip2px(context, 60)));
-        imageView.setImageResource(R.drawable.upload_icon);
+        imageView.setLayoutParams(new ViewGroup.LayoutParams(PublicHelp.dip2px(context, 40), PublicHelp.dip2px(context, 40)));
+        imageView.setImageResource(R.drawable.fileicon);
         linearLayout.addView(imageView);
         TextView textView = new TextView(context);
         textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));

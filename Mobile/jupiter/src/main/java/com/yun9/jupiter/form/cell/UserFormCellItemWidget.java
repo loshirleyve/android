@@ -19,6 +19,10 @@ public class UserFormCellItemWidget extends JupiterRelativeLayout{
     private TextView itemName;
     private LinearLayout container;
 
+    private String name;
+
+    private String imageId;
+
     public UserFormCellItemWidget(Context context) {
         super(context);
     }
@@ -44,11 +48,49 @@ public class UserFormCellItemWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(String imageId,String name) {
+        this.imageId = imageId;
+        this.name = name;
         ImageLoader.getInstance().displayImage(imageId,itemImage);
         itemName.setText(name);
     }
 
     public LinearLayout getContainer() {
         return container;
+    }
+
+    public ImageView getItemImage() {
+        return itemImage;
+    }
+
+    public void setItemImage(ImageView itemImage) {
+        this.itemImage = itemImage;
+    }
+
+    public TextView getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(TextView itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setContainer(LinearLayout container) {
+        this.container = container;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 }

@@ -87,9 +87,18 @@ public class UserFormCell extends FormCell{
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                UserFormCellItemWidget widget = new UserFormCellItemWidget(context);
+                UserFormCellItemWidget widget;
+                if (convertView != null) {
+                    widget = (UserFormCellItemWidget) convertView;
+                    if (position < uodMaps.size()
+                            && widget.getImageId().equals(uodMaps.get(position).get(PARAM_KEY_VALUE))){
+                        return widget;
+                    }
+                }
+                widget = new UserFormCellItemWidget(context);
                 if (position == uodMaps.size()) {
-                    widget.buildWithData("drawable://" + R.drawable.user_head, "添加");
+                    widget.buildWithData("drawable://" + R.drawable.add_user, "添加");
+                    widget.getItemName().setTextColor(UserFormCell.this.context.getResources().getColor(R.color.red));
                     widget.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

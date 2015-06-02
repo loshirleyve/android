@@ -12,8 +12,7 @@
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/user_head"/>
+            android:layout_height="60dp"/>
         <TextView
             android:id="@+id/item_name"
             android:layout_width="wrap_content"
