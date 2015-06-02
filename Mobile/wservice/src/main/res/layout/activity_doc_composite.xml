@@ -18,13 +18,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonbar"
         android:layout_below="@+id/titlebar"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
 
         <ListView
             android:id="@+id/doclist"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="5dp"></ListView>
     </LinearLayout>
 
