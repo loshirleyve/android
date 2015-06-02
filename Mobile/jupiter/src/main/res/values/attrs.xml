@@ -59,4 +59,8 @@
         <attr name="imageButtonShowIco" format="boolean"></attr>
 
     </declare-styleable>
+
+    <declare-styleable name="JupiterIco">
+        <attr name="icoShowText" format="boolean"></attr>
+    </declare-styleable>
 </resources>

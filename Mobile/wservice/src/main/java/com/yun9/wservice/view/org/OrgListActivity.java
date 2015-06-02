@@ -11,6 +11,8 @@ import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -30,6 +32,9 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.complete)
     private JupiterImageButtonLayout completeButton;
+
+    @ViewInject(id = R.id.neworg)
+    private JupiterRowStyleTitleLayout newOrg;
 
     @ViewInject(id = R.id.orglist)
     private ListView orgListView;
@@ -98,6 +103,14 @@ public class OrgListActivity extends JupiterFragmentActivity {
             }
         });
 
+        //检查是否显示新增按钮
+        if (AssertValue.isNotNull(command) && command.isNewAction()) {
+            newOrg.setVisibility(View.VISIBLE);
+            newOrg.setOnClickListener(onClickNewOrgListener);
+        } else {
+            newOrg.setVisibility(View.GONE);
+        }
+
         this.completeButton.setOnClickListener(onClickCompletionListener);
     }
 
@@ -138,28 +151,6 @@ public class OrgListActivity extends JupiterFragmentActivity {
         super.onBackPressed();
     }
 
-    private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ArrayList<Org> selectOrg = new ArrayList<>();
-
-            if (AssertValue.isNotNullAndNotEmpty(orgs)) {
-                for (OrgListBean orgListBean : orgs) {
-                    if (orgListBean.isSelected()) {
-                        selectOrg.add(orgListBean.getOrg());
-                    }
-                }
-            }
-            Intent intent = new Intent();
-            intent.putExtra(OrgListCommand.PARAM_ORG, selectOrg);
-            if (AssertValue.isNotNull(command)) {
-                intent.putExtra(OrgListCommand.PARAM_DIMTYPE, command.getDimType());
-            }
-            setResult(OrgListCommand.RESULT_CODE_OK, intent);
-            finish();
-        }
-    };
-
     private void builderData() {
         if (!AssertValue.isNotNull(orgs)) {
             orgs = new ArrayList<>();
@@ -187,4 +178,33 @@ public class OrgListActivity extends JupiterFragmentActivity {
             orgs.add(orgListBean);
         }
     }
+
+    private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<Org> selectOrg = new ArrayList<>();
+
+            if (AssertValue.isNotNullAndNotEmpty(orgs)) {
+                for (OrgListBean orgListBean : orgs) {
+                    if (orgListBean.isSelected()) {
+                        selectOrg.add(orgListBean.getOrg());
+                    }
+                }
+            }
+            Intent intent = new Intent();
+            intent.putExtra(OrgListCommand.PARAM_ORG, selectOrg);
+            if (AssertValue.isNotNull(command)) {
+                intent.putExtra(OrgListCommand.PARAM_DIMTYPE, command.getDimType());
+            }
+            setResult(OrgListCommand.RESULT_CODE_OK, intent);
+            finish();
+        }
+    };
+
+    private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgEditActivity.start(OrgListActivity.this,new OrgEditCommand().setEdit(edit));
+        }
+    };
 }

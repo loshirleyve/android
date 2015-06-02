@@ -16,6 +16,8 @@ public class OrgListCommand extends JupiterCommand {
 
     private boolean edit;
 
+    private boolean newAction;
+
     public static final String PARAM_ORG = "org";
 
     public static final String PARAM_DIMTYPE = "dimtype";
@@ -51,6 +53,15 @@ public class OrgListCommand extends JupiterCommand {
     public OrgListCommand setEdit(boolean edit) {
         this.edit = edit;
 
+        return this;
+    }
+
+    public boolean isNewAction() {
+        return newAction;
+    }
+
+    public OrgListCommand setNewAction(boolean newAction) {
+        this.newAction = newAction;
         return this;
     }
 

@@ -191,7 +191,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             String title = OrgCompositeActivity.this.getResources().getString(R.string.org_list_title_hr);
-            OrgListActivity.start(OrgCompositeActivity.this, builderListCommand(OrgCompositeCommand.DIM_TYPE_HR).setTitle(title));
+            OrgListActivity.start(OrgCompositeActivity.this, builderListCommand(OrgCompositeCommand.DIM_TYPE_HR).setTitle(title).setNewAction(!edit));
         }
     };
 
@@ -199,7 +199,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             String title = OrgCompositeActivity.this.getResources().getString(R.string.org_list_title_group);
-            OrgListActivity.start(OrgCompositeActivity.this, builderListCommand(OrgCompositeCommand.DIM_TYPE_GROUP).setTitle(title));
+            OrgListActivity.start(OrgCompositeActivity.this, builderListCommand(OrgCompositeCommand.DIM_TYPE_GROUP).setTitle(title).setNewAction(!edit));
         }
     };
 

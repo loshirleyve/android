@@ -195,6 +195,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.org.OrgEditActivity"
+            android:label="@string/org_edit_new"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
 
         <activity
             android:name=".view.doc.DocCompositeActivity"
