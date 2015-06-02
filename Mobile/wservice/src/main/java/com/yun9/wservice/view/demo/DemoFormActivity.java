@@ -140,8 +140,8 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         return formBean;
     }
 
-    private Map<String, Object> builderOptions() {
-        Map<String,Object> map = new HashMap<>();
+    private Map<String, String> builderOptions() {
+        Map<String,String> map = new HashMap<>();
         map.put("1","深圳顶聚科技");
         map.put("2","深圳顶聚科技2");
         map.put("3","深圳顶聚科技3");
