@@ -157,6 +157,12 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+            android:name="com.yun9.jupiter.form.MultiSelectActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
             android:name=".func.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"

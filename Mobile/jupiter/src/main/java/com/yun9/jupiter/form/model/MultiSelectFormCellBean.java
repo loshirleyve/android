@@ -15,7 +15,7 @@ public class MultiSelectFormCellBean extends FormCellBean{
 
     private int maxNum;
 
-    private Map<String,Object> optionMap;
+    private Map<String,String> optionMap;
 
     private String ctrlCode;
 
@@ -35,11 +35,11 @@ public class MultiSelectFormCellBean extends FormCellBean{
         this.maxNum = maxNum;
     }
 
-    public Map<String, Object> getOptionMap() {
+    public Map<String, String> getOptionMap() {
         return optionMap;
     }
 
-    public void setOptionMap(Map<String, Object> optionMap) {
+    public void setOptionMap(Map<String, String> optionMap) {
         this.optionMap = optionMap;
     }
 
