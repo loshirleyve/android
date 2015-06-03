@@ -1,22 +1,19 @@
 package com.yun9.jupiter.form.cell;
 
 import android.content.Context;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
-import com.yun9.jupiter.view.JupiterBadgeView;
-import com.yun9.jupiter.view.JupiterGridView;
-import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
-
+import com.yun9.jupiter.widget.JupiterEditIco;
+import com.yun9.jupiter.widget.JupiterEditIcoAdapter;
+import com.yun9.jupiter.widget.JupiterTextIco;
+import com.yun9.jupiter.widget.JupiterTextIcoWithCorner;
+import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,19 +26,17 @@ public class UserFormCell extends FormCell{
     public static final String PARAM_KEY_TYPE = "type";
     public static final String PARAM_KEY_VALUE = "value";
 
-    private JupiterRowStyleTitleLayout titleView;
+    private JupiterEditIco jupiterEditIco;
 
-    private JupiterGridView userGridView;
+    private JupiterEditIcoAdapter adapter;
 
     private UserFormCellBean cellBean;
 
-    private List<Map<String,String>> uodMaps;
+    private List<JupiterTextIco> itemList;
+
+    private boolean edit;
 
     private Context context;
-
-    private BaseAdapter pagerAdapter;
-
-    private boolean isEdit;
 
     public UserFormCell(FormCellBean cellBean) {
         super(cellBean);
@@ -52,27 +47,24 @@ public class UserFormCell extends FormCell{
     public View getCellView(Context context) {
         this.context = context;
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_user, null);
-        titleView = (JupiterRowStyleTitleLayout) rootView.findViewById(R.id.title);
-        userGridView = (JupiterGridView) rootView.findViewById(R.id.userGridView);
-        titleView.getTitleTV().setText(cellBean.getLabel());
-        titleView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                choiceUserOrDept();
-            }
-        });
-        uodMaps = new ArrayList<>();
-        this.setupAdapter();
-        this.restore();
+        jupiterEditIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
+        itemList = new ArrayList<>();
+        this.build();
+        setupEditIco();
         return rootView;
     }
 
-    private void setupAdapter() {
-        pagerAdapter = new BaseAdapter() {
+    private void build() {
+        jupiterEditIco.getRowStyleSutitleLayout().getTitleTV().setText(cellBean.getLabel());
+    }
+
+    private void setupEditIco() {
+        appendAddButton();
+        adapter = new JupiterEditIcoAdapter() {
 
             @Override
             public int getCount() {
-                return uodMaps.size() +1;
+                return itemList.size();
             }
 
             @Override
@@ -86,76 +78,68 @@ public class UserFormCell extends FormCell{
             }
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                UserFormCellItemWidget widget;
-                if (convertView != null) {
-                    widget = (UserFormCellItemWidget) convertView;
-                    if (position < uodMaps.size()
-                            && widget.getImageId().equals(uodMaps.get(position).get(PARAM_KEY_VALUE))){
-                        return widget;
-                    }
-                }
-                widget = new UserFormCellItemWidget(context);
-                if (position == uodMaps.size()) {
-                    widget.buildWithData("drawable://" + R.drawable.add_user, "添加");
-                    widget.getItemName().setTextColor(UserFormCell.this.context.getResources().getColor(R.color.red));
-                    widget.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            choiceUserOrDept();
-                        }
-                    });
-                    widget.setEnabled(isEdit);
-                    return widget;
-                }
-                Map<String,String> params = uodMaps.get(position);
-                widget.buildWithData(params.get(PARAM_KEY_VALUE),"成员名称");
-                appendBadges(position,widget.getContainer());
-                return widget;
+            public JupiterTextIco getItemView(int position, View convertView, ViewGroup parent) {
+                itemList.get(position).setEnabled(edit);
+                return itemList.get(position);
             }
         };
-        this.userGridView.setAdapter(pagerAdapter);
+        jupiterEditIco.setAdapter(adapter);
+        this.restore();
+    }
+
+    private void appendAddButton() {
+        JupiterTextIco item = new JupiterTextIcoWithoutCorner(this.context);
+        item.setTitle("添加");
+        item.setImage("drawable://" + R.drawable.add_user);
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choiceUserOrDept();
+            }
+        });
+        itemList.add(item);
     }
 
     private void restore() {
         if (cellBean.getValue() != null) {
-            uodMaps = (List<Map<String, String>>) cellBean.getValue();
-        }
-        this.reloadDBAndRefreshAdapter();
-    }
-
-    private void reloadDBAndRefreshAdapter() {
-        // 根据uodMaps现有的数据，判断缓冲里面有没有存在相应的数据，没有则重新加载
-        refreshAdapter();
-    }
-
-    private void refreshAdapter() {
-        pagerAdapter.notifyDataSetInvalidated();
-    }
-
-    private void appendBadges(final int position,View view) {
-            JupiterBadgeView badgeView = new JupiterBadgeView(context, view);
-            badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
-            badgeView.setBackgroundResource(R.drawable.icn_delete);
-            badgeView.setBadgeSize(20, 20);
-            badgeView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    removeView(position);
-                }
-            });
-            if (isEdit){
-                badgeView.show();
+            List<Map<String, String>> mapList = new ArrayList<>((List<Map<String, String>>) cellBean.getValue());
+            JupiterTextIco item;
+            for (int i = 0; i < mapList.size(); i++) {
+                item = createItem(i+1,mapList.get(i));// 前面已经有个addButton了
+                item.setTitle("成员名称");
+                item.setImage(mapList.get(i).get(PARAM_KEY_VALUE));
+                item.showCorner();
             }
+            adapter.notifyDataSetChanged();
+        }
     }
 
-    /**
-     * 删除成员
-     * @param position 成员下标
-     */
-    private void removeView(int position) {
-        uodMaps.remove(position);
-        this.refreshAdapter();
+    private JupiterTextIco createItem(final int position,Map<String,String> tag) {
+        // 测试
+        if (position%2 == 0) {
+            final JupiterTextIco item = new JupiterTextIcoWithCorner(this.context);
+            item.setTag(tag);
+            item.setCornerImage(R.drawable.newpost);
+            itemList.add(item);
+            return item;
+        }
+        final JupiterTextIco item = new JupiterTextIco(this.context);
+        item.getBadgeView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteItm(item);
+            }
+        });
+        item.setTag(tag);
+        item.setCornerImage(R.drawable.icn_delete);
+        itemList.add(item);
+        return item;
+    }
+
+
+    private void deleteItm(JupiterTextIco item) {
+        itemList.remove(item);
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -164,21 +148,28 @@ public class UserFormCell extends FormCell{
     private void choiceUserOrDept() {
         Map<String,String> map = new HashMap<>();
         map.put(PARAM_KEY_TYPE,UserFormCellBean.MODE.USER+"");
-        map.put(PARAM_KEY_VALUE,"drawable://"+R.drawable.user_head);
-       uodMaps.add(map);
-        this.reloadDBAndRefreshAdapter();
+        map.put(PARAM_KEY_VALUE, "drawable://" + R.drawable.user_head);
+        JupiterTextIco item = createItem(itemList.size(),map);
+        item.setImage(map.get(PARAM_KEY_VALUE))
+                                    .setTitle("成员名称").showCorner();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void edit(boolean edit) {
-        this.isEdit = edit;
-        titleView.setEnabled(edit);
-        uodMaps = new ArrayList<>(uodMaps);
-        pagerAdapter.notifyDataSetChanged();
+        this.edit = edit;
+        jupiterEditIco.edit(edit);
     }
 
     @Override
     public Object getValue() {
+        List<Map<String,String>> uodMaps = new ArrayList<>();
+        JupiterTextIco item;
+        // 过滤第一个，添加按钮
+        for (int i = 1; i < itemList.size(); i++) {
+            item = itemList.get(i);
+            uodMaps.add((Map<String, String>) item.getTag());
+        }
         return uodMaps;
     }
 

@@ -31,7 +31,9 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -114,6 +116,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         userFormCellBean.setKey("testUser");
         userFormCellBean.setType(UserFormCell.class.getName());
         userFormCellBean.setLabel("测试选择用户");
+        userFormCellBean.setValue(userValue());
         formBean.putCellBean(userFormCellBean);
 
         DetailFormCellBean detailFormCell = new DetailFormCellBean();
@@ -138,6 +141,19 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         multiSelectFormCellBean.setOptionMap(this.builderOptions());
         formBean.putCellBean(multiSelectFormCellBean);
         return formBean;
+    }
+
+    private List<Map<String,String>> userValue() {
+        List<Map<String,String>> maps = new ArrayList<>();
+        Map<String,String> mm = new HashMap<>();
+        mm.put("type","user");
+        mm.put("value","drawable://"+R.drawable.tianjia);
+        Map<String,String> mm2 = new HashMap<>();
+        mm2.put("type","user");
+        mm2.put("value","drawable://"+R.drawable.bpush_gray_logo);
+        maps.add(mm);
+        maps.add(mm2);
+        return maps;
     }
 
     private Map<String, String> builderOptions() {
