@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.yun9.jupiter.model.Org;
-import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AssertValue;
@@ -20,11 +18,8 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.microapp.MicroAppFragment;
-import com.yun9.wservice.view.org.OrgCompositeUserListBean;
+import com.yun9.wservice.func.store.StoreFragment;
 import com.yun9.wservice.view.demo.DemoFormActivity;
-import com.yun9.wservice.view.org.OrgCompositeCommand;
-
-import java.util.List;
 
 
 public class MainActivity extends JupiterFragmentActivity  {
@@ -67,7 +62,6 @@ public class MainActivity extends JupiterFragmentActivity  {
         super.onCreate(savedInstanceState);
         this.initView();
         storeBtn.performClick();
-        DemoFormActivity.start(this, new Bundle());
     }
 
     @Override
@@ -78,6 +72,9 @@ public class MainActivity extends JupiterFragmentActivity  {
 
     private void initView(){
         logger.d("初始化MainActivity");
+
+        //启动push
+        //pushFactory.start(this.getApplicationContext());
 
         this.storeBtn.setOnClickListener(storeOnClickListener);
         this.dynamicBtn.setOnClickListener(dynamicOnClickListener);
@@ -143,25 +140,5 @@ public class MainActivity extends JupiterFragmentActivity  {
         ft.replace(R.id.main_fl_content, fragment,
                 MainActivity.class.getName());
         ft.commit();
-    }
-
-    /**
-     * 为了测试组织选择回调的Demo
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK){
-            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
-            List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
-            logger.d("选择用户数量："+ users.size());
-            logger.d("选择组织数量："+orgs.size());
-        }
-
     }
 }

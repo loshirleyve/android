@@ -1,9 +1,8 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.yun9.wservice.view.StoreFragment">
-
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/store_product"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
     <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/store_title"
@@ -15,24 +14,24 @@
         tb:titleRightText="@string/login"
         tb:titleRightTextVisibility="true"
         tb:titleText="@string/app_store" />
+       <com.yun9.wservice.func.store.ProductCategoryLayout
+           android:id="@+id/category_ll"
+           android:layout_below="@id/store_title"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/store_title">
-    </LinearLayout>
+       </com.yun9.wservice.func.store.ProductCategoryLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/store_title"></android.support.v4.view.ViewPager>
+        <com.yun9.pulltorefresh.PullToRefreshListView
+            xmlns:ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/product_list_ptr"
+            android:layout_below="@id/category_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
-    <com.yun9.pulltorefresh.PullToRefreshListView
-        android:id="@+id/productlist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/viewpager"></com.yun9.pulltorefresh.PullToRefreshListView>
+        </com.yun9.pulltorefresh.PullToRefreshListView>
+
+
 
 </RelativeLayout>
