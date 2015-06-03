@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -25,8 +26,6 @@ public class ProductScrollListView extends JupiterRelativeLayout{
 
     private ViewPager viewPager;
 
-    List<ProductScrollItemView> productScrollItemViews;
-
     public ProductScrollListView(Context context) {
         super(context);
     }
@@ -39,24 +38,6 @@ public class ProductScrollListView extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(List<Product> products){
-
-        productScrollItemViews = new ArrayList<ProductScrollItemView>();
-
-        for(int i = 0; i < products.size(); i++){
-
-            ProductScrollItemView productScrollItemView = new ProductScrollItemView(this.getContext());
-
-            productScrollItemView.buildWithData(products.get(i));
-
-            productScrollItemViews.add(productScrollItemView);
-        }
-
-        ProductImgAdapter productImgAdapter = new ProductImgAdapter(this.getContext(),productScrollItemViews);
-        viewPager.setAdapter(productImgAdapter);
-
-    }
-
     @Override
     protected int getContextView() {
         return R.layout.widget_store_products_imgscroll;
@@ -65,5 +46,9 @@ public class ProductScrollListView extends JupiterRelativeLayout{
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
        viewPager = (ViewPager)this.findViewById(R.id.productsImgScroll);
+    }
+
+    public ViewPager getViewPager() {
+        return viewPager;
     }
 }

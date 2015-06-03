@@ -28,10 +28,10 @@
             android:layout_below="@id/category_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            ptr:ptrAnimationStyle="flip"
-            android:layout_alignParentBottom="true"
-            ptr:ptrMode="both">
+            android:layout_alignParentBottom="true">
 
         </com.yun9.pulltorefresh.PullToRefreshListView>
+
+
 
 </RelativeLayout>
