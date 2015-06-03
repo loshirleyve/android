@@ -21,6 +21,7 @@
         <activity android:name=".photoview.ViewPagerActivity"/>
         <activity android:name=".photoview.RotationSampleActivity"/>
         <activity android:name=".photoview.AUILSampleActivity"/>
+        <activity android:name=".widget.MainActivity"/>
     </application>
 
 </manifest>

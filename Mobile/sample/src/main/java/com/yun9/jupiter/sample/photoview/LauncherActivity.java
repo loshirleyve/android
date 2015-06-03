@@ -22,9 +22,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.yun9.jupiter.sample.widget.MainActivity;
+
 public class LauncherActivity extends ListActivity {
 
-    public static final String[] options = {"Simple Sample", "ViewPager Sample", "Rotation Sample", "Android Universal Image Loader"};
+    public static final String[] options = {"Simple Sample", "ViewPager Sample", "Rotation Sample", "Android Universal Image Loader","ICO"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,9 @@ public class LauncherActivity extends ListActivity {
                 break;
             case 3:
                 c = AUILSampleActivity.class;
+                break;
+            case 4:
+                c = MainActivity.class;
                 break;
         }
 
