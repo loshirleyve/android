@@ -10,12 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.ProductCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -25,9 +27,11 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
  */
 public class ProductCategoryLayout extends JupiterRelativeLayout {
 
-    private PullToRefreshListView pullToRefreshListView;
-    LinearLayout linearLayout;
+    private LinearLayout linearLayout;
 
+    private OnClickListener onClickListener;
+
+    private List<TextView> textViews;
 
     public ProductCategoryLayout(Context context) {
         super(context);
@@ -42,22 +46,29 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
     }
 
     public void buildWidthData(List<ProductCategory> categoryList) {
-        for(int i = 0; i < categoryList.size(); i++)
-        {
-            TextView textView = new TextView(this.getContext());
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0,MATCH_PARENT,1);
-            textView.setLayoutParams(lp);
-            textView.setGravity(Gravity.CENTER);
-            textView.setText(categoryList.get(i).getCategoryname());
-            textView.setTextSize(20);
-            textView.setPadding(10, 10, 10, 10);
-            textView.setTextColor(getResources().getColor(R.color.whites));
-            linearLayout.addView(textView);
+
+        textViews = new ArrayList<>();
+        if (AssertValue.isNotNullAndNotEmpty(categoryList)){
+            for(int i = 0; i < categoryList.size(); i++)
+            {
+                TextView textView = new TextView(this.getContext());
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0,MATCH_PARENT,1);
+                textView.setLayoutParams(lp);
+                textView.setGravity(Gravity.CENTER);
+                textView.setText(categoryList.get(i).getCategoryname());
+                textView.setTextSize(20);
+                textView.setPadding(10, 10, 10, 10);
+                textView.setTag(categoryList.get(i));
+                textView.setTextColor(getResources().getColor(R.color.whites));
+                if (AssertValue.isNotNull(onClickListener)){
+                    textView.setOnClickListener(onClickListener);
+                }
+                textViews.add(textView);
+                linearLayout.addView(textView);
+            }
+            //
+            this.textViews.get(0).performClick();
         }
-
-        //TextView textView = new TextView(getContext());
-        //textView.setText("");
-
     }
 
     @Override
@@ -70,11 +81,9 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
        linearLayout = (LinearLayout)this.findViewById(R.id.category_lll);
     }
 
-    public PullToRefreshListView getPullToRefreshListView() {
-        return pullToRefreshListView;
-    }
 
-    public void setPullToRefreshListView(PullToRefreshListView pullToRefreshListView) {
-        this.pullToRefreshListView = pullToRefreshListView;
+    @Override
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 }

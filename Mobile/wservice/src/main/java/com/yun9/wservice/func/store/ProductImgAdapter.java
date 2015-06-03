@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.wservice.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,29 +16,37 @@ import java.util.List;
  */
 public class ProductImgAdapter extends PagerAdapter{
     private Context context;
-    private List<ProductScrollItemView> mList;
+    private List<Product> products;
 
-    public ProductImgAdapter(Context context, List<ProductScrollItemView> list){
+    private List<ProductScrollItemView> productScrollItemViews;
+
+    public ProductImgAdapter(Context context, List<Product> products){
         this.context = context;
-        this.mList = list;
+        this.products = products;
+        productScrollItemViews = new ArrayList<>();
     }
     @Override
     public int getCount() {
-        if(AssertValue.isNotNullAndNotEmpty(mList)) {
-            return mList.size();
+        if(AssertValue.isNotNullAndNotEmpty(products)) {
+            return products.size();
         }else
             return 0;
     }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(mList.get(position));
+        container.removeView(productScrollItemViews.get(position));
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(mList.get(position));
-        return mList.get(position);
+        Product product = products.get(position);
+        ProductScrollItemView productScrollItemView = new ProductScrollItemView(context);
+        productScrollItemView.buildWithData(product);
+        container.addView(productScrollItemView);
+        productScrollItemViews.add(productScrollItemView);
+
+        return productScrollItemView;
     }
 
     @Override

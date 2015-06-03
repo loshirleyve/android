@@ -15,12 +15,6 @@ import com.yun9.wservice.model.Product;
 public class ProductMainItemWidget extends JupiterRelativeLayout {
 
     private JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout;
-/*    demonstration
-private TextView productName;*/
-   // private ImageView productImg;
-    private TextView productName;
-    private TextView productDetail;
-
 
     public ProductMainItemWidget(Context context) {
         super(context);
@@ -33,11 +27,7 @@ private TextView productName;*/
     public ProductMainItemWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-    public void buildWithData(Product product) {
 
-        productName.setText(product.getAttachname());
-        productDetail.setText(product.getInputdesc());
-    }
 
     @Override
     protected int getContextView() {
@@ -49,7 +39,10 @@ private TextView productName;*/
         jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout)this
                 .findViewById(R.id.store_product_main_item);
 
-        productName = jupiterRowStyleSutitleLayout.getTimeTv();
-        productDetail = jupiterRowStyleSutitleLayout.getSutitleTv();
     }
+
+    public JupiterRowStyleSutitleLayout getJupiterRowStyleSutitleLayout() {
+        return jupiterRowStyleSutitleLayout;
+    }
+
 }
