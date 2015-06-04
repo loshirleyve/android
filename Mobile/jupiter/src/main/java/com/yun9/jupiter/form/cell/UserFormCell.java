@@ -105,7 +105,7 @@ public class UserFormCell extends FormCell{
             List<Map<String, String>> mapList = new ArrayList<>((List<Map<String, String>>) cellBean.getValue());
             JupiterTextIco item;
             for (int i = 0; i < mapList.size(); i++) {
-                item = createItem(i+1,mapList.get(i));// 前面已经有个addButton了
+                item = createItem(mapList.get(i));
                 item.setTitle("成员名称");
                 item.setImage(mapList.get(i).get(PARAM_KEY_VALUE));
                 item.showCorner();
@@ -114,15 +114,7 @@ public class UserFormCell extends FormCell{
         }
     }
 
-    private JupiterTextIco createItem(final int position,Map<String,String> tag) {
-        // 测试
-        if (position%2 == 0) {
-            final JupiterTextIco item = new JupiterTextIcoWithCorner(this.context);
-            item.setTag(tag);
-            item.setCornerImage(R.drawable.newpost);
-            itemList.add(item);
-            return item;
-        }
+    private JupiterTextIco createItem(Map<String,String> tag) {
         final JupiterTextIco item = new JupiterTextIco(this.context);
         item.getBadgeView().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +141,7 @@ public class UserFormCell extends FormCell{
         Map<String,String> map = new HashMap<>();
         map.put(PARAM_KEY_TYPE,UserFormCellBean.MODE.USER+"");
         map.put(PARAM_KEY_VALUE, "drawable://" + R.drawable.user_head);
-        JupiterTextIco item = createItem(itemList.size(),map);
+        JupiterTextIco item = createItem(map);
         item.setImage(map.get(PARAM_KEY_VALUE))
                                     .setTitle("成员名称").showCorner();
         adapter.notifyDataSetChanged();

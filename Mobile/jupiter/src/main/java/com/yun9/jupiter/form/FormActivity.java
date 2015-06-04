@@ -63,7 +63,7 @@ public class FormActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         activityCallbackMap = new HashMap<>();
         formBean = (FormBean) this.getIntent().getSerializableExtra("form");
-        form = new Form(formBean);
+        form = Form.getInstance(formBean);
         this.initView();
         this.builder();
         edit = !formBean.isEditableWhenLoaded(); // 因为下面的toggleState会再次取反edit
@@ -203,7 +203,7 @@ public class FormActivity extends JupiterFragmentActivity {
 
     private void rebuildForm() {
         formLL.removeAllViews();
-        form = new Form(formBean);
+        form = Form.getInstance(formBean);
         //添加cell
         if (AssertValue.isNotNullAndNotEmpty(form.getCells())) {
             for (FormCell formCell : form.getCells()) {

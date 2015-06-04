@@ -91,7 +91,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         formBean.setKey("demoform");
 
         TextFormCellBean textFormCell = new TextFormCellBean();
-        textFormCell.setType(TextFormCell.class.getName());
+        textFormCell.setType(TextFormCell.class.getSimpleName());
         textFormCell.setKey("testText");
         textFormCell.setDefaultValue("hello");
         textFormCell.setLabel("测试文本输入");
@@ -99,22 +99,23 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         formBean.putCellBean(textFormCell);
 
         ImageFormCellBean imageFormCell = new ImageFormCellBean();
+        imageFormCell.setMaxNum(3);
         imageFormCell.setKey("testImage");
         imageFormCell.setValue("1,2");
-        imageFormCell.setType(ImageFormCell.class.getName());
+        imageFormCell.setType(ImageFormCell.class.getSimpleName());
         imageFormCell.setLabel("测试图片选择");
         formBean.putCellBean(imageFormCell);
 
         DocFormCellBean docFormCell= new DocFormCellBean();
         docFormCell.setKey("testDoc");
-        docFormCell.setType(DocFormCell.class.getName());
+        docFormCell.setType(DocFormCell.class.getSimpleName());
         docFormCell.setValue("1");
         docFormCell.setLabel("测试文档选择");
         formBean.putCellBean(docFormCell);
 
         UserFormCellBean userFormCellBean = new UserFormCellBean();
         userFormCellBean.setKey("testUser");
-        userFormCellBean.setType(UserFormCell.class.getName());
+        userFormCellBean.setType(UserFormCell.class.getSimpleName());
         userFormCellBean.setLabel("测试选择用户");
         userFormCellBean.setValue(userValue());
         formBean.putCellBean(userFormCellBean);
@@ -123,7 +124,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         detailFormCell.setLabel("测试子项目");
         detailFormCell.setKey("testDetail");
         detailFormCell.setFormBean(this.builderSubForm());
-        detailFormCell.setType(DetailFormCell.class.getName());
+        detailFormCell.setType(DetailFormCell.class.getSimpleName());
         detailFormCell.setTitlekey("testsubinput");
         detailFormCell.setSubtitlekey("testsubinput2");
         formBean.putCellBean(detailFormCell);
@@ -131,7 +132,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         MultiSelectFormCellBean multiSelectFormCellBean = new MultiSelectFormCellBean();
         multiSelectFormCellBean.setLabel("测试多选");
         multiSelectFormCellBean.setKey("testMultiSelect");
-        multiSelectFormCellBean.setType(MultiSelectFormCell.class.getName());
+        multiSelectFormCellBean.setType(MultiSelectFormCell.class.getSimpleName());
         multiSelectFormCellBean.setMaxNum(2);
         multiSelectFormCellBean.setMinNum(1);
         Map<String,Object> map = new HashMap<>();
@@ -173,13 +174,13 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         TextFormCellBean textFormCell = new TextFormCellBean();
         textFormCell.setLabel("测试子项目文本输入");
         textFormCell.setKey("testsubinput");
-        textFormCell.setType(TextFormCell.class.getName());
+        textFormCell.setType(TextFormCell.class.getSimpleName());
         subform.putCellBean(textFormCell);
 
         TextFormCellBean textFormCell2 = new TextFormCellBean();
         textFormCell2.setLabel("测试子项目文本输入Sub");
         textFormCell2.setKey("testsubinput2");
-        textFormCell2.setType(TextFormCell.class.getName());
+        textFormCell2.setType(TextFormCell.class.getSimpleName());
         subform.putCellBean(textFormCell2);
         return subform;
     }

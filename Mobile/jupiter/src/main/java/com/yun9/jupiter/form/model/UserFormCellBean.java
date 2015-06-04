@@ -9,10 +9,6 @@ public class UserFormCellBean extends FormCellBean{
 
     private int mode;
 
-    private int minNum;
-
-    private int maxNum;
-
     public class MODE {
        public static final int USER = 1; // 选择用户
        public static final int DEPT = 2; // 选择部门
@@ -27,19 +23,7 @@ public class UserFormCellBean extends FormCellBean{
         this.mode = mode;
     }
 
-    public int getMinNum() {
-        return minNum;
-    }
+    public void add(String userid,String name,String headurl){
 
-    public void setMinNum(int minNum) {
-        this.minNum = minNum;
-    }
-
-    public int getMaxNum() {
-        return maxNum;
-    }
-
-    public void setMaxNum(int maxNum) {
-        this.maxNum = maxNum;
     }
 }
