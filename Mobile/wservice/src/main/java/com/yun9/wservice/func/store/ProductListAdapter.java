@@ -45,7 +45,7 @@ public class ProductListAdapter extends JupiterAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = null;
-        Product product = products.get(position - 1);
+        Product product = products.get(position);
 
         if (AssertValue.isNotNull(convertView) && convertView instanceof JupiterRowStyleSutitleLayout) {
             jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
