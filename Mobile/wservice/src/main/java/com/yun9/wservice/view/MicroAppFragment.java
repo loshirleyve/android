@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.microapp;
+package com.yun9.wservice.view;
 
 
 import android.os.Bundle;

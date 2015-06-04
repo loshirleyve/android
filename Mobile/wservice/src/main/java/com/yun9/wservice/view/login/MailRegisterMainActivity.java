@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.login;
+package com.yun9.wservice.view.login;
 
 import android.content.Intent;
 import android.os.Bundle;

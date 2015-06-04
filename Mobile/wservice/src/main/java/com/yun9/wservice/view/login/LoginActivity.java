@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.login;
+package com.yun9.wservice.view.login;
 
 import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;

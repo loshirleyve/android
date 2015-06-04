@@ -17,9 +17,7 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.func.microapp.MicroAppFragment;
 import com.yun9.wservice.func.store.StoreFragment;
-import com.yun9.wservice.view.demo.DemoFormActivity;
 
 
 public class MainActivity extends JupiterFragmentActivity  {
@@ -110,7 +108,7 @@ public class MainActivity extends JupiterFragmentActivity  {
         public void onClick(View v) {
             logger.d("应用被点击！");
             Bundle bundle = new Bundle();
-            com.yun9.wservice.func.microapp.MicroAppFragment microAppFragment = MicroAppFragment.newInstance(bundle);
+            MicroAppFragment microAppFragment = MicroAppFragment.newInstance(bundle);
             //pushFragment(MicroAppFragment.newInstance(null));
             pushFragment(microAppFragment);
             setButton(v);

@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.microapp;
+package com.yun9.wservice.view;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
