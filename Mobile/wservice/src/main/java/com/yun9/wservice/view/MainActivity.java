@@ -47,6 +47,14 @@ public class MainActivity extends JupiterFragmentActivity  {
     @BeanInject
     private PushFactory pushFactory;
 
+    private StoreFragment storeFragment;
+
+    private DynamicSessionFragment dynamicSessionFragment;
+
+    private  MicroAppFragment microAppFragment;
+
+    private UserFragment userFragment;
+
     private View currentButton;
 
     public static void start(Context context,Bundle bundle){
@@ -88,7 +96,11 @@ public class MainActivity extends JupiterFragmentActivity  {
         public void onClick(View v) {
             logger.d("商店被点击！");
 
-            StoreFragment storeFragment = StoreFragment.newInstance(null);
+            if (!AssertValue.isNotNull(storeFragment)){
+                Bundle bundle = new Bundle();
+                storeFragment = StoreFragment.newInstance(bundle);
+            }
+
             pushFragment(storeFragment);
             setButton(v);
         }
@@ -99,8 +111,10 @@ public class MainActivity extends JupiterFragmentActivity  {
         public void onClick(View v) {
             logger.d("动态按钮点击！");
 
-            Bundle bundle = new Bundle();
-            DynamicSessionFragment dynamicSessionFragment = DynamicSessionFragment.newInstance(bundle);
+            if (!AssertValue.isNotNull(dynamicSessionFragment)) {
+                Bundle bundle = new Bundle();
+                dynamicSessionFragment = DynamicSessionFragment.newInstance(bundle);
+            }
             pushFragment(dynamicSessionFragment);
             setButton(v);
         }
@@ -110,9 +124,10 @@ public class MainActivity extends JupiterFragmentActivity  {
         @Override
         public void onClick(View v) {
             logger.d("应用被点击！");
-            Bundle bundle = new Bundle();
-            MicroAppFragment microAppFragment = MicroAppFragment.newInstance(bundle);
-            //pushFragment(MicroAppFragment.newInstance(null));
+            if(!AssertValue.isNotNull(microAppFragment)) {
+                Bundle bundle = new Bundle();
+                microAppFragment = MicroAppFragment.newInstance(bundle);
+            }
             pushFragment(microAppFragment);
             setButton(v);
         }
@@ -122,7 +137,10 @@ public class MainActivity extends JupiterFragmentActivity  {
         @Override
         public void onClick(View v) {
             logger.d("我被点击！");
-            pushFragment(UserFragment.newInstance(null));
+            if (!AssertValue.isNotNull(userFragment)){
+                userFragment = UserFragment.newInstance(null);
+            }
+            pushFragment(userFragment);
             setButton(v);
         }
     };

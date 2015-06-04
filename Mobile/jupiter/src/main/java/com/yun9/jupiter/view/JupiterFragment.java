@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.injected.BeanInjectedUtil;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.injected.ViewInjectedUtil;
 
 /**
@@ -20,6 +21,8 @@ public abstract class JupiterFragment extends Fragment {
 
     protected Context mContext;
 
+    private View view;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,16 +31,21 @@ public abstract class JupiterFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(this.getContentView(), container, false);
 
-        try {
-            BeanInjectedUtil.initInjected( this.getActivity().getApplicationContext(), this);
-            ViewInjectedUtil.initInjected(this,this.getActivity(),view);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (!AssertValue.isNotNull(view)) {
+            view = inflater.inflate(this.getContentView(), container, false);
+
+            try {
+                BeanInjectedUtil.initInjected(this.getActivity().getApplicationContext(), this);
+                ViewInjectedUtil.initInjected(this, this.getActivity(), view);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+            this.initViews(view);
         }
 
-        this.initViews(view);
+
         return view;
     }
 

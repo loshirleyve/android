@@ -30,12 +30,12 @@ public class MicroAppAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object)   {
-        ((ViewPager)container).removeView(mListViews.get(position));//ɾ��ҳ��
+        ((ViewPager)container).removeView(mListViews.get(position));
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {  //�����������ʵ��ҳ��
-        ((ViewPager)container).addView(mListViews.get(position));//���ҳ��
+    public Object instantiateItem(ViewGroup container, int position) {
+        ((ViewPager)container).addView(mListViews.get(position));
         return mListViews.get(position);
     }
 
