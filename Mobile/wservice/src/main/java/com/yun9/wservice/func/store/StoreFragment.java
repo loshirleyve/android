@@ -2,17 +2,13 @@ package com.yun9.wservice.func.store;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.mobile.annotation.ViewInject;
-import com.yun9.pulltorefresh.PullToRefreshBase;
-import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
 import com.yun9.wservice.model.ProductCategory;
@@ -21,12 +17,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * Created by xia on 2015/5/27.
  */
 public class StoreFragment extends JupiterFragment {
 
-    private PullToRefreshListView pullToRefreshListView;
+    private ListView productListView;
     private ProductCategoryLayout productCategoryLayout;
     private ProductListAdapter productListAdapter;
 
@@ -36,6 +37,8 @@ public class StoreFragment extends JupiterFragment {
     private LinkedList<Product> products;
     private List<ProductCategory> productCategoryList;
     private ProductCategory currProductCategory;
+
+    private PtrClassicFrameLayout mPtrFrame;
 
     @ViewInject(id = R.id.category_lll)
     private LinearLayout linearLayout;
@@ -55,13 +58,32 @@ public class StoreFragment extends JupiterFragment {
     @Override
     protected void initViews(View view) {
         productCategoryLayout = (ProductCategoryLayout) view.findViewById(R.id.category_ll);
-        pullToRefreshListView = (PullToRefreshListView)view.findViewById(R.id.product_list_ptr);
-
-        pullToRefreshListView.setOnRefreshListener(onRefreshListener);
-        pullToRefreshListView.setOnLastItemVisibleListener(onLastItemVisibleListener);
-
+        productListView = (ListView) view.findViewById(R.id.product_list_ptr);
+        mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
         productScrollListView = new ProductScrollListView(mContext);
 
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refreshProduct();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+
+        // the following are default settings
+//        mPtrFrame.setResistance(1.7f);
+//        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
+//        mPtrFrame.setDurationToClose(200);
+//        mPtrFrame.setDurationToCloseHeader(1000);
+//        // default is false
+//        mPtrFrame.setPullToRefresh(false);
+//        // default is true
+//        mPtrFrame.setKeepHeaderWhenRefresh(true);
 
         refreshProductCategory();
     }
@@ -87,17 +109,19 @@ public class StoreFragment extends JupiterFragment {
 
         if (!AssertValue.isNotNull(productListAdapter)){
             productListAdapter = new ProductListAdapter(this.getActivity(),products,productScrollListView);
-            pullToRefreshListView.setAdapter(productListAdapter);
+            productListView.setAdapter(productListAdapter);
         }else{
             productListAdapter.notifyDataSetChanged();
         }
 
-        if (!AssertValue.isNotNull(productImgAdapter)){
-            productImgAdapter = new ProductImgAdapter(this.mContext,products);
-            productScrollListView.getViewPager().setAdapter(productImgAdapter);
-        }else{
-            productImgAdapter.notifyDataSetChanged();
-        }
+//        if (!AssertValue.isNotNull(productImgAdapter)){
+//            productImgAdapter = new ProductImgAdapter(this.mContext,products);
+//            productScrollListView.getViewPager().setAdapter(productImgAdapter);
+//        }else{
+//            productImgAdapter.notifyDataSetChanged();
+//        }
+
+        mPtrFrame.refreshComplete();
 
     }
 
@@ -143,30 +167,9 @@ public class StoreFragment extends JupiterFragment {
         @Override
         protected void onPostExecute(String[] result) {
             completeRefreshProduct();
-            pullToRefreshListView.onRefreshComplete();
             super.onPostExecute(result);
         }
     }
-
-    private PullToRefreshBase.OnRefreshListener onRefreshListener =  new PullToRefreshBase.OnRefreshListener<ListView>() {
-        @Override
-        public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-            String label = DateUtils.formatDateTime(mContext, System.currentTimeMillis(),
-                    DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-
-            // Update the LastUpdatedLabel
-            refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-            refreshProduct();
-        }
-    };
-
-    private PullToRefreshBase.OnLastItemVisibleListener onLastItemVisibleListener = new PullToRefreshBase.OnLastItemVisibleListener() {
-
-        @Override
-        public void onLastItemVisible() {
-            Toast.makeText(mContext, "End of List!", Toast.LENGTH_SHORT).show();
-        }
-    };
 
    private  View.OnClickListener onCategoryClickListener =  new View.OnClickListener() {
         @Override
@@ -174,7 +177,12 @@ public class StoreFragment extends JupiterFragment {
             currProductCategory = (ProductCategory) v.getTag();
             if (AssertValue.isNotNull(currProductCategory)) {
                 cleanProduct();
-                refreshProduct();
+                mPtrFrame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPtrFrame.autoRefresh();
+                    }
+                },100);
             }
         }
     };

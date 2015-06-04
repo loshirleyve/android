@@ -31,4 +31,5 @@ dependencies {
     compile project(':pulltorefresh')
     compile project(':menudrawer')
     compile project(':photoview')
+    compile project(':ptr-lib')
 }
