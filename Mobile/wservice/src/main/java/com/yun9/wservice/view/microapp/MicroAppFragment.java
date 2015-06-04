@@ -2,13 +2,8 @@ package com.yun9.wservice.view.microapp;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
@@ -16,22 +11,20 @@ import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.demo.LocationActivity;
 import com.yun9.wservice.model.MicroAppBean;
+import com.yun9.wservice.view.demo.LocationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
  */
 public class MicroAppFragment extends JupiterFragment {
     private static final Logger logger = Logger.getLogger(MicroAppFragment.class);
-
-    private static final int PAGE_NUM = 9;
-    private static final int ROW_NUM = 3;
-
-    @ViewInject(id = R.id.viewpager)
-    private ViewPager viewPager;
 
     @ViewInject(id = R.id.microapp_title)
     private JupiterTitleBarLayout titleBar;
@@ -39,8 +32,13 @@ public class MicroAppFragment extends JupiterFragment {
     @ViewInject(id = R.id.gridview)
     private GridView gridView;
 
-    @ViewInject(id = R.id.textView)
-    private TextView textView;
+    @ViewInject(id = R.id.rotate_header_list_view_frame)
+    private PtrClassicFrameLayout mPtrFrame;
+
+    private List<MicroAppBean> microAppBeans;
+
+    private MicroAppGridViewAdapter microAppGridViewAdapter;
+
 
     public static MicroAppFragment newInstance(Bundle args) {
         MicroAppFragment fragment = new MicroAppFragment();
@@ -57,83 +55,63 @@ public class MicroAppFragment extends JupiterFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
     protected int getContentView() {
         return R.layout.fragment_micro_app;
     }
 
     @Override
     protected void initViews(View view) {
-        List<MicroAppBean> microAppBeans = this.builderData();
-        List<View> viewList = new ArrayList<View>();
-        // List<GridView> gridViewList = new ArrayList<GridView>();
-        // TODO 加载页面
-        if (AssertValue.isNotNullAndNotEmpty(microAppBeans)) {
-            //microAppBeans.size() / PAGE_NUM;
-            int pageSize = ((microAppBeans.size() % PAGE_NUM == 0) ? (microAppBeans.size() / PAGE_NUM) : (microAppBeans.size() / PAGE_NUM + 1));
-            /*int pageSize = 3;*/
-            for (int i = 0; i < pageSize; i++) {
-                View tempView = this.builderView(i, microAppBeans);
-                viewList.add(tempView);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refresh();
             }
-        }
-        MicroAppAdapter microAppAdapter = new MicroAppAdapter(viewList);
-        viewPager.setAdapter(microAppAdapter);
-        logger.d("进入应用界面！aaa");
+        });
+
+        mPtrFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPtrFrame.autoRefresh();
+            }
+        }, 100);
     }
 
-    private View builderView(int pageNum, List<MicroAppBean> microAppBeans) {
-
-        int beginIndex = pageNum * PAGE_NUM;
-
-        List<View> viewList = new ArrayList<View>();
-
-        //循环显示
-        for (int i = beginIndex; i < beginIndex + PAGE_NUM && i < microAppBeans.size(); i++) {
-            MicroAppBean microAppBean = microAppBeans.get(i);
-            View view = this.builderItemView(microAppBean);
-            viewList.add(view);
-        }
-
-        View view = LayoutInflater.from(this.getActivity()).inflate(R.layout.widget_micro_app_gridview, null);
-        GridView gridView = (GridView) view.findViewById(R.id.gridview);
-        gridView.setAdapter(new MicroAppGridViewAdapter(viewList));
-
-        return view;
+    private void refresh() {
+        mPtrFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                completeRefresh();
+            }
+        }, 1000);
     }
 
-    private View builderItemView(MicroAppBean microAppBean) {
-        View view = LayoutInflater.from(this.getActivity())
-                .inflate(R.layout.widget_micro_app_gridview_item, null);
-        TextView textView1 = (TextView) view.findViewById(R.id.textView);
-        textView1.setText(microAppBean.getName());
-        if (AssertValue.isNotNull(microAppBean.getOnClickListener())) {
-            view.setOnClickListener(microAppBean.getOnClickListener());
+    private void completeRefresh() {
+        if (!AssertValue.isNotNull(microAppBeans)) {
+            microAppBeans = new ArrayList<>();
         }
 
-        return view;
-    }
+        microAppBeans.removeAll(microAppBeans);
 
-    private List<MicroAppBean> builderData() {
-        List<MicroAppBean> microAppBeanList = new ArrayList<MicroAppBean>();
         for (int i = 0; i < 30; i++) {
             MicroAppBean microAppBean = new MicroAppBean();
             microAppBean.setName("应用" + (i + 1));
-            microAppBeanList.add(microAppBean);
+            microAppBeans.add(microAppBean);
+        }
 
-            microAppBean.setOnClickListener(new View.OnClickListener() {
+        if (!AssertValue.isNotNull(microAppGridViewAdapter)) {
+            microAppGridViewAdapter = new MicroAppGridViewAdapter(this.mContext, microAppBeans);
+            microAppGridViewAdapter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     LocationActivity.start(MicroAppFragment.this.getActivity(), null);
                 }
             });
-        }
 
-        return microAppBeanList;
+            gridView.setAdapter(microAppGridViewAdapter);
+        }else{
+            microAppGridViewAdapter.notifyDataSetChanged();
+        }
+        mPtrFrame.refreshComplete();
     }
 }
