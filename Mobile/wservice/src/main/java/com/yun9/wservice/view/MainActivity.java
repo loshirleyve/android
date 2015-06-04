@@ -18,6 +18,9 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.store.StoreFragment;
+import com.yun9.wservice.view.dynamic.DynamicSessionFragment;
+import com.yun9.wservice.view.microapp.MicroAppFragment;
+import com.yun9.wservice.view.myself.UserFragment;
 
 
 public class MainActivity extends JupiterFragmentActivity  {

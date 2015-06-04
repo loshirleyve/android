@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.view.dynamic;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,9 +18,7 @@ import com.yun9.wservice.view.msgcard.MsgCardListActivity;
 
 import net.simonvt.menudrawer.MenuDrawer;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;

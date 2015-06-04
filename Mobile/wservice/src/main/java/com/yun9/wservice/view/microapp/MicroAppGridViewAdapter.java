@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.view.microapp;
 
 import android.content.Context;
 import android.view.View;
