@@ -51,43 +51,42 @@ public class MsgCardListAdapter extends JupiterAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         MsgCard msgCard = this.msgCardList.get(position);
 
+        MsgCardWidget msgCardWidget = null;
+
         if (convertView == null) {
-            convertView = View.inflate(mContext,
-                    R.layout.activity_msg_card_list_item, null);
+            msgCardWidget = new MsgCardWidget(mContext);
+            msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logger.d("点赞！");
+                }
+            });
+            msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logger.d("转发！");
+                }
+            });
+            msgCardWidget.getCommentRL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logger.d("评论！");
+                }
+            });
+            msgCardWidget.getActionRL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logger.d("动作！");
+                }
+            });
+        }else{
+            msgCardWidget = (MsgCardWidget) convertView;
         }
-
-        MsgCardWidget msgCardWidget = (MsgCardWidget) convertView
-                .findViewById(R.id.msg_card_list_item);
-
-        msgCard.setOnPraiseClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logger.d("点赞！");
-            }
-        });
-        msgCard.setOnForwardClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logger.d("转发！");
-            }
-        });
-        msgCard.setOnCommentClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logger.d("评论！");
-            }
-        });
-        msgCard.setOnActionClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logger.d("动作！");
-            }
-        });
 
         msgCardWidget.setTag(msgCard);
         msgCardWidget.buildWithData(msgCard);
+        msgCardWidget.setTag(msgCard);
 
-        convertView.setTag(msgCard);
-        return convertView;
+        return msgCardWidget;
     }
 }

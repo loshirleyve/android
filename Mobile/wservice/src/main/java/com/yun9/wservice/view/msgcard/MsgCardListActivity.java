@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
-import com.yun9.pulltorefresh.PullToRefreshListView;
 import com.yun9.wservice.R;
 import com.yun9.wservice.cache.FileIdCache;
 import com.yun9.wservice.model.MsgCard;
@@ -48,7 +48,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     private JupiterTitleBarLayout titleBar;
 
     @ViewInject(id=R.id.msg_card_lv)
-    private PullToRefreshListView msgCardList;
+    private ListView msgCardList;
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrFrame;
@@ -62,8 +62,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         context.startActivity(intent);
 
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +87,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 MsgCardListActivity.this.finish();
             }
         });
-
-//        titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MsgCardListActivity.this.mMenuDrawer.toggleMenu();
-//            }
-//        });
-
 
         msgCardList.setOnItemClickListener(msgCardOnItemClickListener);
 
