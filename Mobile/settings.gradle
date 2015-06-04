@@ -1,1 +1,1 @@
-include ':wservice', ':jupiter', ':menudrawer', ':menudrawersample', ':photoview', ':sample',':ptr-lib', ':viewpagerindicator'
+include ':wservice', ':jupiter', ':menudrawer', ':photoview', ':sample',':ptr-lib', ':viewpagerindicator'
