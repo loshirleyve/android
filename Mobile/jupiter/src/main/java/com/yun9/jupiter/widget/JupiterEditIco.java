@@ -2,15 +2,19 @@ package com.yun9.jupiter.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-
-import java.util.List;
+import com.yun9.jupiter.R;
+import com.yun9.jupiter.view.JupiterGridView;
 
 /**
  * Created by Leon on 15/6/2.
  */
 public class JupiterEditIco extends JupiterRelativeLayout {
 
-    private JupiterRowStyleSutitleLayout rowStyleSutitleLayout;
+    private JupiterRowStyleTitleLayout rowStyleSutitleLayout;
+
+    private JupiterGridView gridView;
+
+    private JupiterEditIcoAdapter adapter;
 
     public JupiterEditIco(Context context) {
         super(context);
@@ -26,29 +30,30 @@ public class JupiterEditIco extends JupiterRelativeLayout {
 
     @Override
     protected int getContextView() {
-        return 0;
+        return R.layout.widget_edit_ico;
     }
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-
+        rowStyleSutitleLayout = (JupiterRowStyleTitleLayout) this.findViewById(R.id.title_ll);
+        gridView = (JupiterGridView) this.findViewById(R.id.item_grid_view);
     }
 
-    public void edit(boolean edit){
-
+    public void setAdapter(JupiterEditIcoAdapter adapter) {
+        this.adapter = adapter;
+        gridView.setAdapter(adapter);
     }
 
-    public void add(JupiterEditIcoBean jupiterEditIcoBean){
-
+    public void edit(boolean edit) {
+        adapter.edit(edit);
     }
 
-
-
-    public void clean(){
-
+    public JupiterRowStyleTitleLayout getRowStyleSutitleLayout() {
+        return rowStyleSutitleLayout;
     }
 
-    public List<JupiterEditIcoBean> getItems(){
-        return null;
+    public void setTitle(String title) {
+        this.getRowStyleSutitleLayout().getTitleTV().setText(title);
     }
+
 }
