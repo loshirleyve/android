@@ -707,11 +707,7 @@ public class PtrFrameLayout extends ViewGroup {
         return (mFlag & FLAG_ENABLE_NEXT_PTR_AT_ONCE) > 0;
     }
 
-    /**
-     * The content view will now move when {@param pinContent} set to true.
-     *
-     * @param pinContent
-     */
+
     public void setPinContent(boolean pinContent) {
         if (pinContent) {
             mFlag = mFlag | FLAG_PIN_CONTENT;
