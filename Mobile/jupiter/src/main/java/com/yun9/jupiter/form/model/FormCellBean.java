@@ -18,6 +18,10 @@ public class FormCellBean implements java.io.Serializable{
     private Object value;
     private String type;
 
+    private int minNum;
+
+    private int maxNum;
+
     public String getLabel() {
         return label;
     }
@@ -64,5 +68,21 @@ public class FormCellBean implements java.io.Serializable{
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public int getMinNum() {
+        return minNum;
+    }
+
+    public void setMinNum(int minNum) {
+        this.minNum = minNum;
+    }
+
+    public int getMaxNum() {
+        return maxNum;
+    }
+
+    public void setMaxNum(int maxNum) {
+        this.maxNum = maxNum;
     }
 }

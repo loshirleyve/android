@@ -3,10 +3,13 @@ package com.yun9.jupiter.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.yun9.jupiter.R;
+
 /**
  * Created by Leon on 15/6/2.
  */
 public class JupiterEditItem extends JupiterRelativeLayout {
+
     public JupiterEditItem(Context context) {
         super(context);
     }
@@ -21,7 +24,7 @@ public class JupiterEditItem extends JupiterRelativeLayout {
 
     @Override
     protected int getContextView() {
-        return 0;
+        return R.layout.widget_edit_item;
     }
 
     @Override

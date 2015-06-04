@@ -51,7 +51,7 @@ public class DetailFormCellActivity extends JupiterActivity {
         this.setContentView(R.layout.detail_cell_page);
         cellBean = (DetailFormCellBean) this.getIntent().getSerializableExtra("cellBean");
         formBeans = (List<FormBean>) this.getIntent().getSerializableExtra("forms");
-        form = new Form(cellBean.getFormBean());
+        form = Form.getInstance(cellBean.getFormBean());
         this.initView();
         this.builder();
         this.rebuildContainer();
