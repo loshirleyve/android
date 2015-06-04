@@ -60,6 +60,7 @@ public class StoreFragment extends JupiterFragment {
         productCategoryLayout = (ProductCategoryLayout) view.findViewById(R.id.category_ll);
         productListView = (ListView) view.findViewById(R.id.product_list_ptr);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
+
         productScrollListView = new ProductScrollListView(mContext);
 
         mPtrFrame.setLastUpdateTimeRelateObject(this);
@@ -108,7 +109,7 @@ public class StoreFragment extends JupiterFragment {
         }
 
         if (!AssertValue.isNotNull(productListAdapter)){
-            productListAdapter = new ProductListAdapter(this.getActivity(),products,productScrollListView);
+            productListAdapter = new ProductListAdapter(this.getActivity(),products);
             productListView.setAdapter(productListAdapter);
         }else{
             productListAdapter.notifyDataSetChanged();
