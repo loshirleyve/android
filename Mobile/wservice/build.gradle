@@ -28,7 +28,6 @@ dependencies {
     compile project(':jupiter')
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:support-v4:22.0.0'
-    compile project(':pulltorefresh')
     compile project(':menudrawer')
     compile project(':photoview')
     compile project(':ptr-lib')

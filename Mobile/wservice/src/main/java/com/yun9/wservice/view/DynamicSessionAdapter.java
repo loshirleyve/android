@@ -15,14 +15,14 @@ import java.util.List;
 /**
  * Created by Leon on 15/4/21.
  */
-public class DynamicSessionAdapter  extends JupiterAdapter{
+public class DynamicSessionAdapter extends JupiterAdapter {
 
     private List<MsgSession> msgSessionList;
 
-    private Context     mContext;
+    private Context mContext;
 
 
-    public DynamicSessionAdapter(Context context ,List<MsgSession> msgSessionList){
+    public DynamicSessionAdapter(Context context, List<MsgSession> msgSessionList) {
         this.msgSessionList = msgSessionList;
         this.mContext = context;
     }
@@ -30,9 +30,9 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNullAndNotEmpty(this.msgSessionList)){
+        if (AssertValue.isNotNullAndNotEmpty(this.msgSessionList)) {
             return this.msgSessionList.size();
-        }else {
+        } else {
             return 0;
         }
     }
@@ -50,19 +50,18 @@ public class DynamicSessionAdapter  extends JupiterAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         MsgSession msgSession = this.msgSessionList.get(position);
+        JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = null;
 
         if (convertView == null) {
-            convertView = View.inflate(mContext,
-                    R.layout.fragment_dynamic_session_item, null);
+            jupiterRowStyleSutitleLayout = new JupiterRowStyleSutitleLayout(mContext);
+        }else{
+            jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
         }
-
-        JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView
-                .findViewById(R.id.msg_card_session_rc);
 
         jupiterRowStyleSutitleLayout.setTag(msgSession);
         jupiterRowStyleSutitleLayout.getTitleTV().setText(msgSession.getFromusername());
-        convertView.setTag(msgSession);
-        return convertView;
+
+        return jupiterRowStyleSutitleLayout;
     }
 
 }

@@ -1,67 +1,63 @@
-<net.simonvt.menudrawer.SlidingDrawer
+<net.simonvt.menudrawer.SlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".view.DynamicSessionFragment"
+    android:id="@+id/drawerMenu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawerMenu">
+    tools:context=".view.DynamicSessionFragment">
+
     <LinearLayout
         android:id="@id/mdMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp" >
+        android:padding="10dp">
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            xmlns:row="http://schemas.android.com/apk/res-auto"
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
             android:id="@+id/my_todo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            row:rowStyleTitleText="@string/app_name">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            row:rowStyleTitleText="@string/app_name"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            xmlns:row="http://schemas.android.com/apk/res-auto"
+        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
             android:id="@+id/my_already"
-            android:layout_marginTop="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            row:rowStyleTitleShowArrow="false">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            android:layout_marginTop="0dp"
+            row:rowStyleTitleShowArrow="false"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/whites"
-            android:text="热门话题"/>
+            android:layout_marginTop="10dp"
+            android:text="热门话题"
+            android:textColor="@color/whites" />
+
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/hotTopic1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/hotTopic2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/hotTopic3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/hotTopic4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
             android:id="@+id/hotTopic5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
 
     </LinearLayout>
@@ -70,32 +66,44 @@
         android:id="@id/mdContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:background="@color/groupbackground"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="0dp" >
+        android:padding="0dp">
 
-        <com.yun9.jupiter.widget.JupiterTitleBarLayout
-            xmlns:tb="http://schemas.android.com/apk/res-auto"
+        <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
             android:id="@+id/dynamic_title_tb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tb:titleText="@string/app_dynamic"
-            tb:titleLeftText="@string/activity_dynamice_category"
-            tb:titleLeftIcoVisibility="true"
             tb:titleLeftIcoSrc="@drawable/classification"
+            tb:titleLeftIcoVisibility="true"
+            tb:titleLeftText="@string/activity_dynamice_category"
             tb:titleLeftTextVisibility="false"
+            tb:titleRightIcoSrc="@drawable/write"
             tb:titleRightIcoVisibility="true"
-            tb:titleRightIcoSrc="@drawable/write"/>
+            tb:titleText="@string/app_dynamic" />
 
-        <com.yun9.pulltorefresh.PullToRefreshListView
-            xmlns:ptr="http://schemas.android.com/apk/res-auto"
-            android:layout_below="@id/dynamic_title_tb"
-            android:id="@+id/dynamic_sessions_lv"
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rotate_header_list_view_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ptr:ptrAnimationStyle="flip"
-            ptr:ptrMode="both"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/category_ll"
+            android:background="@color/groupbackground"
+            cube_ptr:ptr_duration_to_close="200"
+            cube_ptr:ptr_duration_to_close_header="1000"
+            cube_ptr:ptr_keep_header_when_refresh="true"
+            cube_ptr:ptr_pull_to_fresh="false"
+            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+            cube_ptr:ptr_resistance="1.7">
+
+            <ListView
+                android:id="@+id/dynamic_sessions_lv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></ListView>
+
+        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
     </LinearLayout>
 
 </net.simonvt.menudrawer.SlidingDrawer>
