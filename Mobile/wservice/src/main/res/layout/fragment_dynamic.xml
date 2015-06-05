@@ -1,69 +1,9 @@
-<net.simonvt.menudrawer.SlidingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawerMenu"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.DynamicSessionFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@id/mdMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_todo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            row:rowStyleTitleText="@string/app_name"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/my_already"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            row:rowStyleTitleShowArrow="false"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="热门话题"
-            android:textColor="@color/whites" />
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            android:id="@+id/hotTopic1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            android:id="@+id/hotTopic2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            android:id="@+id/hotTopic3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            android:id="@+id/hotTopic4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-        <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-            android:id="@+id/hotTopic5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@id/mdContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/groupbackground"
@@ -107,6 +47,5 @@
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
     </LinearLayout>
-
-</net.simonvt.menudrawer.SlidingDrawer>
+</RelativeLayout>
 

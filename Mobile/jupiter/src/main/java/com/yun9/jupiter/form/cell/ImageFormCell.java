@@ -17,6 +17,7 @@ import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterBadgeView;
+import com.yun9.jupiter.widget.BasicJupiterEditIcoAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditIcoAdapter;
 import com.yun9.jupiter.widget.JupiterTextIco;
@@ -83,29 +84,7 @@ public class ImageFormCell extends FormCell {
 
     private void setupEditIco() {
         appendAddButton();
-        adapter = new JupiterEditIcoAdapter() {
-
-            @Override
-            public int getCount() {
-                return itemList.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public JupiterTextIco getItemView(int position, View convertView, ViewGroup parent) {
-                itemList.get(position).setEnabled(edit);
-                return itemList.get(position);
-            }
-        };
+        adapter = new BasicJupiterEditIcoAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
     }
