@@ -28,11 +28,12 @@ import com.yun9.jupiter.sample.photoview.RotationSampleActivity;
 import com.yun9.jupiter.sample.photoview.SimpleSampleActivity;
 import com.yun9.jupiter.sample.photoview.ViewPagerActivity;
 import com.yun9.jupiter.sample.ptr.PtrWithListActivity;
+import com.yun9.jupiter.sample.residemenu.MenuActivity;
 import com.yun9.jupiter.sample.viewpagerindicator.ListSamples;
 
 public class MainActivity extends ListActivity {
 
-    public static final String[] options = {"PhotoView","ICO","PTR","ViewPagerIndicator"};
+    public static final String[] options = {"PhotoView","ICO","PTR","ViewPagerIndicator","ResideMenu"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class MainActivity extends ListActivity {
             case 3:
                 c = ListSamples.class;
                 break;
+            case 4:
+                c = MenuActivity.class;
         }
 
         startActivity(new Intent(this, c));
