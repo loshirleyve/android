@@ -63,6 +63,7 @@
     <string name="org_list_title_group">小组</string>
 
     <string name="org_edit_new">编辑部门</string>
+    <string name="parent_org">上级部门</string>
 
     <string name="doc_composite_title">文件列表</string>
 

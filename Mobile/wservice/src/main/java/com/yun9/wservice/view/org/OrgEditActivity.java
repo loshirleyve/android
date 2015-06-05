@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -22,6 +23,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
+
+
+    @ViewInject(id = R.id.staffs)
+    private JupiterGridView jupiterGridView;
 
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
@@ -52,7 +57,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(command) && command.isEdit()){
             this.setEdit(command.isEdit());
         }
-
         //如果没有orgid则进入新增状态
 
     }

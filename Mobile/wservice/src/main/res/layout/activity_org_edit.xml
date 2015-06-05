@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/groupbackground">
 
     <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/titlebar"
@@ -25,9 +26,56 @@
             android:id="@+id/demo">
         </com.yun9.jupiter.widget.JupiterIco>
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/devide_line"
+            android:text="@string/parent_org"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/whites"
+            android:enabled="false"
+            android:editable="false"
+            android:paddingLeft="20dp"
+            android:textColor="@color/red"
+            android:text="@string/parent_org"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/devide_line"
+            android:text="@string/parent_org"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/devide_line"
+                android:text="@string/parent_org"/>
+            </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/whites"
+                android:enabled="false"
+                android:editable="false"
+                android:paddingLeft="20dp"
+                android:textColor="@color/red"
+                android:hint="@string/parent_org"
+                android:text="@string/parent_org"/>
 
 
         </LinearLayout>
@@ -38,7 +86,12 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <com.yun9.jupiter.view.JupiterGridView
+            android:id="@+id/staffs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+        </com.yun9.jupiter.view.JupiterGridView>
 
     </LinearLayout>
 
