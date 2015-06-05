@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
-import com.yun9.jupiter.widget.JupiterIco;
+import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.wservice.model.MicroAppBean;
 
 import java.util.List;
@@ -49,32 +49,20 @@ public class MicroAppGridViewAdapter extends JupiterAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        JupiterIco jupiterIco = null;
+        JupiterTextIco jupiterTextIco = null;
+        MicroAppBean microAppBean = microAppBeans.get(position);
 
         if (AssertValue.isNotNull(convertView)){
-            jupiterIco = (JupiterIco) convertView;
+            jupiterTextIco = (JupiterTextIco) convertView;
         }else{
-            jupiterIco = new JupiterIco(mContext);
+            jupiterTextIco = new JupiterTextIco(mContext);
             if (AssertValue.isNotNull(onClickListener)) {
-                jupiterIco.setOnClickListener(onClickListener);
+                jupiterTextIco.setOnClickListener(onClickListener);
             }
         }
 
-        jupiterIco
+        jupiterTextIco.setTitle(microAppBean.getName());
 
-
-
-/*          View view = this.mListViews.get(position);
-        if(convertView == null){
-            convertView = View.inflate(mContext, R.layout.widget_micro_app_gridview_item, null);
-        }
-        LinearLayout linearLayout = (LinearLayout)convertView.findViewById(R.id.gridViewItem);
-        linearLayout.setTag(view);
-        convertView.setTag(view);
-        return convertView;*/
-  /*    return mListViews.get(position);*/
-        View view = this.mListViews.get(position);
-        return  view;
-
+        return jupiterTextIco;
     }
 }
