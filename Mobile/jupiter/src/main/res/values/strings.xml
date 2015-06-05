@@ -13,6 +13,7 @@
     <string name="jupiter_multi_choice">多选</string>
     <string name="jupiter_ne_version">发现新版本</string>
     <string name="jupiter_network_error">你的网络似乎有些问题，请检查一下网络设置。</string>
+    <string name="jupiter_loading">加载中...</string>
 
     <string name="jupiter_row_cell_title">测试标题内容</string>
     <string name="jupiter_row_cell_sutitle">今天下午开发行cell功能，完成后将会方便调用，并且能够统一风格.</string>

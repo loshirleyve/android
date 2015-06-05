@@ -9,6 +9,7 @@ import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
+import com.yun9.jupiter.widget.JupiterPagingListView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -38,7 +39,7 @@ public class DynamicSessionFragment extends JupiterFragment {
     private JupiterTitleBarLayout titleBar;
 
     @ViewInject(id=R.id.dynamic_sessions_lv)
-    private ListView dynamicSessionList;
+    private JupiterPagingListView dynamicSessionList;
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
@@ -105,7 +106,7 @@ public class DynamicSessionFragment extends JupiterFragment {
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                refresh(false);
             }
         });
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
@@ -114,19 +115,29 @@ public class DynamicSessionFragment extends JupiterFragment {
                 mPtrClassicFrameLayout.autoRefresh();
             }
         },100);
+
+        //设置加载更多
+        dynamicSessionList.setPagingableListener(new JupiterPagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                refresh(true);
+            }
+        });
+
+        dynamicSessionList.setHasMoreItems(true);
     }
 
-    private void refresh(){
+    private void refresh(final boolean loadMore){
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                completeRefresh();
+                completeRefresh(loadMore);
             }
         }, 2000);
     }
 
-    private void completeRefresh(){
-        this.initMsgSession();
+    private void completeRefresh(boolean loadMore){
+        this.initMsgSession(loadMore);
 
         if (!AssertValue.isNotNull(dynamicSessionAdapter)){
             dynamicSessionAdapter = new DynamicSessionAdapter(mContext,msgSessions);
@@ -134,7 +145,13 @@ public class DynamicSessionFragment extends JupiterFragment {
         }else{
             dynamicSessionAdapter.notifyDataSetChanged();
         }
-        mPtrClassicFrameLayout.refreshComplete();
+
+        if (loadMore){
+            dynamicSessionList.onFinishLoading(true);
+        }else{
+            mPtrClassicFrameLayout.refreshComplete();
+        }
+
     }
 
     private int dpToPx(int dp) {
@@ -142,7 +159,7 @@ public class DynamicSessionFragment extends JupiterFragment {
     }
 
 
-    private void initMsgSession(){
+    private void initMsgSession(boolean loadMore){
         if (!AssertValue.isNotNull(msgSessions)){
             msgSessions = new LinkedList<>();
         }
@@ -153,8 +170,13 @@ public class DynamicSessionFragment extends JupiterFragment {
 
         for(int i = size;i< maxsize;i++){
             MsgSession msgSession = new MsgSession();
-            msgSession.setFromusername("Leon"+i);
-            msgSessions.addFirst(msgSession);
+            msgSession.setFromusername("Leon" + i);
+            if (loadMore){
+                msgSessions.addLast(msgSession);
+            }else{
+                msgSessions.addFirst(msgSession);
+            }
+
         }
     }
 

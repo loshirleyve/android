@@ -97,10 +97,12 @@
             cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
             cube_ptr:ptr_resistance="1.7">
 
-            <ListView
+            <com.yun9.jupiter.widget.JupiterPagingListView
                 android:id="@+id/dynamic_sessions_lv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
+                android:layout_height="wrap_content">
+
+            </com.yun9.jupiter.widget.JupiterPagingListView>
 
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
