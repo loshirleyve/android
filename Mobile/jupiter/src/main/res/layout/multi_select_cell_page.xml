@@ -12,7 +12,7 @@
         tb:titleText="表单"
         tb:titleLeftIcoVisibility="true"
         tb:titleRightTextVisibility="true"
-        tb:titleRightText="@string/jupiter_add">
+        tb:titleRightText="单选">
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
     <ScrollView

@@ -1,11 +1,14 @@
 package com.yun9.jupiter.form.cell;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.MultiSelectActivity;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
@@ -41,11 +44,25 @@ public class MultiSelectFormCell extends FormCell {
         titleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openActivity();
             }
         });
         this.restore();
         return rootView;
+    }
+
+    private void openActivity() {
+        FormActivity formActivity = (FormActivity) this.context;
+        int requestCode = formActivity.addActivityCallback(new FormActivity.IFormActivityCallback() {
+            @Override
+            public void onActivityResult(int resultCode, Intent data) {
+                if (MultiSelectActivity.RESPONSE_CODE.COMPLETE == resultCode){
+                    selectedMap = (Map<String, String>) data.getSerializableExtra("selectedOptionMap");
+                    rebuild();
+                }
+            }
+        });
+        MultiSelectActivity.start(formActivity,requestCode,cellBean,selectedMap);
     }
 
     private void restore() {

@@ -18,15 +18,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttonbar"
         android:layout_below="@+id/titlebar"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-
-        <ListView
-            android:id="@+id/doclist"
+        android:orientation="vertical">
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"></ListView>
+            android:layout_height="wrap_content"
+            row:rowStyleSutitleTitleText="@string/app_complete"
+            row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleText="-">
+
+        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -51,7 +51,6 @@
             button:imageButtonShowIco="true"
             button:imageButtonText="@string/app_send_msgcard"
             button:imageButtonIcoSrc="@drawable/newpost">
-
         </com.yun9.jupiter.widget.JupiterImageButtonLayout>
 
     </LinearLayout>

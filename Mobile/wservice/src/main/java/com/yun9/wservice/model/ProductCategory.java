@@ -6,6 +6,8 @@ package com.yun9.wservice.model;
 public class ProductCategory {
 
     private String categoryname;
+    private String province;
+    private String city;
 
     public ProductCategory(String categoryname){
         this.categoryname = categoryname;
@@ -17,5 +19,21 @@ public class ProductCategory {
 
     public void setCategoryname(String categoryname) {
         this.categoryname = categoryname;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

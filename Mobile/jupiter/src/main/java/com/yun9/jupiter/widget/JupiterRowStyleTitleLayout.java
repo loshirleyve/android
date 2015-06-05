@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.util.AssertValue;
 
 /**
  * Created by Leon on 15/4/22.
@@ -22,6 +24,12 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
     private ImageView arrowRightIV;
 
     private TextView hotNitoceTV;
+
+    private ImageView selectModeIV;
+
+    private boolean selected;
+
+    private OnSelectListener onSelectListener;
 
     public JupiterRowStyleTitleLayout(Context context) {
         super(context);
@@ -46,6 +54,7 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
         this.mainIV = (ImageView) this.findViewById(R.id.main_iv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
+        this.selectModeIV = (ImageView) this.findViewById(R.id.selectmode_iv);
         this.initAttr(attrs);
     }
 
@@ -94,8 +103,36 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
         }finally{
             typedArray.recycle();
         }
+    }
 
+    public void setSelectMode(boolean mode) {
+        if (mode) {
+            selected = false;
+            this.selectModeIV.setVisibility(View.VISIBLE);
+            this.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = !selected;
+                    select(selected);
+                    if (AssertValue.isNotNull(onSelectListener)) {
+                        onSelectListener.onSelect(JupiterRowStyleTitleLayout.this, selected);
+                    }
+                }
+            });
+        } else {
+            this.selectModeIV.setVisibility(View.GONE);
+            this.setOnClickListener(null);
+        }
+    }
 
+    public void select(boolean selected){
+        this.selected = selected;
+
+        if (this.selected) {
+            selectModeIV.setImageResource(R.drawable.selector);
+        } else {
+            selectModeIV.setImageResource(R.drawable.selector_empty);
+        }
     }
 
     public TextView getTitleTV() {
@@ -128,5 +165,31 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
 
     public void setHotNitoceTV(TextView hotNitoceTV) {
         this.hotNitoceTV = hotNitoceTV;
+    }
+
+    public ImageView getSelectModeIV() {
+        return selectModeIV;
+    }
+
+    public void setSelectModeIV(ImageView selectModeIV) {
+        this.selectModeIV = selectModeIV;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
+    @Override
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public OnSelectListener getOnSelectListener() {
+        return onSelectListener;
+    }
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
     }
 }

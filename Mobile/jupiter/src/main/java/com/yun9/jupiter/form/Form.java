@@ -8,6 +8,7 @@ import com.yun9.jupiter.util.AssertValue;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,35 +20,34 @@ public class Form implements java.io.Serializable {
 
     private List<FormCell> cells;
 
-    private Map<String,FormCell> cellMap;
-
     public static Form getInstance(FormBean formBean) {
         Form form = new Form(formBean);
         return form;
     }
 
-    public Form(FormBean formBean) {
+    private Form(FormBean formBean) {
         this.formBean = formBean;
         buildWithFormBean();
     }
 
     private void buildWithFormBean() {
         cells = new ArrayList<>();
-        cellMap = new HashMap<>();
         FormCellBean formCellBean;
         FormCell cell;
+        Class<? extends FormCell> type;
         for (int i = 0; i < formBean.getCellBeanList().size(); i++) {
             formCellBean = formBean.getCellBeanList().get(i);
-            cell = createCell(formCellBean.getType(),formCellBean);
-            cellMap.put(formCellBean.getKey(),cell);
-            cells.add(cell);
+            type = FormUtilFactory.getInstance().getCellTypeClassByType(formCellBean.getType());
+            if (type != null){
+                cell = createCell(type,formCellBean);
+                cells.add(cell);
+            }
         }
     }
 
-    private  <T extends FormCell> T createCell(String typeName,FormCellBean bean) {
+    private  <T extends FormCell> T createCell(Class<T> type,FormCellBean bean) {
 
         try {
-            Class<T> type = (Class<T>) Class.forName(typeName);
             FormCell formCell = type.getConstructor(FormCellBean.class).newInstance(bean);
             formCell.init();
             return (T) formCell;
@@ -63,16 +63,10 @@ public class Form implements java.io.Serializable {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
             throw new JupiterRuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new JupiterRuntimeException(e);
         }
     }
 
     public void putCell(FormCell formCell) {
-        if (!AssertValue.isNotNull(cells)) {
-            this.cells = new ArrayList<FormCell>();
-        }
         this.cells.add(formCell);
     }
 
@@ -89,10 +83,6 @@ public class Form implements java.io.Serializable {
         return cells;
     }
 
-    public void setCells(List<FormCell> cells) {
-        this.cells = cells;
-    }
-
     /**
      * 获取Form绑定的数据model
      * 会触发generateFormValue方法，填充
@@ -106,14 +96,22 @@ public class Form implements java.io.Serializable {
 
     public Map<String,Object> generateFormValue() {
         Map<String,Object> map = new HashMap<>();
-        for (FormCell cell : cells) {
+        Iterator<FormCell> iterator = cells.iterator();
+        FormCell cell;
+        while (iterator.hasNext()){
+            cell = iterator.next();
             map.put(cell.getFormCellBean().getKey(),cell.getValue());
         }
         return map;
     }
 
     public Object getCellValue(String key) {
-        return cellMap.get(key).getValue();
+        for (FormCell tmp : cells) {
+            if (tmp.getFormCellBean().getKey().equals(key)) {
+                return tmp;
+            }
+        }
+        return null;
     }
 
     public void setFormBean(FormBean formBean) {

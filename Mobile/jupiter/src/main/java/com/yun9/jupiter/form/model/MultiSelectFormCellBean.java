@@ -11,35 +11,15 @@ import java.util.Map;
  */
 public class MultiSelectFormCellBean extends FormCellBean{
 
-    private int minNum;
-
-    private int maxNum;
-
-    private Map<String,Object> optionMap;
+    private Map<String,String> optionMap;
 
     private String ctrlCode;
 
-    public int getMinNum() {
-        return minNum;
-    }
-
-    public void setMinNum(int minNum) {
-        this.minNum = minNum;
-    }
-
-    public int getMaxNum() {
-        return maxNum;
-    }
-
-    public void setMaxNum(int maxNum) {
-        this.maxNum = maxNum;
-    }
-
-    public Map<String, Object> getOptionMap() {
+    public Map<String, String> getOptionMap() {
         return optionMap;
     }
 
-    public void setOptionMap(Map<String, Object> optionMap) {
+    public void setOptionMap(Map<String, String> optionMap) {
         this.optionMap = optionMap;
     }
 

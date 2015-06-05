@@ -25,15 +25,6 @@ public class MsgCard implements java.io.Serializable {
 	private List<MsgCardComment> commentlist;
 	private MsgCardRelationship relationship;
 
-    transient
-    private View.OnClickListener onPraiseClickListener;
-    transient
-    private View.OnClickListener onForwardClickListener;
-    transient
-    private View.OnClickListener onCommentClickListener;
-    transient
-    private View.OnClickListener onActionClickListener;
-
 	public MsgCardMain getMain() {
 		return main;
 	}
@@ -114,35 +105,4 @@ public class MsgCard implements java.io.Serializable {
 		this.commentlist = commentlist;
 	}
 
-    public View.OnClickListener getOnPraiseClickListener() {
-        return onPraiseClickListener;
-    }
-
-    public void setOnPraiseClickListener(View.OnClickListener onPraiseClickListener) {
-        this.onPraiseClickListener = onPraiseClickListener;
-    }
-
-    public View.OnClickListener getOnForwardClickListener() {
-        return onForwardClickListener;
-    }
-
-    public void setOnForwardClickListener(View.OnClickListener onForwardClickListener) {
-        this.onForwardClickListener = onForwardClickListener;
-    }
-
-    public View.OnClickListener getOnCommentClickListener() {
-        return onCommentClickListener;
-    }
-
-    public void setOnCommentClickListener(View.OnClickListener onCommentClickListener) {
-        this.onCommentClickListener = onCommentClickListener;
-    }
-
-    public View.OnClickListener getOnActionClickListener() {
-        return onActionClickListener;
-    }
-
-    public void setOnActionClickListener(View.OnClickListener onActionClickListener) {
-        this.onActionClickListener = onActionClickListener;
-    }
 }

@@ -129,11 +129,6 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
     public void buildWithData (MsgCard msgCard) {
         this.msgCard = msgCard;
-        this.getPraiseRL().setOnClickListener(msgCard.getOnPraiseClickListener());
-        this.getFwRL().setOnClickListener(msgCard.getOnForwardClickListener());
-        this.getCommentRL().setOnClickListener(msgCard.getOnCommentClickListener());
-        this.getActionRL().setOnClickListener(msgCard.getOnActionClickListener());
-
         // 处理图片
         if (msgCard.getAttachments() != null
                 && msgCard.getAttachments().size() > 0) {

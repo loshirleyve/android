@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 
-import com.yun9.jupiter.widget.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.CirclePageIndicator;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 
