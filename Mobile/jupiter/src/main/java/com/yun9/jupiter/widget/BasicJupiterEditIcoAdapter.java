@@ -12,8 +12,6 @@ public class BasicJupiterEditIcoAdapter extends JupiterEditIcoAdapter{
 
     private List<JupiterTextIco> itemList;
 
-    private boolean edit;
-
     public BasicJupiterEditIcoAdapter(List<JupiterTextIco> itemList) {
         super();
         this.itemList = itemList;
@@ -36,15 +34,7 @@ public class BasicJupiterEditIcoAdapter extends JupiterEditIcoAdapter{
 
     @Override
     public JupiterTextIco getItemView(int position, View convertView, ViewGroup parent) {
-        itemList.get(position).setEnabled(edit);
+        itemList.get(position).setEnabled(BasicJupiterEditIcoAdapter.this.edit);
         return itemList.get(position);
-    }
-
-    public boolean isEdit() {
-        return edit;
-    }
-
-    public void setEdit(boolean edit) {
-        this.edit = edit;
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
  */
 public abstract class JupiterEditIcoAdapter extends JupiterAdapter{
 
-    private boolean edit;
+    protected boolean edit;
 
     @Override
     public final View getView(int position, View convertView, ViewGroup parent) {
