@@ -3,8 +3,10 @@ package com.yun9.wservice.view.dynamic;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Toast;
 
+import com.special.ResideMenu.ResideMenu;
+import com.special.ResideMenu.ResideMenuItem;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
@@ -17,8 +19,6 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgSession;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
 
-import net.simonvt.menudrawer.MenuDrawer;
-
 import java.util.LinkedList;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -26,7 +26,7 @@ import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
 /**
- * 
+ *
  */
 public class DynamicSessionFragment extends JupiterFragment {
 
@@ -35,16 +35,16 @@ public class DynamicSessionFragment extends JupiterFragment {
     @BeanInject
     private SessionManager sessionManager;
 
-    @ViewInject(id=R.id.dynamic_title_tb)
+    @ViewInject(id = R.id.dynamic_title_tb)
     private JupiterTitleBarLayout titleBar;
 
-    @ViewInject(id=R.id.dynamic_sessions_lv)
+    @ViewInject(id = R.id.dynamic_sessions_lv)
     private JupiterPagingListView dynamicSessionList;
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
-    private MenuDrawer mMenuDrawer;
+    private ResideMenu resideMenu;
 
     private DynamicSessionAdapter dynamicSessionAdapter;
 
@@ -54,7 +54,6 @@ public class DynamicSessionFragment extends JupiterFragment {
     /**
      * 使用工厂方法创建一个新的动态实例，
      * 这个动态的使用必须使用此方法创建实例
-     *
      */
     public static DynamicSessionFragment newInstance(Bundle args) {
         DynamicSessionFragment fragment = new DynamicSessionFragment();
@@ -77,8 +76,6 @@ public class DynamicSessionFragment extends JupiterFragment {
 
     @Override
     protected void initViews(View view) {
-        mMenuDrawer = (MenuDrawer) view.findViewById(R.id.drawerMenu);
-        mMenuDrawer.setTouchMode(MenuDrawer.TOUCH_MODE_FULLSCREEN);
 
         this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,7 +95,7 @@ public class DynamicSessionFragment extends JupiterFragment {
         this.titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMenuDrawer.toggleMenu();
+                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
             }
         });
 
@@ -114,7 +111,7 @@ public class DynamicSessionFragment extends JupiterFragment {
             public void run() {
                 mPtrClassicFrameLayout.autoRefresh();
             }
-        },100);
+        }, 100);
 
         //设置加载更多
         dynamicSessionList.setPagingableListener(new JupiterPagingListView.Pagingable() {
@@ -125,9 +122,27 @@ public class DynamicSessionFragment extends JupiterFragment {
         });
 
         dynamicSessionList.setHasMoreItems(true);
+
+        this.setUpMenu();
     }
 
-    private void refresh(final boolean loadMore){
+    private void setUpMenu() {
+
+        // attach to current activity;
+        resideMenu = new ResideMenu(this.getActivity());
+        //resideMenu.setBackground(R.drawable.menu_background);
+        resideMenu.attachToActivity(this.getActivity());
+        resideMenu.setMenuListener(menuListener);
+        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
+        resideMenu.setScaleValue(0.6f);
+
+        for (int i = 0; i < 6; i++) {
+            ResideMenuItem itemMenu = new ResideMenuItem(this.getActivity(), R.drawable.write, "话题"+i);
+            resideMenu.addMenuItem(itemMenu, ResideMenu.DIRECTION_LEFT);
+        }
+    }
+
+    private void refresh(final boolean loadMore) {
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -136,19 +151,19 @@ public class DynamicSessionFragment extends JupiterFragment {
         }, 2000);
     }
 
-    private void completeRefresh(boolean loadMore){
+    private void completeRefresh(boolean loadMore) {
         this.initMsgSession(loadMore);
 
-        if (!AssertValue.isNotNull(dynamicSessionAdapter)){
-            dynamicSessionAdapter = new DynamicSessionAdapter(mContext,msgSessions);
+        if (!AssertValue.isNotNull(dynamicSessionAdapter)) {
+            dynamicSessionAdapter = new DynamicSessionAdapter(mContext, msgSessions);
             dynamicSessionList.setAdapter(dynamicSessionAdapter);
-        }else{
+        } else {
             dynamicSessionAdapter.notifyDataSetChanged();
         }
 
-        if (loadMore){
+        if (loadMore) {
             dynamicSessionList.onFinishLoading(true);
-        }else{
+        } else {
             mPtrClassicFrameLayout.refreshComplete();
         }
 
@@ -159,8 +174,8 @@ public class DynamicSessionFragment extends JupiterFragment {
     }
 
 
-    private void initMsgSession(boolean loadMore){
-        if (!AssertValue.isNotNull(msgSessions)){
+    private void initMsgSession(boolean loadMore) {
+        if (!AssertValue.isNotNull(msgSessions)) {
             msgSessions = new LinkedList<>();
         }
 
@@ -168,17 +183,27 @@ public class DynamicSessionFragment extends JupiterFragment {
         int maxsize = size + 5;
 
 
-        for(int i = size;i< maxsize;i++){
+        for (int i = size; i < maxsize; i++) {
             MsgSession msgSession = new MsgSession();
             msgSession.setFromusername("Leon" + i);
-            if (loadMore){
+            if (loadMore) {
                 msgSessions.addLast(msgSession);
-            }else{
+            } else {
                 msgSessions.addFirst(msgSession);
             }
 
         }
     }
 
+    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
+        @Override
+        public void openMenu() {
+            //Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
+        }
 
+        @Override
+        public void closeMenu() {
+            //Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
+        }
+    };
 }
