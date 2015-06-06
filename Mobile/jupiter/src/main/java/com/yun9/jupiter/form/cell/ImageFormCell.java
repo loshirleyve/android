@@ -143,7 +143,10 @@ public class ImageFormCell extends FormCell {
 
     private void reCaculateLimit() {
         if (itemList.size() > cellBean.getMaxNum()) {
-            itemList = itemList.subList(0, cellBean.getMaxNum());
+            int len = itemList.size();
+            for (int i = 0; i < len - cellBean.getMaxNum(); i++) {
+                itemList.remove(len -(i+1));
+            }
         } else if (itemList.size() < cellBean.getMaxNum()) {
             JupiterEditableView item = itemList.get(itemList.size() - 1);
             // 只有添加按钮的tag为null

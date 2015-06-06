@@ -91,8 +91,9 @@ public class DocFormCell extends FormCell {
         }
         String[] ids = ((String)cellBean.getValue()).split(",");
         for (int i = 0; i < ids.length; i++) {
-            itemList.add(createItem(ids[i]));
+           createItem(ids[i]);
         }
+        adapter.notifyDataSetChanged();
     }
 
     private void startUploadDoc() {
