@@ -110,6 +110,8 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         docFormCell.setKey("testDoc");
         docFormCell.setType(DocFormCell.class.getSimpleName());
         docFormCell.setValue("1");
+        docFormCell.setMaxNum(3);
+        docFormCell.setMinNum(1);
         docFormCell.setLabel("测试文档选择");
         formBean.putCellBean(docFormCell);
 

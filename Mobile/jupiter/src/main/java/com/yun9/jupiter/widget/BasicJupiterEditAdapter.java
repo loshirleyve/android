@@ -8,11 +8,11 @@ import java.util.List;
 /**
  * Created by huangbinglong on 15/6/5.
  */
-public class BasicJupiterEditIcoAdapter extends JupiterEditIcoAdapter{
+public class BasicJupiterEditAdapter extends JupiterEditAdapter {
 
-    private List<JupiterTextIco> itemList;
+    private List<JupiterEditableView> itemList;
 
-    public BasicJupiterEditIcoAdapter(List<JupiterTextIco> itemList) {
+    public BasicJupiterEditAdapter(List<JupiterEditableView> itemList) {
         super();
         this.itemList = itemList;
     }
@@ -33,8 +33,8 @@ public class BasicJupiterEditIcoAdapter extends JupiterEditIcoAdapter{
     }
 
     @Override
-    public JupiterTextIco getItemView(int position, View convertView, ViewGroup parent) {
-        itemList.get(position).setEnabled(BasicJupiterEditIcoAdapter.this.edit);
+    public JupiterEditableView getItemView(int position, View convertView, ViewGroup parent) {
+        itemList.get(position).setEnabled(BasicJupiterEditAdapter.this.edit);
         return itemList.get(position);
     }
 }

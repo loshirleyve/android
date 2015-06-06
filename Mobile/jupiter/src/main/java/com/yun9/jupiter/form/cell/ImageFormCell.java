@@ -3,23 +3,15 @@ package com.yun9.jupiter.form.cell;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.ImageFormCellBean;
-import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.PublicHelp;
-import com.yun9.jupiter.view.JupiterBadgeView;
-import com.yun9.jupiter.widget.BasicJupiterEditIcoAdapter;
+import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
-import com.yun9.jupiter.widget.JupiterEditIcoAdapter;
+import com.yun9.jupiter.widget.JupiterEditAdapter;
+import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 
@@ -35,13 +27,13 @@ public class ImageFormCell extends FormCell {
 
     private JupiterEditIco jupiterEditIco;
 
-    private JupiterEditIcoAdapter adapter;
+    private JupiterEditAdapter adapter;
 
     private ImageFormCellBean cellBean;
 
     private boolean edit;
 
-    private List<JupiterTextIco> itemList;
+    private List<JupiterEditableView> itemList;
 
     public ImageFormCell(FormCellBean cellBean) {
         super(cellBean);
@@ -84,7 +76,7 @@ public class ImageFormCell extends FormCell {
 
     private void setupEditIco() {
         appendAddButton();
-        adapter = new BasicJupiterEditIcoAdapter(itemList);
+        adapter = new BasicJupiterEditAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
     }
@@ -151,9 +143,12 @@ public class ImageFormCell extends FormCell {
 
     private void reCaculateLimit() {
         if (itemList.size() > cellBean.getMaxNum()) {
-            itemList = itemList.subList(0, cellBean.getMaxNum());
+            int len = itemList.size();
+            for (int i = 0; i < len - cellBean.getMaxNum(); i++) {
+                itemList.remove(len -(i+1));
+            }
         } else if (itemList.size() < cellBean.getMaxNum()) {
-            JupiterTextIco item = itemList.get(itemList.size() - 1);
+            JupiterEditableView item = itemList.get(itemList.size() - 1);
             // 只有添加按钮的tag为null
             if (item.getTag() != null) {
                 appendAddButton();
@@ -170,7 +165,7 @@ public class ImageFormCell extends FormCell {
     @Override
     public Object getValue() {
         StringBuffer sb = new StringBuffer();
-        for (JupiterTextIco ico : itemList) {
+        for (JupiterEditableView ico : itemList) {
             if (ico.getTag() != null) {
                 sb.append(ico.getTag()).append(",");
             }
