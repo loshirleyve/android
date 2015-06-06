@@ -42,6 +42,7 @@ public class JupiterEditIco extends JupiterRelativeLayout {
     }
 
     public void edit(boolean edit) {
+        this.getRowStyleSutitleLayout().setEnabled(edit);
         JupiterEditAdapter adapter = (JupiterEditAdapter) this.gridView.getAdapter();
         adapter.edit(edit);
     }
