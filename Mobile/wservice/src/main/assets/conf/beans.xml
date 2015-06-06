@@ -7,7 +7,8 @@
     <bean class="com.yun9.jupiter.http.support.DefaultHttpFactory"></bean>
     <bean class="com.yun9.jupiter.push.support.XiaoMiPushFactory"></bean>
     <bean class="com.yun9.wservice.support.MessageReceiverFactory"></bean>
-    <bean class="com.yun9.jupiter.location.EmptyLocationFactory"></bean>
+    <bean class="com.yun9.jupiter.location.BaiduLocationFactory"></bean>
+    <!--<bean class="com.yun9.jupiter.location.EmptyLocationFactory"></bean>-->
     <bean class="com.yun9.jupiter.navigation.DefaultNavigationManager"></bean>
 
     <!--
