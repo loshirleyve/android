@@ -3,16 +3,16 @@ package com.yun9.jupiter.form.cell;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
-import com.yun9.jupiter.widget.BasicJupiterEditIcoAdapter;
+import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
-import com.yun9.jupiter.widget.JupiterEditIcoAdapter;
+import com.yun9.jupiter.widget.JupiterEditAdapter;
+import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
-import com.yun9.jupiter.widget.JupiterTextIcoWithCorner;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,11 +29,11 @@ public class UserFormCell extends FormCell{
 
     private JupiterEditIco jupiterEditIco;
 
-    private JupiterEditIcoAdapter adapter;
+    private JupiterEditAdapter adapter;
 
     private UserFormCellBean cellBean;
 
-    private List<JupiterTextIco> itemList;
+    private List<JupiterEditableView> itemList;
 
     private boolean edit;
 
@@ -61,7 +61,7 @@ public class UserFormCell extends FormCell{
 
     private void setupEditIco() {
         appendAddButton();
-        adapter = new BasicJupiterEditIcoAdapter(itemList);
+        adapter = new BasicJupiterEditAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
     }
@@ -135,7 +135,7 @@ public class UserFormCell extends FormCell{
     @Override
     public Object getValue() {
         List<Map<String,String>> uodMaps = new ArrayList<>();
-        JupiterTextIco item;
+        JupiterEditableView item;
         // 过滤第一个，添加按钮
         for (int i = 1; i < itemList.size(); i++) {
             item = itemList.get(i);
