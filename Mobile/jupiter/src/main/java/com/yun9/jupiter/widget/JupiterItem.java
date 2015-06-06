@@ -6,65 +6,66 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterBadgeView;
 
 /**
- * Created by huangbinglong on 15/6/2.
+ * Created by huangbinglong on 15/6/5.
  */
-public class JupiterTextIco extends JupiterEditableView{
+public class JupiterItem extends JupiterEditableView{
 
     private ImageView itemImage;
     private TextView itemName;
     private JupiterBadgeView badgeView;
 
-    public JupiterTextIco(Context context) {
+    public JupiterItem(Context context) {
         super(context);
     }
 
-    public JupiterTextIco(Context context, AttributeSet attrs) {
+    public JupiterItem(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public JupiterTextIco(Context context, AttributeSet attrs, int defStyle) {
+    public JupiterItem(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
     @Override
     protected int getContextView() {
-        return R.layout.widget_ico;
+        return R.layout.widget_item;
     }
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         itemImage = (ImageView) this.findViewById(R.id.item_image);
         itemName = (TextView) this.findViewById(R.id.item_name);
-        badgeView = new JupiterBadgeView(this.getContext(), itemImage);
+        View view = this.findViewById(R.id.container);
+        badgeView = new JupiterBadgeView(this.getContext(), view);
         this.initAttr(attrs);
     }
 
     private void initAttr(AttributeSet attrs){
-        TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterTextIco);
+        TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterItem);
 
         try{
-            if (typedArray.hasValue(R.styleable.JupiterTextIco_ico_title)){
-                String titleText = typedArray.getString(R.styleable.JupiterTextIco_ico_title);
+            if (typedArray.hasValue(R.styleable.JupiterItem_item_title)){
+                String titleText = typedArray.getString(R.styleable.JupiterItem_item_title);
                 this.itemName.setText(titleText);
             }
 
-            if (typedArray.hasValue(R.styleable.JupiterTextIco_ico_image)){
-                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterTextIco_ico_image);
+            if (typedArray.hasValue(R.styleable.JupiterItem_item_image)){
+                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterItem_item_image);
                 if (mainImage != null){
                     this.itemImage.setImageDrawable(mainImage);
                 }
             }
 
-            if (typedArray.hasValue(R.styleable.JupiterTextIco_ico_badge_image)){
-                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterTextIco_ico_badge_image);
+            if (typedArray.hasValue(R.styleable.JupiterItem_item_badge_image)){
+                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterItem_item_badge_image);
                 if (mainImage != null){
                     this.badgeView.setBackgroundDrawable(mainImage);
                 }
@@ -143,22 +144,22 @@ public class JupiterTextIco extends JupiterEditableView{
         this.badgeView = badgeView;
     }
 
-    public JupiterTextIco setTitle(String title) {
+    public JupiterItem setTitle(String title) {
         buildTitle(title);
         return this;
     }
 
-    public JupiterTextIco setOval(boolean oval) {
+    public JupiterItem setOval(boolean oval) {
 //        buildImage();
         return this;
     }
 
-    public JupiterTextIco setImage(String image) {
+    public JupiterItem setImage(String image) {
         buildImage(image);
         return this;
     }
 
-    public JupiterTextIco setCornerImage(int cornerImage) {
+    public JupiterItem setCornerImage(int cornerImage) {
         buildBadge(cornerImage);
         return this;
     }

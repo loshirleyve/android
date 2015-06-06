@@ -14,8 +14,6 @@ public class JupiterEditIco extends JupiterRelativeLayout {
 
     private JupiterGridView gridView;
 
-    private JupiterEditIcoAdapter adapter;
-
     public JupiterEditIco(Context context) {
         super(context);
     }
@@ -39,12 +37,12 @@ public class JupiterEditIco extends JupiterRelativeLayout {
         gridView = (JupiterGridView) this.findViewById(R.id.item_grid_view);
     }
 
-    public void setAdapter(JupiterEditIcoAdapter adapter) {
-        this.adapter = adapter;
+    public void setAdapter(JupiterEditAdapter adapter) {
         gridView.setAdapter(adapter);
     }
 
     public void edit(boolean edit) {
+        JupiterEditAdapter adapter = (JupiterEditAdapter) this.gridView.getAdapter();
         adapter.edit(edit);
     }
 

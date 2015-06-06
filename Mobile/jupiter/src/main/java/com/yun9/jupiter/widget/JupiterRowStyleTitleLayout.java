@@ -192,4 +192,6 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
     public void setOnSelectListener(OnSelectListener onSelectListener) {
         this.onSelectListener = onSelectListener;
     }
+
+
 }
