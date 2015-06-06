@@ -1,6 +1,4 @@
-package com.yun9.wservice.model;
-
-import android.view.View;
+package com.yun9.jupiter.navigation;
 
 import com.yun9.jupiter.util.AssertValue;
 
@@ -10,7 +8,7 @@ import java.util.List;
 /**
  * Created by xia on 2015/5/22.
  */
-public class MicroAppBean  {
+public class NavigationBean {
 
     public static final String TYPE_ITEM  = "item";
 
@@ -24,11 +22,12 @@ public class MicroAppBean  {
     private String parentid;
     private String actiontype;
     private String icopath;
-    private List<MicroAppBean> children;
+    private List<NavigationBean> children;
 
-    public MicroAppBean(String id,String name,String type){
+    public NavigationBean(String id,String no, String name, String type){
         this.id= id;
         this.name = name;
+        this.no = no;
         this.type = type;
     }
 
@@ -91,19 +90,19 @@ public class MicroAppBean  {
     }
 
 
-    public List<MicroAppBean> getChildren() {
+    public List<NavigationBean> getChildren() {
         return children;
     }
 
-    public void setChildren(List<MicroAppBean> children) {
+    public void setChildren(List<NavigationBean> children) {
         this.children = children;
     }
 
-    public void putChildren(MicroAppBean microAppBean){
+    public void putChildren(NavigationBean navigationBean){
         if (!AssertValue.isNotNull(children)){
             this.children = new ArrayList<>();
         }
 
-        this.children.add(microAppBean);
+        this.children.add(navigationBean);
     }
 }
