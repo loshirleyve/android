@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
@@ -16,7 +17,9 @@ import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Leon on 15/5/25.
@@ -35,6 +38,8 @@ public class ImageFormCell extends FormCell {
 
     private List<JupiterEditableView> itemList;
 
+    private FormUtilFactory.BizExecutor executor;
+
     public ImageFormCell(FormCellBean cellBean) {
         super(cellBean);
         this.cellBean = (ImageFormCellBean) cellBean;
@@ -47,6 +52,7 @@ public class ImageFormCell extends FormCell {
         itemList = new ArrayList<>();
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_image, null);
         jupiterEditIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
+        executor = FormUtilFactory.getInstance().getBizExcutor(FormUtilFactory.BizExecutor.TPPE_VIEW_IMAGE);
         this.build();
         setupEditIco();
         return rootView;
@@ -125,14 +131,33 @@ public class ImageFormCell extends FormCell {
                 deleteItm(item);
             }
         });
+        itemList.add(0, item);
         item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 显示大图
+                if (executor != null) {
+                    Map<String, Object> config = new HashMap<String, Object>();
+                    config.put("position", indexOfItem(item));
+                    config.put("images", getImages());
+                    executor.execute(ImageFormCell.this.context, config, null);
+                }
             }
         });
-        itemList.add(0, item);
         return item;
+    }
+
+    private String[] getImages() {
+        List<String> images = new ArrayList<>();
+        for (JupiterEditableView view : itemList) {
+            if (view.getTag() != null) {
+                images.add((String) view.getTag());
+            }
+        }
+        return images.toArray(new String[0]);
+    }
+
+    private int indexOfItem(JupiterEditableView view) {
+        return itemList.indexOf(view);
     }
 
     private void deleteItm(JupiterTextIco item) {
