@@ -1,5 +1,7 @@
 package com.yun9.jupiter.form.model;
 
+import com.yun9.jupiter.model.SerialableEntry;
+
 import java.util.List;
 import java.util.Map;
 
@@ -11,15 +13,15 @@ import java.util.Map;
  */
 public class MultiSelectFormCellBean extends FormCellBean{
 
-    private Map<String,String> optionMap;
+    private List<SerialableEntry<String,String>> optionMap;
 
     private String ctrlCode;
 
-    public Map<String, String> getOptionMap() {
+    public List<SerialableEntry<String,String>> getOptionMap() {
         return optionMap;
     }
 
-    public void setOptionMap(Map<String, String> optionMap) {
+    public void setOptionMap(List<SerialableEntry<String,String>> optionMap) {
         this.optionMap = optionMap;
     }
 

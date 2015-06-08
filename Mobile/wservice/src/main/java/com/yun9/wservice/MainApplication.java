@@ -9,6 +9,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.form.FormUtilFactory;
+import com.yun9.wservice.bizexecutor.MultiSelectBizExcutor;
 import com.yun9.wservice.bizexecutor.ViewImageBizExecutor;
 import com.yun9.wservice.imageloader.Y9ImageDownloader;
 import com.yun9.wservice.support.MessageReceiverFactory;
@@ -51,7 +52,8 @@ public class MainApplication extends JupiterApplication {
 
     private void initBizExcutors() {
         FormUtilFactory.getInstance()
-                .registerBizExecutor(FormUtilFactory.BizExecutor.TPPE_VIEW_IMAGE,
+                .registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_VIEW_IMAGE,
                         new ViewImageBizExecutor());
+        FormUtilFactory.getInstance().registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_MULTI_SELECT,new MultiSelectBizExcutor());
     }
 }

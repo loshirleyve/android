@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
@@ -52,7 +53,7 @@ public class ImageFormCell extends FormCell {
         itemList = new ArrayList<>();
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_image, null);
         jupiterEditIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
-        executor = FormUtilFactory.getInstance().getBizExcutor(FormUtilFactory.BizExecutor.TPPE_VIEW_IMAGE);
+        executor = FormUtilFactory.getInstance().getBizExcutor(FormUtilFactory.BizExecutor.TYPE_VIEW_IMAGE);
         this.build();
         setupEditIco();
         return rootView;
@@ -139,7 +140,9 @@ public class ImageFormCell extends FormCell {
                     Map<String, Object> config = new HashMap<String, Object>();
                     config.put("position", indexOfItem(item));
                     config.put("images", getImages());
-                    executor.execute(ImageFormCell.this.context, config, null);
+                    FormActivity activity = (FormActivity) ImageFormCell.this.context;
+                    int requestCode = activity.generateRequestCode();
+                    executor.execute(activity,requestCode,config);
                 }
             }
         });
