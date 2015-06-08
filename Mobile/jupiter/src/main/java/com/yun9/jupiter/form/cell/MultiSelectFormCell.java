@@ -90,6 +90,7 @@ public class MultiSelectFormCell extends FormCell {
     private void openActivity() {
         if (executor != null) {
             Map<String,Object> config = new HashMap<>();
+            config.put("isCacelable",true);
             config.put("ctrlCode",cellBean.getCtrlCode());
             config.put("options", cellBean.getOptionMap());
             config.put("selectedList", getValue());

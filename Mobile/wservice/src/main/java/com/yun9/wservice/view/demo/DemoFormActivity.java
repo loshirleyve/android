@@ -162,7 +162,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
 
     private List<SerialableEntry<String,String>> builderOptions() {
         List<SerialableEntry<String,String>> list = new ArrayList<>();
-        list.add(new SerialableEntry<String, String>("1","深圳顶聚科技1"));
+        list.add(new SerialableEntry<String, String>("1","深圳顶聚科技"));
         list.add(new SerialableEntry<String, String>("2", "深圳顶聚科技2"));
         list.add(new SerialableEntry<String, String>("3","深圳顶聚科技3"));
         list.add(new SerialableEntry<String, String>("4", "深圳顶聚科技4"));
