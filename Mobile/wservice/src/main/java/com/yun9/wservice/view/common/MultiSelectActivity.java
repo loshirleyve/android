@@ -65,7 +65,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         }
         isCacelable = getIntent().getBooleanExtra("isCacelable", false);
         if (isCacelable) {
-            selectedList.add(0, new SerialableEntry<String, String>(CACEL_ITEM_ID,CACEL_ITEM_NAME));
+            options.add(0, new SerialableEntry<String, String>(CACEL_ITEM_ID,CACEL_ITEM_NAME));
         }
     }
     
@@ -103,6 +103,8 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
                 final SerialableEntry<String, String> param = options.get(position);
                 if (convertView == null) {
                     final JupiterRowStyleTitleLayout temp = new JupiterRowStyleTitleLayout(MultiSelectActivity.this);
+                    temp.getMainIV().setVisibility(View.GONE);
+                    temp.setSelectMode(true);
                     temp.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -115,13 +117,12 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
                 } else {
                     item = (JupiterRowStyleTitleLayout) convertView;
                 }
-                item.setSelectMode(true);
                 item.getTitleTV().setText(param.getValue());
                 item.setTag(param);
                 if (selectedList.indexOf(param) != -1) {
-                    item.setSelected(true);
+                    item.select(true);
                 } else {
-                    item.setSelected(false);
+                    item.select(false);
                 }
                 return convertView;
             }
@@ -137,7 +138,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
             adapter.notifyDataSetChanged();
             return;
         }
-        
+
         // 删除取消的选择
         int len = selectedList.size();
         for (int i = 0; i < len; i++) {
@@ -148,16 +149,23 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         }
 
         if (selectedList.indexOf(param) != -1) {
-            itemLayout.setSelected(false);
+            itemLayout.select(false);
             selectedList.remove(param);
         } else {
-            itemLayout.setSelected(true);
+            itemLayout.select(true);
             selectedList.add(param);
         }
         adapter.notifyDataSetChanged();
     }
 
     private void gatherResult() {
+        int len = selectedList.size();
+        for (int i = 0; i < len; i++) {
+            if (selectedList.get(i).getKey().equals(CACEL_ITEM_ID)){
+                selectedList.remove(selectedList.get(i));
+                break;
+            }
+        }
         Intent intent = getIntent();
         intent.putExtra("selectedList", (Serializable) selectedList);
     }
