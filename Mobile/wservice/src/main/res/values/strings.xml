@@ -66,5 +66,6 @@
     <string name="parent_org">上级部门</string>
 
     <string name="doc_composite_title">文档</string>
+    <string name="please_select">请选择</string>
 
 </resources>

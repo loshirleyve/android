@@ -1,13 +1,19 @@
 package com.yun9.jupiter.form.cell;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
+import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.util.Constants;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
@@ -38,6 +44,8 @@ public class MultiSelectFormCell extends FormCell {
 
     private JupiterEditAdapter adapter;
 
+    private FormUtilFactory.BizExecutor executor;
+
     public MultiSelectFormCell(FormCellBean cellBean) {
         super(cellBean);
         this.cellBean = (MultiSelectFormCellBean) cellBean;
@@ -48,6 +56,7 @@ public class MultiSelectFormCell extends FormCell {
         this.context = context;
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_multi_select, null);
         editIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
+        executor = FormUtilFactory.getInstance().getBizExcutor(FormUtilFactory.BizExecutor.TYPE_MULTI_SELECT);
         this.buildView();
         this.setupEditIco();
         return rootView;
@@ -73,22 +82,34 @@ public class MultiSelectFormCell extends FormCell {
 
     private void restore() {
         if (cellBean.getValue() != null) {
-            Map<String,String> selectedMap = (Map<String, String>) cellBean.getValue();
-            reload(selectedMap);
+            List<SerialableEntry<String,String>> selectedList = (List<SerialableEntry<String, String>>) cellBean.getValue();
+            reload(selectedList);
         }
     }
 
     private void openActivity() {
-        // 打开选择器
+        if (executor != null) {
+            Map<String,Object> config = new HashMap<>();
+            config.put("ctrlCode",cellBean.getCtrlCode());
+            config.put("options", cellBean.getOptionMap());
+            config.put("selectedList", getValue());
+            FormActivity activity = (FormActivity) this.context;
+            int requestCode = activity.addActivityCallback(new FormActivity.IFormActivityCallback() {
+                @Override
+                public void onActivityResult(int resultCode, Intent data) {
+                    if (resultCode == Constants.ACTIVITY_RETURN.SUCCESS) {
+                        reload((List<SerialableEntry<String, String>>) data.getSerializableExtra("selectedList"));
+                    }
+                }
+            });
+            executor.execute(activity,requestCode,config);
+        }
     }
 
-    private void reload(Map<String,String> map) {
+    private void reload(List<SerialableEntry<String,String>> list) {
         itemList.clear();
-        Iterator<String> iterator = map.keySet().iterator();
-        String key;
-        while (iterator.hasNext()) {
-            key = iterator.next();
-            createItem(key,map.get(key));
+        for (int i = 0; i < list.size(); i++) {
+            createItem(list.get(i).getKey(),list.get(i).getValue());
         }
         adapter.notifyDataSetChanged();
     }
@@ -96,7 +117,7 @@ public class MultiSelectFormCell extends FormCell {
     private void createItem(String key,String label) {
         JupiterTag item = new JupiterTag(this.context);
         item.setTitle(label);
-        item.setTag(Collections.singletonMap(key,label));
+        item.setTag(new SerialableEntry<String,String>(key,label));
         itemList.add(item);
     }
 
@@ -107,11 +128,11 @@ public class MultiSelectFormCell extends FormCell {
 
     @Override
     public Object getValue() {
-        Map<String,String> map = new HashMap<>();
+        List<SerialableEntry<String,String>> list = new ArrayList<>();
         for (JupiterEditableView view : itemList) {
-            map.putAll((Map<? extends String, ? extends String>) view.getTag());
+            list.add((SerialableEntry<String, String>) view.getTag());
         }
-        return map;
+        return list;
     }
 
     @Override

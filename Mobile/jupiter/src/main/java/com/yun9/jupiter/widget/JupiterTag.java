@@ -43,7 +43,6 @@ public class JupiterTag extends JupiterEditableView{
 
 
     private void buildTitle(String title) {
-        // 设置图片描述文字
         if (AssertValue.isNotNullAndNotEmpty(title)) {
             itemName.setVisibility(VISIBLE);
             itemName.setText(title);

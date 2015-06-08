@@ -1,6 +1,8 @@
 package com.yun9.jupiter.form;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import com.yun9.jupiter.form.cell.DetailFormCell;
 import com.yun9.jupiter.form.cell.DocFormCell;
@@ -107,18 +109,30 @@ public class FormUtilFactory {
     }
 
     public interface BizExecutor{
-        public static final String TPPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
-        public static final String TPPE_SELECT_FILE = "selectFile";
+        public static final String TYPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
+        public static final String TYPE_SELECT_FILE = "selectFile";
         /**
          * config中可选参数：position;
          * 必要参数：images,数组，图片ID
-         * 回调不回传参数
+         * 不需要回调
          */
-        public static final String TPPE_VIEW_IMAGE = "viewImage";
-        public void execute(Context context,Map<String,Object> config,BizExecuteCompleted callback);
+        public static final String TYPE_VIEW_IMAGE = "viewImage";
+        /**
+         * config中可选参数：ctrlCode，控制编码
+         * 可选参数：selectedMap，已选项；
+         * 可选参数：options，可选项；其中ctrlCode跟options必须有一个不能为空
+         * 可选参数：isCacelable,默认false，是否可撤销，true会增加一个不使用的选项
+         * callback需要返回值：selectedList<Entry<String,String>>,key为被选择项的code，value为被选择项的显示名称
+         */
+        public static final String TYPE_MULTI_SELECT = "multiSelect";
+
+        /**
+         * 具体业务处理
+         * @param activity 从这个activity，可能需要启动另一个activity
+         * @param requestCode 请求编码
+         * @param config 具体业务数据
+         */
+        public void execute(Activity activity,int requestCode,Map<String,Object> config);
     }
 
-    public interface BizExecuteCompleted{
-        public void callback(Map<String,Object> value);
-    }
 }

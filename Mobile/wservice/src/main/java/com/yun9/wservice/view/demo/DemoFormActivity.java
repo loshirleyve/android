@@ -23,6 +23,7 @@ import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
+import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -137,10 +138,10 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         multiSelectFormCellBean.setType(MultiSelectFormCell.class.getSimpleName());
         multiSelectFormCellBean.setMaxNum(2);
         multiSelectFormCellBean.setMinNum(1);
-        Map<String,Object> map = new HashMap<>();
-        map.put("1", "深圳顶聚科技");
-        map.put("2", "深圳顶聚科技2");
-        multiSelectFormCellBean.setValue(map);
+        List<SerialableEntry<String,String>> list = new ArrayList<>();
+        list.add(new SerialableEntry<String, String>("1", "深圳顶聚科技"));
+        list.add(new SerialableEntry<String, String>("2", "深圳顶聚科技2"));
+        multiSelectFormCellBean.setValue(list);
         multiSelectFormCellBean.setOptionMap(this.builderOptions());
         formBean.putCellBean(multiSelectFormCellBean);
         return formBean;
@@ -159,13 +160,13 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         return maps;
     }
 
-    private Map<String, String> builderOptions() {
-        Map<String,String> map = new HashMap<>();
-        map.put("1","深圳顶聚科技");
-        map.put("2","深圳顶聚科技2");
-        map.put("3","深圳顶聚科技3");
-        map.put("4","深圳顶聚科技4");
-        return map;
+    private List<SerialableEntry<String,String>> builderOptions() {
+        List<SerialableEntry<String,String>> list = new ArrayList<>();
+        list.add(new SerialableEntry<String, String>("1","深圳顶聚科技1"));
+        list.add(new SerialableEntry<String, String>("2", "深圳顶聚科技2"));
+        list.add(new SerialableEntry<String, String>("3","深圳顶聚科技3"));
+        list.add(new SerialableEntry<String, String>("4", "深圳顶聚科技4"));
+        return list;
     }
 
     private FormBean builderSubForm(){
