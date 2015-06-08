@@ -108,7 +108,13 @@ public class FormUtilFactory {
 
     public interface BizExecutor{
         public static final String TPPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
-        public static final String TPPE_SELECT_FILE = "selectUserOrDept";
+        public static final String TPPE_SELECT_FILE = "selectFile";
+        /**
+         * config中可选参数：position;
+         * 必要参数：images,数组，图片ID
+         * 回调不回传参数
+         */
+        public static final String TPPE_VIEW_IMAGE = "viewImage";
         public void execute(Context context,Map<String,Object> config,BizExecuteCompleted callback);
     }
 

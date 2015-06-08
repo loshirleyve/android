@@ -8,6 +8,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.form.FormUtilFactory;
+import com.yun9.wservice.bizexecutor.ViewImageBizExecutor;
 import com.yun9.wservice.imageloader.Y9ImageDownloader;
 import com.yun9.wservice.support.MessageReceiverFactory;
 import com.yun9.wservice.support.MessageReceiverMsgCardHandler;
@@ -20,9 +22,10 @@ public class MainApplication extends JupiterApplication {
         super.onCreate();
         initImageLoader(getApplicationContext());
         this.regHandler();
+        this.initBizExcutors();
     }
 
-    private void regHandler(){
+    private void regHandler() {
         MessageReceiverFactory messageReceiverFactory = this.getBeanManager().get(MessageReceiverFactory.class);
         messageReceiverFactory.regHandler(new MessageReceiverMsgCardHandler());
 
@@ -44,5 +47,11 @@ public class MainApplication extends JupiterApplication {
 
         // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
+    }
+
+    private void initBizExcutors() {
+        FormUtilFactory.getInstance()
+                .registerBizExecutor(FormUtilFactory.BizExecutor.TPPE_VIEW_IMAGE,
+                        new ViewImageBizExecutor());
     }
 }
