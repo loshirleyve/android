@@ -6,6 +6,11 @@
             <clazz>com.yun9.wservice.view.demo.LocationFuncEnterHandler</clazz>
         </enter>
 
+        <enter>
+            <name>login</name>
+            <clazz>com.yun9.wservice.view.login.LoginFuncEnterHandler</clazz>
+        </enter>
+
     </enters>
 
     <handlers>

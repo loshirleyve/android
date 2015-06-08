@@ -1,86 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView android:id="@+id/scroll" xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:fillViewport="true"
-    >
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login"
-      >
+    android:background="@color/whites">
 
-    <com.yun9.jupiter.widget.JupiterTitleBarLayout
-        xmlns:tb="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/login03_title"
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tb:titleLeftIcoSrc="@drawable/left_white"
         tb:titleLeftIcoVisibility="true"
-        tb:titleText="@string/login"/>
+        tb:titleText="@string/login" />
 
-    <ImageView
-        android:id="@+id/login_img"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:layout_below="@+id/login03_title"
-        android:layout_marginTop="15dp"
-        android:layout_centerHorizontal="true"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="100dp"
-        android:layout_below="@+id/login_img"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+        android:layout_below="@+id/titlebar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/acc_icn"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/login_name"
-                android:layout_marginLeft="5dp"
-                android:singleLine="true"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/pass_icn"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/login_pass"
-                android:layout_marginLeft="5dp"
-                android:singleLine="true"
-                />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
+        <ImageView
+            android:id="@+id/login_img"
+            android:layout_width="192dp"
+            android:layout_height="53dp"
             android:layout_gravity="center"
-            android:hint="@string/login"
-            android:textSize="18dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp"
+            android:src="@drawable/logo" />
+
+        <com.yun9.jupiter.widget.JupiterImageEditLayout xmlns:ie="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/userno_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            ie:image_edit_hint="@string/login_name"
+            ie:image_ico_src="@drawable/acc_icn"></com.yun9.jupiter.widget.JupiterImageEditLayout>
+
+        <com.yun9.jupiter.widget.JupiterImageEditLayout xmlns:ie="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/password_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            ie:image_edit_hint="@string/login_pass"
+            ie:image_ico_src="@drawable/pass_icn"></com.yun9.jupiter.widget.JupiterImageEditLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_border"
+                button:imageButtonText="@string/login">
+
+            </com.yun9.jupiter.widget.JupiterImageButtonLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>
-</ScrollView>

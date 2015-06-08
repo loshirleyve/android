@@ -82,4 +82,10 @@
         <attr name="item_image" format="reference"></attr>
         <attr name="item_badge_image" format="reference"></attr>
     </declare-styleable>
+
+    <declare-styleable name="JupiterImageEditLayout">
+        <attr name="image_ico_src" format="reference"></attr>
+        <attr name="image_edit_hint" format="string"></attr>
+
+    </declare-styleable>
 </resources>

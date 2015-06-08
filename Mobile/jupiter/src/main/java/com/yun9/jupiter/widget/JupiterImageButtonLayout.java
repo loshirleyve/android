@@ -23,6 +23,8 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
 
     private RelativeLayout buttonBarRL;
 
+    private LinearLayout loadingLL;
+
     public JupiterImageButtonLayout(Context context) {
         super(context);
     }
@@ -46,6 +48,7 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
         textTV = (TextView) findViewById(R.id.text_tv);
         buttonLL = (LinearLayout) findViewById(R.id.button_ll);
         buttonBarRL = (RelativeLayout) findViewById(R.id.button_rl);
+        loadingLL = (LinearLayout) findViewById(R.id.loading_view);
 
 
         this.initAttr(attrs);
@@ -78,6 +81,16 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
             a.recycle();
         }
 
+    }
+
+    public void setLoading(boolean state){
+        if (state){
+            this.loadingLL.setVisibility(View.VISIBLE);
+            buttonBarRL.setEnabled(false);
+        }else{
+            this.loadingLL.setVisibility(View.GONE);
+            buttonBarRL.setEnabled(true);
+        }
     }
 
     public ImageView getIcoIV() {
