@@ -123,7 +123,7 @@ public class DynamicSessionFragment extends JupiterFragment {
 
         dynamicSessionList.setHasMoreItems(true);
 
-        this.setUpMenu();
+       // this.setUpMenu();
     }
 
     private void setUpMenu() {

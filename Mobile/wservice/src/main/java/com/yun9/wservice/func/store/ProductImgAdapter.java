@@ -2,6 +2,7 @@ package com.yun9.wservice.func.store;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,37 +17,45 @@ import java.util.List;
  */
 public class ProductImgAdapter extends PagerAdapter{
     private Context context;
-    private List<Product> products;
 
-    private List<ProductScrollItemView> productScrollItemViews;
+    private List<ProductScrollItemView> mViews;
 
-    public ProductImgAdapter(Context context, List<Product> products){
+    public ProductImgAdapter(Context context,List<ProductScrollItemView> views){
         this.context = context;
-        this.products = products;
-        productScrollItemViews = new ArrayList<>();
+        this.mViews = views;
     }
     @Override
     public int getCount() {
-        if(AssertValue.isNotNullAndNotEmpty(products)) {
-            return products.size();
+        if(AssertValue.isNotNullAndNotEmpty(mViews)) {
+            return mViews.size();
         }else
             return 0;
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(productScrollItemViews.get(position));
+        //container.removeView(mViews.get(position));
+        ViewPager viewPager = (ViewPager) container;
+        viewPager.removeView((View) object);
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Product product = products.get(position);
+        /*Product product = products.get(position);
         ProductScrollItemView productScrollItemView = new ProductScrollItemView(context);
         productScrollItemView.buildWithData(product);
         container.addView(productScrollItemView);
         productScrollItemViews.add(productScrollItemView);
 
-        return productScrollItemView;
+        return productScrollItemViews.get(position);*/
+        container.addView(mViews.get(position));
+        return mViews.get(position);
+
     }
 
     @Override

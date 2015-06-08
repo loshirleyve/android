@@ -6,7 +6,7 @@
 
     <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/store_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tb:titleLeftIcoVisibility="true"
         tb:titleLeftText="@string/app_name"
@@ -19,37 +19,60 @@
         android:id="@+id/category_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/store_title">
+        android:layout_below="@id/store_title"></com.yun9.wservice.func.store.ProductCategoryLayout>
 
-    </com.yun9.wservice.func.store.ProductCategoryLayout>
-
-
-    <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/rotate_header_list_view_frame"
+    <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
+        android:id="@+id/productsImgScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/groupbackground"
-        android:layout_below="@+id/category_ll"
-        android:layout_alignParentBottom="true"
-        cube_ptr:ptr_duration_to_close="200"
-        cube_ptr:ptr_duration_to_close_header="1000"
-        cube_ptr:ptr_keep_header_when_refresh="true"
-        cube_ptr:ptr_pull_to_fresh="false"
-        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-        cube_ptr:ptr_resistance="1.7">
+        android:layout_below="@+id/category_ll" />
 
-        <ListView
-            android:id="@+id/product_list_ptr"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/productsImgScroll"
+        android:orientation="vertical">
+
+
+        <!--    <android.support.v4.view.ViewPager
+                android:id="@+id/productsImgScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                />-->
+
+
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rotate_header_list_view_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@null"
-            android:fadingEdge="none"
-            android:listSelector="@android:color/transparent"
-            android:scrollbarStyle="outsideOverlay"
-            android:choiceMode="singleChoice">
-        </ListView>
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/productsImgScroll"
+            android:background="@color/groupbackground"
+            cube_ptr:ptr_duration_to_close="200"
+            cube_ptr:ptr_duration_to_close_header="1000"
+            cube_ptr:ptr_keep_header_when_refresh="true"
+            cube_ptr:ptr_pull_to_fresh="false"
+            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+            cube_ptr:ptr_resistance="1.7">
 
-    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <ListView
+                    android:id="@+id/product_list_ptr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:choiceMode="singleChoice"
+                    android:divider="@null"
+                    android:fadingEdge="none"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbarStyle="outsideOverlay"></ListView>
 
+            </LinearLayout>
+
+        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    </LinearLayout>
 </RelativeLayout>

@@ -52,7 +52,10 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
                 textView.setText(categoryList.get(i).getCategoryname());
                 textView.setTextSize(20);
                 textView.setPadding(10, 10, 10, 10);
+                textView.setBackground(getResources().getDrawable(R.drawable.productcategory_background));
+
                 textView.setTag(categoryList.get(i));
+
                 textView.setTextColor(getResources().getColor(R.color.whites));
                 if (AssertValue.isNotNull(onClickListener)){
                     textView.setOnClickListener(onClickListener);

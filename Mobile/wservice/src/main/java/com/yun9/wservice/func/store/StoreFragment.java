@@ -2,12 +2,15 @@ package com.yun9.wservice.func.store;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragment;
+import com.yun9.jupiter.widget.JupiterAutoHeightViewPager;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
@@ -31,20 +34,21 @@ public class StoreFragment extends JupiterFragment {
     private ProductCategoryLayout productCategoryLayout;
     private ProductListAdapter productListAdapter;
 
-    private ProductScrollListView productScrollListView;
+    //private ProductScrollListView productScrollListView;
     private ProductImgAdapter productImgAdapter;
+    private List<ProductScrollItemView> productScrollItemViews;
+    private ViewPager viewPager;
 
     private LinkedList<Product> products;
     private List<ProductCategory> productCategoryList;
+    private TextView pcTV;
+
     private ProductCategory currProductCategory;
 
     private PtrClassicFrameLayout mPtrFrame;
 
-    @ViewInject(id = R.id.category_lll)
-    private LinearLayout linearLayout;
 
-
-    public static StoreFragment newInstance( Bundle args ) {
+    public static StoreFragment newInstance(Bundle args) {
         StoreFragment fragment = new StoreFragment();
         fragment.setArguments(args);
         return fragment;
@@ -58,10 +62,13 @@ public class StoreFragment extends JupiterFragment {
     @Override
     protected void initViews(View view) {
         productCategoryLayout = (ProductCategoryLayout) view.findViewById(R.id.category_ll);
+        //productScrollListView = (ProductScrollListView) view.findViewById(R.id.productsImgScroll);
         productListView = (ListView) view.findViewById(R.id.product_list_ptr);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
 
-        productScrollListView = new ProductScrollListView(mContext);
+        viewPager = (ViewPager) view.findViewById(R.id.productsImgScroll);
+
+        //productScrollListView = new ProductScrollListView(mContext);
 
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -91,64 +98,96 @@ public class StoreFragment extends JupiterFragment {
 
     private void refreshProduct() {
         //TODO 执行服务器刷新
-        if (AssertValue.isNotNull(currProductCategory)){
+        if (AssertValue.isNotNull(currProductCategory)) {
             new GetDataTask().execute();
         }
     }
 
-    private void completeRefreshProduct(){
-        if (!AssertValue.isNotNull(products)){
+    private void completeRefreshProduct() {
+        if (!AssertValue.isNotNull(products)) {
             products = new LinkedList<>();
         }
 
-        for(int i = 0; i < 3; i++){
+        LinkedList<Product> topProducts = new LinkedList<>();
+
+        for (int i = 0; i < 3; i++) {
             Product product = new Product();
             product.setProductid("" + i);
             product.setProductImg(currProductCategory.getCategoryname() + ";产品图片" + i);
             products.addFirst(product);
+            topProducts.addLast(product);
         }
 
-        if (!AssertValue.isNotNull(productListAdapter)){
-            productListAdapter = new ProductListAdapter(this.getActivity(),products);
+        this.builderViewPages(topProducts);
+
+        if (!AssertValue.isNotNull(productImgAdapter)) {
+            productImgAdapter = new ProductImgAdapter(this.getActivity(), productScrollItemViews);
+            viewPager.setAdapter(productImgAdapter);
+        } else {
+            productImgAdapter.notifyDataSetChanged();
+        }
+
+        if (!AssertValue.isNotNull(productListAdapter)) {
+            productListAdapter = new ProductListAdapter(this.getActivity(), products);
             productListView.setAdapter(productListAdapter);
-        }else{
+        } else {
             productListAdapter.notifyDataSetChanged();
         }
-
-//        if (!AssertValue.isNotNull(productImgAdapter)){
-//            productImgAdapter = new ProductImgAdapter(this.mContext,products);
-//            productScrollListView.getViewPager().setAdapter(productImgAdapter);
-//        }else{
-//            productImgAdapter.notifyDataSetChanged();
-//        }
 
         mPtrFrame.refreshComplete();
 
     }
 
-    private void refreshProductCategory(){
+    private void builderViewPages(LinkedList<Product> topProducts) {
+        if (!AssertValue.isNotNull(productScrollItemViews)) {
+            this.productScrollItemViews = new ArrayList<>();
+        }
+
+        if (AssertValue.isNotNull(topProducts)) {
+            for (Product product : topProducts) {
+                ProductScrollItemView view = new ProductScrollItemView(mContext);
+                view.buildWithData(product);
+                view.setTag(product);
+                this.productScrollItemViews.add(view);
+            }
+        }
+    }
+
+    private void refreshProductCategory() {
         List<ProductCategory> productCategories = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++){
-            ProductCategory productCategory = new ProductCategory("分类" + i);
-            productCategories.add(productCategory);
-        }
+        ProductCategory productCategory1 = new ProductCategory("精选");
+        ProductCategory productCategory2 = new ProductCategory("财务");
+        ProductCategory productCategory3 = new ProductCategory("行政");
+        ProductCategory productCategory4 = new ProductCategory("理财");
+
+        productCategories.add(productCategory1);
+        productCategories.add(productCategory2);
+        productCategories.add(productCategory3);
+        productCategories.add(productCategory4);
 
         this.onCategoryComplete(productCategories);
 
     }
 
-    private void onCategoryComplete(List<ProductCategory> productCategories){
-        if (AssertValue.isNotNullAndNotEmpty(productCategories)){
+    private void onCategoryComplete(List<ProductCategory> productCategories) {
+        if (AssertValue.isNotNullAndNotEmpty(productCategories)) {
             this.productCategoryList = productCategories;
             productCategoryLayout.setOnClickListener(onCategoryClickListener);
             productCategoryLayout.buildWidthData(productCategoryList);
         }
     }
 
-    private void cleanProduct(){
-        if (AssertValue.isNotNullAndNotEmpty(products)){
-           products.removeAll(products);
+    private void cleanProduct() {
+        if (AssertValue.isNotNullAndNotEmpty(products)) {
+            products.clear();
+        }
+
+        if (AssertValue.isNotNullAndNotEmpty(productScrollItemViews)) {
+            productScrollItemViews.clear();
+            if (AssertValue.isNotNull(productImgAdapter)) {
+                productImgAdapter.notifyDataSetChanged();
+            }
         }
 
     }
@@ -172,7 +211,7 @@ public class StoreFragment extends JupiterFragment {
         }
     }
 
-   private  View.OnClickListener onCategoryClickListener =  new View.OnClickListener() {
+    private View.OnClickListener onCategoryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             currProductCategory = (ProductCategory) v.getTag();
@@ -183,7 +222,7 @@ public class StoreFragment extends JupiterFragment {
                     public void run() {
                         mPtrFrame.autoRefresh();
                     }
-                },100);
+                }, 100);
             }
         }
     };

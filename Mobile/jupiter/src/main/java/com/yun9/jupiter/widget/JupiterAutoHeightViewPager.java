@@ -15,10 +15,10 @@ import com.yun9.jupiter.util.PublicHelp;
  * 由于Viewpager嵌套在ScrollView中时，原生的Viewpager不能自适应高度，
  * 所以采用这个定制的ViewPager，重写onMeasure方法，重写计算高度
  */
-public class JupiterAutoHeightViewPager extends ViewPager{
+public class JupiterAutoHeightViewPager extends ViewPager {
 
     // TODO 额外工具条的高度，如果ViewPager下面有其他元素，Viewpager内容会被挡到
-    private int extraHeight = 50;// 下面toolbar的高度
+    private int extraHeight = 70;// 下面toolbar的高度
 
     private int height;
 
@@ -32,7 +32,8 @@ public class JupiterAutoHeightViewPager extends ViewPager{
         super(context, attrs);
     }
 
-    @Override
+
+   /* @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (height <= getExtraHeight()) {
             // 下面遍历所有child的高度
@@ -51,19 +52,38 @@ public class JupiterAutoHeightViewPager extends ViewPager{
                     MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, measureHeight);
+    }*/
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        int height = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+            int h = child.getMeasuredHeight();
+            if (h > height) height = h;
+        }
+
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+
 
     private int getWindowsHeight() {
         WindowManager wm = (WindowManager) getContext()
                 .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics  dm = new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(dm);
         int screenHeight = dm.heightPixels;
         return screenHeight;
     }
 
     public int getExtraHeight() {
-        return PublicHelp.dip2px(getContext(),extraHeight);
+        return PublicHelp.dip2px(getContext(), extraHeight);
     }
 
     public void setExtraHeight(int extraHeight) {
