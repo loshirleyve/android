@@ -177,7 +177,7 @@ public class LoginActivity extends JupiterFragmentActivity {
             //登录成功
             sessionManager.loginIn(user);
             //执行切换到当前机构
-            sessionManager.changeInst(sessionManager.getInst(user.getId()));
+            sessionManager.changeInst(inst);
             setResult(LoginCommand.RESULT_CODE_OK);
             finish();
         }

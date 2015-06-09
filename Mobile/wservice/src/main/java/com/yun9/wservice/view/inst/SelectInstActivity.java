@@ -4,12 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -31,14 +37,18 @@ public class SelectInstActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
-    public static void start(Activity activity,SelectInstCommand command) {
+    private List<Inst> insts;
+
+    private SelectInstAdapter selectInstAdapter;
+
+    public static void start(Activity activity, SelectInstCommand command) {
         Intent intent = new Intent(activity, SelectInstActivity.class);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("command",command);
+        bundle.putSerializable("command", command);
         intent.putExtras(bundle);
 
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, SelectInstCommand.REQUEST_CODE);
     }
 
     @Override
@@ -60,6 +70,8 @@ public class SelectInstActivity extends JupiterFragmentActivity {
             }
         });
 
+        this.instListView.setOnItemClickListener(onInstItemClickListener);
+
         mPtrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -73,15 +85,52 @@ public class SelectInstActivity extends JupiterFragmentActivity {
             public void run() {
                 mPtrClassicFrameLayout.autoRefresh();
             }
-        },100);
+        }, 100);
     }
 
-    private void refresh(){
+    private void refresh() {
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPtrClassicFrameLayout.refreshComplete();
+                completeRefresh();
             }
-        },1000);
+        }, 1000);
     }
+
+    private void completeRefresh() {
+
+        if (!AssertValue.isNotNull(insts)) {
+            this.insts = new ArrayList<>();
+        }
+
+        this.insts.clear();
+
+        Inst tempInst = new Inst();
+        tempInst.setName("深圳市顶聚科技有限公司");
+        tempInst.setId("123123");
+        this.insts.add(tempInst);
+
+        if (!AssertValue.isNotNull(selectInstAdapter)) {
+            this.selectInstAdapter = new SelectInstAdapter(this, insts);
+            instListView.setAdapter(selectInstAdapter);
+        } else {
+            selectInstAdapter.notifyDataSetChanged();
+        }
+
+        mPtrClassicFrameLayout.refreshComplete();
+    }
+
+    private AdapterView.OnItemClickListener onInstItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Inst inst = (Inst) view.getTag();
+
+            if (AssertValue.isNotNull(inst)) {
+                Intent intent = new Intent();
+                intent.putExtra(SelectInstCommand.PARAM_INST, inst);
+                setResult(SelectInstCommand.RESULT_CODE_OK, intent);
+                SelectInstActivity.this.finish();
+            }
+        }
+    };
 }

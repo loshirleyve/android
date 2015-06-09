@@ -157,6 +157,11 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
         this.getArrowRightIV().setVisibility(show);
     }
 
+    public void setShowSutitleText(boolean isShow){
+        int show = isShow?View.VISIBLE:View.GONE;
+        this.getSutitleTv().setVisibility(show);
+    }
+
     public void setSelectMode(boolean mode) {
         if (mode) {
             selected = false;

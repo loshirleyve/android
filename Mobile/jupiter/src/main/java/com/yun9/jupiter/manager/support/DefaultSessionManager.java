@@ -152,7 +152,7 @@ public class DefaultSessionManager implements SessionManager, Bean,
             Inst oldInst = this.getInst();
 
             //新旧机构相同无需切换
-            if (oldInst.getId().equals(newInst.getId())) {
+            if (AssertValue.isNotNull(oldInst) && oldInst.getId().equals(newInst.getId())) {
                 return;
             }
 

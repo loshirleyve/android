@@ -37,7 +37,7 @@
     <string name="user_mycontact">我的客户</string>
     <string name="user_signature">个性签名</string>
     <string name="setting">设置</string>
-    <string name="switch_acc">切换账户</string>
+    <string name="switch_acc">切换机构</string>
     <string name="scan_frame">扫一扫</string>
     <string name="activity_dynamice_category">分类</string>
 
