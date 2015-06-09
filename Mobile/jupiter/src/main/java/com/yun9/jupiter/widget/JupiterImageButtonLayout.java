@@ -93,6 +93,12 @@ public class JupiterImageButtonLayout extends JupiterRelativeLayout {
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        this.buttonBarRL.setEnabled(enabled);
+    }
+
     public ImageView getIcoIV() {
         return icoIV;
     }

@@ -1,50 +1,47 @@
 package com.yun9.jupiter.manager;
 
-import android.content.Context;
-
-import com.yun9.jupiter.model.AuthInfo;
-import com.yun9.jupiter.model.Device;
 import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.model.User;
 
 public interface SessionManager {
 
-	public static final String FIRST = "first";
+    public static final String FIRST_STATE = "first";
 
-	public static final String LOGIN = "login";
+    public static final String LOGIN_STATE = "login";
 
-	public static final String AUTHINFO = "authInfo";
+    public static final String USER_INFO = "userinfo";
 
-	public boolean isFirst();
+    public static final String INST_INFO = "instinfo";
 
-	public void setFirst(boolean first);
+    public void clean();
 
-	public void setLocalString(String key, String value);
+    public boolean isLogin();
 
-	public void setLocalBoolean(String key, boolean value);
+    public User getUser();
 
-	public String getLocalString(String key, String defaultVal);
+    public Inst getInst();
 
-	public Boolean getLocalBoolean(String key, boolean defaultVal);
+    public void loginIn(User user);
 
-	public void clean();
+    public void logout(User user);
 
-	public Device getDevice();
+    public void changeInst(Inst newInst);
 
-	public void loadDeviceInfos(Context cxt);
+    public void regOnLoginListener(OnLoginListener onLoginListener);
 
-	public void setLocationParams();
+    public void regOnLogoutListener(OnLogoutListener onLogoutListener);
 
-	public void loadLocationParams();
+    public void regOnChangeInstListener(OnChangeInstListener onChangeInstListener);
 
-	public void cleanLocalParams();
+    public interface OnLoginListener {
+        public void login(User user);
+    }
 
-	public AuthInfo getAuthInfo();
+    public interface OnLogoutListener {
+        public void logout(User user);
+    }
 
-	public void setAuthInfo(AuthInfo authInfo);
-
-	public boolean isLogin();
-
-	public void setLogin(boolean login);
-
-	public void changeInst(Inst oldInst, Inst newInst);
+    public interface OnChangeInstListener {
+        public void changeInst(Inst inst);
+    }
 }

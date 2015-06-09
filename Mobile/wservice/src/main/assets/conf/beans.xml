@@ -10,6 +10,7 @@
     <bean class="com.yun9.jupiter.location.BaiduLocationFactory"></bean>
     <!--<bean class="com.yun9.jupiter.location.EmptyLocationFactory"></bean>-->
     <bean class="com.yun9.jupiter.navigation.DefaultNavigationManager"></bean>
+    <bean class="com.yun9.jupiter.manager.support.DefaultDeviceManager"></bean>
 
     <!--
 	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>

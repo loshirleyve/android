@@ -23,7 +23,7 @@ public class UserDataCache extends AbsCache{
 			JupiterApplication jupiterApplication = JupiterApplication.mInstance;
 			BeanManager beanManager =jupiterApplication.getBeanManager();
 			SessionManager sessionManger = null;
-			String currUserId = sessionManger.getAuthInfo().getUserinfo().getId();
+			String currUserId = sessionManger.getUser().getId();
 			if (instance == null) {
 				instance = new UserDataCache(currUserId);
 			} else {

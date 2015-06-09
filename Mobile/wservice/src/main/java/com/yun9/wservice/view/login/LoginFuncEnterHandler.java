@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -11,7 +12,7 @@ import com.yun9.jupiter.navigation.NavigationBean;
  */
 public class LoginFuncEnterHandler implements FuncEnterHandler {
     @Override
-    public void enter(Context context, Bundle bundle, NavigationBean navigationBean) {
-        LoginMainActivity.start(context,bundle);
+    public void enter(Activity activity, Bundle bundle, NavigationBean navigationBean) {
+        LoginMainActivity.start(activity,new LoginCommand());
     }
 }

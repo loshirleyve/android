@@ -184,7 +184,7 @@ public class MicroAppFragment extends JupiterFragment {
             if (MicroAppBean.TYPE_GROUP.equals(microAppBean.getType())) {
                 showPopWin(microAppBean,view);
             } else if (MicroAppBean.TYPE_ITEM.equals(microAppBean.getType())) {
-                navigationManager.navigation(mContext,null,microAppBean);
+                navigationManager.navigation(getActivity(),null,microAppBean);
                 popupWindow.dismiss();
             }
         }

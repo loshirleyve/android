@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
@@ -19,6 +20,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.func.store.StoreFragment;
 import com.yun9.wservice.view.dynamic.DynamicSessionFragment;
+import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.microapp.MicroAppFragment;
 import com.yun9.wservice.view.myself.UserFragment;
 
@@ -159,5 +161,15 @@ public class MainActivity extends JupiterFragmentActivity  {
         ft.replace(R.id.main_fl_content, fragment,
                 MainActivity.class.getName());
         ft.commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK){
+            Toast.makeText(this,"登录成功！",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

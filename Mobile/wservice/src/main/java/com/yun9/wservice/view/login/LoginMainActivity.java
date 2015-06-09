@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,8 @@ import com.yun9.wservice.R;
 public class LoginMainActivity extends JupiterFragmentActivity {
     private static final Logger logger = Logger.getLogger(LoginMainActivity.class);
 
+    private LoginCommand command;
+
     @ViewInject(id = R.id.login_button_main)
     private Button loginButton;
 
@@ -37,8 +40,7 @@ public class LoginMainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("登录按钮被点击！");
-            Intent i = new Intent(LoginMainActivity.this, LoginActivity.class);
-            startActivity(i);
+            LoginActivity.start(LoginMainActivity.this, command);
         }
     };
 
@@ -54,23 +56,25 @@ public class LoginMainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("模拟账户按钮被点击！");
-            Intent i = new Intent(LoginMainActivity.this, MailRegisterActivity.class);
-            startActivity(i);
+            LoginActivity.start(LoginMainActivity.this, command.setDemo(true));
         }
     };
 
-    public static void start(Context context, Bundle bundle) {
-        Intent intent = new Intent(context, LoginMainActivity.class);
-        if (AssertValue.isNotNull(bundle)) {
-            intent.putExtras(bundle);
-        }
-        context.startActivity(intent);
+    public static void start(Activity activity, LoginCommand command) {
+        Intent intent = new Intent(activity, LoginMainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("command", command);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent, LoginCommand.REQUEST_CODE);
     }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        command = (LoginCommand) this.getIntent().getSerializableExtra("command");
 
         this.loginButton.setOnClickListener(loginOnClickListener);
         this.freeReg.setOnClickListener(freeOnClickListener);
@@ -79,9 +83,23 @@ public class LoginMainActivity extends JupiterFragmentActivity {
         loginTitle.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setResult(LoginCommand.RESULT_CODE_CANCEL);
                 LoginMainActivity.this.finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK) {
+            setResult(LoginCommand.RESULT_CODE_OK);
+            finish();
+
+        } else if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_CANCEL) {
+
+        }
     }
 
     @Override

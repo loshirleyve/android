@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <repositorys>
 	<repository>
+		<name>CheckUserPassword</name>
+		<action>com.yun9.sys.inst.serivce.QueryIdentificationByUsernoAndPasswd</action>
+		<output>
+			<classname>com.yun9.jupiter.model.User</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+
+	<repository>
 		<name>SysUserQuery</name>
 		<action>com.yun9.sys.inst.support.service.SysUserQueryService</action>
 		<output>      

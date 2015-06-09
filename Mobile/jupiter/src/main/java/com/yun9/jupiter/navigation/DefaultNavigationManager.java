@@ -1,5 +1,6 @@
 package com.yun9.jupiter.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -29,20 +30,20 @@ public class DefaultNavigationManager implements NavigationManager, Bean, Initia
     private BeanManager beanManager;
 
     @Override
-    public void navigation(Context context,Bundle bundle, NavigationBean navigationBean) {
+    public void navigation(Activity activity,Bundle bundle, NavigationBean navigationBean) {
 
         //首先查找功能入口，如果功能入口不存在则查找公共处理器
         FuncEnterHandler funcEnterHandler = this.findFuncEnterHandler(navigationBean);
 
         if (AssertValue.isNotNull(funcEnterHandler)){
-            funcEnterHandler.enter(context,bundle,navigationBean);
+            funcEnterHandler.enter(activity,bundle,navigationBean);
         }else{
             NavigationHandler handler = this.findHandler(navigationBean);
 
             if (AssertValue.isNotNull(handler)) {
-                handler.navigation(context, navigationBean);
+                handler.navigation(activity, navigationBean);
             } else {
-                Toast.makeText(context, "没有找到导航功能！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "没有找到导航功能！", Toast.LENGTH_SHORT).show();
             }
         }
     }
