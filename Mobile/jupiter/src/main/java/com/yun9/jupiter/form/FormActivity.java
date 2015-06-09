@@ -45,7 +45,7 @@ public class FormActivity extends JupiterFragmentActivity {
 
     private Map<Integer, IFormActivityCallback> activityCallbackMap;
 
-    private int baseRequestCode = REQUEST_CODE.NORMAL;
+    private int baseRequestCode = 10000;
 
     @Override
     protected int getContentView() {
@@ -249,12 +249,22 @@ public class FormActivity extends JupiterFragmentActivity {
     }
 
     public int addActivityCallback(IFormActivityCallback callback) {
+        if (callback == null) {
+            callback = EMPTY_CALL_BACK;
+        }
         int requestCode = generateRequestCode();
         activityCallbackMap.put(requestCode, callback);
         return requestCode;
     }
 
-    public int generateRequestCode() {
+    public void addActivityCallback(int requestCode,IFormActivityCallback callback) {
+        if (callback == null) {
+            callback = EMPTY_CALL_BACK;
+        }
+        activityCallbackMap.put(requestCode, callback);
+    }
+
+    private int generateRequestCode() {
         return ++baseRequestCode;
     }
 
@@ -267,14 +277,17 @@ public class FormActivity extends JupiterFragmentActivity {
         }
     }
 
-    public class REQUEST_CODE {
-        public static final int NORMAL = 100;
-    }
-
     public class RESPONSE_CODE {
         public static final int COMPLETE = 100;
         public static final int CANCEL = 200;
     }
+
+    private static final IFormActivityCallback EMPTY_CALL_BACK = new IFormActivityCallback() {
+        @Override
+        public void onActivityResult(int resultCode, Intent data) {
+
+        }
+    };
 
     public interface IFormActivityCallback {
         public void onActivityResult(int resultCode, Intent data);

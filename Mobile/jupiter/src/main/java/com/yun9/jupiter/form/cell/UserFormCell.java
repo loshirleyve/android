@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
@@ -60,7 +62,6 @@ public class UserFormCell extends FormCell{
     }
 
     private void setupEditIco() {
-        appendAddButton();
         adapter = new BasicJupiterEditAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
@@ -82,14 +83,7 @@ public class UserFormCell extends FormCell{
     private void restore() {
         if (cellBean.getValue() != null) {
             List<Map<String, String>> mapList = new ArrayList<>((List<Map<String, String>>) cellBean.getValue());
-            JupiterTextIco item;
-            for (int i = 0; i < mapList.size(); i++) {
-                item = createItem(mapList.get(i));
-                item.setTitle("成员名称");
-                item.setImage(mapList.get(i).get(PARAM_KEY_VALUE));
-                item.showCorner();
-            }
-            adapter.notifyDataSetChanged();
+            reload(mapList);
         }
     }
 
@@ -117,12 +111,22 @@ public class UserFormCell extends FormCell{
      * 激活选择用户Activity
      */
     private void choiceUserOrDept() {
-        Map<String,String> map = new HashMap<>();
-        map.put(PARAM_KEY_TYPE,UserFormCellBean.MODE.USER+"");
-        map.put(PARAM_KEY_VALUE, "drawable://" + R.drawable.user_head);
-        JupiterTextIco item = createItem(map);
-        item.setImage(map.get(PARAM_KEY_VALUE))
-                                    .setTitle("成员名称").showCorner();
+        FormUtilFactory.BizExecutor executor = findBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_USER_OR_DEPT);
+        if (executor != null) {
+            executor.execute((FormActivity) this.context,this);
+        }
+    }
+
+    public void reload(List<Map<String,String>> uodMaps) {
+        itemList.clear();
+        appendAddButton();
+        JupiterTextIco item;
+        for (int i = 0; i < uodMaps.size(); i++) {
+            item = createItem(uodMaps.get(i));
+            item.setTitle("成员名称");
+            item.setImage(uodMaps.get(i).get(PARAM_KEY_VALUE));
+            item.showCorner();
+        }
         adapter.notifyDataSetChanged();
     }
 
