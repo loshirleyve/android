@@ -35,6 +35,7 @@ public class ProductScrollItemView extends JupiterRelativeLayout{
         textView2.setText(product.getProductImg());
         textView3.setText(product.getProductImg());
     }
+
     @Override
     protected int getContextView() {
         return R.layout.widget_product_scroll_item;

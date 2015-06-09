@@ -46,13 +46,6 @@ public class ProductImgAdapter extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        /*Product product = products.get(position);
-        ProductScrollItemView productScrollItemView = new ProductScrollItemView(context);
-        productScrollItemView.buildWithData(product);
-        container.addView(productScrollItemView);
-        productScrollItemViews.add(productScrollItemView);
-
-        return productScrollItemViews.get(position);*/
         container.addView(mViews.get(position));
         return mViews.get(position);
 
