@@ -23,7 +23,6 @@ public class MainApplication extends JupiterApplication {
         super.onCreate();
         initImageLoader(getApplicationContext());
         this.regHandler();
-        this.initBizExcutors();
     }
 
     private void regHandler() {
@@ -50,10 +49,4 @@ public class MainApplication extends JupiterApplication {
         ImageLoader.getInstance().init(config.build());
     }
 
-    private void initBizExcutors() {
-        FormUtilFactory.getInstance()
-                .registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_VIEW_IMAGE,
-                        new ViewImageBizExecutor());
-        FormUtilFactory.getInstance().registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_MULTI_SELECT,new MultiSelectBizExcutor());
-    }
 }

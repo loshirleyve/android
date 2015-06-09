@@ -10,6 +10,8 @@ import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
+import com.yun9.jupiter.model.Org;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
@@ -41,6 +43,9 @@ public class UserFormCell extends FormCell{
 
     private Context context;
 
+    private FormUtilFactory.LoadValueHandler loadUserValueHandler;
+    private FormUtilFactory.LoadValueHandler loadOrgValueHandler;
+
     public UserFormCell(FormCellBean cellBean) {
         super(cellBean);
         this.cellBean = (UserFormCellBean) cellBean;
@@ -52,6 +57,8 @@ public class UserFormCell extends FormCell{
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_user, null);
         jupiterEditIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
         itemList = new ArrayList<>();
+        loadUserValueHandler = findLoadValueHandler(FormUtilFactory.LoadValueHandler.TYPE_USER);
+        loadOrgValueHandler = findLoadValueHandler(FormUtilFactory.LoadValueHandler.TYPE_ORG);
         this.build();
         setupEditIco();
         return rootView;
@@ -120,11 +127,29 @@ public class UserFormCell extends FormCell{
     public void reload(List<Map<String,String>> uodMaps) {
         itemList.clear();
         appendAddButton();
-        JupiterTextIco item;
         for (int i = 0; i < uodMaps.size(); i++) {
-            item = createItem(uodMaps.get(i));
-            item.setTitle("成员名称");
-            item.setImage(uodMaps.get(i).get(PARAM_KEY_VALUE));
+            final JupiterTextIco item = createItem(uodMaps.get(i));
+            if (uodMaps.get(i).get(PARAM_KEY_TYPE).equals("user")
+                    && loadUserValueHandler != null) {
+                loadUserValueHandler.load(uodMaps.get(i).get(PARAM_KEY_VALUE), new FormUtilFactory.LoadValueCompleted() {
+                    @Override
+                    public void callback(Object data) {
+                        User user = (User) data;
+                        item.setTitle(user.getName());
+                        item.setImage(user.getHeaderfileid());
+                    }
+                });
+            } else if (uodMaps.get(i).get(PARAM_KEY_TYPE).equals("org")
+                    && loadOrgValueHandler != null){
+                loadOrgValueHandler.load(uodMaps.get(i).get(PARAM_KEY_VALUE), new FormUtilFactory.LoadValueCompleted() {
+                    @Override
+                    public void callback(Object data) {
+                        Org org = (Org) data;
+                        item.setTitle(org.getName());
+                        item.setImage("drawable://"+R.drawable.fileicon);
+                    }
+                });
+            }
             item.showCorner();
         }
         adapter.notifyDataSetChanged();

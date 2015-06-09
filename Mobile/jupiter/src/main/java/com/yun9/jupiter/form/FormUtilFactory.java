@@ -85,12 +85,14 @@ public class FormUtilFactory {
     }
 
     public interface LoadValueHandler{
-
-        public void load(String type,String id,LoadValueCompleted callback);
+        public static final String TYPE_USER = "user";
+        public static final String TYPE_ORG = "org";
+        public static final String TYPE_FILE = "file";
+        public void load(String id,LoadValueCompleted callback);
     }
 
     public interface LoadValueCompleted{
-        public void callback(Map<String,Object> value);
+        public void callback(Object data);
     }
 
     public void registerBizExecutor(String type,BizExecutor executor) {
