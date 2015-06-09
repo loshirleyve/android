@@ -61,25 +61,25 @@ public class ProductListAdapter extends JupiterAdapter {
             case 1:
                 productItemLayout.getTitleTV().setText("代发工资");
                 productItemLayout.getSutitleTV().setText("代替企业自己，为员工发工资");
-                productItemLayout.getMainIV().setImageResource(R.drawable.mapp5);
+                productItemLayout.getMainIV().setImageResource(R.drawable.user_org);
                 productItemLayout.getHotnoticeTV().setText("每月200元");
                 break;
             case 2:
                 productItemLayout.getTitleTV().setText("缴交社保");
                 productItemLayout.getSutitleTV().setText("社保申报及缴纳");
-                productItemLayout.getMainIV().setImageResource(R.drawable.mapp4);
+                productItemLayout.getMainIV().setImageResource(R.drawable.user_org);
                 productItemLayout.getHotnoticeTV().setText("每月300元");
                 break;
             case 3:
                 productItemLayout.getTitleTV().setText("员工手册拟定");
                 productItemLayout.getSutitleTV().setText("拟定有效的员工手册，保证其程序合法、内容合法");
-                productItemLayout.getMainIV().setImageResource(R.drawable.mapp6);
+                productItemLayout.getMainIV().setImageResource(R.drawable.user_org);
                 productItemLayout.getHotnoticeTV().setText("每月400元");
                 break;
             default:
                 productItemLayout.getTitleTV().setText("员工手册拟定");
                 productItemLayout.getSutitleTV().setText("拟定有效的员工手册，保证其程序合法、内容合法");
-                productItemLayout.getMainIV().setImageResource(R.drawable.mapp2);
+                productItemLayout.getMainIV().setImageResource(R.drawable.user_org);
                 productItemLayout.getHotnoticeTV().setText("每月400元");
         }
 /*        productItemLayout.getTitleTV().setText(product.getProductImg());
