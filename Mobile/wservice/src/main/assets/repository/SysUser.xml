@@ -20,6 +20,15 @@
 		<type>yun9</type>
 	</repository>
 	<repository>
+		<name>QueryUserInfoByIdService</name>
+		<action>com.yun9.sys.user.service.QueryUserInfoByIdService</action>
+		<output>
+			<classname>com.yun9.jupiter.model.User</classname>
+			<type>object</type>
+		</output>
+		<type>yun9</type>
+	</repository>
+	<repository>
 		<name>SysUserPasswdValidate</name>
 		<action>com.yun9.sys.inst.support.service.SysUserPasswdValidateService</action>
 		<output>
