@@ -88,12 +88,22 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
             }
 
             if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage)){
-                boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage,false);
+                boolean showMainImage = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowMainImage, false);
 
                 if (showMainImage){
                     this.mainIV.setVisibility(View.VISIBLE);
                 }else{
                     this.mainIV.setVisibility(View.GONE);
+                }
+            }
+
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowSutitleText)){
+                boolean showSutitleText = typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowSutitleText,false);
+
+                if (showSutitleText){
+                    this.sutitleTv.setVisibility(View.VISIBLE);
+                }else{
+                    this.sutitleTv.setVisibility(View.GONE);
                 }
             }
 

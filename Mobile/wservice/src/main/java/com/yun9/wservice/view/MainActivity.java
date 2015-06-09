@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AssertValue;
@@ -105,6 +106,14 @@ public class MainActivity extends JupiterFragmentActivity {
         this.userBtn.setOnClickListener(onClickListener);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!sessionManager.isLogin()) {
+            switchFragment("store", storeBtn, false);
+        }
+    }
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -112,11 +121,11 @@ public class MainActivity extends JupiterFragmentActivity {
             preButton = v;
 
             if ("store".equals(currType)) {
-                switchFragment(currType, v);
+                switchFragment(currType, v, false);
             } else {
                 //其他类型需要检查是否登录
                 if (sessionManager.isLogin()) {
-                    switchFragment(v.getTag().toString(), v);
+                    switchFragment(v.getTag().toString(), v, false);
                 } else {
                     //还没有登陆系统，需要先登陆
                     LoginMainActivity.start(MainActivity.this, new LoginCommand());
@@ -125,30 +134,30 @@ public class MainActivity extends JupiterFragmentActivity {
         }
     };
 
-    private void switchFragment(String type, View v) {
+    private void switchFragment(String type, View v, boolean refresh) {
         if ("store".equals(type)) {
-            if (!AssertValue.isNotNull(storeFragment)) {
+            if (!AssertValue.isNotNull(storeFragment) || refresh) {
                 Bundle bundle = new Bundle();
                 storeFragment = StoreFragment.newInstance(bundle);
             }
             pushFragment(storeFragment);
             setButton(v);
         } else if ("dynamic".equals(type)) {
-            if (!AssertValue.isNotNull(dynamicSessionFragment)) {
+            if (!AssertValue.isNotNull(dynamicSessionFragment) || refresh) {
                 Bundle bundle = new Bundle();
                 dynamicSessionFragment = DynamicSessionFragment.newInstance(bundle);
             }
             pushFragment(dynamicSessionFragment);
             setButton(v);
         } else if ("microapp".equals(type)) {
-            if (!AssertValue.isNotNull(microAppFragment)) {
+            if (!AssertValue.isNotNull(microAppFragment) || refresh) {
                 Bundle bundle = new Bundle();
                 microAppFragment = MicroAppFragment.newInstance(bundle);
             }
             pushFragment(microAppFragment);
             setButton(v);
         } else if ("user".equals(type)) {
-            if (!AssertValue.isNotNull(userFragment)) {
+            if (!AssertValue.isNotNull(userFragment) || refresh) {
                 userFragment = UserFragment.newInstance(null);
             }
             pushFragment(userFragment);
@@ -180,7 +189,7 @@ public class MainActivity extends JupiterFragmentActivity {
         if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK) {
             Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
             //切换到之前准备打开的页面
-            this.switchFragment(currType, preButton);
+            this.switchFragment(currType, preButton, true);
         }
 
     }
