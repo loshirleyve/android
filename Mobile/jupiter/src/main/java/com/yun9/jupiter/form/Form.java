@@ -105,6 +105,17 @@ public class Form implements java.io.Serializable {
         return map;
     }
 
+    public String validate() {
+        String message = null;
+        for (FormCell cell : cells){
+           message = cell.validate();
+            if (AssertValue.isNotNullAndNotEmpty(message)) {
+                return message;
+            }
+        }
+        return message;
+    }
+
     public Object getCellValue(String key) {
         for (FormCell tmp : cells) {
             if (tmp.getFormCellBean().getKey().equals(key)) {

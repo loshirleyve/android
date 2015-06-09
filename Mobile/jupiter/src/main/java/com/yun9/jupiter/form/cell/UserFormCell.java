@@ -148,4 +148,22 @@ public class UserFormCell extends FormCell{
     public FormCellBean getFormCellBean() {
         return cellBean;
     }
+
+    @Override
+    public String validate() {
+        List<Map<String,String>> uodMaps = (List<Map<String, String>>) getValue();
+        if (cellBean.isRequired()
+                && uodMaps.size() == 0){
+            return "请选择 " + cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && uodMaps.size() < cellBean.getMinNum()){
+            return cellBean.getLabel()+" 至少需要 "+cellBean.getMinNum()+" 个";
+        }
+        if (cellBean.getMaxNum() > 0 &&
+                uodMaps.size() > cellBean.getMaxNum()){
+            return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
+        }
+        return null;
+    }
 }

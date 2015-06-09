@@ -71,4 +71,22 @@ public class TextFormCell extends FormCell {
     public FormCellBean getFormCellBean() {
         return cellBean;
     }
+
+    @Override
+    public String validate() {
+        String value = (String) getValue();
+        if (cellBean.isRequired()
+                && !AssertValue.isNotNullAndNotEmpty(value)) {
+            return "请填写 "+cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && value.length() < cellBean.getMinNum()){
+            return cellBean.getLabel() + " 的长度必须大于 "+cellBean.getMinNum();
+        }
+        if (cellBean.getMaxNum() > 0
+                && value.length() > cellBean.getMaxNum()) {
+            return cellBean.getLabel() + " 的长度必须小于 "+cellBean.getMaxNum();
+        }
+        return null;
+    }
 }

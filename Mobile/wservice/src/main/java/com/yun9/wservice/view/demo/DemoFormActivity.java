@@ -102,7 +102,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         ImageFormCellBean imageFormCell = new ImageFormCellBean();
         imageFormCell.setMaxNum(3);
         imageFormCell.setKey("testImage");
-        imageFormCell.setValue("1,2");
+        imageFormCell.setValue(new String[]{"1","2"});
         imageFormCell.setType(ImageFormCell.class.getSimpleName());
         imageFormCell.setLabel("测试图片选择");
         formBean.putCellBean(imageFormCell);
