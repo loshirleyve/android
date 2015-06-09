@@ -90,7 +90,7 @@ public class MultiSelectFormCell extends FormCell {
     private void openActivity() {
         if (executor != null) {
             Map<String,Object> config = new HashMap<>();
-            config.put("isCacelable",true);
+            config.put("isCancelable",true);
             config.put("ctrlCode",cellBean.getCtrlCode());
             config.put("options", cellBean.getOptionMap());
             config.put("selectedList", getValue());
@@ -139,5 +139,22 @@ public class MultiSelectFormCell extends FormCell {
     @Override
     public FormCellBean getFormCellBean() {
         return cellBean;
+    }
+
+    @Override
+    public String validate() {
+        if (cellBean.isRequired()
+                && itemList.size() == 0){
+            return "请选择 " + cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && itemList.size() < cellBean.getMinNum()){
+            return cellBean.getLabel()+" 至少需要 "+cellBean.getMinNum()+" 个";
+        }
+        if (cellBean.getMaxNum() > 0 &&
+                itemList.size() > cellBean.getMaxNum()){
+            return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
+        }
+        return null;
     }
 }

@@ -99,14 +99,11 @@ public class FormActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View view) {
                 if (!edit) {
-                    FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
-                    FormActivity.this.finish();
+                    doCancel();
                     return;
                 }
                 if (form.getFormBean().isSaveFormWhenGoBack()) {
-                    gatherFormBean();
-                    FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-                    FormActivity.this.finish();
+                    doComplete();
                     return;
                 }
                 new AlertDialog.Builder(FormActivity.this).setTitle("确认放弃修改？")
@@ -116,8 +113,7 @@ public class FormActivity extends JupiterFragmentActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // 点击“确认”后的操作
-                                FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
-                                FormActivity.this.finish();
+                                doCancel();
 
                             }
                         })
@@ -179,9 +175,7 @@ public class FormActivity extends JupiterFragmentActivity {
         submitTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gatherFormBean();
-                FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-                FormActivity.this.finish();
+                doComplete();
             }
         });
 
@@ -214,6 +208,23 @@ public class FormActivity extends JupiterFragmentActivity {
                 }
             }
         }
+    }
+
+    private void doComplete() {
+        // 验证表单
+        String message = form.validate();
+        if (AssertValue.isNotNullAndNotEmpty(message)){
+            this.showToast(message);
+            return;
+        }
+        gatherFormBean();
+        FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
+        FormActivity.this.finish();
+    }
+
+    private void doCancel() {
+        FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
+        FormActivity.this.finish();
     }
 
     /**

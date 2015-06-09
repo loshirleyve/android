@@ -86,6 +86,23 @@ public class DetailFormCell extends FormCell {
         return cellBean;
     }
 
+    @Override
+    public String validate() {
+        if (cellBean.isRequired()
+                && detailFormBeans.size() == 0) {
+            return "请添加 "+cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && detailFormBeans.size() < cellBean.getMinNum()){
+            return cellBean.getLabel()+" 至少需要 "+cellBean.getMinNum()+" 个";
+        }
+        if (cellBean.getMaxNum() > 0 &&
+                detailFormBeans.size() > cellBean.getMaxNum()){
+            return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
+        }
+        return null;
+    }
+
     /**
      * 进入二级表单
      */

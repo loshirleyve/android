@@ -105,7 +105,7 @@ public class ImageFormCell extends FormCell {
         if (cellBean.getValue() == null) {
             return;
         }
-        String[] ids = ((String) cellBean.getValue()).split(",");
+        String[] ids = ((String[]) cellBean.getValue());
         for (String id : ids) {
             createItem(id);
         }
@@ -192,21 +192,36 @@ public class ImageFormCell extends FormCell {
 
     @Override
     public Object getValue() {
-        StringBuffer sb = new StringBuffer();
+        List<String> ids = new ArrayList<>();
         for (JupiterEditableView ico : itemList) {
             if (ico.getTag() != null) {
-                sb.append(ico.getTag()).append(",");
+                ids.add((String) ico.getTag());
             }
         }
-        if (sb.length() > 0) {
-            return sb.substring(0, sb.length() - 1);
-        }
-        return sb;
+        return ids;
     }
 
     @Override
     public FormCellBean getFormCellBean() {
         return cellBean;
+    }
+
+    @Override
+    public String validate() {
+        List<String> ids = (List<String>) getValue();
+        if (cellBean.isRequired()
+                && ids.size() == 0){
+            return "请选择 " + cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && ids.size() < cellBean.getMinNum()){
+            return cellBean.getLabel()+" 至少需要 "+cellBean.getMinNum()+" 个";
+        }
+        if (cellBean.getMaxNum() > 0 &&
+                ids.size() > cellBean.getMaxNum()){
+            return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
+        }
+        return null;
     }
 
 }

@@ -32,7 +32,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
     private String ctrlCode;
     private List<SerialableEntry<String, String>> selectedList;
     private List<SerialableEntry<String, String>> options;
-    private boolean isCacelable;
+    private boolean isCancelable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +63,8 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         if (tmp != null) {
             ctrlCode = (String) tmp;
         }
-        isCacelable = getIntent().getBooleanExtra("isCacelable", false);
-        if (isCacelable) {
+        isCancelable = getIntent().getBooleanExtra("isCancelable", false);
+        if (isCancelable) {
             options.add(0, new SerialableEntry<String, String>(CACEL_ITEM_ID,CACEL_ITEM_NAME));
         }
     }

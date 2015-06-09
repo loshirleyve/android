@@ -121,7 +121,7 @@ public class FormUtilFactory {
          * config中可选参数：ctrlCode，控制编码
          * 可选参数：selectedMap，已选项；
          * 可选参数：options，可选项；其中ctrlCode跟options必须有一个不能为空
-         * 可选参数：isCacelable,默认false，是否可撤销，true会增加一个不使用的选项
+         * 可选参数：isCancelable,默认false，是否可撤销，true会增加一个不使用的选项
          * callback需要返回值：selectedList<Entry<String,String>>,key为被选择项的code，value为被选择项的显示名称
          */
         public static final String TYPE_MULTI_SELECT = "multiSelect";

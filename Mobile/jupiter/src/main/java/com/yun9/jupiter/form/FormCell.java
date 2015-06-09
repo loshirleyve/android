@@ -24,4 +24,6 @@ public abstract class FormCell implements java.io.Serializable{
     public abstract Object getValue();
 
     public abstract FormCellBean getFormCellBean();
+
+    public abstract String validate();
 }
