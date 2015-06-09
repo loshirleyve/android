@@ -226,6 +226,12 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.inst.SelectInstActivity"
+            android:label="@string/select_inst"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
 
     </application>
 

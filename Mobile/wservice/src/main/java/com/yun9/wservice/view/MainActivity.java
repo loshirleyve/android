@@ -187,7 +187,14 @@ public class MainActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK) {
+
+            //检查用户是否已经存在选择的机构信息
+            if (!AssertValue.isNotNull(sessionManager.getInst())){
+
+            }
+
             Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
+
             //切换到之前准备打开的页面
             this.switchFragment(currType, preButton, true);
         }

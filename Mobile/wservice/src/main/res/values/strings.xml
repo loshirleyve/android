@@ -48,6 +48,8 @@
     <string name="setting_logout">注销</string>
     <string name="setting_clean">清理缓存</string>
 
+    <string name="select_inst">选择机构</string>
+
 
     <string name="msg_card_context">#巡店报告#\n日期:2015年4月24日(星期五)\n地点：深圳市南山区沙河西路\n\卖场气氛:活跃\n卖场活动:买100送换100</string>
     <string name="msg_card_location">深圳市南山区西丽镇茶光路1003号</string>

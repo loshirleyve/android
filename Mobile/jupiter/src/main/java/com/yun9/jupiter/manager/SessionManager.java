@@ -21,6 +21,8 @@ public interface SessionManager {
 
     public Inst getInst();
 
+    public Inst getInst(String userid);
+
     public void loginIn(User user);
 
     public void logout(User user);
