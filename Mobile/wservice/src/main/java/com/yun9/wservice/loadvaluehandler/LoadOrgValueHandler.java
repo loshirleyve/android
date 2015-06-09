@@ -13,7 +13,6 @@ public class LoadOrgValueHandler implements FormUtilFactory.LoadValueHandler {
     public void load(String id, FormUtilFactory.LoadValueCompleted callback) {
         Org org = OrgCache.getInstance().getOrg(id);
         if (org == null) {
-            // 从服务器获取
             return;
         }
         callback.callback(org);
