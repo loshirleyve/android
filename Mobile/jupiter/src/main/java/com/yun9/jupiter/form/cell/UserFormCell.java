@@ -3,15 +3,20 @@ package com.yun9.jupiter.form.cell;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
+import com.yun9.jupiter.model.Org;
+import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
-import com.yun9.jupiter.widget.JupiterEditIcoAdapter;
+import com.yun9.jupiter.widget.JupiterEditAdapter;
+import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
-import com.yun9.jupiter.widget.JupiterTextIcoWithCorner;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,15 +33,18 @@ public class UserFormCell extends FormCell{
 
     private JupiterEditIco jupiterEditIco;
 
-    private JupiterEditIcoAdapter adapter;
+    private JupiterEditAdapter adapter;
 
     private UserFormCellBean cellBean;
 
-    private List<JupiterTextIco> itemList;
+    private List<JupiterEditableView> itemList;
 
     private boolean edit;
 
     private Context context;
+
+    private FormUtilFactory.LoadValueHandler loadUserValueHandler;
+    private FormUtilFactory.LoadValueHandler loadOrgValueHandler;
 
     public UserFormCell(FormCellBean cellBean) {
         super(cellBean);
@@ -49,6 +57,8 @@ public class UserFormCell extends FormCell{
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_user, null);
         jupiterEditIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
         itemList = new ArrayList<>();
+        loadUserValueHandler = findLoadValueHandler(FormUtilFactory.LoadValueHandler.TYPE_USER);
+        loadOrgValueHandler = findLoadValueHandler(FormUtilFactory.LoadValueHandler.TYPE_ORG);
         this.build();
         setupEditIco();
         return rootView;
@@ -59,30 +69,7 @@ public class UserFormCell extends FormCell{
     }
 
     private void setupEditIco() {
-        appendAddButton();
-        adapter = new JupiterEditIcoAdapter() {
-
-            @Override
-            public int getCount() {
-                return itemList.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public JupiterTextIco getItemView(int position, View convertView, ViewGroup parent) {
-                itemList.get(position).setEnabled(edit);
-                return itemList.get(position);
-            }
-        };
+        adapter = new BasicJupiterEditAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
     }
@@ -103,14 +90,7 @@ public class UserFormCell extends FormCell{
     private void restore() {
         if (cellBean.getValue() != null) {
             List<Map<String, String>> mapList = new ArrayList<>((List<Map<String, String>>) cellBean.getValue());
-            JupiterTextIco item;
-            for (int i = 0; i < mapList.size(); i++) {
-                item = createItem(mapList.get(i));
-                item.setTitle("成员名称");
-                item.setImage(mapList.get(i).get(PARAM_KEY_VALUE));
-                item.showCorner();
-            }
-            adapter.notifyDataSetChanged();
+            reload(mapList);
         }
     }
 
@@ -138,12 +118,40 @@ public class UserFormCell extends FormCell{
      * 激活选择用户Activity
      */
     private void choiceUserOrDept() {
-        Map<String,String> map = new HashMap<>();
-        map.put(PARAM_KEY_TYPE,UserFormCellBean.MODE.USER+"");
-        map.put(PARAM_KEY_VALUE, "drawable://" + R.drawable.user_head);
-        JupiterTextIco item = createItem(map);
-        item.setImage(map.get(PARAM_KEY_VALUE))
-                                    .setTitle("成员名称").showCorner();
+        FormUtilFactory.BizExecutor executor = findBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_USER_OR_DEPT);
+        if (executor != null) {
+            executor.execute((FormActivity) this.context,this);
+        }
+    }
+
+    public void reload(List<Map<String,String>> uodMaps) {
+        itemList.clear();
+        appendAddButton();
+        for (int i = 0; i < uodMaps.size(); i++) {
+            final JupiterTextIco item = createItem(uodMaps.get(i));
+            if (uodMaps.get(i).get(PARAM_KEY_TYPE).equals("user")
+                    && loadUserValueHandler != null) {
+                loadUserValueHandler.load(uodMaps.get(i).get(PARAM_KEY_VALUE), new FormUtilFactory.LoadValueCompleted() {
+                    @Override
+                    public void callback(Object data) {
+                        User user = (User) data;
+                        item.setTitle(user.getName());
+                        item.setImage(user.getHeaderfileid());
+                    }
+                });
+            } else if (uodMaps.get(i).get(PARAM_KEY_TYPE).equals("org")
+                    && loadOrgValueHandler != null){
+                loadOrgValueHandler.load(uodMaps.get(i).get(PARAM_KEY_VALUE), new FormUtilFactory.LoadValueCompleted() {
+                    @Override
+                    public void callback(Object data) {
+                        Org org = (Org) data;
+                        item.setTitle(org.getName());
+                        item.setImage("drawable://"+R.drawable.fileicon);
+                    }
+                });
+            }
+            item.showCorner();
+        }
         adapter.notifyDataSetChanged();
     }
 
@@ -156,7 +164,7 @@ public class UserFormCell extends FormCell{
     @Override
     public Object getValue() {
         List<Map<String,String>> uodMaps = new ArrayList<>();
-        JupiterTextIco item;
+        JupiterEditableView item;
         // 过滤第一个，添加按钮
         for (int i = 1; i < itemList.size(); i++) {
             item = itemList.get(i);
@@ -168,5 +176,23 @@ public class UserFormCell extends FormCell{
     @Override
     public FormCellBean getFormCellBean() {
         return cellBean;
+    }
+
+    @Override
+    public String validate() {
+        List<Map<String,String>> uodMaps = (List<Map<String, String>>) getValue();
+        if (cellBean.isRequired()
+                && uodMaps.size() == 0){
+            return "请选择 " + cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && uodMaps.size() < cellBean.getMinNum()){
+            return cellBean.getLabel()+" 至少需要 "+cellBean.getMinNum()+" 个";
+        }
+        if (cellBean.getMaxNum() > 0 &&
+                uodMaps.size() > cellBean.getMaxNum()){
+            return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
+        }
+        return null;
     }
 }

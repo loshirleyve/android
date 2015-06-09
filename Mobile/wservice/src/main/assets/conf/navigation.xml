@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation>
+    <enters>
+        <enter>
+            <name>locationdemo</name>
+            <clazz>com.yun9.wservice.view.demo.LocationFuncEnterHandler</clazz>
+        </enter>
+
+        <enter>
+            <name>login</name>
+            <clazz>com.yun9.wservice.view.login.LoginFuncEnterHandler</clazz>
+        </enter>
+
+    </enters>
+
+    <handlers>
+        <!-- 公共的导航功能处理器，如果在enter中找不到对应的处理器将进入此项目中查找是否有支持的处理器
+        <handler>
+            <clazz>123</clazz>
+        </handler>
+        -->
+    </handlers>
+
+
+</navigation>

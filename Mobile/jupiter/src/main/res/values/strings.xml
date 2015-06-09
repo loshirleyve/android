@@ -16,7 +16,6 @@
     <string name="jupiter_loading">加载中...</string>
 
     <string name="jupiter_row_cell_title">测试标题内容</string>
-    <string name="jupiter_row_cell_sutitle">今天下午开发行cell功能，完成后将会方便调用，并且能够统一风格.</string>
     <string name="jupiter_row_cell_time">1小时前</string>
 
 

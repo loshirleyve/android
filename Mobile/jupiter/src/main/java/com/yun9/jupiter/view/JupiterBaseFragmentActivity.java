@@ -14,6 +14,7 @@ public abstract class JupiterBaseFragmentActivity extends FragmentActivity {
 
     private static boolean isShowToast = true;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

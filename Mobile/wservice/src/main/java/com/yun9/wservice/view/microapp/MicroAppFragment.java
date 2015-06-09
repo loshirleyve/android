@@ -1,18 +1,26 @@
 package com.yun9.wservice.view.microapp;
 
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.yun9.jupiter.navigation.NavigationBean;
+import com.yun9.jupiter.navigation.NavigationManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MicroAppBean;
-import com.yun9.wservice.view.demo.LocationActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +43,20 @@ public class MicroAppFragment extends JupiterFragment {
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrFrame;
 
-    private List<MicroAppBean> microAppBeans;
+    @BeanInject
+    private NavigationManager navigationManager;
+
+    private List<NavigationBean> microAppBeans;
 
     private MicroAppGridViewAdapter microAppGridViewAdapter;
+
+    private List<NavigationBean> childMicroAppBeans;
+
+    private MicroAppGridViewAdapter childMicroAppGridViewAdapter;
+
+    private PopupWindow popupWindow;
+
+    private View popView;
 
 
     public static MicroAppFragment newInstance(Bundle args) {
@@ -61,6 +80,7 @@ public class MicroAppFragment extends JupiterFragment {
 
     @Override
     protected void initViews(View view) {
+        iniPopMicroGroupWindow();
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -68,7 +88,6 @@ public class MicroAppFragment extends JupiterFragment {
                 refresh();
             }
         });
-
         mPtrFrame.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -91,27 +110,83 @@ public class MicroAppFragment extends JupiterFragment {
             microAppBeans = new ArrayList<>();
         }
 
-        microAppBeans.removeAll(microAppBeans);
+        microAppBeans.clear();
+        microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "locationdemo", "地理位置测试", NavigationBean.TYPE_ITEM));
+        microAppBeans.add(new NavigationBean(System.currentTimeMillis()+"","login","登录测试",NavigationBean.TYPE_ITEM));
+
+        NavigationBean microAppBeanGroup1 = new NavigationBean(System.currentTimeMillis() + "","11", "申请", NavigationBean.TYPE_GROUP);
+
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "请假","1", NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "报销","2", NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "出差","3", NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "加班","4" ,NavigationBean.TYPE_ITEM));
+
+        microAppBeans.add(microAppBeanGroup1);
 
         for (int i = 0; i < 30; i++) {
-            MicroAppBean microAppBean = new MicroAppBean();
-            microAppBean.setName("应用" + (i + 1));
+            NavigationBean microAppBean = new NavigationBean(System.currentTimeMillis() + "",""+i, "应用" + (i + 1), NavigationBean.TYPE_ITEM);
             microAppBeans.add(microAppBean);
         }
 
         if (!AssertValue.isNotNull(microAppGridViewAdapter)) {
             microAppGridViewAdapter = new MicroAppGridViewAdapter(this.mContext, microAppBeans);
-            microAppGridViewAdapter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LocationActivity.start(MicroAppFragment.this.getActivity(), null);
-                }
-            });
-
+            microAppGridViewAdapter.setOnClickListener(onMicroAppClickListener);
             gridView.setAdapter(microAppGridViewAdapter);
-        }else{
+        } else {
             microAppGridViewAdapter.notifyDataSetChanged();
         }
         mPtrFrame.refreshComplete();
     }
+
+    private void iniPopMicroGroupWindow() {
+
+        childMicroAppBeans = new ArrayList<>();
+
+
+        childMicroAppGridViewAdapter = new MicroAppGridViewAdapter(mContext, childMicroAppBeans);
+        childMicroAppGridViewAdapter.setOnClickListener(onMicroAppClickListener);
+
+        popView = View.inflate(mContext, R.layout.widget_micro_app_popwindow_group, null);
+        GridView gridView = (GridView) popView.findViewById(R.id.gridview);
+        gridView.setAdapter(childMicroAppGridViewAdapter);
+        popupWindow = new PopupWindow(popView,500,500);
+    }
+
+    private void showPopWin(NavigationBean microAppBean,View parent) {
+        if (AssertValue.isNotNull(microAppBean) && AssertValue.isNotNullAndNotEmpty(microAppBean.getChildren())) {
+            TextView textView = (TextView) popView.findViewById(R.id.title_tv);
+            textView.setText(microAppBean.getName());
+            childMicroAppBeans.clear();
+
+            for(NavigationBean children : microAppBean.getChildren()){
+                childMicroAppBeans.add(children);
+            }
+
+            childMicroAppGridViewAdapter.notifyDataSetChanged();
+
+            popupWindow.showAtLocation(parent, Gravity.CENTER, 0, 0);
+            //获取popwindow焦点
+            popupWindow.setFocusable(true);
+            //设置popwindow如果点击外面区域，便关闭。
+            popupWindow.setTouchable(true);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+
+            //popupWindow.update();
+        }
+    }
+
+    private View.OnClickListener onMicroAppClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            NavigationBean microAppBean = (NavigationBean) view.getTag();
+
+            if (MicroAppBean.TYPE_GROUP.equals(microAppBean.getType())) {
+                showPopWin(microAppBean,view);
+            } else if (MicroAppBean.TYPE_ITEM.equals(microAppBean.getType())) {
+                navigationManager.navigation(getActivity(),null,microAppBean);
+                popupWindow.dismiss();
+            }
+        }
+    };
 }

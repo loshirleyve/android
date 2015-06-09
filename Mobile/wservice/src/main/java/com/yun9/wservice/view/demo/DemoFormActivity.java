@@ -23,6 +23,7 @@ import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
+import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -79,7 +80,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         formitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FormActivity.start(DemoFormActivity.this, FormActivity.REQUEST_CODE.NORMAL, fakeData());
+                FormActivity.start(DemoFormActivity.this, REQUEST_CODE.NORMAL, fakeData());
             }
         });
 
@@ -101,7 +102,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         ImageFormCellBean imageFormCell = new ImageFormCellBean();
         imageFormCell.setMaxNum(3);
         imageFormCell.setKey("testImage");
-        imageFormCell.setValue("1,2");
+        imageFormCell.setValue(new String[]{"1","2"});
         imageFormCell.setType(ImageFormCell.class.getSimpleName());
         imageFormCell.setLabel("测试图片选择");
         formBean.putCellBean(imageFormCell);
@@ -110,6 +111,8 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         docFormCell.setKey("testDoc");
         docFormCell.setType(DocFormCell.class.getSimpleName());
         docFormCell.setValue("1");
+        docFormCell.setMaxNum(3);
+        docFormCell.setMinNum(1);
         docFormCell.setLabel("测试文档选择");
         formBean.putCellBean(docFormCell);
 
@@ -135,10 +138,10 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         multiSelectFormCellBean.setType(MultiSelectFormCell.class.getSimpleName());
         multiSelectFormCellBean.setMaxNum(2);
         multiSelectFormCellBean.setMinNum(1);
-        Map<String,Object> map = new HashMap<>();
-        map.put("1", "深圳顶聚科技");
-        map.put("2", "深圳顶聚科技2");
-        multiSelectFormCellBean.setValue(map);
+        List<SerialableEntry<String,String>> list = new ArrayList<>();
+        list.add(new SerialableEntry<String, String>("1", "深圳顶聚科技"));
+        list.add(new SerialableEntry<String, String>("2", "深圳顶聚科技2"));
+        multiSelectFormCellBean.setValue(list);
         multiSelectFormCellBean.setOptionMap(this.builderOptions());
         formBean.putCellBean(multiSelectFormCellBean);
         return formBean;
@@ -157,13 +160,13 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         return maps;
     }
 
-    private Map<String, String> builderOptions() {
-        Map<String,String> map = new HashMap<>();
-        map.put("1","深圳顶聚科技");
-        map.put("2","深圳顶聚科技2");
-        map.put("3","深圳顶聚科技3");
-        map.put("4","深圳顶聚科技4");
-        return map;
+    private List<SerialableEntry<String,String>> builderOptions() {
+        List<SerialableEntry<String,String>> list = new ArrayList<>();
+        list.add(new SerialableEntry<String, String>("1","深圳顶聚科技"));
+        list.add(new SerialableEntry<String, String>("2", "深圳顶聚科技2"));
+        list.add(new SerialableEntry<String, String>("3","深圳顶聚科技3"));
+        list.add(new SerialableEntry<String, String>("4", "深圳顶聚科技4"));
+        return list;
     }
 
     private FormBean builderSubForm(){
@@ -187,7 +190,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FormActivity.REQUEST_CODE.NORMAL
+        if (requestCode == REQUEST_CODE.NORMAL
                 && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
             FormBean formBean = (FormBean) data.getSerializableExtra("form");
             contentTV.setText(beanToJson(formBean.getValue()));
@@ -197,5 +200,10 @@ public class DemoFormActivity extends JupiterFragmentActivity {
     private String beanToJson(Object bean) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(bean);
+    }
+
+
+    public class REQUEST_CODE {
+        public static final int NORMAL = 100;
     }
 }

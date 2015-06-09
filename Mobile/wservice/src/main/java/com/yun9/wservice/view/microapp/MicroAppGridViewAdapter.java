@@ -4,10 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yun9.jupiter.navigation.NavigationBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTextIco;
-import com.yun9.wservice.model.MicroAppBean;
 
 import java.util.List;
 
@@ -16,13 +16,13 @@ import java.util.List;
  */
 public class MicroAppGridViewAdapter extends JupiterAdapter {
 
-    private List<MicroAppBean> microAppBeans;
+    private List<NavigationBean> microAppBeans;
 
     private Context mContext;
 
     private View.OnClickListener onClickListener;
 
-    public MicroAppGridViewAdapter(Context context,List<MicroAppBean> microAppBeans){
+    public MicroAppGridViewAdapter(Context context,List<NavigationBean> microAppBeans){
         this.microAppBeans = microAppBeans;
         this.mContext = context;
     }
@@ -50,7 +50,7 @@ public class MicroAppGridViewAdapter extends JupiterAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         JupiterTextIco jupiterTextIco = null;
-        MicroAppBean microAppBean = microAppBeans.get(position);
+        NavigationBean microAppBean = microAppBeans.get(position);
 
         if (AssertValue.isNotNull(convertView)){
             jupiterTextIco = (JupiterTextIco) convertView;
@@ -62,6 +62,7 @@ public class MicroAppGridViewAdapter extends JupiterAdapter {
         }
 
         jupiterTextIco.setTitle(microAppBean.getName());
+        jupiterTextIco.setTag(microAppBean);
 
         return jupiterTextIco;
     }

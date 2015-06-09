@@ -14,18 +14,11 @@
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
     <LinearLayout
+        android:id="@+id/editdept"
+        android:layout_below="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <com.yun9.jupiter.widget.JupiterIco xmlns:ico="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/titlebar"
-            ico:icoShowText="true"
-            android:id="@+id/demo">
-        </com.yun9.jupiter.widget.JupiterIco>
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -82,17 +75,10 @@
 
     </LinearLayout>
 
-    <LinearLayout
-
+    <com.yun9.jupiter.widget.JupiterEditIco
+        android:id="@+id/edit_ico_users"
+        android:layout_below="@+id/editdept"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <com.yun9.jupiter.view.JupiterGridView
-            android:id="@+id/staffs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </com.yun9.jupiter.view.JupiterGridView>
-
-    </LinearLayout>
+        android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterEditIco>
 
 </RelativeLayout>

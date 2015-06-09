@@ -1,6 +1,8 @@
 package com.yun9.jupiter.form;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 
 import com.yun9.jupiter.form.cell.DetailFormCell;
 import com.yun9.jupiter.form.cell.DocFormCell;
@@ -83,16 +85,14 @@ public class FormUtilFactory {
     }
 
     public interface LoadValueHandler{
-        /*** 用户*/
         public static final String TYPE_USER = "user";
-        /*** 部门*/
-        public static final String TYPE_DEPT = "dept";
-
-        public void load(String type,String id,LoadValueCompleted callback);
+        public static final String TYPE_ORG = "org";
+        public static final String TYPE_FILE = "file";
+        public void load(String id,LoadValueCompleted callback);
     }
 
     public interface LoadValueCompleted{
-        public void callback(Map<String,Object> value);
+        public void callback(Object data);
     }
 
     public void registerBizExecutor(String type,BizExecutor executor) {
@@ -107,12 +107,11 @@ public class FormUtilFactory {
     }
 
     public interface BizExecutor{
-        public static final String TPPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
-        public static final String TPPE_SELECT_FILE = "selectUserOrDept";
-        public void execute(Context context,Map<String,Object> config,BizExecuteCompleted callback);
+        public static final String TYPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
+        public static final String TYPE_SELECT_FILE = "selectFile";
+        public static final String TYPE_VIEW_IMAGE = "viewImage";
+        public static final String TYPE_MULTI_SELECT = "multiSelect";
+        public void execute(FormActivity activity,FormCell cell);
     }
 
-    public interface BizExecuteCompleted{
-        public void callback(Map<String,Object> value);
-    }
 }

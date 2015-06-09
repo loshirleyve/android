@@ -2,26 +2,51 @@ package com.yun9.wservice.model;
 
 import android.view.View;
 
+import com.yun9.jupiter.util.AssertValue;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by xia on 2015/5/22.
  */
 public class MicroAppBean  {
-    private String type;
-    private String parentid;
-    private String device;
-    private String actiontype;
-    private String url;
-    private String icopath;
-    private int sort;
-    private String mainurl;
-    private String no;
-    private String name;
-    private String actionparams;
-    List<MicroAppBean> children;
 
-    private View.OnClickListener onClickListener;
+    public static final String TYPE_ITEM  = "item";
+
+    public static final String TYPE_GROUP = "group";
+
+
+    private String id;
+    private String name;
+    private String no;
+    private String type = TYPE_ITEM;
+    private String parentid;
+    private String actiontype;
+    private String icopath;
+    private List<MicroAppBean> children;
+
+    public MicroAppBean(String id,String name,String type){
+        this.id= id;
+        this.name = name;
+        this.type = type;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNo() {
+        return no;
+    }
+
+    public void setNo(String no) {
+        this.no = no;
+    }
 
     public String getType() {
         return type;
@@ -39,14 +64,6 @@ public class MicroAppBean  {
         this.parentid = parentid;
     }
 
-    public String getDevice() {
-        return device;
-    }
-
-    public void setDevice(String device) {
-        this.device = device;
-    }
-
     public String getActiontype() {
         return actiontype;
     }
@@ -55,13 +72,6 @@ public class MicroAppBean  {
         this.actiontype = actiontype;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public String getIcopath() {
         return icopath;
@@ -71,29 +81,6 @@ public class MicroAppBean  {
         this.icopath = icopath;
     }
 
-    public int getSort() {
-        return sort;
-    }
-
-    public void setSort(int sort) {
-        this.sort = sort;
-    }
-
-    public String getMainurl() {
-        return mainurl;
-    }
-
-    public void setMainurl(String mainurl) {
-        this.mainurl = mainurl;
-    }
-
-    public String getNo() {
-        return no;
-    }
-
-    public void setNo(String no) {
-        this.no = no;
-    }
 
     public String getName() {
         return name;
@@ -103,13 +90,6 @@ public class MicroAppBean  {
         this.name = name;
     }
 
-    public String getActionparams() {
-        return actionparams;
-    }
-
-    public void setActionparams(String actionparams) {
-        this.actionparams = actionparams;
-    }
 
     public List<MicroAppBean> getChildren() {
         return children;
@@ -119,11 +99,11 @@ public class MicroAppBean  {
         this.children = children;
     }
 
-    public View.OnClickListener getOnClickListener() {
-        return onClickListener;
-    }
+    public void putChildren(MicroAppBean microAppBean){
+        if (!AssertValue.isNotNull(children)){
+            this.children = new ArrayList<>();
+        }
 
-    public void setOnClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+        this.children.add(microAppBean);
     }
 }

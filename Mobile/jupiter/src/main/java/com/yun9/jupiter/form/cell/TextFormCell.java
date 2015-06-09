@@ -12,15 +12,14 @@ import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.widget.JupiterEditText;
 
 /**
  * Created by Leon on 15/5/25.
  */
 public class TextFormCell extends FormCell {
 
-    private TextView labelTV;
-
-    private EditText inputTextET;
+    private JupiterEditText editText;
 
     private TextFormCellBean cellBean;
 
@@ -38,15 +37,15 @@ public class TextFormCell extends FormCell {
     @Override
     public View getCellView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.form_cell_textinput,null);
-        this.labelTV = (TextView) view.findViewById(R.id.label);
-        this.inputTextET = (EditText) view.findViewById(R.id.textInput);
+        editText = (JupiterEditText) view.findViewById(R.id.edit_text);
 
         //检查是否存在默认值
         if (AssertValue.isNotNullAndNotEmpty(cellBean.getDefaultValue())){
-            inputTextET.setText(cellBean.getDefaultValue());
+            editText.getEditText().setText(cellBean.getDefaultValue());
         }
         //设置label
-        labelTV.setText(cellBean.getLabel());
+        editText.getTitleTV().setText(cellBean.getLabel());
+        editText.getEditText().setHint(cellBean.getLabel());
         restore();
         return view;
     }
@@ -55,21 +54,39 @@ public class TextFormCell extends FormCell {
         if (cellBean.getValue() == null) {
             return;
         }
-        inputTextET.setText((String) cellBean.getValue());
+        editText.getEditText().setText((String) cellBean.getValue());
     }
 
     @Override
     public void edit(boolean edit) {
-        inputTextET.setEnabled(edit);
+        editText.edit(edit);
     }
 
     @Override
     public Object getValue() {
-        return String.valueOf(inputTextET.getText());
+        return String.valueOf(editText.getEditText().getText());
     }
 
     @Override
     public FormCellBean getFormCellBean() {
         return cellBean;
+    }
+
+    @Override
+    public String validate() {
+        String value = (String) getValue();
+        if (cellBean.isRequired()
+                && !AssertValue.isNotNullAndNotEmpty(value)) {
+            return "请填写 "+cellBean.getLabel();
+        }
+        if (cellBean.getMinNum() > 0
+                && value.length() < cellBean.getMinNum()){
+            return cellBean.getLabel() + " 的长度必须大于 "+cellBean.getMinNum();
+        }
+        if (cellBean.getMaxNum() > 0
+                && value.length() > cellBean.getMaxNum()) {
+            return cellBean.getLabel() + " 的长度必须小于 "+cellBean.getMaxNum();
+        }
+        return null;
     }
 }

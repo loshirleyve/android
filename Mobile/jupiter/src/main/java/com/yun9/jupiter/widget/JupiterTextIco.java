@@ -1,7 +1,10 @@
 package com.yun9.jupiter.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,20 +16,11 @@ import com.yun9.jupiter.view.JupiterBadgeView;
 /**
  * Created by huangbinglong on 15/6/2.
  */
-public class JupiterTextIco extends JupiterRelativeLayout {
+public class JupiterTextIco extends JupiterEditableView{
 
     private ImageView itemImage;
     private TextView itemName;
-    private LinearLayout container;
     private JupiterBadgeView badgeView;
-
-    private String title;  // 图片标题
-
-    private boolean oval;  //是否将图片弄成椭圆形状
-
-    private String image;   // 图片ID
-
-    private int cornerImage; // 用户指定角标图片
 
     public JupiterTextIco(Context context) {
         super(context);
@@ -50,35 +44,60 @@ public class JupiterTextIco extends JupiterRelativeLayout {
         itemImage = (ImageView) this.findViewById(R.id.item_image);
         itemName = (TextView) this.findViewById(R.id.item_name);
         badgeView = new JupiterBadgeView(this.getContext(), itemImage);
-        buildImage();
-        buildTitle();
-        buildBadge();
+        this.initAttr(attrs);
     }
 
-    private void buildTitle() {
+    private void initAttr(AttributeSet attrs){
+        TypedArray typedArray = this.getContext().obtainStyledAttributes(attrs, R.styleable.JupiterTextIco);
+
+        try{
+            if (typedArray.hasValue(R.styleable.JupiterTextIco_ico_title)){
+                String titleText = typedArray.getString(R.styleable.JupiterTextIco_ico_title);
+                this.itemName.setText(titleText);
+            }
+
+            if (typedArray.hasValue(R.styleable.JupiterTextIco_ico_image)){
+                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterTextIco_ico_image);
+                if (mainImage != null){
+                    this.itemImage.setImageDrawable(mainImage);
+                }
+            }
+
+            if (typedArray.hasValue(R.styleable.JupiterTextIco_ico_badge_image)){
+                Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterTextIco_ico_badge_image);
+                if (mainImage != null){
+                    this.badgeView.setBackgroundDrawable(mainImage);
+                }
+            }
+        }finally{
+            typedArray.recycle();
+        }
+    }
+
+    private void buildTitle(String title) {
         // 设置图片描述文字
-        if (AssertValue.isNotNullAndNotEmpty(this.title)) {
+        if (AssertValue.isNotNullAndNotEmpty(title)) {
             itemName.setVisibility(VISIBLE);
-            itemName.setText(this.title);
+            itemName.setText(title);
         } else {
             itemName.setVisibility(GONE);
         }
     }
 
-    private void buildImage() {
+    private void buildImage(String image) {
         // 设置图片
-        if (AssertValue.isNotNullAndNotEmpty(this.image)) {
+        if (AssertValue.isNotNullAndNotEmpty(image)) {
             itemImage.setVisibility(VISIBLE);
-            ImageLoader.getInstance().displayImage(this.image, itemImage);
+            ImageLoader.getInstance().displayImage(image, itemImage);
         } else {
             itemImage.setVisibility(GONE);
         }
     }
 
-    private void buildBadge() {
-        if (this.cornerImage != 0) {
+    private void buildBadge(int cornerImage) {
+        if (cornerImage != 0) {
             badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
-            badgeView.setBackgroundResource(this.cornerImage);
+            badgeView.setBackgroundResource(cornerImage);
             badgeView.setBadgeSize(20, 20);
         }
 
@@ -116,14 +135,6 @@ public class JupiterTextIco extends JupiterRelativeLayout {
         this.itemName = itemName;
     }
 
-    public LinearLayout getContainer() {
-        return container;
-    }
-
-    public void setContainer(LinearLayout container) {
-        this.container = container;
-    }
-
     public JupiterBadgeView getBadgeView() {
         return badgeView;
     }
@@ -132,43 +143,23 @@ public class JupiterTextIco extends JupiterRelativeLayout {
         this.badgeView = badgeView;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public JupiterTextIco setTitle(String title) {
-        this.title = title;
-        buildTitle();
+        buildTitle(title);
         return this;
-    }
-
-    public boolean isOval() {
-        return oval;
     }
 
     public JupiterTextIco setOval(boolean oval) {
-        this.oval = oval;
-        buildImage();
+//        buildImage();
         return this;
-    }
-
-    public String getImage() {
-        return image;
     }
 
     public JupiterTextIco setImage(String image) {
-        this.image = image;
-        buildImage();
+        buildImage(image);
         return this;
     }
 
-    public int getCornerImage() {
-        return cornerImage;
-    }
-
     public JupiterTextIco setCornerImage(int cornerImage) {
-        this.cornerImage = cornerImage;
-        buildBadge();
+        buildBadge(cornerImage);
         return this;
     }
 }

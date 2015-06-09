@@ -37,6 +37,7 @@
         <attr name="rowStyleSutitleShowTimeText" format="boolean" />
         <attr name="rowStyleSutitleMainImage" format="reference"></attr>
         <attr name="rowStyleSutitleSelectModel" format="boolean"></attr>
+        <attr name="rowStyleSutitleShowSutitleText" format="boolean"></attr>
     </declare-styleable>
 
     <declare-styleable name="JupiterRowStyleTitleLayout">
@@ -71,7 +72,21 @@
 
     </declare-styleable>
 
-    <declare-styleable name="JupiterIco">
-        <attr name="icoShowText" format="boolean"></attr>
+    <declare-styleable name="JupiterTextIco">
+        <attr name="ico_title" format="string"></attr>
+        <attr name="ico_image" format="reference"></attr>
+        <attr name="ico_badge_image" format="reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="JupiterItem">
+        <attr name="item_title" format="string"></attr>
+        <attr name="item_image" format="reference"></attr>
+        <attr name="item_badge_image" format="reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="JupiterImageEditLayout">
+        <attr name="image_ico_src" format="reference"></attr>
+        <attr name="image_edit_hint" format="string"></attr>
+
     </declare-styleable>
 </resources>

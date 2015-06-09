@@ -6,7 +6,10 @@ import android.view.View;
 
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
+import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
@@ -18,6 +21,9 @@ import com.yun9.wservice.view.org.OrgCompositeCommand;
 public class UserFragment extends JupiterFragment {
 
     private UserHeadWidget userHeadWidget;
+
+    @ViewInject(id = R.id.setting)
+    private JupiterRowStyleTitleLayout settingLayout;
 
     private final static Logger logger = Logger.getLogger(UserFragment.class);
 
@@ -46,15 +52,20 @@ public class UserFragment extends JupiterFragment {
             }
         });
 
-        userHeadWidget.getDocLL().setOnClickListener(new View.OnClickListener()
-        {
+        userHeadWidget.getDocLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocCompositeActivity.start(UserFragment.this.getActivity(),new DocCompositeCommand().setEdit(true).setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK));
+                DocCompositeActivity.start(UserFragment.this.getActivity(), new DocCompositeCommand().setEdit(true).setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK));
+            }
+        });
+
+        settingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingActivity.start(getActivity());
             }
         });
     }
-
 
 
 }

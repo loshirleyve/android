@@ -6,9 +6,8 @@
 	<config name="app.config.resource.yun9.baseUrl">http://112.124.7.224:6018/inst/service/biz/action.yun9</config>
 	<config name="app.config.resource.yun9.token">3f6439dde1ae0b6badd4fc31a86346db3d0ac9b732b4ca4c5e6e356789cfb95f1b437c88772b27028a36ea1965c030d596471b5cd6c62d57</config>
 	-->
-	<config name="app.config.resource.yun9.baseUrl">http://120.24.84.201/service/service/biz/action.yun9</config>
+	<config name="app.config.resource.yun9.baseUrl">http://120.25.201.15:9080/ws-biz/service/action.yun9</config>
 	<config name="app.config.resource.yun9.token">8fc50dd14a951318ca168e40a9fa1ec78d1110e058700c9affdbe6ab5eb6b931</config>
-											      
 	<config name="app.config.resource.yun9.contentType">application/json</config>
 		
 	<config name="app.config.resource.bpmx5.baseUrl">http://www.yun9.com:7077/bpm-portal/bpm/service</config>
@@ -21,7 +20,7 @@
 	<config name="app.config.http.timeout">60000</config>
 	<config name="app.config.http.useragent">Yun9MobileApp</config>
 	
-	<config name="app.config.session.sp.name">Yun9MobileApp</config>
+	<config name="app.config.session.sp.name">com.yun9.wservice</config>
 	
 	<config name="app.config.jm.url">http://app.ibiart.com</config>
 	<config name="app.config.resource.yun9.file.upload.baseUrl">http://120.24.84.201/service/common/file/upload.yun9?floderid=1</config>

@@ -8,6 +8,7 @@ import android.view.View;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
+import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -24,13 +25,14 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
+    @ViewInject(id=R.id.edit_ico_users)
+    private JupiterEditIco jupiterEditIco;
 
-    @ViewInject(id = R.id.staffs)
-    private JupiterGridView jupiterGridView;
+    public OrgEditActivity() {
+    }
 
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
-
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
         intent.putExtras(bundle);
@@ -49,9 +51,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
 
-
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-
 
         //检查是否进入编辑状态
         if (AssertValue.isNotNull(command) && command.isEdit()){

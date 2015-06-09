@@ -45,7 +45,7 @@ public class FormActivity extends JupiterFragmentActivity {
 
     private Map<Integer, IFormActivityCallback> activityCallbackMap;
 
-    private int baseRequestCode = REQUEST_CODE.NORMAL;
+    private int baseRequestCode = 10000;
 
     @Override
     protected int getContentView() {
@@ -99,14 +99,11 @@ public class FormActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View view) {
                 if (!edit) {
-                    FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
-                    FormActivity.this.finish();
+                    doCancel();
                     return;
                 }
                 if (form.getFormBean().isSaveFormWhenGoBack()) {
-                    gatherFormBean();
-                    FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-                    FormActivity.this.finish();
+                    doComplete();
                     return;
                 }
                 new AlertDialog.Builder(FormActivity.this).setTitle("确认放弃修改？")
@@ -116,8 +113,7 @@ public class FormActivity extends JupiterFragmentActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // 点击“确认”后的操作
-                                FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
-                                FormActivity.this.finish();
+                                doCancel();
 
                             }
                         })
@@ -179,9 +175,7 @@ public class FormActivity extends JupiterFragmentActivity {
         submitTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gatherFormBean();
-                FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-                FormActivity.this.finish();
+                doComplete();
             }
         });
 
@@ -216,6 +210,23 @@ public class FormActivity extends JupiterFragmentActivity {
         }
     }
 
+    private void doComplete() {
+        // 验证表单
+        String message = form.validate();
+        if (AssertValue.isNotNullAndNotEmpty(message)){
+            this.showToast(message);
+            return;
+        }
+        gatherFormBean();
+        FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
+        FormActivity.this.finish();
+    }
+
+    private void doCancel() {
+        FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
+        FormActivity.this.finish();
+    }
+
     /**
      * 隐藏键盘
      */
@@ -238,12 +249,22 @@ public class FormActivity extends JupiterFragmentActivity {
     }
 
     public int addActivityCallback(IFormActivityCallback callback) {
+        if (callback == null) {
+            callback = EMPTY_CALL_BACK;
+        }
         int requestCode = generateRequestCode();
         activityCallbackMap.put(requestCode, callback);
         return requestCode;
     }
 
-    public int generateRequestCode() {
+    public void addActivityCallback(int requestCode,IFormActivityCallback callback) {
+        if (callback == null) {
+            callback = EMPTY_CALL_BACK;
+        }
+        activityCallbackMap.put(requestCode, callback);
+    }
+
+    private int generateRequestCode() {
         return ++baseRequestCode;
     }
 
@@ -256,14 +277,17 @@ public class FormActivity extends JupiterFragmentActivity {
         }
     }
 
-    public class REQUEST_CODE {
-        public static final int NORMAL = 100;
-    }
-
     public class RESPONSE_CODE {
         public static final int COMPLETE = 100;
         public static final int CANCEL = 200;
     }
+
+    private static final IFormActivityCallback EMPTY_CALL_BACK = new IFormActivityCallback() {
+        @Override
+        public void onActivityResult(int resultCode, Intent data) {
+
+        }
+    };
 
     public interface IFormActivityCallback {
         public void onActivityResult(int resultCode, Intent data);

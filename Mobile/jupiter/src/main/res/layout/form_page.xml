@@ -37,6 +37,7 @@
         android:layout_below="@+id/titlebar"
         android:layout_above="@id/line_v"
         android:layout_width="match_parent"
+        android:fillViewport="true"
         android:layout_height="wrap_content">
         <LinearLayout
             android:orientation="vertical"
