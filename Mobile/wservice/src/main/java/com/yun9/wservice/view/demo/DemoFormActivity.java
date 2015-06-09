@@ -80,7 +80,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         formitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FormActivity.start(DemoFormActivity.this, FormActivity.REQUEST_CODE.NORMAL, fakeData());
+                FormActivity.start(DemoFormActivity.this, REQUEST_CODE.NORMAL, fakeData());
             }
         });
 
@@ -190,7 +190,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FormActivity.REQUEST_CODE.NORMAL
+        if (requestCode == REQUEST_CODE.NORMAL
                 && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
             FormBean formBean = (FormBean) data.getSerializableExtra("form");
             contentTV.setText(beanToJson(formBean.getValue()));
@@ -200,5 +200,10 @@ public class DemoFormActivity extends JupiterFragmentActivity {
     private String beanToJson(Object bean) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(bean);
+    }
+
+
+    public class REQUEST_CODE {
+        public static final int NORMAL = 100;
     }
 }

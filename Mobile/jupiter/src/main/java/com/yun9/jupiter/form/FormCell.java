@@ -17,6 +17,14 @@ public abstract class FormCell implements java.io.Serializable{
 
     };
 
+    protected FormUtilFactory.BizExecutor findBizExecutor(String type) {
+        return FormUtilFactory.getInstance().getBizExcutor(type);
+    }
+
+    protected FormUtilFactory.LoadValueHandler findLoadValueHandler(String type) {
+        return FormUtilFactory.getInstance().getLoadValueHandler(type);
+    }
+
     public abstract View getCellView(Context context);
 
     public abstract void edit(boolean edit);

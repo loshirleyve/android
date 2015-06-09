@@ -5,15 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
 import com.yun9.jupiter.model.SerialableEntry;
-import com.yun9.jupiter.util.Constants;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.wservice.R;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,6 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
     private String ctrlCode;
     private List<SerialableEntry<String, String>> selectedList;
     private List<SerialableEntry<String, String>> options;
-    private boolean isCancelable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +59,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         if (tmp != null) {
             ctrlCode = (String) tmp;
         }
-        isCancelable = getIntent().getBooleanExtra("isCancelable", false);
+        boolean isCancelable = getIntent().getBooleanExtra("isCancelable", false);
         if (isCancelable) {
             options.add(0, new SerialableEntry<String, String>(CACEL_ITEM_ID,CACEL_ITEM_NAME));
         }

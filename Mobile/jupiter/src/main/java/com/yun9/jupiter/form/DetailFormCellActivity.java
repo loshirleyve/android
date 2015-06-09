@@ -82,7 +82,7 @@ public class DetailFormCellActivity extends JupiterActivity {
         this.titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FormActivity.start(DetailFormCellActivity.this, FormActivity.REQUEST_CODE.NORMAL, DetailFormCellActivity.this.cellBean.getFormBean());
+                FormActivity.start(DetailFormCellActivity.this, REQUEST_CODE.NORMAL, DetailFormCellActivity.this.cellBean.getFormBean());
 
             }
         });
@@ -94,8 +94,8 @@ public class DetailFormCellActivity extends JupiterActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == FormActivity.REQUEST_CODE.NORMAL
-                && resultCode == RESPONSE_CODE.COMPLETE) {
+        if (requestCode == REQUEST_CODE.NORMAL
+                && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
             FormBean formBean = (FormBean) data.getSerializableExtra("form");
             appendItem(formBeans.size(),formBean);
             formBeans.add(formBean);
@@ -144,6 +144,10 @@ public class DetailFormCellActivity extends JupiterActivity {
             formBean = formBeans.get(i);
             appendItem(i,formBean);
         }
+    }
+
+    public class REQUEST_CODE {
+        public static final int NORMAL = 100;
     }
 
     public class RESPONSE_CODE {

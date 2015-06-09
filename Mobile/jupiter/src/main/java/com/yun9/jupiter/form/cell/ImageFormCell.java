@@ -41,6 +41,8 @@ public class ImageFormCell extends FormCell {
 
     private FormUtilFactory.BizExecutor executor;
 
+    private int currentIndex;
+
     public ImageFormCell(FormCellBean cellBean) {
         super(cellBean);
         this.cellBean = (ImageFormCellBean) cellBean;
@@ -53,7 +55,7 @@ public class ImageFormCell extends FormCell {
         itemList = new ArrayList<>();
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_image, null);
         jupiterEditIco = (JupiterEditIco) rootView.findViewById(R.id.edit_ico);
-        executor = FormUtilFactory.getInstance().getBizExcutor(FormUtilFactory.BizExecutor.TYPE_VIEW_IMAGE);
+        executor = findBizExecutor(FormUtilFactory.BizExecutor.TYPE_VIEW_IMAGE);
         this.build();
         setupEditIco();
         return rootView;
@@ -137,19 +139,19 @@ public class ImageFormCell extends FormCell {
             @Override
             public void onClick(View v) {
                 if (executor != null) {
-                    Map<String, Object> config = new HashMap<String, Object>();
-                    config.put("position", indexOfItem(item));
-                    config.put("images", getImages());
-                    FormActivity activity = (FormActivity) ImageFormCell.this.context;
-                    int requestCode = activity.generateRequestCode();
-                    executor.execute(activity,requestCode,config);
+                    currentIndex = indexOfItem(item);
+                    executor.execute((FormActivity) ImageFormCell.this.context, ImageFormCell.this);
                 }
             }
         });
         return item;
     }
 
-    private String[] getImages() {
+    public int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    public String[] getImages() {
         List<String> images = new ArrayList<>();
         for (JupiterEditableView view : itemList) {
             if (view.getTag() != null) {

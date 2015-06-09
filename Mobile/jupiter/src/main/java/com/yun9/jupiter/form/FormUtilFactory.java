@@ -85,16 +85,14 @@ public class FormUtilFactory {
     }
 
     public interface LoadValueHandler{
-        /*** 用户*/
         public static final String TYPE_USER = "user";
-        /*** 部门*/
-        public static final String TYPE_DEPT = "dept";
-
-        public void load(String type,String id,LoadValueCompleted callback);
+        public static final String TYPE_ORG = "org";
+        public static final String TYPE_FILE = "file";
+        public void load(String id,LoadValueCompleted callback);
     }
 
     public interface LoadValueCompleted{
-        public void callback(Map<String,Object> value);
+        public void callback(Object data);
     }
 
     public void registerBizExecutor(String type,BizExecutor executor) {
@@ -111,28 +109,9 @@ public class FormUtilFactory {
     public interface BizExecutor{
         public static final String TYPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
         public static final String TYPE_SELECT_FILE = "selectFile";
-        /**
-         * config中可选参数：position;
-         * 必要参数：images,数组，图片ID
-         * 不需要回调
-         */
         public static final String TYPE_VIEW_IMAGE = "viewImage";
-        /**
-         * config中可选参数：ctrlCode，控制编码
-         * 可选参数：selectedMap，已选项；
-         * 可选参数：options，可选项；其中ctrlCode跟options必须有一个不能为空
-         * 可选参数：isCancelable,默认false，是否可撤销，true会增加一个不使用的选项
-         * callback需要返回值：selectedList<Entry<String,String>>,key为被选择项的code，value为被选择项的显示名称
-         */
         public static final String TYPE_MULTI_SELECT = "multiSelect";
-
-        /**
-         * 具体业务处理
-         * @param activity 从这个activity，可能需要启动另一个activity
-         * @param requestCode 请求编码
-         * @param config 具体业务数据
-         */
-        public void execute(Activity activity,int requestCode,Map<String,Object> config);
+        public void execute(FormActivity activity,FormCell cell);
     }
 
 }
