@@ -1,186 +1,167 @@
 package com.yun9.jupiter.manager.support;
 
-import java.util.Map;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
+import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.conf.PropertiesManager;
-import com.yun9.jupiter.model.AuthInfo;
-import com.yun9.jupiter.model.Device;
-import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.manager.SessionManagerException;
+import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.mobile.annotation.BeanInject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DefaultSessionManager implements SessionManager, Bean,
         Initialization {
 
-    @BeanInject
-	private PropertiesManager propertiesManager;
+    private static final Logger logger = Logger
+            .getLogger(DefaultSessionManager.class);
 
-	private AuthInfo authInfo;
+    private List<OnLoginListener> onLoginListenerList;
 
-	private Device device;
+    private List<OnLogoutListener> onLogoutListenerList;
 
-	private SharedPreferences sp;
+    private List<OnChangeInstListener> onChangeInstListenerList;
 
-	private static final Logger logger = Logger
-			.getLogger(DefaultSessionManager.class);
+    @Override
+    public Class<?> getType() {
+        return SessionManager.class;
+    }
 
-	@Override
-	public Class<?> getType() {
-		return SessionManager.class;
-	}
+    @Override
+    public void clean() {
 
-	@Override
-	public boolean isLogin() {
-		return this.getLocalBoolean(LOGIN, false);
-	}
+    }
 
-	@Override
-	public void setLogin(boolean login) {
-		this.setLocalBoolean(LOGIN, login);
-	}
+    @Override
+    public void regOnLoginListener(OnLoginListener onLoginListener) {
+        if (!AssertValue.isNotNull(onLoginListenerList)) {
+            this.onLoginListenerList = new ArrayList<>();
+        }
+        this.onLoginListenerList.add(onLoginListener);
+    }
 
-	public void clean() {
-		authInfo = null;
-	}
+    @Override
+    public void regOnLogoutListener(OnLogoutListener onLogoutListener) {
+        if (!AssertValue.isNotNull(onLogoutListenerList)) {
+            this.onLogoutListenerList = new ArrayList<>();
+        }
+        this.onLogoutListenerList.add(onLogoutListener);
+    }
 
-	@Override
-	public void init(BeanManager beanManager) {
-		logger.d("session factory init.");
-		String name = propertiesManager.getString("app.config.session.sp.name",
-				"Yun9MobileApp");
-		this.sp = beanManager.getApplicationContext().getSharedPreferences(
-				name, Context.MODE_PRIVATE);
+    @Override
+    public void regOnChangeInstListener(OnChangeInstListener onChangeInstListener) {
+        if (!AssertValue.isNotNull(onChangeInstListenerList)) {
+            this.onChangeInstListenerList = new ArrayList<>();
+        }
+        this.onChangeInstListenerList.add(onChangeInstListener);
+    }
 
-		// 收集设备信息
-		this.loadDeviceInfos(beanManager.getApplicationContext());
+    @Override
+    public boolean isLogin() {
+        boolean loginState = AppCache.getInstance().getAsBoolean(SessionManager.LOGIN_STATE);
+        return loginState;
+    }
 
-		this.loadLocationParams();
-	}
+    @Override
+    public User getUser() {
+        User user = AppCache.getInstance().get(SessionManager.USER_INFO, User.class);
+        if (!AssertValue.isNotNull(user)) {
+            user = new User();
+        }
 
-	public boolean isFirst() {
-		return this.getLocalBoolean(FIRST, false);
-	}
+        return user;
+    }
 
-	public void setFirst(boolean first) {
-		this.setLocalBoolean(FIRST, first);
-	}
+    @Override
+    public Inst getInst() {
+        Inst inst = AppCache.getInstance().get(SessionManager.INST_INFO, Inst.class);
 
-	public void setLocalString(String key, String value) {
-		Editor editor = sp.edit();
-		editor.putString(key, value);
-		editor.commit();
-	}
+        if (!AssertValue.isNotNull(inst)) {
+            inst = new Inst();
+        }
+        return inst;
+    }
 
-	public void setLocalBoolean(String key, boolean value) {
-		Editor editor = sp.edit();
-		editor.putBoolean(key, value);
-		editor.commit();
-	}
+    private void setLogin(boolean login) {
+        AppCache.getInstance().put(SessionManager.LOGIN_STATE, login);
+    }
 
-	@Override
-	public String getLocalString(String key, String defaultVal) {
-		return this.sp.getString(key, defaultVal);
-	}
 
-	@Override
-	public Boolean getLocalBoolean(String key, boolean defaultVal) {
-		return this.sp.getBoolean(key, defaultVal);
-	}
+    private void setUser(User user) {
+        AppCache.getInstance().put(SessionManager.USER_INFO, user);
+    }
 
-	public Device getDevice() {
-		return device;
-	}
+    private void setInst(Inst inst) {
+        AppCache.getInstance().put(SessionManager.INST_INFO, inst);
+    }
 
-	public void setDevice(Device device) {
-		this.device = device;
-	}
+    @Override
+    public void loginIn(User user) {
 
-	public AuthInfo getAuthInfo() {
-		return authInfo;
-	}
+        if (AssertValue.isNotNull(user) && AssertValue.isNotNullAndNotEmpty(user.getId())) {
+            //记录登录状态
+            this.setLogin(true);
+            //记录用户信息
+            this.setUser(user);
 
-	public void setAuthInfo(AuthInfo authInfo) {
-		this.authInfo = authInfo;
-	}
+            //执行后续动作
+            if (AssertValue.isNotNullAndNotEmpty(this.onLoginListenerList)) {
+                for (OnLoginListener onLoginListener : this.onLoginListenerList) {
+                    onLoginListener.login(user);
+                }
+            }
+        }
+    }
 
-	public void setLocationParams() {
-		if (AssertValue.isNotNull(this.authInfo)) {
-			String authJson = JsonUtil.beanToJson(this.getAuthInfo());
-			logger.d("auth info json set to location:" + authJson);
-			this.setLocalString(SessionManager.AUTHINFO, authJson);
-		}
-	}
+    @Override
+    public void logout(User user) {
+        //解除用户登录状态
+        this.setLogin(false);
+        //清理本地用户信息
+        this.setUser(new User());
 
-	public void loadLocationParams() {
-		String authJson = this.getLocalString(SessionManager.AUTHINFO, "");
-		logger.d("auth info json form location:" + authJson);
+        //执行用户注销动作服务等相关后续动作
+        if (AssertValue.isNotNullAndNotEmpty(this.onLogoutListenerList)) {
+            for (OnLogoutListener onLogoutListener : this.onLogoutListenerList) {
+                onLogoutListener.logout(user);
+            }
+        }
+    }
 
-		if (AssertValue.isNotNullAndNotEmpty(authJson)) {
-			this.authInfo = JsonUtil.jsonToBean(authJson, AuthInfo.class);
-		}
-	}
 
-	public void cleanLocalParams() {
-		this.setLocalString(SessionManager.AUTHINFO, null);
-	}
+    @Override
+    public void init(BeanManager beanManager) {
+    }
 
-	@Override
-	public void loadDeviceInfos(Context cxt) {
-		// 收集设备信息
-		Map<String, String> deviceInfo = PublicHelp.collectDeviceInfo(cxt);
 
-		this.device = new Device();
+    @Override
+    public void changeInst(Inst newInst) {
 
-		device.setId(deviceInfo.get("ID"));
-		device.setDeviceid(deviceInfo.get("TMDeviceid"));
-		device.setModel(deviceInfo.get("MODEL"));
-		device.setBoard(deviceInfo.get("BOARD"));
-		device.setBrand(deviceInfo.get("BRAND"));
-		device.setFingerprint(deviceInfo.get("FINGERPRINT"));
-		device.setSerial(deviceInfo.get("SERIAL"));
-		device.setOthers(deviceInfo);
+        if (AssertValue.isNotNull(newInst)) {
+            Inst oldInst = this.getInst();
 
-	}
+            //新旧机构相同无需切换
+            if (oldInst.getId().equals(newInst.getId())) {
+                return;
+            }
 
-	@Override
-	public void changeInst(Inst oldInst, Inst newInst) {
+            //执行机构的后续动作
+            if (AssertValue.isNotNullAndNotEmpty(this.onChangeInstListenerList)) {
+                for (OnChangeInstListener onChangeInstListener : this.onChangeInstListenerList) {
+                    onChangeInstListener.changeInst(newInst);
+                }
+            }
+            //记录新机构信息
+            this.setInst(newInst);
 
-		// 新旧机构相同无需切换
-		if (oldInst.getId().equals(newInst.getId())) {
-			return;
-		}
+        }
 
-		// 原机构与当前系统回话记录的机构不相同
-		if (!oldInst.getId().equals(authInfo.getInstinfo().getId())) {
-			throw new SessionManagerException("切换机构错误，原机构与回话记录机构不相同。");
-		}
-
-		// 检查新机构是否存在于用户的绑定机构中
-		boolean exist = false;
-
-		for (Inst inst : authInfo.getAllinsts()) {
-			if (inst.getId().equals(newInst.getId())) {
-				exist = true;
-			}
-		}
-
-		if (exist) {
-			authInfo.setInstinfo(newInst);
-		}
-
-	}
+    }
 
 }

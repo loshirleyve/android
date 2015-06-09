@@ -2,6 +2,9 @@
     <string name="login">登录</string>
     <string name="login_name">填写账户名</string>
     <string name="login_pass">填写密码</string>
+    <string name="login_no_password">请输入密码</string>
+    <string name="login_no_userno">请输入账号</string>
+
 
     <string name="mailrge1">我们发送了一封激活邮件到您的邮箱：XXXX@163.com。</string>
     <string name="mailrge2">请登录邮箱按邮件内容引导激活您的账户。</string>

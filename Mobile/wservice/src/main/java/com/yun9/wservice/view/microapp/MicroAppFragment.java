@@ -112,6 +112,7 @@ public class MicroAppFragment extends JupiterFragment {
 
         microAppBeans.clear();
         microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "locationdemo", "地理位置测试", NavigationBean.TYPE_ITEM));
+        microAppBeans.add(new NavigationBean(System.currentTimeMillis()+"","login","登录测试",NavigationBean.TYPE_ITEM));
 
         NavigationBean microAppBeanGroup1 = new NavigationBean(System.currentTimeMillis() + "","11", "申请", NavigationBean.TYPE_GROUP);
 
@@ -183,7 +184,7 @@ public class MicroAppFragment extends JupiterFragment {
             if (MicroAppBean.TYPE_GROUP.equals(microAppBean.getType())) {
                 showPopWin(microAppBean,view);
             } else if (MicroAppBean.TYPE_ITEM.equals(microAppBean.getType())) {
-                navigationManager.navigation(mContext,null,microAppBean);
+                navigationManager.navigation(getActivity(),null,microAppBean);
                 popupWindow.dismiss();
             }
         }
