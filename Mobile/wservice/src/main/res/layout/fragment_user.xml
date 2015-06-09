@@ -68,7 +68,7 @@
                 app:rowStyleTitleText="@string/setting"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
             <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-                android:id="@+id/about4"
+                android:id="@+id/switch_inst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

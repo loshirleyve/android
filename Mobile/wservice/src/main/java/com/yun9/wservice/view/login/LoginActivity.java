@@ -1,7 +1,6 @@
 package com.yun9.wservice.view.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -14,8 +13,8 @@ import android.widget.Toast;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.model.User;
-import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -26,9 +25,8 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.yun9.wservice.view.inst.SelectInstActivity;
+import com.yun9.wservice.view.inst.SelectInstCommand;
 
 /**
  * Created by xia on 2015/5/20.
@@ -57,6 +55,8 @@ public class LoginActivity extends JupiterFragmentActivity {
 
     @BeanInject
     private SessionManager sessionManager;
+
+    private User user;
 
     public static void start(Activity activity, LoginCommand command) {
         Intent intent = new Intent(activity, LoginActivity.class);
@@ -134,11 +134,16 @@ public class LoginActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 try {
-                    User user = (User) response.getPayload();
-                    //登录成功
-                    sessionManager.loginIn(user);
-                    setResult(LoginCommand.RESULT_CODE_OK);
-                    finish();
+                    user = (User) response.getPayload();
+
+                    //检查登录用户的机构信息
+                    if (AssertValue.isNotNull(sessionManager.getInst(user.getId()))) {
+                        complete(user, sessionManager.getInst(user.getId()));
+                    } else {
+                        //未选择机构，进行机构选择操作
+                        SelectInstActivity.start(LoginActivity.this, new SelectInstCommand().setUser(user));
+                    }
+
                 } finally {
                     setLoading(false);
                 }
@@ -153,6 +158,29 @@ public class LoginActivity extends JupiterFragmentActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SelectInstCommand.REQUEST_CODE && resultCode == SelectInstCommand.RESULT_CODE_OK) {
+            Inst inst = (Inst) data.getSerializableExtra(SelectInstCommand.PARAM_INST);
+            complete(user, inst);
+        } else if (requestCode == SelectInstCommand.REQUEST_CODE && resultCode == SelectInstCommand.RESULT_CODE_CANCEL) {
+
+        }
+    }
+
+    private void complete(User user, Inst inst) {
+        if (AssertValue.isNotNull(user) && AssertValue.isNotNull(inst)) {
+            //登录成功
+            sessionManager.loginIn(user);
+            //执行切换到当前机构
+            sessionManager.changeInst(inst);
+            setResult(LoginCommand.RESULT_CODE_OK);
+            finish();
+        }
     }
 
     private void setLoading(boolean statue) {

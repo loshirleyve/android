@@ -37,7 +37,7 @@
     <string name="user_mycontact">我的客户</string>
     <string name="user_signature">个性签名</string>
     <string name="setting">设置</string>
-    <string name="switch_acc">切换账户</string>
+    <string name="switch_acc">切换机构</string>
     <string name="scan_frame">扫一扫</string>
     <string name="activity_dynamice_category">分类</string>
 
@@ -47,6 +47,8 @@
     <string name="setting_about">关于</string>
     <string name="setting_logout">注销</string>
     <string name="setting_clean">清理缓存</string>
+
+    <string name="select_inst">选择机构</string>
 
 
     <string name="msg_card_context">#巡店报告#\n日期:2015年4月24日(星期五)\n地点：深圳市南山区沙河西路\n\卖场气氛:活跃\n卖场活动:买100送换100</string>

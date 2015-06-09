@@ -4,6 +4,7 @@ import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
 import com.yun9.jupiter.cache.AppCache;
+import com.yun9.jupiter.cache.UserDataCache;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
@@ -74,31 +75,35 @@ public class DefaultSessionManager implements SessionManager, Bean,
         if (!AssertValue.isNotNull(user)) {
             user = new User();
         }
-
         return user;
     }
 
     @Override
     public Inst getInst() {
-        Inst inst = AppCache.getInstance().get(SessionManager.INST_INFO, Inst.class);
+        return this.getInst(null);
+    }
 
-        if (!AssertValue.isNotNull(inst)) {
-            inst = new Inst();
+    public Inst getInst(String userid) {
+        UserDataCache userDataCache = UserDataCache.getInstance(userid);
+
+        if (AssertValue.isNotNull(userDataCache)) {
+            Inst inst = userDataCache.get(SessionManager.INST_INFO, Inst.class);
+            return inst;
+        } else {
+            return new Inst();
         }
-        return inst;
     }
 
     private void setLogin(boolean login) {
         AppCache.getInstance().put(SessionManager.LOGIN_STATE, login);
     }
 
-
     private void setUser(User user) {
         AppCache.getInstance().put(SessionManager.USER_INFO, user);
     }
 
     private void setInst(Inst inst) {
-        AppCache.getInstance().put(SessionManager.INST_INFO, inst);
+        UserDataCache.getInstance().put(SessionManager.INST_INFO, inst);
     }
 
     @Override
@@ -147,7 +152,7 @@ public class DefaultSessionManager implements SessionManager, Bean,
             Inst oldInst = this.getInst();
 
             //新旧机构相同无需切换
-            if (oldInst.getId().equals(newInst.getId())) {
+            if (AssertValue.isNotNull(oldInst) && oldInst.getId().equals(newInst.getId())) {
                 return;
             }
 

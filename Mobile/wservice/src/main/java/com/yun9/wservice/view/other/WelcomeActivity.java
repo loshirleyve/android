@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.view.other;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +9,7 @@ import com.yun9.jupiter.view.JupiterActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-
+import com.yun9.wservice.view.main.MainActivity;
 
 
 public class WelcomeActivity extends JupiterActivity {
@@ -39,7 +39,7 @@ public class WelcomeActivity extends JupiterActivity {
 		mImageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-                MainActivity.start(WelcomeActivity.this,null);
+                MainActivity.start(WelcomeActivity.this, null);
 				finish();
 			}
 		}, 1000);

@@ -1,4 +1,4 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.view.other;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.org.OrgCompositeCommand;
 
 /**
  * Created by Leon on 15/6/9.

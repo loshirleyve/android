@@ -40,7 +40,7 @@ public class LoginMainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("登录按钮被点击！");
-            LoginActivity.start(LoginMainActivity.this, command);
+            LoginActivity.start(LoginMainActivity.this, command.setDemo(false));
         }
     };
 

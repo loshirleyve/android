@@ -1,31 +1,32 @@
-package com.yun9.wservice.view;
+package com.yun9.wservice.view.main;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.func.store.StoreFragment;
-import com.yun9.wservice.view.dynamic.DynamicSessionFragment;
+import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
-import com.yun9.wservice.view.microapp.MicroAppFragment;
-import com.yun9.wservice.view.myself.UserFragment;
+import com.yun9.wservice.view.main.support.DynamicFuncFragmentHandler;
+import com.yun9.wservice.view.main.support.MicroAppFuncFragmentHandler;
+import com.yun9.wservice.view.main.support.StoreFuncFragmentHandler;
+import com.yun9.wservice.view.main.support.UserFuncFragmentHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends JupiterFragmentActivity {
@@ -54,19 +55,13 @@ public class MainActivity extends JupiterFragmentActivity {
     @BeanInject
     private PushFactory pushFactory;
 
-    private StoreFragment storeFragment;
-
-    private DynamicSessionFragment dynamicSessionFragment;
-
-    private MicroAppFragment microAppFragment;
-
-    private UserFragment userFragment;
-
     private View currentButton;
 
     private View preButton;
 
     private String currType;
+
+    private List<FuncFragmentHandler> funcFragmentHandlerList;
 
     public static void start(Context context, Bundle bundle) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -91,14 +86,16 @@ public class MainActivity extends JupiterFragmentActivity {
 
 
     private void initView() {
-        logger.d("初始化MainActivity");
+        funcFragmentHandlerList = new ArrayList<>();
+        funcFragmentHandlerList.add(new StoreFuncFragmentHandler(this.getSupportFragmentManager()));
+        funcFragmentHandlerList.add(new DynamicFuncFragmentHandler(this.getSupportFragmentManager()));
+        funcFragmentHandlerList.add(new MicroAppFuncFragmentHandler(this.getSupportFragmentManager()));
+        funcFragmentHandlerList.add(new UserFuncFragmentHandler(this.getSupportFragmentManager()));
 
-        //启动push
-        //pushFactory.start(this.getApplicationContext());
-        this.storeBtn.setTag("store");
-        this.dynamicBtn.setTag("dynamic");
-        this.microappBtn.setTag("microapp");
-        this.userBtn.setTag("user");
+        this.storeBtn.setTag(FuncFragmentHandler.FUNC_STORE);
+        this.dynamicBtn.setTag(FuncFragmentHandler.FUNC_DYNAMIC);
+        this.microappBtn.setTag(FuncFragmentHandler.FUNC_MICROAPP);
+        this.userBtn.setTag(FuncFragmentHandler.FUNC_USER);
 
         this.storeBtn.setOnClickListener(onClickListener);
         this.dynamicBtn.setOnClickListener(onClickListener);
@@ -110,8 +107,21 @@ public class MainActivity extends JupiterFragmentActivity {
     protected void onResume() {
         super.onResume();
         if (!sessionManager.isLogin()) {
-            switchFragment("store", storeBtn, false);
+            switchFragment(FuncFragmentHandler.FUNC_STORE, storeBtn);
         }
+    }
+
+    private FuncFragmentHandler findHandler(String type) {
+        FuncFragmentHandler funcFragmentHandler = null;
+        if (AssertValue.isNotNullAndNotEmpty(this.funcFragmentHandlerList)) {
+            for (FuncFragmentHandler handler : this.funcFragmentHandlerList) {
+                if (handler.support(type)) {
+                    funcFragmentHandler = handler;
+                    break;
+                }
+            }
+        }
+        return funcFragmentHandler;
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -119,51 +129,22 @@ public class MainActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             currType = v.getTag().toString();
             preButton = v;
-
-            if ("store".equals(currType)) {
-                switchFragment(currType, v, false);
-            } else {
-                //其他类型需要检查是否登录
-                if (sessionManager.isLogin()) {
-                    switchFragment(v.getTag().toString(), v, false);
-                } else {
-                    //还没有登陆系统，需要先登陆
-                    LoginMainActivity.start(MainActivity.this, new LoginCommand());
-                }
-            }
+            switchFragment(currType, v);
         }
     };
 
-    private void switchFragment(String type, View v, boolean refresh) {
-        if ("store".equals(type)) {
-            if (!AssertValue.isNotNull(storeFragment) || refresh) {
-                Bundle bundle = new Bundle();
-                storeFragment = StoreFragment.newInstance(bundle);
-            }
-            pushFragment(storeFragment);
-            setButton(v);
-        } else if ("dynamic".equals(type)) {
-            if (!AssertValue.isNotNull(dynamicSessionFragment) || refresh) {
-                Bundle bundle = new Bundle();
-                dynamicSessionFragment = DynamicSessionFragment.newInstance(bundle);
-            }
-            pushFragment(dynamicSessionFragment);
-            setButton(v);
-        } else if ("microapp".equals(type)) {
-            if (!AssertValue.isNotNull(microAppFragment) || refresh) {
-                Bundle bundle = new Bundle();
-                microAppFragment = MicroAppFragment.newInstance(bundle);
-            }
-            pushFragment(microAppFragment);
-            setButton(v);
-        } else if ("user".equals(type)) {
-            if (!AssertValue.isNotNull(userFragment) || refresh) {
-                userFragment = UserFragment.newInstance(null);
-            }
-            pushFragment(userFragment);
-            setButton(v);
-        }
+    private void switchFragment(String type, View v) {
+        FuncFragmentHandler funcFragmentHandler = findHandler(type);
 
+        if (AssertValue.isNotNull(funcFragmentHandler)) {
+            if (funcFragmentHandler.needLogin() && !sessionManager.isLogin()) {
+                //还没有登陆系统，需要先登陆
+                LoginMainActivity.start(MainActivity.this, new LoginCommand());
+            } else {
+                funcFragmentHandler.switchFragment();
+                setButton(v);
+            }
+        }
     }
 
     private void setButton(View v) {
@@ -174,12 +155,12 @@ public class MainActivity extends JupiterFragmentActivity {
         currentButton = v;
     }
 
-    private void pushFragment(JupiterFragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.main_fl_content, fragment,
-                MainActivity.class.getName());
-        ft.commit();
+    private void setRefresh(boolean refresh){
+        if (AssertValue.isNotNullAndNotEmpty(this.funcFragmentHandlerList)){
+            for(FuncFragmentHandler funcFragmentHandler:this.funcFragmentHandlerList){
+                funcFragmentHandler.setRefresh(refresh);
+            }
+        }
     }
 
     @Override
@@ -188,8 +169,25 @@ public class MainActivity extends JupiterFragmentActivity {
 
         if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK) {
             Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
+
+            //设置为必须刷新
+            setRefresh(true);
+
             //切换到之前准备打开的页面
-            this.switchFragment(currType, preButton, true);
+            this.switchFragment(currType, preButton);
+        }
+
+        if (requestCode == SelectInstCommand.REQUEST_CODE && resultCode == SelectInstCommand.RESULT_CODE_OK) {
+            Inst inst = (Inst) data.getSerializableExtra(SelectInstCommand.PARAM_INST);
+
+            if (AssertValue.isNotNull(inst)) {
+                sessionManager.changeInst(inst);
+            }
+            //设置为必须刷新
+            setRefresh(true);
+
+            //切换到商店页面
+            this.switchFragment(FuncFragmentHandler.FUNC_STORE, storeBtn);
         }
 
     }
