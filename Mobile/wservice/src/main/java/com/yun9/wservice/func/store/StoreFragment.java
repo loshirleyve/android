@@ -4,10 +4,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.viewpagerindicator.CirclePageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAutoHeightViewPager;
@@ -34,10 +39,10 @@ public class StoreFragment extends JupiterFragment {
     private ProductCategoryLayout productCategoryLayout;
     private ProductListAdapter productListAdapter;
 
-    //private ProductScrollListView productScrollListView;
     private ProductImgAdapter productImgAdapter;
     private List<ProductScrollItemView> productScrollItemViews;
     private ViewPager viewPager;
+    private CirclePageIndicator circlePageIndicator;
 
     private LinkedList<Product> products;
     private List<ProductCategory> productCategoryList;
@@ -46,7 +51,6 @@ public class StoreFragment extends JupiterFragment {
     private ProductCategory currProductCategory;
 
     private PtrClassicFrameLayout mPtrFrame;
-
 
     public static StoreFragment newInstance(Bundle args) {
         StoreFragment fragment = new StoreFragment();
@@ -62,13 +66,11 @@ public class StoreFragment extends JupiterFragment {
     @Override
     protected void initViews(View view) {
         productCategoryLayout = (ProductCategoryLayout) view.findViewById(R.id.category_ll);
-        //productScrollListView = (ProductScrollListView) view.findViewById(R.id.productsImgScroll);
         productListView = (ListView) view.findViewById(R.id.product_list_ptr);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
 
         viewPager = (ViewPager) view.findViewById(R.id.productsImgScroll);
-
-        //productScrollListView = new ProductScrollListView(mContext);
+        circlePageIndicator = (CirclePageIndicator)view.findViewById(R.id.indicator);
 
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -123,6 +125,7 @@ public class StoreFragment extends JupiterFragment {
         if (!AssertValue.isNotNull(productImgAdapter)) {
             productImgAdapter = new ProductImgAdapter(this.getActivity(), productScrollItemViews);
             viewPager.setAdapter(productImgAdapter);
+           circlePageIndicator.setViewPager(viewPager);
         } else {
             productImgAdapter.notifyDataSetChanged();
         }
@@ -146,7 +149,9 @@ public class StoreFragment extends JupiterFragment {
         if (AssertValue.isNotNull(topProducts)) {
             for (Product product : topProducts) {
                 ProductScrollItemView view = new ProductScrollItemView(mContext);
+
                 view.buildWithData(product);
+
                 view.setTag(product);
                 this.productScrollItemViews.add(view);
             }
@@ -226,4 +231,6 @@ public class StoreFragment extends JupiterFragment {
             }
         }
     };
+
 }
+

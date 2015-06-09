@@ -105,7 +105,10 @@
             android:name=".view.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeActivity"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" ></activity>
+<!--
+        android:theme="@style/AppThemeActivity"
+-->
 
         <!-- 欢迎 -->
         <activity

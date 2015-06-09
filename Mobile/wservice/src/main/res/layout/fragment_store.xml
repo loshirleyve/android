@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:attr="http://schemas.android.com/tools"
     android:id="@+id/store_product"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -19,27 +21,30 @@
         android:id="@+id/category_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/store_title"></com.yun9.wservice.func.store.ProductCategoryLayout>
+        android:layout_below="@id/store_title">
+    </com.yun9.wservice.func.store.ProductCategoryLayout>
 
     <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
         android:id="@+id/productsImgScroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/category_ll" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_below="@+id/category_ll"/>
 
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category_ll"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="150dp"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/productsImgScroll"
         android:orientation="vertical">
 
-
-        <!--    <android.support.v4.view.ViewPager
-                android:id="@+id/productsImgScroll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                />-->
 
 
         <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
@@ -69,7 +74,9 @@
                     android:divider="@null"
                     android:fadingEdge="none"
                     android:listSelector="@android:color/transparent"
-                    android:scrollbarStyle="outsideOverlay"></ListView>
+                    android:scrollbarStyle="outsideOverlay">
+
+                    </ListView>
 
             </LinearLayout>
 
