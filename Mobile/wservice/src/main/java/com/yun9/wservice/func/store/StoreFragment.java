@@ -1,25 +1,32 @@
 package com.yun9.wservice.func.store;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.special.ResideMenu.ResideMenu;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAutoHeightViewPager;
+import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
 import com.yun9.wservice.model.ProductCategory;
+import com.yun9.wservice.model.SampleUser;
+import com.yun9.wservice.view.login.LoginMainActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -34,6 +41,11 @@ import in.srain.cube.views.ptr.PtrHandler;
  * Created by xia on 2015/5/27.
  */
 public class StoreFragment extends JupiterFragment {
+
+
+    @ViewInject(id = R.id.store_title)
+    private JupiterTitleBarLayout titleBar;
+
 
     private ListView productListView;
     private ProductCategoryLayout productCategoryLayout;
@@ -65,12 +77,23 @@ public class StoreFragment extends JupiterFragment {
 
     @Override
     protected void initViews(View view) {
+        this.titleBar.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Logged()){
+                    Intent gotoLogin = new Intent(mContext, LoginMainActivity.class);
+                    startActivity(gotoLogin);
+                }
+            }
+        });
+
         productCategoryLayout = (ProductCategoryLayout) view.findViewById(R.id.category_ll);
         productListView = (ListView) view.findViewById(R.id.product_list_ptr);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
 
-        viewPager = (ViewPager) view.findViewById(R.id.productsImgScroll);
-        circlePageIndicator = (CirclePageIndicator)view.findViewById(R.id.indicator);
+        View pageView = LayoutInflater.from(mContext).inflate(R.layout.store_product_pager,null);
+        viewPager = (ViewPager) pageView.findViewById(R.id.productsImgScroll);
+        circlePageIndicator = (CirclePageIndicator)pageView.findViewById(R.id.indicator);
 
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -118,21 +141,25 @@ public class StoreFragment extends JupiterFragment {
             product.setProductImg(currProductCategory.getCategoryname() + ";产品图片" + i);
             products.addFirst(product);
             topProducts.addLast(product);
+
         }
 
         this.builderViewPages(topProducts);
 
         if (!AssertValue.isNotNull(productImgAdapter)) {
-            productImgAdapter = new ProductImgAdapter(this.getActivity(), productScrollItemViews);
+            productImgAdapter = new ProductImgAdapter(mContext, productScrollItemViews);
             viewPager.setAdapter(productImgAdapter);
-           circlePageIndicator.setViewPager(viewPager);
+            circlePageIndicator.setViewPager(viewPager);
         } else {
             productImgAdapter.notifyDataSetChanged();
         }
 
         if (!AssertValue.isNotNull(productListAdapter)) {
+            productListView.addHeaderView(LayoutInflater.from(mContext).inflate(R.layout.store_product_pager, null,false));
+
             productListAdapter = new ProductListAdapter(this.getActivity(), products);
             productListView.setAdapter(productListAdapter);
+
         } else {
             productListAdapter.notifyDataSetChanged();
         }
@@ -220,6 +247,17 @@ public class StoreFragment extends JupiterFragment {
         @Override
         public void onClick(View v) {
             currProductCategory = (ProductCategory) v.getTag();
+
+            List<TextView> textViewList;
+            textViewList = productCategoryLayout.getTextViews();
+            for (int i = 0; i < textViewList.size(); i++){
+                if(textViewList.get(i).getTag() != currProductCategory){
+                    textViewList.get(i).setBackgroundResource(R.drawable.productcategory_background);
+                }else {
+                    textViewList.get(i).setBackgroundResource(R.color.title_color);
+                }
+            }
+
             if (AssertValue.isNotNull(currProductCategory)) {
                 cleanProduct();
                 mPtrFrame.postDelayed(new Runnable() {
@@ -231,6 +269,27 @@ public class StoreFragment extends JupiterFragment {
             }
         }
     };
+
+    //
+    //
+    //
+    public boolean Logged(){
+
+        SampleUser sampleUser = new SampleUser();
+        String no = sampleUser.getNo().toString();
+        String name = sampleUser.getName().toString();
+        String id = sampleUser.getId().toString();
+
+        if(no.equals("") || name.equals("") || id.equals("")){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    //
+    //
+    //
+
 
 }
 
