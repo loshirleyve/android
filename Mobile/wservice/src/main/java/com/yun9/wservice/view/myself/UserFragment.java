@@ -58,7 +58,7 @@ public class UserFragment extends JupiterFragment {
         userHeadWidget.getOrgLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrgCompositeActivity.start(UserFragment.this.getActivity(), new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).putSelectUser("1").putSelectUser("2").putSelectOrgs("1").putSelectOrgs("5"));
+                OrgCompositeActivity.start(UserFragment.this.getActivity(), new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).putSelectUser("186").putSelectUser("2").putSelectOrgs("25970000000010006").putSelectOrgs("5"));
             }
         });
 

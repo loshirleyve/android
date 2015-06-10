@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 获取组织综合信息 -->
+    <repository>
+        <name>QueryOrgCompositeInfo</name>
+        <action>com.yun9.ws.biz.service.QueryOrgCompositeInfoService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrgCompositeInfoBean</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 通过维度id查询组织,输出为OrgListBean-->
+    <repository>
+        <name>QueryOrgsByOrgList</name>
+        <action>com.yun9.sys.inst.serivce.QueryOrgsService</action>
+        <output>
+            <classname>com.yun9.wservice.view.org.OrgListBean</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 通过组织id集合查询组织信息-->
+    <repository>
+        <name>QueryOrgsByOrgids</name>
+        <action>com.yun9.sys.inst.serivce.QueryOrgsByOrgidsService</action>
+        <output>
+            <classname>com.yun9.jupiter.model.Org</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+
+
+</repositorys>

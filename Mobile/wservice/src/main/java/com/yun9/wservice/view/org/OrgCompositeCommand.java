@@ -29,6 +29,8 @@ public class OrgCompositeCommand extends JupiterCommand {
 
     private String instid;
 
+    private String userid;
+
     private boolean edit;
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
@@ -74,6 +76,15 @@ public class OrgCompositeCommand extends JupiterCommand {
     public OrgCompositeCommand setInstid(String instid) {
         this.instid = instid;
 
+        return this;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public OrgCompositeCommand setUserid(String userid) {
+        this.userid = userid;
         return this;
     }
 

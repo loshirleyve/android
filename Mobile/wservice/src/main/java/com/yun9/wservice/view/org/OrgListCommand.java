@@ -26,6 +26,8 @@ public class OrgListCommand extends JupiterCommand {
 
     private String instid;
 
+    private String dimid;
+
     private List<String> selectOrgs;
 
     public String getDimType() {
@@ -71,6 +73,15 @@ public class OrgListCommand extends JupiterCommand {
 
     public OrgListCommand setInstid(String instid) {
         this.instid = instid;
+        return this;
+    }
+
+    public String getDimid() {
+        return dimid;
+    }
+
+    public OrgListCommand setDimid(String dimid) {
+        this.dimid = dimid;
         return this;
     }
 

@@ -78,8 +78,8 @@ public class OrgGridViewAdapter extends JupiterAdapter {
         }
 
         item.setSelectMode(selectMode);
-        item.getTitleTV().setText(orgListBean.getOrg().getName());
-        item.getSutitleTv().setText(orgListBean.getOrg().getNo()+" "+orgListBean.getOrg().getName());
+        item.getTitleTV().setText(orgListBean.getName());
+        item.getSutitleTv().setText(orgListBean.getUserNames());
         item.select(orgListBean.isSelected());
         item.setTag(orgListBean);
 

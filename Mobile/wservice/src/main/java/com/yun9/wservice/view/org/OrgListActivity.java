@@ -1,19 +1,25 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.model.Org;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
-import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
@@ -41,6 +47,9 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.buttonbar)
     private LinearLayout buttonBar;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
 
     private List<OrgListBean> orgs;
 
@@ -79,10 +88,6 @@ public class OrgListActivity extends JupiterFragmentActivity {
         //刷新数据
         this.refresh();
 
-        //设置是否编辑模式参数
-        if (AssertValue.isNotNull(command)) {
-            this.setEdit(command.isEdit());
-        }
 
     }
 
@@ -115,12 +120,31 @@ public class OrgListActivity extends JupiterFragmentActivity {
     }
 
     private void refresh() {
-        this.builderData();
-        if (!AssertValue.isNotNull(this.orgListAdapter)) {
-            this.orgListAdapter = new OrgListAdapter(this, this.orgs);
-            this.orgListView.setAdapter(orgListAdapter);
-        } else {
-            this.orgListAdapter.notifyDataSetChanged();
+
+        if (AssertValue.isNotNull(command)) {
+
+            final ProgressDialog registerDialog = ProgressDialog.show(OrgListActivity.this, null, getResources().getString(R.string.app_wating), true);
+
+            Resource resource = resourceFactory.create("QueryOrgsByOrgList");
+            resource.param("demid", command.getDimid());
+
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    List<OrgListBean> tempOrgs = (List<OrgListBean>) response.getPayload();
+                    builderData(tempOrgs);
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(OrgListActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinally(Response response) {
+                    registerDialog.dismiss();
+                }
+            });
         }
     }
 
@@ -151,34 +175,43 @@ public class OrgListActivity extends JupiterFragmentActivity {
         super.onBackPressed();
     }
 
-    private void builderData() {
+    private void builderData(List<OrgListBean> tempOrgs) {
+
         if (!AssertValue.isNotNull(orgs)) {
             orgs = new ArrayList<>();
         }
 
-        for (int i = 0; i < 20; i++) {
-            OrgListBean orgListBean = new OrgListBean();
-            orgListBean.setSelected(false);
-            Org org = new Org();
-            org.setId(i + "");
-            org.setName("测试组织" + i);
-            org.setNo("00" + i);
-            org.setDimType(command.getDimType());
-            orgListBean.setOrg(org);
+        if (AssertValue.isNotNullAndNotEmpty(tempOrgs)) {
+            for (OrgListBean tempOrg : tempOrgs) {
+                tempOrg.setSelected(false);
 
-            //根据代入参数设置已经选中的项目
-            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectOrgs())) {
-                for (String orgid : command.getSelectOrgs()) {
-                    if (AssertValue.isNotNull(orgid) && orgid.equals(org.getId())) {
-                        orgListBean.setSelected(true);
+                //根据代入参数设置已经选中的项目
+                if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectOrgs())) {
+                    for (String orgid : command.getSelectOrgs()) {
+                        if (AssertValue.isNotNull(orgid) && orgid.equals(tempOrg.getId())) {
+                            tempOrg.setSelected(true);
+                        }
                     }
                 }
+                orgs.add(tempOrg);
             }
-
-            orgs.add(orgListBean);
         }
+
+        if (!AssertValue.isNotNull(this.orgListAdapter)) {
+            this.orgListAdapter = new OrgListAdapter(this, this.orgs);
+            this.orgListView.setAdapter(orgListAdapter);
+        } else {
+            this.orgListAdapter.notifyDataSetChanged();
+        }
+
+        //设置是否编辑模式参数
+        if (AssertValue.isNotNull(command)) {
+            this.setEdit(command.isEdit());
+        }
+
     }
 
+    //TODO 待服务完善参数后，完成缺少字段的补充处理
     private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -187,7 +220,19 @@ public class OrgListActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNullAndNotEmpty(orgs)) {
                 for (OrgListBean orgListBean : orgs) {
                     if (orgListBean.isSelected()) {
-                        selectOrg.add(orgListBean.getOrg());
+                        Org org = new Org();
+                        org.setId(orgListBean.getId());
+                        org.setNo(orgListBean.getNo());
+                        org.setName(orgListBean.getName());
+                        //org.setDimType();
+                        //org.setDimid(orgListBean.getd);
+                        org.setCreateby(orgListBean.getCreateby());
+                        org.setDesc(orgListBean.getDesc_());
+                        //org.setDimno(orgListBean.getd);
+                        org.setParentid(orgListBean.getParentid());
+                        //org.setRemark(orgListBean.getR);
+                        org.setSort(orgListBean.getSort());
+                        selectOrg.add(org);
                     }
                 }
             }
@@ -204,7 +249,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
     private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgEditActivity.start(OrgListActivity.this,new OrgEditCommand().setEdit(edit));
+            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(edit));
         }
     };
 }
