@@ -26,11 +26,6 @@
     <string name="app_wating">正在处理,请稍后...</string>
 
 
-    <string name="user_head_name">黄小明</string>
-    <string name="user_company_name">深圳市顶聚科技有限公司</string>
-
-    <string name="user_organize_name">研发部</string>
-
     <string name="user_buyer">购买管理</string>
     <string name="user_file">文件</string>
     <string name="user_org">组织架构</string>

@@ -1,6 +1,8 @@
 package com.yun9.jupiter.model;
 
 
+import java.util.List;
+
 public class User implements java.io.Serializable {
 
 	/**
@@ -22,9 +24,25 @@ public class User implements java.io.Serializable {
 	private long createdata;
 	private String createby;
 	private String remark;
-	
+	private String orgNames;
+	private List<UserContact> contacts;
 
-	
+
+	public String getOrgNames() {
+		return orgNames;
+	}
+
+	public void setOrgNames(String orgNames) {
+		this.orgNames = orgNames;
+	}
+
+	public List<UserContact> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<UserContact> contacts) {
+		this.contacts = contacts;
+	}
 
 	public String getId() {
 		return id;

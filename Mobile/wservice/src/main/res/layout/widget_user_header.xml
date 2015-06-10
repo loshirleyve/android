@@ -30,7 +30,6 @@
                 android:id="@+id/user_head_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/user_head_name"
                 android:textColor="@color/whites"
                 android:textSize="20dp" />
 
@@ -39,7 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/user_company_name"
                 android:textColor="@color/whites"
                 android:textSize="15dp" />
 
@@ -48,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@string/user_organize_name"
                 android:textColor="@color/whites"
                 android:textSize="15dp" />
 
@@ -58,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:text="个性签名"
                 android:textColor="@color/whites"
                 android:textSize="15dp" />
         </LinearLayout>

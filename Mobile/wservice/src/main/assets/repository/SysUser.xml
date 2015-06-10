@@ -22,7 +22,7 @@
         <type>yun9</type>
     </repository>
 
-    <!--通过userid查询用户信息-->
+    <!--通过userid查询用户信息，如果包含instid，则包含组织信息-->
     <repository>
         <name>QueryUserInfoByIdService</name>
         <action>com.yun9.sys.user.service.QueryUserInfoByIdService</action>

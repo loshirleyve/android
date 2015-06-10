@@ -1,10 +1,17 @@
 package com.yun9.wservice.view.myself;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
@@ -28,6 +35,9 @@ public class UserFragment extends JupiterFragment {
 
     @BeanInject
     private SessionManager sessionManager;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
 
     @ViewInject(id = R.id.setting)
     private JupiterRowStyleTitleLayout settingLayout;
@@ -58,7 +68,7 @@ public class UserFragment extends JupiterFragment {
         userHeadWidget.getOrgLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrgCompositeActivity.start(UserFragment.this.getActivity(), new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).putSelectUser("186").putSelectUser("2").putSelectOrgs("25970000000010006").putSelectOrgs("5"));
+                OrgCompositeActivity.start(UserFragment.this.getActivity(), new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).putSelectUser("186").putSelectOrgs("25970000000010006"));
             }
         });
 
@@ -82,7 +92,48 @@ public class UserFragment extends JupiterFragment {
                 SelectInstActivity.start(getActivity(),new SelectInstCommand().setUser(sessionManager.getUser()));
             }
         });
+
+        this.refresh();
     }
 
 
+    private void refresh(){
+        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())){
+            Resource resource = resourceFactory.create("QueryUserInfoByIdService");
+            resource.param("userid",sessionManager.getUser().getId());
+            resource.param("instid",sessionManager.getInst().getId());
+
+            final ProgressDialog registerDialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.app_wating), true);
+
+
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    User user = (User) response.getPayload();
+
+                    if (AssertValue.isNotNull(user)){
+                        userHeadWidget.getUserNameTV().setText(user.getName());
+                        //TODO 等待服务完善返回机构信息后增加
+                        userHeadWidget.getCompanyTV().setText(sessionManager.getInst().getName());
+                        userHeadWidget.getOrgTV().setText(user.getOrgNames());
+                        userHeadWidget.getSignTV().setText(user.getSignature());
+                        //TODO 头像待服务完善
+                    }
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    userHeadWidget.getUserNameTV().setText("");
+                    userHeadWidget.getCompanyTV().setText("");
+                    userHeadWidget.getOrgTV().setText("");
+                    userHeadWidget.getSignTV().setText("");
+                }
+
+                @Override
+                public void onFinally(Response response) {
+                    registerDialog.dismiss();
+                }
+            });
+        }
+    }
 }

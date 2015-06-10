@@ -187,11 +187,11 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             orgCompositeTopWidget.getMyselfLL().getSutitleTv().setText(orgCompositeInfoBean.getMyself().getSignature());
         }
 
-        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getHr())){
+        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getHr())) {
             orgCompositeTopWidget.getOrgHrLL().setTag(orgCompositeInfoBean.getHr().get("id"));
         }
 
-        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getGroup())){
+        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getGroup())) {
             orgCompositeTopWidget.getOrgGroupLL().setTag(orgCompositeInfoBean.getGroup().get("id"));
         }
 
@@ -238,9 +238,9 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                 @Override
                 public void onSuccess(Response response) {
 
-                    ArrayList<Org> selectOrgs  = (ArrayList<Org>) response.getPayload();
+                    ArrayList<Org> selectOrgs = (ArrayList<Org>) response.getPayload();
                     //TODO 待服务返回完善的组织数据后，补充根据dimtype不同放入不同的选择类型中
-                    if(AssertValue.isNotNullAndNotEmpty(selectOrgs)) {
+                    if (AssertValue.isNotNullAndNotEmpty(selectOrgs)) {
                         onSelectOrgMaps.put(OrgCompositeCommand.DIM_TYPE_HR, selectOrgs);
                     }
                     //设置子标题
@@ -300,9 +300,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         //找到需要打开类型的已经选择组织放入传递对象
         if (AssertValue.isNotNullAndNotEmpty(onSelectOrgMaps.get(dimType))) {
             for (Org org : onSelectOrgMaps.get(dimType)) {
-                if (dimType.equals(org.getDimType())) {
-                    orgListCommand.putSelectOrgs(org.getId());
-                }
+                orgListCommand.putSelectOrgs(org.getId());
             }
         }
         return orgListCommand;
@@ -463,8 +461,10 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     }
 
     private void selectMode(boolean mode) {
-        this.orgCompositeListAdapter.setSelectMode(mode);
-        this.orgCompositeListAdapter.notifyDataSetChanged();
+        if (AssertValue.isNotNull(this.orgCompositeListAdapter)) {
+            this.orgCompositeListAdapter.setSelectMode(mode);
+            this.orgCompositeListAdapter.notifyDataSetChanged();
+        }
 
     }
 }

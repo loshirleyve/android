@@ -121,7 +121,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
     private void refresh() {
 
-        if (AssertValue.isNotNull(command)) {
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getDimid())) {
 
             final ProgressDialog registerDialog = ProgressDialog.show(OrgListActivity.this, null, getResources().getString(R.string.app_wating), true);
 
@@ -164,8 +164,12 @@ public class OrgListActivity extends JupiterFragmentActivity {
     }
 
     private void selectMode(boolean mode) {
-        this.orgListAdapter.setSelectMode(mode);
-        this.orgListAdapter.notifyDataSetChanged();
+
+        if(AssertValue.isNotNull(this.orgListAdapter)) {
+
+            this.orgListAdapter.setSelectMode(mode);
+            this.orgListAdapter.notifyDataSetChanged();
+        }
 
     }
 
