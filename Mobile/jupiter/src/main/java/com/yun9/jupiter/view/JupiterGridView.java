@@ -2,6 +2,7 @@ package com.yun9.jupiter.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.GridView;
 
 /**
@@ -28,4 +29,5 @@ public class JupiterGridView extends GridView{
                 MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
     }
+
 }

@@ -176,6 +176,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         subform.setTitle("测试子项目");
         TextFormCellBean textFormCell = new TextFormCellBean();
         textFormCell.setLabel("测试子项目文本输入");
+        textFormCell.setRequired(true);
         textFormCell.setKey("testsubinput");
         textFormCell.setType(TextFormCell.class.getSimpleName());
         subform.putCellBean(textFormCell);
@@ -183,6 +184,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         TextFormCellBean textFormCell2 = new TextFormCellBean();
         textFormCell2.setLabel("测试子项目文本输入Sub");
         textFormCell2.setKey("testsubinput2");
+        textFormCell2.setRequired(true);
         textFormCell2.setType(TextFormCell.class.getSimpleName());
         subform.putCellBean(textFormCell2);
         return subform;

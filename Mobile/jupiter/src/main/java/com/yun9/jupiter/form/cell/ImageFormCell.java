@@ -111,7 +111,7 @@ public class ImageFormCell extends FormCell {
         for (String id : ids) {
             createItem(id);
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     private void startUploadImage() {
@@ -168,7 +168,7 @@ public class ImageFormCell extends FormCell {
     private void deleteItm(JupiterTextIco item) {
         itemList.remove(item);
         reCaculateLimit();
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     private void reCaculateLimit() {

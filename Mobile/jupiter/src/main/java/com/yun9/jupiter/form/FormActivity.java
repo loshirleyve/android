@@ -2,13 +2,11 @@ package com.yun9.jupiter.form;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -20,7 +18,6 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -185,8 +182,13 @@ public class FormActivity extends JupiterFragmentActivity {
             params.addRule(RelativeLayout.ABOVE, 0);
         }
 
-        // 隐藏键盘
-        hideInputMethodManager();
+        formLL.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                formLL.requestFocus();
+                return false;
+            }
+        });
 
     }
 
@@ -225,15 +227,6 @@ public class FormActivity extends JupiterFragmentActivity {
     private void doCancel() {
         FormActivity.this.setResult(RESPONSE_CODE.CANCEL, getIntent());
         FormActivity.this.finish();
-    }
-
-    /**
-     * 隐藏键盘
-     */
-    private void hideInputMethodManager() {
-        // 没效果啊
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void toggleState() {

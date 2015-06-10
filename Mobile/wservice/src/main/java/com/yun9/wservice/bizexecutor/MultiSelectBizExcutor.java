@@ -26,7 +26,7 @@ import java.util.Map;
 public class MultiSelectBizExcutor implements FormUtilFactory.BizExecutor {
 
     @Override
-    public void execute(final FormActivity activity,FormCell cell) {
+    public void execute(final FormActivity activity, final FormCell cell) {
         Intent intent = new Intent(activity,MultiSelectActivity.class);
         final MultiSelectFormCell formCell = (MultiSelectFormCell) cell;
         MultiSelectFormCellBean cellBean = (MultiSelectFormCellBean) cell.getFormCellBean();
@@ -37,7 +37,11 @@ public class MultiSelectBizExcutor implements FormUtilFactory.BizExecutor {
         int requestCode = activity.addActivityCallback(new FormActivity.IFormActivityCallback() {
             @Override
             public void onActivityResult(int resultCode, Intent data) {
-                List<SerialableEntry<String, String>> selectedList = (List<SerialableEntry<String, String>>) data.getSerializableExtra("selectedList");
+                List<SerialableEntry<String, String>> selectedList = (List<SerialableEntry<String, String>>) cell.getValue();
+                Serializable obj = data.getSerializableExtra("selectedList");
+                if (obj != null) {
+                    selectedList = (List<SerialableEntry<String, String>>) obj;
+                }
                 formCell.reload(selectedList);
             }
         });

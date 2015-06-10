@@ -111,7 +111,7 @@ public class UserFormCell extends FormCell{
 
     private void deleteItm(JupiterTextIco item) {
         itemList.remove(item);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     /**
@@ -152,7 +152,7 @@ public class UserFormCell extends FormCell{
             }
             item.showCorner();
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     @Override

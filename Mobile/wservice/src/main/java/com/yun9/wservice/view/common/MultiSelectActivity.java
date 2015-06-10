@@ -1,10 +1,13 @@
 package com.yun9.wservice.view.common;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -25,6 +28,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
 
     private JupiterTitleBarLayout titleBarLayout;
     private ListView listView;
+    private TextView submitTV;
     private JupiterAdapter adapter;
     private String ctrlCode;
     private List<SerialableEntry<String, String>> selectedList;
@@ -35,6 +39,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         titleBarLayout = (JupiterTitleBarLayout) this.findViewById(R.id.title_bar);
         listView = (ListView) this.findViewById(R.id.listview);
+        submitTV = (TextView) this.findViewById(R.id.submit);
         initData();
         this.build();
         this.setupAdapter();
@@ -66,14 +71,16 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
     }
     
     private void build() {
-        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener clickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gatherResult();
                 setResult(Constants.ACTIVITY_RETURN.SUCCESS, getIntent());
                 MultiSelectActivity.this.finish();
             }
-        });
+        };
+        titleBarLayout.getTitleLeft().setOnClickListener(clickListener);
+        submitTV.setOnClickListener(clickListener);
     }
 
     private void setupAdapter() {

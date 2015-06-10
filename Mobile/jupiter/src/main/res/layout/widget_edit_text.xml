@@ -6,22 +6,20 @@
     <TextView
         android:id="@+id/title_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:paddingBottom="2dp"
         android:paddingTop="2dp"
         android:paddingLeft="10dp"
         android:visibility="gone"
         android:background="@color/whites"
         android:text="@string/jupiter"/>
-    <com.rengwuxian.materialedittext.MaterialEditText
+    <EditText
         android:layout_below="@+id/title_tv"
         android:id="@+id/m_edit_text"
         android:imeOptions="actionDone"
+        android:background="@color/whites"
         android:paddingLeft="10dp"
-        app:met_baseColor="#0056d3"
-        app:met_floatingLabel="normal"
-        app:met_primaryColor="#0056d3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="50dp" />
 
 </RelativeLayout>
