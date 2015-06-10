@@ -7,10 +7,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
-import com.yun9.wservice.cache.FileIdCache;
 import com.yun9.wservice.cache.UserCache;
-
-import java.util.List;
 
 /**
  * Created by huangbinglong on 15/6/9.
