@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/store_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,35 +25,36 @@
         android:layout_below="@id/store_title">
     </com.yun9.wservice.func.store.ProductCategoryLayout>
 
-    <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
-        android:id="@+id/productsImgScroll"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_below="@+id/category_ll"/>
+    <!--    <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
+            android:id="@+id/productsImgScroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_below="@+id/category_ll"/>
 
-    <com.viewpagerindicator.CirclePageIndicator
-        android:id="@+id/indicator"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/category_ll"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="150dp"
-        />
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/category_ll"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="150dp"
+            />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/productsImgScroll"
+        android:layout_below="@id/category_ll"
         android:orientation="vertical">
 
 
 
-        <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout
+            xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rotate_header_list_view_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/productsImgScroll"
+            android:layout_below="@id/category_ll"
             android:background="@color/groupbackground"
             cube_ptr:ptr_duration_to_close="200"
             cube_ptr:ptr_duration_to_close_header="1000"
@@ -76,7 +78,7 @@
                     android:listSelector="@android:color/transparent"
                     android:scrollbarStyle="outsideOverlay">
 
-                    </ListView>
+                </ListView>
 
             </LinearLayout>
 

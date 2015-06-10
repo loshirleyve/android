@@ -39,9 +39,13 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
         super(context, attrs, defStyle);
     }
 
+    public List<TextView> getTextViews() {
+        return textViews;
+    }
+
     public void buildWidthData(List<ProductCategory> categoryList) {
 
-        textViews = new ArrayList<>();
+        textViews = new ArrayList<TextView>();
         if (AssertValue.isNotNullAndNotEmpty(categoryList)){
             for(int i = 0; i < categoryList.size(); i++)
             {
@@ -50,9 +54,10 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
                 textView.setLayoutParams(lp);
                 textView.setGravity(Gravity.CENTER);
                 textView.setText(categoryList.get(i).getCategoryname());
-                textView.setTextSize(20);
+                textView.setTextSize(16);
                 textView.setPadding(10, 10, 10, 10);
-                textView.setBackground(getResources().getDrawable(R.drawable.productcategory_background));
+                textView.setBackgroundResource(R.drawable.productcategory_background);
+                //textView.setBackground(getResources().getDrawable(R.drawable.productcategory_background));
 
                 textView.setTag(categoryList.get(i));
 
@@ -65,7 +70,9 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
             }
             //
             this.textViews.get(0).performClick();
+
         }
+
     }
 
     @Override

@@ -44,7 +44,6 @@ public class ProductListAdapter extends JupiterAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ProductItemLayout productItemLayout = null;
-        Product product = products.get(position);
 
         if (AssertValue.isNotNull(convertView)) {
             productItemLayout = (ProductItemLayout) convertView;
@@ -88,4 +87,6 @@ public class ProductListAdapter extends JupiterAdapter {
         return productItemLayout;
 
     }
+
+
 }
