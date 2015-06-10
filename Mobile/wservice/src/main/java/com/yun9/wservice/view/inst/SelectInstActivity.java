@@ -6,11 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
@@ -36,6 +44,12 @@ public class SelectInstActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
+    @BeanInject
+    private SessionManager sessionManager;
 
     private List<Inst> insts;
 
@@ -70,8 +84,6 @@ public class SelectInstActivity extends JupiterFragmentActivity {
             }
         });
 
-        this.instListView.setOnItemClickListener(onInstItemClickListener);
-
         mPtrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -83,21 +95,39 @@ public class SelectInstActivity extends JupiterFragmentActivity {
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPtrClassicFrameLayout.autoRefresh();
+                if (AssertValue.isNotNull(command) && AssertValue.isNotNull(command.getUser())) {
+                    mPtrClassicFrameLayout.autoRefresh();
+                }
             }
         }, 100);
     }
 
     private void refresh() {
-        mPtrClassicFrameLayout.postDelayed(new Runnable() {
+
+        Resource resource = resourceFactory.create("QueryUserInsts");
+        resource.param("userno", command.getUser().getNo());
+
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
-            public void run() {
-                completeRefresh();
+            public void onSuccess(Response response) {
+                List<Inst> tempInsts = (List<Inst>) response.getPayload();
+                completeRefresh(tempInsts);
             }
-        }, 1000);
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(SelectInstActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                mPtrClassicFrameLayout.refreshComplete();
+
+            }
+        });
     }
 
-    private void completeRefresh() {
+    private void completeRefresh(List<Inst> tempInsts) {
 
         if (!AssertValue.isNotNull(insts)) {
             this.insts = new ArrayList<>();
@@ -105,24 +135,30 @@ public class SelectInstActivity extends JupiterFragmentActivity {
 
         this.insts.clear();
 
-        Inst tempInst = new Inst();
-        tempInst.setName("深圳市顶聚科技有限公司");
-        tempInst.setId("123123");
-        this.insts.add(tempInst);
+        if (AssertValue.isNotNullAndNotEmpty(tempInsts)) {
+            for (Inst inst : tempInsts) {
+                if (AssertValue.isNotNull(inst)) {
+                    this.insts.add(inst);
+                }
+            }
+        }
 
         if (!AssertValue.isNotNull(selectInstAdapter)) {
             this.selectInstAdapter = new SelectInstAdapter(this, insts);
+            this.selectInstAdapter.setOnSelectListener(onInstSelectListener);
+            Inst currInst = sessionManager.getInst(command.getUser().getId());
+            if (AssertValue.isNotNull(currInst)){
+                selectInstAdapter.setCurrInst(currInst);
+            }
             instListView.setAdapter(selectInstAdapter);
         } else {
             selectInstAdapter.notifyDataSetChanged();
         }
-
-        mPtrClassicFrameLayout.refreshComplete();
     }
 
-    private AdapterView.OnItemClickListener onInstItemClickListener = new AdapterView.OnItemClickListener() {
+    private OnSelectListener onInstSelectListener = new OnSelectListener() {
         @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        public void onSelect(View view, boolean mode) {
             Inst inst = (Inst) view.getTag();
 
             if (AssertValue.isNotNull(inst)) {

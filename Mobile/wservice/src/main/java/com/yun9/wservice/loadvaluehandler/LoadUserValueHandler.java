@@ -35,6 +35,11 @@ public class LoadUserValueHandler implements FormUtilFactory.LoadValueHandler{
                 public void onFailure(Response response) {
                     System.out.println(response.getCause());
                 }
+
+                @Override
+                public void onFinally(Response response) {
+
+                }
             });
             return;
         }

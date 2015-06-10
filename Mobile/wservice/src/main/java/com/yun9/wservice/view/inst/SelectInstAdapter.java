@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -19,10 +20,20 @@ public class SelectInstAdapter extends JupiterAdapter {
 
     private List<Inst> mInsts;
     private Context mContext;
+    private OnSelectListener onSelectListener;
+    private Inst currInst;
 
     public SelectInstAdapter(Context context,List<Inst> insts){
         this.mInsts = insts;
         this.mContext = context;
+    }
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
+    }
+
+    public void setCurrInst(Inst currInst) {
+        this.currInst = currInst;
     }
 
     @Override
@@ -49,11 +60,21 @@ public class SelectInstAdapter extends JupiterAdapter {
             rowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
         }else{
             rowStyleSutitleLayout = new JupiterRowStyleSutitleLayout(mContext);
-            rowStyleSutitleLayout.setShowArrow(true);
+            rowStyleSutitleLayout.setShowArrow(false);
             rowStyleSutitleLayout.setShowTime(false);
             rowStyleSutitleLayout.setShowSutitleText(false);
             rowStyleSutitleLayout.setShowMainImage(false);
+            rowStyleSutitleLayout.setSelectMode(true);
+            if (AssertValue.isNotNull(onSelectListener)){
+                rowStyleSutitleLayout.setOnSelectListener(onSelectListener);
+            }
 
+        }
+
+        if (AssertValue.isNotNull(currInst) && currInst.getId().equals(inst.getId())){
+            rowStyleSutitleLayout.select(true);
+        }else{
+            rowStyleSutitleLayout.select(false);
         }
 
         rowStyleSutitleLayout.setTag(inst);

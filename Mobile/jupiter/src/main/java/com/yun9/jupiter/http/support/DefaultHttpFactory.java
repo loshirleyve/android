@@ -69,7 +69,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
     private int network_error_resource;
 
     @Override
-    public void post(Resource resource, final AsyncHttpResponseCallback callback) {
+    public void post(final Resource resource, final AsyncHttpResponseCallback callback) {
         AssertArgument.isNotNull(callback, "callback");
         AssertArgument.isNotNull(resource, "resource");
 
@@ -126,9 +126,17 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                                 headers, responseBody, null);
                         if (AssertValue.isNotNull(callback)) {
                             if ("100".equals(response.getCode())) {
-                                callback.onSuccess(response);
+                                try {
+                                    callback.onSuccess(response);
+                                }finally {
+                                    callback.onFinally(response);
+                                }
                             } else {
-                                callback.onFailure(response);
+                                try {
+                                    callback.onFailure(response);
+                                }finally {
+                                    callback.onFinally(response);
+                                }
                             }
                         }
                     }
@@ -139,7 +147,11 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                         if (AssertValue.isNotNull(callback)) {
                             Response response = createResponse(request,
                                     statusCode, headers, responseBody, error);
-                            callback.onFailure(response);
+                            try {
+                                callback.onFailure(response);
+                            }finally {
+                                callback.onFinally(response);
+                            }
                         }
                     }
                 });

@@ -133,28 +133,26 @@ public class LoginActivity extends JupiterFragmentActivity {
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                try {
-                    user = (User) response.getPayload();
-
-                    //检查登录用户的机构信息
-                    if (AssertValue.isNotNull(sessionManager.getInst(user.getId()))) {
-                        complete(user, sessionManager.getInst(user.getId()));
-                    } else {
-                        //未选择机构，进行机构选择操作
-                        SelectInstActivity.start(LoginActivity.this, new SelectInstCommand().setUser(user));
-                    }
-
-                } finally {
-                    setLoading(false);
+                user = (User) response.getPayload();
+                //检查登录用户的机构信息
+                if (AssertValue.isNotNull(sessionManager.getInst(user.getId()))) {
+                    complete(user, sessionManager.getInst(user.getId()));
+                } else {
+                    //未选择机构，进行机构选择操作
+                    SelectInstActivity.start(LoginActivity.this, new SelectInstCommand().setUser(user));
                 }
             }
 
             @Override
             public void onFailure(Response response) {
                 String cause = response.getCause();
-                setLoading(false);
                 //登录失败
                 Toast.makeText(LoginActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                setLoading(false);
 
             }
         });
