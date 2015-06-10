@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whites">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/titlebar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:titleLeftIcoSrc="@drawable/left_white"
+        app:titleLeftIcoVisibility="true"
+        app:titleRightText="@string/app_next"
+        app:titleRightTextVisibility="true"
+        app:titleText="@string/register_user">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center_vertical"
+            android:text="@string/register_user_welcome"
+            android:textSize="20dp" />
+
+        <com.yun9.jupiter.widget.JupiterImageEditLayout xmlns:ie="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/email_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            ie:image_edit_hint="@string/register_user_input_email"
+            ie:image_ico_src="@drawable/acc_icn">
+        </com.yun9.jupiter.widget.JupiterImageEditLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

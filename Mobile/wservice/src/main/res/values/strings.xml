@@ -6,7 +6,7 @@
     <string name="login_no_userno">请输入账号</string>
 
 
-    <string name="mailrge1">我们发送了一封激活邮件到您的邮箱：XXXX@163.com。</string>
+    <string name="mailrge1">我们发送了一封激活邮件到您的邮箱。</string>
     <string name="mailrge2">请登录邮箱按邮件内容引导激活您的账户。</string>
     <string name="mailrge3">如您已经激活账户，请登录移办通</string>
 
@@ -22,6 +22,8 @@
     <string name="app_edit">编辑</string>
     <string name="app_complete">完成</string>
     <string name="app_ok">确定</string>
+    <string name="app_next">下一步</string>
+    <string name="app_wating">正在处理,请稍后...</string>
 
 
     <string name="user_head_name">黄小明</string>
@@ -82,6 +84,9 @@
     <string name="doc_composite_title">文档</string>
     <string name="please_select">请选择</string>
 
-
+    <string name="register_user">注册用户</string>
+    <string name="register_user_welcome">欢迎加入移办通，请输入您的邮箱地址</string>
+    <string name="register_user_input_email">填写邮箱地址</string>
+    <string name="register_user_input_email_error">请输入一个有效的电子邮箱</string>
 
 </resources>

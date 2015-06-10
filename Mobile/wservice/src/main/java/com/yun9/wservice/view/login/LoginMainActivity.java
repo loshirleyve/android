@@ -1,20 +1,18 @@
 package com.yun9.wservice.view.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.jupiter.view.JupiterActivity;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.register.UserRegisterActivity;
 
 /**
  * Created by xia on 2015/5/21.
@@ -48,7 +46,7 @@ public class LoginMainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("免费注册按钮被点击！");
-            Intent i = new Intent(LoginMainActivity.this, MailRegisterMainActivity.class);
+            Intent i = new Intent(LoginMainActivity.this, UserRegisterActivity.class);
             startActivity(i);
         }
     };

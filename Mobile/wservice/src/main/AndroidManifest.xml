@@ -178,12 +178,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".view.login.MailRegisterMainActivity"
+            android:name=".view.register.UserRegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".view.login.MailRegisterActivity"
+            android:name=".view.register.UserRegisterCompleteActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
