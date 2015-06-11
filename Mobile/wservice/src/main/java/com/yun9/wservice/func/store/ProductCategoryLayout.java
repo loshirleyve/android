@@ -57,7 +57,6 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
                 textView.setTextSize(16);
                 textView.setPadding(10, 10, 10, 10);
                 textView.setBackgroundResource(R.drawable.productcategory_background);
-                //textView.setBackground(getResources().getDrawable(R.drawable.productcategory_background));
 
                 textView.setTag(categoryList.get(i));
 

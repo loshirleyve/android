@@ -6,20 +6,14 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.special.ResideMenu.ResideMenu;
 import com.viewpagerindicator.CirclePageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragment;
-import com.yun9.jupiter.widget.JupiterAutoHeightViewPager;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -54,6 +48,7 @@ public class StoreFragment extends JupiterFragment {
     private ProductImgAdapter productImgAdapter;
     private List<ProductScrollItemView> productScrollItemViews;
     private ViewPager viewPager;
+    private View pageView;
     private CirclePageIndicator circlePageIndicator;
 
     private LinkedList<Product> products;
@@ -91,7 +86,7 @@ public class StoreFragment extends JupiterFragment {
         productListView = (ListView) view.findViewById(R.id.product_list_ptr);
         mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
 
-        View pageView = LayoutInflater.from(mContext).inflate(R.layout.store_product_pager,null);
+        pageView = LayoutInflater.from(mContext).inflate(R.layout.widget_store_product_pager,null);
         viewPager = (ViewPager) pageView.findViewById(R.id.productsImgScroll);
         circlePageIndicator = (CirclePageIndicator)pageView.findViewById(R.id.indicator);
 
@@ -148,6 +143,7 @@ public class StoreFragment extends JupiterFragment {
 
         if (!AssertValue.isNotNull(productImgAdapter)) {
             productImgAdapter = new ProductImgAdapter(mContext, productScrollItemViews);
+            //viewPager.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, 200));
             viewPager.setAdapter(productImgAdapter);
             circlePageIndicator.setViewPager(viewPager);
         } else {
@@ -155,7 +151,7 @@ public class StoreFragment extends JupiterFragment {
         }
 
         if (!AssertValue.isNotNull(productListAdapter)) {
-            productListView.addHeaderView(LayoutInflater.from(mContext).inflate(R.layout.store_product_pager, null,false));
+            productListView.addHeaderView(pageView, null, false);
 
             productListAdapter = new ProductListAdapter(this.getActivity(), products);
             productListView.setAdapter(productListAdapter);
@@ -163,6 +159,7 @@ public class StoreFragment extends JupiterFragment {
         } else {
             productListAdapter.notifyDataSetChanged();
         }
+
 
         mPtrFrame.refreshComplete();
 
@@ -178,7 +175,6 @@ public class StoreFragment extends JupiterFragment {
                 ProductScrollItemView view = new ProductScrollItemView(mContext);
 
                 view.buildWithData(product);
-
                 view.setTag(product);
                 this.productScrollItemViews.add(view);
             }
