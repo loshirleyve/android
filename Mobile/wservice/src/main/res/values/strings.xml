@@ -83,5 +83,8 @@
     <string name="register_user_welcome">欢迎加入移办通，请输入您的邮箱地址</string>
     <string name="register_user_input_email">填写邮箱地址</string>
     <string name="register_user_input_email_error">请输入一个有效的电子邮箱</string>
+    <string name="detail_client">客户详情</string>
+    <string name="add_client">添加客户</string>
+    <string name="contact_name">联系人名</string>
 
 </resources>
