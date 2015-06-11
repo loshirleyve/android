@@ -1,5 +1,6 @@
 package com.yun9.wservice.model;
 
+import com.yun9.jupiter.model.Dim;
 import com.yun9.jupiter.model.User;
 
 import java.util.List;
@@ -9,28 +10,11 @@ import java.util.Map;
  * Created by Leon on 15/6/10.
  */
 public class OrgCompositeInfoBean implements java.io.Serializable {
-    private Map<String, Object> hr;
-    private Map<String, Object> group;
+    private List<Dim> dim;
 
     private User myself;
 
     private List<User> userMaps;
-
-    public Map<String, Object> getHr() {
-        return hr;
-    }
-
-    public void setHr(Map<String, Object> hr) {
-        this.hr = hr;
-    }
-
-    public Map<String, Object> getGroup() {
-        return group;
-    }
-
-    public void setGroup(Map<String, Object> group) {
-        this.group = group;
-    }
 
     public User getMyself() {
         return myself;
@@ -46,5 +30,13 @@ public class OrgCompositeInfoBean implements java.io.Serializable {
 
     public void setUserMaps(List<User> userMaps) {
         this.userMaps = userMaps;
+    }
+
+    public List<Dim> getDim() {
+        return dim;
+    }
+
+    public void setDim(List<Dim> dim) {
+        this.dim = dim;
     }
 }

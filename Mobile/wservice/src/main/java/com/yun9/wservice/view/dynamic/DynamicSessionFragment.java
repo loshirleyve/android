@@ -8,6 +8,8 @@ import android.widget.Toast;
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.Org;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
@@ -96,6 +98,13 @@ public class DynamicSessionFragment extends JupiterFragment {
             @Override
             public void onClick(View v) {
                 resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+            }
+        });
+
+        this.titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewDynamicActivity.start(getActivity(),new NewDynamicCommand());
             }
         });
 

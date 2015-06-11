@@ -11,6 +11,11 @@
             <clazz>com.yun9.wservice.view.login.LoginFuncEnterHandler</clazz>
         </enter>
 
+        <enter>
+            <name>demoform</name>
+            <clazz>com.yun9.wservice.view.demo.DemoFormEnterHandler</clazz>
+        </enter>
+
     </enters>
 
     <handlers>

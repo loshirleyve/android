@@ -112,19 +112,20 @@ public class MicroAppFragment extends JupiterFragment {
 
         microAppBeans.clear();
         microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "locationdemo", "地理位置测试", NavigationBean.TYPE_ITEM));
-        microAppBeans.add(new NavigationBean(System.currentTimeMillis()+"","login","登录测试",NavigationBean.TYPE_ITEM));
+        microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "login", "登录测试", NavigationBean.TYPE_ITEM));
+        microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "demoform", "测试表单", NavigationBean.TYPE_ITEM));
 
-        NavigationBean microAppBeanGroup1 = new NavigationBean(System.currentTimeMillis() + "","11", "申请", NavigationBean.TYPE_GROUP);
+        NavigationBean microAppBeanGroup1 = new NavigationBean(System.currentTimeMillis() + "", "11", "申请", NavigationBean.TYPE_GROUP);
 
-        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "请假","1", NavigationBean.TYPE_ITEM));
-        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "报销","2", NavigationBean.TYPE_ITEM));
-        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "出差","3", NavigationBean.TYPE_ITEM));
-        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "加班","4" ,NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "请假", "1", NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "报销", "2", NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "出差", "3", NavigationBean.TYPE_ITEM));
+        microAppBeanGroup1.putChildren(new NavigationBean(System.currentTimeMillis() + "", "加班", "4", NavigationBean.TYPE_ITEM));
 
         microAppBeans.add(microAppBeanGroup1);
 
         for (int i = 0; i < 30; i++) {
-            NavigationBean microAppBean = new NavigationBean(System.currentTimeMillis() + "",""+i, "应用" + (i + 1), NavigationBean.TYPE_ITEM);
+            NavigationBean microAppBean = new NavigationBean(System.currentTimeMillis() + "", "" + i, "应用" + (i + 1), NavigationBean.TYPE_ITEM);
             microAppBeans.add(microAppBean);
         }
 
@@ -149,16 +150,16 @@ public class MicroAppFragment extends JupiterFragment {
         popView = View.inflate(mContext, R.layout.widget_micro_app_popwindow_group, null);
         GridView gridView = (GridView) popView.findViewById(R.id.gridview);
         gridView.setAdapter(childMicroAppGridViewAdapter);
-        popupWindow = new PopupWindow(popView,500,500);
+        popupWindow = new PopupWindow(popView, 500, 500);
     }
 
-    private void showPopWin(NavigationBean microAppBean,View parent) {
+    private void showPopWin(NavigationBean microAppBean, View parent) {
         if (AssertValue.isNotNull(microAppBean) && AssertValue.isNotNullAndNotEmpty(microAppBean.getChildren())) {
             TextView textView = (TextView) popView.findViewById(R.id.title_tv);
             textView.setText(microAppBean.getName());
             childMicroAppBeans.clear();
 
-            for(NavigationBean children : microAppBean.getChildren()){
+            for (NavigationBean children : microAppBean.getChildren()) {
                 childMicroAppBeans.add(children);
             }
 
@@ -182,9 +183,9 @@ public class MicroAppFragment extends JupiterFragment {
             NavigationBean microAppBean = (NavigationBean) view.getTag();
 
             if (MicroAppBean.TYPE_GROUP.equals(microAppBean.getType())) {
-                showPopWin(microAppBean,view);
+                showPopWin(microAppBean, view);
             } else if (MicroAppBean.TYPE_ITEM.equals(microAppBean.getType())) {
-                navigationManager.navigation(getActivity(),null,microAppBean);
+                navigationManager.navigation(getActivity(), null, microAppBean);
                 popupWindow.dismiss();
             }
         }

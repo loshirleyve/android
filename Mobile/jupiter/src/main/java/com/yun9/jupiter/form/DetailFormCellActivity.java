@@ -1,26 +1,22 @@
 package com.yun9.jupiter.form;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.form.cell.DetailFormCell;
 import com.yun9.jupiter.form.model.DetailFormCellBean;
 import com.yun9.jupiter.form.model.FormBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterActivity;
-import com.yun9.jupiter.view.JupiterBadgeView;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -119,17 +115,17 @@ public class DetailFormCellActivity extends JupiterActivity {
         sutitleLayout.setTitleText((String) titleText);
         sutitleLayout.setSubTitleText((String) subTitleText);
         formLL.addView(sutitleLayout);
-        JupiterBadgeView badgeView = new JupiterBadgeView(this, sutitleLayout);
-        badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
-        badgeView.setBackgroundResource(R.drawable.icn_delete);
-        badgeView.setBadgeSize(20, 20);
-        badgeView.setOnClickListener(new View.OnClickListener() {
+        sutitleLayout.getArrowRightIV().setVisibility(View.VISIBLE);
+        sutitleLayout.getArrowRightIV().getLayoutParams().width = PublicHelp.dip2px(this, 30);
+        sutitleLayout.getArrowRightIV().getLayoutParams().height = PublicHelp.dip2px(this, 30);
+        sutitleLayout.getArrowRightIV().setImageDrawable(getResources().getDrawable(R.drawable.icn_delete));
+        sutitleLayout.getArrowRightIV().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 removeItem(position);
             }
         });
-        badgeView.show();
+
     }
 
     private void removeItem(int position) {

@@ -89,4 +89,9 @@
         <attr name="image_edit_hint" format="string"></attr>
 
     </declare-styleable>
+
+    <declare-styleable name="StaggeredGridView">
+        <attr name="drawSelectorOnTop" format="boolean" />
+        <attr name="numColumns" format="integer" />
+    </declare-styleable>
 </resources>

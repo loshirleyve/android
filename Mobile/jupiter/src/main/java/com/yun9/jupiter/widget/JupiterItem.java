@@ -20,7 +20,7 @@ public class JupiterItem extends JupiterEditableView{
 
     private ImageView itemImage;
     private TextView itemName;
-    private JupiterBadgeView badgeView;
+    private ImageView arrowIV;
 
     public JupiterItem(Context context) {
         super(context);
@@ -43,8 +43,7 @@ public class JupiterItem extends JupiterEditableView{
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         itemImage = (ImageView) this.findViewById(R.id.item_image);
         itemName = (TextView) this.findViewById(R.id.item_name);
-        View view = this.findViewById(R.id.container);
-        badgeView = new JupiterBadgeView(this.getContext(), view);
+        arrowIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.initAttr(attrs);
     }
 
@@ -67,7 +66,7 @@ public class JupiterItem extends JupiterEditableView{
             if (typedArray.hasValue(R.styleable.JupiterItem_item_badge_image)){
                 Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterItem_item_badge_image);
                 if (mainImage != null){
-                    this.badgeView.setBackgroundDrawable(mainImage);
+                    this.arrowIV.setImageDrawable(mainImage);
                 }
             }
         }finally{
@@ -97,27 +96,25 @@ public class JupiterItem extends JupiterEditableView{
 
     private void buildBadge(int cornerImage) {
         if (cornerImage != 0) {
-            badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
-            badgeView.setBackgroundResource(cornerImage);
-            badgeView.setBadgeSize(20, 20);
+            arrowIV.setImageResource(cornerImage);
         }
 
     }
 
     public void edit(boolean edit) {
         if (edit) {
-            badgeView.show();
+            arrowIV.setVisibility(VISIBLE);
         } else {
-            badgeView.hide();
+            arrowIV.setVisibility(GONE);
         }
     }
 
     public void showCorner() {
-        badgeView.show();
+        arrowIV.setVisibility(VISIBLE);
     }
 
     public void hideCorner() {
-        badgeView.hide();
+        arrowIV.setVisibility(GONE);
     }
 
     public ImageView getItemImage() {
@@ -134,14 +131,6 @@ public class JupiterItem extends JupiterEditableView{
 
     public void setItemName(TextView itemName) {
         this.itemName = itemName;
-    }
-
-    public JupiterBadgeView getBadgeView() {
-        return badgeView;
-    }
-
-    public void setBadgeView(JupiterBadgeView badgeView) {
-        this.badgeView = badgeView;
     }
 
     public JupiterItem setTitle(String title) {
@@ -162,5 +151,13 @@ public class JupiterItem extends JupiterEditableView{
     public JupiterItem setCornerImage(int cornerImage) {
         buildBadge(cornerImage);
         return this;
+    }
+
+    public ImageView getArrowIV() {
+        return arrowIV;
+    }
+
+    public void setArrowIV(ImageView arrowIV) {
+        this.arrowIV = arrowIV;
     }
 }

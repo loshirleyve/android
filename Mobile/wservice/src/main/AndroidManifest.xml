@@ -152,6 +152,7 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:name="com.yun9.jupiter.form.FormActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
@@ -178,12 +179,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".view.register.UserRegisterActivity"
+            android:name=".view.login.MailRegisterMainActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".view.register.UserRegisterCompleteActivity"
+            android:name=".view.login.MailRegisterActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
@@ -234,6 +235,13 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:name=".view.inst.SelectInstActivity"
             android:label="@string/select_inst"
             android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.dynamic.NewDynamicActivity"
+            android:label="@string/app_send_msgcard"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
 

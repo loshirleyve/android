@@ -1,24 +1,14 @@
 package com.yun9.jupiter.form.cell;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.model.DocFormCellBean;
 import com.yun9.jupiter.form.model.FormCellBean;
-import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.util.PublicHelp;
-import com.yun9.jupiter.view.JupiterBadgeView;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditItem;
@@ -26,9 +16,7 @@ import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterItem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Leon on 15/5/25.
@@ -93,12 +81,12 @@ public class DocFormCell extends FormCell {
         for (int i = 0; i < ids.length; i++) {
            createItem(ids[i]);
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     private void startUploadDoc() {
         createItem("1");
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     private JupiterItem createItem(String id) {
@@ -107,7 +95,7 @@ public class DocFormCell extends FormCell {
         item.setImage("drawable://" + R.drawable.fileicon);
         item.setTag(id);
         item.setCornerImage(R.drawable.icn_delete);
-        item.getBadgeView().setOnClickListener(new View.OnClickListener() {
+        item.getArrowIV().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 deleteItm(item);
@@ -119,7 +107,7 @@ public class DocFormCell extends FormCell {
 
     private void deleteItm(JupiterItem item) {
         itemList.remove(item);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetInvalidated();
     }
 
     @Override

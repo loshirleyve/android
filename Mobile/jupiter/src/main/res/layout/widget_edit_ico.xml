@@ -11,6 +11,7 @@
         app:rowStyleTitleShowArrow="false"/>
     <com.yun9.jupiter.view.JupiterGridView
         android:id="@+id/item_grid_view"
+        android:background="@color/drak"
         android:layout_below="@id/title_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

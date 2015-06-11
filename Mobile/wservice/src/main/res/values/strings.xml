@@ -24,6 +24,9 @@
     <string name="app_ok">确定</string>
     <string name="app_next">下一步</string>
     <string name="app_wating">正在处理,请稍后...</string>
+    <string name="app_send">发送</string>
+    <string name="app_show_location">显示位置</string>
+    <string name="app_share_scope">分享范围</string>
 
 
     <string name="user_buyer">购买管理</string>

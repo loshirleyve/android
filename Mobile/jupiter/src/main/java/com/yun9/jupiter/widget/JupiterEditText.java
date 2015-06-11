@@ -2,10 +2,14 @@ package com.yun9.jupiter.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.util.PublicHelp;
 
 /**
  * Created by huangbinglong on 15/6/6.
@@ -13,7 +17,7 @@ import com.yun9.jupiter.R;
 public class JupiterEditText extends JupiterEditableView{
 
     private TextView titleTV;
-    private MaterialEditText editText;
+    private EditText editText;
 
     private boolean edit;
 
@@ -37,17 +41,41 @@ public class JupiterEditText extends JupiterEditableView{
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         titleTV = (TextView) this.findViewById(R.id.title_tv);
-        editText = (MaterialEditText) this.findViewById(R.id.m_edit_text);
+        editText = (EditText) this.findViewById(R.id.m_edit_text);
     }
 
     @Override
-    public void edit(boolean edit) {
+    public void edit(final boolean edit) {
         this.edit = edit;
         editText.setEnabled(edit);
-        if (edit) {
-            titleTV.setVisibility(VISIBLE);
-        } else {
-            titleTV.setVisibility(GONE);
+        editText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (JupiterEditText.this.edit) {
+                    titleTV.setVisibility(VISIBLE);
+                    editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),25);
+                } else {
+                    titleTV.setVisibility(GONE);
+                    editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),50);
+                    hideInputMethodManager();
+                }
+            }
+        });
+        editText.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && JupiterEditText.this.edit) {
+                    titleTV.setVisibility(VISIBLE);
+                    editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),25);
+                } else {
+                    titleTV.setVisibility(GONE);
+                    editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),50);
+                    hideInputMethodManager();
+                }
+            }
+        });
+        if (!edit) {
+            hideInputMethodManager();
         }
     }
 
@@ -55,8 +83,15 @@ public class JupiterEditText extends JupiterEditableView{
         return titleTV;
     }
 
-    public MaterialEditText getEditText() {
+    public EditText getEditText() {
         return editText;
     }
 
+    /**
+     * 隐藏键盘
+     */
+    private void hideInputMethodManager() {
+        InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
 }
