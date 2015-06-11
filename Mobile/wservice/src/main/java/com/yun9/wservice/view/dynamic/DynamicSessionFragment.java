@@ -99,6 +99,13 @@ public class DynamicSessionFragment extends JupiterFragment {
             }
         });
 
+        this.titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NewDynamicActivity.start(getActivity(),new NewDynamicCommand());
+            }
+        });
+
         mPtrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
