@@ -1,9 +1,11 @@
 package com.yun9.jupiter.form;
 
+import com.google.gson.JsonObject;
 import com.yun9.jupiter.exception.JupiterRuntimeException;
 import com.yun9.jupiter.form.model.FormBean;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class Form implements java.io.Serializable {
      * @return
      */
     public static Form getInstance(String json) {
-        Form form = new Form(null);
+        Form form = new Form(JsonUtil.jsonToBean(json,FormBean.class));
         return form;
     }
 
@@ -145,7 +147,19 @@ public class Form implements java.io.Serializable {
      * @param json 表单值配置
      */
     public void loadDataFromJson(String json) {
-
+        if (!AssertValue.isNotNullAndNotEmpty(json)
+                && cells != null && cells.size() > 0){
+            return;
+        }
+        JsonObject object = JsonUtil.fromString(json);
+        FormCellBean bean;
+        for (int i = 0; i < cells.size(); i++) {
+            bean = cells.get(i).getFormCellBean();
+            if (object.get(bean.getKey()) != null) {
+                bean.buildValueFromJson(object.get(bean.getKey()));
+                cells.get(i).reload(bean);
+            }
+        }
     }
 
 }

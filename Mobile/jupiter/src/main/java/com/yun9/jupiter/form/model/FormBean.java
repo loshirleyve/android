@@ -1,5 +1,11 @@
 package com.yun9.jupiter.form.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.yun9.jupiter.form.FormUtilFactory;
+import com.yun9.jupiter.util.JsonUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -82,5 +88,29 @@ public class FormBean implements java.io.Serializable{
 
     public void setSaveFormWhenGoBack(boolean saveFormWhenGoBack) {
         this.saveFormWhenGoBack = saveFormWhenGoBack;
+    }
+
+    public static FormBean fromJson(String json) {
+        FormBean formBean = JsonUtil.jsonToBean(json, FormBean.class);
+        if (formBean.getCellBeanList() != null) {
+            formBean.getCellBeanList().clear(); // 直接上面这样转，类型是错误的
+        } else {
+            return formBean;
+        }
+        JsonObject jsonObject = JsonUtil.fromString(json);
+        JsonArray cellBeanArray = jsonObject.getAsJsonArray("cellBeanList");
+        if (cellBeanArray != null && cellBeanArray.size() > 0) {
+            for (int i = 0; i < cellBeanArray.size(); i++) {
+                JsonElement element = cellBeanArray.get(i);
+                JsonObject object = element.getAsJsonObject();
+                Class<? extends FormCellBean> cls = FormUtilFactory.getInstance()
+                        .getCellBeanTypeClassByType(object.get("type").getAsString());
+                FormCellBean bean = JsonUtil.jsonElementToBean(element, cls);
+                bean.buildConfigFromJson(element);
+                bean.buildValueFromJson(object.get("value"));
+                formBean.getCellBeanList().add(bean);
+            }
+        }
+        return formBean;
     }
 }

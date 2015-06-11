@@ -73,6 +73,7 @@ public class UserFormCell extends FormCell{
     }
 
     private void setupEditIco() {
+        appendAddButton();
         adapter = new BasicJupiterEditAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
@@ -200,5 +201,10 @@ public class UserFormCell extends FormCell{
             return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
         }
         return null;
+    }
+
+    @Override
+    public void reload(FormCellBean bean) {
+        this.cellBean = (UserFormCellBean) bean;
     }
 }
