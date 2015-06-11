@@ -9,8 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tb:titleLeftIcoVisibility="true"
-        tb:titleRightTextVisibility="true"
         tb:titleRightText="@string/app_send"
+        tb:titleRightTextVisibility="true"
         tb:titleText="@string/app_send_msgcard" />
 
     <ScrollView
@@ -23,19 +23,57 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/share_rll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/share_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_share_scope"
+                    android:textColor="@color/drak" />
+
+                <LinearLayout
+                    android:id="@+id/share_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/share_tv"
+                    android:orientation="horizontal">
+
+                    <com.yun9.jupiter.view.JupiterGridView
+                        android:id="@+id/share_to_gv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnWidth="65dp"
+                        android:gravity="center"
+                        android:listSelector="@color/transparent"
+                        android:numColumns="auto_fit"
+                        android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+
+                </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/msg_ll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
 
                 <EditText
+                    android:id="@+id/dynamic_content_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
                     android:gravity="top"
-                    android:scrollHorizontally="false"
-                    android:minHeight="150dp" />
+                    android:minHeight="150dp"
+                    android:scrollHorizontally="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -43,13 +81,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <GridView
+
+                <com.yun9.jupiter.view.JupiterGridView
                     android:id="@+id/images_gv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:numColumns="3">
+                    android:gravity="center"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="3"
+                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
 
-                </GridView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -57,48 +98,53 @@
     <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
         <RelativeLayout
             android:id="@+id/info_bar"
             android:layout_width="match_parent"
-            android:layout_height="20dp">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
 
             <LinearLayout
+                android:id="@+id/location_ll"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:background="@color/groupbackground"
+                android:minWidth="50dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/landmark" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/msg_card_location"
-                    android:textColor="@color/drak" />
+                    android:layout_margin="5dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/landmark" />
+
+                    <TextView
+                        android:id="@+id/location_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/app_show_location" />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/time_tv"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp">
+                android:layout_centerVertical="true"
+                android:text="@string/msg_card_time"
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/msg_card_time"
-
-                    android:textColor="@color/drak" />
-            </LinearLayout>
+                android:textColor="@color/drak" />
         </RelativeLayout>
 
         <View
@@ -111,7 +157,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:layout_below="@+id/devide_line"
             android:background="@color/groupbackground">
 
