@@ -13,6 +13,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.Dim;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
@@ -28,6 +29,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrgCompositeInfoBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +75,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     private OrgCompositeTopWidget orgCompositeTopWidget;
 
     private boolean edit;
+
 
     public static void start(Activity activity, OrgCompositeCommand command) {
         Intent intent = new Intent(activity, OrgCompositeActivity.class);
@@ -187,13 +190,17 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             orgCompositeTopWidget.getMyselfLL().getSutitleTv().setText(orgCompositeInfoBean.getMyself().getSignature());
         }
 
-        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getHr())) {
-            orgCompositeTopWidget.getOrgHrLL().setTag(orgCompositeInfoBean.getHr().get("id"));
+        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNullAndNotEmpty(orgCompositeInfoBean.getDim())) {
+            for (Dim dim : orgCompositeInfoBean.getDim()) {
+                if (OrgCompositeCommand.DIM_TYPE_GROUP.equals(dim.getType())) {
+                    orgCompositeTopWidget.getOrgGroupLL().setTag(dim.getId());
+                }
+                if (OrgCompositeCommand.DIM_TYPE_HR.equals(dim.getType())) {
+                    orgCompositeTopWidget.getOrgHrLL().setTag(dim.getId());
+                }
+            }
         }
 
-        if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getGroup())) {
-            orgCompositeTopWidget.getOrgGroupLL().setTag(orgCompositeInfoBean.getGroup().get("id"));
-        }
 
         if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNullAndNotEmpty(orgCompositeInfoBean.getUserMaps())) {
             for (User user : orgCompositeInfoBean.getUserMaps()) {
@@ -239,9 +246,24 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                 public void onSuccess(Response response) {
 
                     ArrayList<Org> selectOrgs = (ArrayList<Org>) response.getPayload();
-                    //TODO 待服务返回完善的组织数据后，补充根据dimtype不同放入不同的选择类型中
+
                     if (AssertValue.isNotNullAndNotEmpty(selectOrgs)) {
-                        onSelectOrgMaps.put(OrgCompositeCommand.DIM_TYPE_HR, selectOrgs);
+                        ArrayList<Org> hrOrgs = new ArrayList<Org>();
+                        ArrayList<Org> groupOrgs = new ArrayList<Org>();
+
+                        for (Org org : selectOrgs) {
+                            if (OrgCompositeCommand.DIM_TYPE_HR.equals(org.getType())) {
+                                hrOrgs.add(org);
+                            }
+
+                            if (OrgCompositeCommand.DIM_TYPE_GROUP.equals(org.getType())) {
+                                groupOrgs.add(org);
+                            }
+                        }
+
+                        onSelectOrgMaps.put(OrgCompositeCommand.DIM_TYPE_HR, hrOrgs);
+                        onSelectOrgMaps.put(OrgCompositeCommand.DIM_TYPE_GROUP, groupOrgs);
+
                     }
                     //设置子标题
                     setSutitle();

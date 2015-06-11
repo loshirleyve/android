@@ -3,13 +3,14 @@ package com.yun9.jupiter.model;
 /**
  * Created by Leon on 15/6/1.
  */
-public class Org implements java.io.Serializable{
+public class Org implements java.io.Serializable {
     private String id;
     private String name;
     private String no;
-    private String dimid;
-    private String dimno;
-    private String dimType;
+    private String demid;
+    private String dimNo;
+    private String dimName;
+    private String type;
     private String desc;
     private String parentid;
     private int sort;
@@ -89,27 +90,35 @@ public class Org implements java.io.Serializable{
         this.remark = remark;
     }
 
-    public String getDimid() {
-        return dimid;
+    public String getDemid() {
+        return demid;
     }
 
-    public void setDimid(String dimid) {
-        this.dimid = dimid;
+    public void setDemid(String demid) {
+        this.demid = demid;
     }
 
-    public String getDimno() {
-        return dimno;
+    public String getDimNo() {
+        return dimNo;
     }
 
-    public void setDimno(String dimno) {
-        this.dimno = dimno;
+    public void setDimNo(String dimNo) {
+        this.dimNo = dimNo;
     }
 
-    public String getDimType() {
-        return dimType;
+    public String getType() {
+        return type;
     }
 
-    public void setDimType(String dimType) {
-        this.dimType = dimType;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDimName() {
+        return dimName;
+    }
+
+    public void setDimName(String dimName) {
+        this.dimName = dimName;
     }
 }

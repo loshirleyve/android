@@ -187,18 +187,18 @@
                     android:src="@drawable/select_user" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/select_org_rl"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/select_org_rl"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1">-->
 
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/select_org" />
-            </RelativeLayout>
+                <!--<ImageView-->
+                    <!--android:layout_width="32dp"-->
+                    <!--android:layout_height="32dp"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:src="@drawable/select_org" />-->
+            <!--</RelativeLayout>-->
 
             <RelativeLayout
                 android:id="@+id/select_topoc_rl"

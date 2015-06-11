@@ -21,6 +21,7 @@ import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -32,6 +33,7 @@ import com.yun9.wservice.view.org.OrgListActivity;
 import com.yun9.wservice.view.org.OrgListCommand;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,8 +65,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.select_user_rl)
     private RelativeLayout selectUserRL;
 
-    @ViewInject(id = R.id.select_org_rl)
-    private RelativeLayout selectOrgRL;
+//    @ViewInject(id = R.id.select_org_rl)
+//    private RelativeLayout selectOrgRL;
 
     @ViewInject(id = R.id.select_topoc_rl)
     private RelativeLayout selectTopocRL;
@@ -84,6 +86,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private NewDynamicShareInfoAdapter newDynamicShareInfoAdapter;
 
     private LocationBean lastLocationBean;
+
+    private Date sendDate;
 
     @Override
     protected int getContentView() {
@@ -106,7 +110,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
         this.selectImageRL.setOnClickListener(onSelectImageClickListener);
         this.selectUserRL.setOnClickListener(onSelectUserClickListener);
-        this.selectOrgRL.setOnClickListener(onSelectOrgClickListener);
+//        this.selectOrgRL.setOnClickListener(onSelectOrgClickListener);
         this.selectTopocRL.setOnClickListener(onSelectTopocClickListener);
         this.keyboradRL.setOnClickListener(onKeyboradClickListener);
 
@@ -114,6 +118,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
         this.titleBarLayout.getTitleRight().setOnClickListener(onSendClickListener);
         this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+
+        sendDate = DateUtil.getNowDate();
+        this.timeTV.setText(DateUtil.getStringDate());
 
         //载入参数代入的发送对象
         this.loadCommandSelectInfo();
@@ -267,14 +274,14 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         }
     };
 
-    private View.OnClickListener onSelectOrgClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            OrgListCommand orgListCommand = new OrgListCommand().setEdit(true);
-
-            OrgListActivity.start(NewDynamicActivity.this, orgListCommand);
-        }
-    };
+//    private View.OnClickListener onSelectOrgClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            OrgListCommand orgListCommand = new OrgListCommand().setEdit(true);
+//
+//            OrgListActivity.start(NewDynamicActivity.this, orgListCommand);
+//        }
+//    };
 
     private View.OnClickListener onSelectTopocClickListener = new View.OnClickListener() {
         @Override
