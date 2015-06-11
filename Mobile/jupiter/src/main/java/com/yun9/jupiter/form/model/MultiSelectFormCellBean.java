@@ -1,7 +1,11 @@
 package com.yun9.jupiter.form.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.util.JsonUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,5 +35,17 @@ public class MultiSelectFormCellBean extends FormCellBean{
 
     public void setCtrlCode(String ctrlCode) {
         this.ctrlCode = ctrlCode;
+    }
+
+    @Override
+    public void buildValueFromJson(JsonElement element) {
+        if (element != null) {
+            List<SerialableEntry<String, String>> list = new ArrayList<>();
+            JsonArray array = element.getAsJsonArray();
+            for (int i = 0; i < array.size(); i++) {
+                list.add(JsonUtil.jsonElementToBean(array.get(i),SerialableEntry.class));
+            }
+            this.setValue(list);
+        }
     }
 }

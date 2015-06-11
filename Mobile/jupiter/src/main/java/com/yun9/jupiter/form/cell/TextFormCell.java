@@ -89,4 +89,9 @@ public class TextFormCell extends FormCell {
         }
         return null;
     }
+
+    @Override
+    public void reload(FormCellBean bean) {
+        this.cellBean = (TextFormCellBean) bean;
+    }
 }

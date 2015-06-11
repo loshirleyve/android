@@ -3,6 +3,7 @@ package com.yun9.jupiter.form.model;
 import android.content.Context;
 import android.view.View;
 
+import com.google.gson.JsonElement;
 import com.yun9.jupiter.form.FormCell;
 
 import java.util.Objects;
@@ -84,5 +85,13 @@ public class FormCellBean implements java.io.Serializable{
 
     public void setMaxNum(int maxNum) {
         this.maxNum = maxNum;
+    }
+
+    public void buildConfigFromJson(JsonElement element) {
+
+    }
+
+    public void buildValueFromJson(JsonElement element) {
+        // 子类需要实现这个方法，从json配置中恢复值
     }
 }

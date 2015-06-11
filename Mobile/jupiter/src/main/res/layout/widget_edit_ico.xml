@@ -15,6 +15,7 @@
         android:layout_below="@id/title_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:gravity="center"
         android:horizontalSpacing="4dip"
         android:stretchMode="columnWidth"

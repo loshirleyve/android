@@ -1,6 +1,16 @@
 package com.yun9.jupiter.form.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by huangbinglong on 15/5/30.
@@ -25,5 +35,17 @@ public class UserFormCellBean extends FormCellBean{
 
     public void add(String userid,String name,String headurl){
 
+    }
+
+    @Override
+    public void buildValueFromJson(JsonElement element) {
+        if (element != null){
+            List<Map<String,String>> mapList = new ArrayList<>();
+            JsonArray array = element.getAsJsonArray();
+            for (int i = 0; i < array.size(); i++) {
+                mapList.add(JsonUtil.jsonElementToBean(array.get(i),HashMap.class));
+            }
+            this.setValue(mapList);
+        }
     }
 }

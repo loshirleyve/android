@@ -80,7 +80,9 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         formitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FormActivity.start(DemoFormActivity.this, REQUEST_CODE.NORMAL, fakeData());
+                FormBean formBean = fakeData();
+                String valueJson = contentTV.getText().toString();
+                FormActivity.start(DemoFormActivity.this, REQUEST_CODE.NORMAL, JsonUtil.beanToJson(formBean),valueJson);
             }
         });
 
@@ -90,6 +92,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         FormBean formBean = FormBean.getInstance();
         formBean.setTitle("测试表单");
         formBean.setKey("demoform");
+        formBean.setEditableWhenLoaded(true);
 
         TextFormCellBean textFormCell = new TextFormCellBean();
         textFormCell.setType(TextFormCell.class.getSimpleName());
@@ -102,7 +105,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         ImageFormCellBean imageFormCell = new ImageFormCellBean();
         imageFormCell.setMaxNum(3);
         imageFormCell.setKey("testImage");
-        imageFormCell.setValue(new String[]{"1","2"});
+        imageFormCell.setValue(new String[]{"1", "2"});
         imageFormCell.setType(ImageFormCell.class.getSimpleName());
         imageFormCell.setLabel("测试图片选择");
         formBean.putCellBean(imageFormCell);
@@ -110,7 +113,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         DocFormCellBean docFormCell= new DocFormCellBean();
         docFormCell.setKey("testDoc");
         docFormCell.setType(DocFormCell.class.getSimpleName());
-        docFormCell.setValue("1");
+        docFormCell.setValue(new String[]{"1"});
         docFormCell.setMaxNum(3);
         docFormCell.setMinNum(1);
         docFormCell.setLabel("测试文档选择");

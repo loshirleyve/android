@@ -10,7 +10,6 @@
         android:paddingBottom="2dp"
         android:paddingTop="2dp"
         android:paddingLeft="10dp"
-        android:visibility="gone"
         android:background="@color/whites"
         android:text="@string/jupiter"/>
     <EditText
@@ -20,6 +19,6 @@
         android:background="@color/whites"
         android:paddingLeft="10dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="25dp" />
 
 </RelativeLayout>

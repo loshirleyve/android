@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -21,6 +22,14 @@ public class JsonUtil {
 
 		return bean;
 
+	}
+
+	public static  <T> T jsonElementToBean(JsonElement element,Class<T> beanCalss) {
+		Gson gson = new Gson();
+
+		T bean = (T) gson.fromJson(element, beanCalss);
+
+		return bean;
 	}
 	
 	/**

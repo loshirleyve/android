@@ -5,18 +5,23 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterBadgeView;
 
 /**
  * Created by huangbinglong on 15/6/2.
  */
 public class JupiterTextIco extends JupiterEditableView{
+
+    public static final int DEFAULT_IMAGE_SIZE = 60;
 
     private ImageView itemImage;
     private TextView itemName;
@@ -44,6 +49,12 @@ public class JupiterTextIco extends JupiterEditableView{
         itemImage = (ImageView) this.findViewById(R.id.item_image);
         itemName = (TextView) this.findViewById(R.id.item_name);
         badgeView = new JupiterBadgeView(this.getContext(), itemImage);
+        itemImage.setLayoutParams(new FrameLayout.LayoutParams(PublicHelp
+                                                                .dip2px(this.getContext(),
+                                                                        DEFAULT_IMAGE_SIZE),
+                                                                PublicHelp
+                                                                        .dip2px(this.getContext(),
+                                                                                DEFAULT_IMAGE_SIZE)));
         this.initAttr(attrs);
     }
 
@@ -162,4 +173,5 @@ public class JupiterTextIco extends JupiterEditableView{
         buildBadge(cornerImage);
         return this;
     }
+
 }
