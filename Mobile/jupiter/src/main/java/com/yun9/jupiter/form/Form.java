@@ -25,6 +25,17 @@ public class Form implements java.io.Serializable {
         return form;
     }
 
+    /**
+     * 通过JSON配置生成表单；
+     * JSON的格式需符合实体：com.yun9.jupiter.form.model.FormBean
+     * @param json
+     * @return
+     */
+    public static Form getInstance(String json) {
+        Form form = new Form(null);
+        return form;
+    }
+
     private Form(FormBean formBean) {
         this.formBean = formBean;
         buildWithFormBean();
@@ -128,4 +139,13 @@ public class Form implements java.io.Serializable {
     public void setFormBean(FormBean formBean) {
         this.formBean = formBean;
     }
+
+    /**
+     * 从json配置中，重新加载表单元素的值
+     * @param json 表单值配置
+     */
+    public void loadDataFromJson(String json) {
+
+    }
+
 }

@@ -3,6 +3,9 @@ package com.yun9.jupiter.form.cell;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.FormActivity;
@@ -12,6 +15,7 @@ import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
@@ -77,6 +81,7 @@ public class UserFormCell extends FormCell{
     private void appendAddButton() {
         JupiterTextIco item = new JupiterTextIcoWithoutCorner(this.context);
         item.setTitle("添加");
+        item.getItemImage().setLayoutParams(new FrameLayout.LayoutParams(PublicHelp.dip2px(this.context, 40), PublicHelp.dip2px(this.context, 40)));
         item.setImage("drawable://" + R.drawable.add_user);
         item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +107,7 @@ public class UserFormCell extends FormCell{
                 deleteItm(item);
             }
         });
+        item.getItemImage().setLayoutParams(new FrameLayout.LayoutParams(PublicHelp.dip2px(this.context, 40), PublicHelp.dip2px(this.context, 40)));
         item.setTag(tag);
         item.setCornerImage(R.drawable.icn_delete);
         itemList.add(item);

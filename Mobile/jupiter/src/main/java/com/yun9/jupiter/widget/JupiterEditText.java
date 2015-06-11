@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.PublicHelp;
 
 /**
@@ -54,17 +55,14 @@ public class JupiterEditText extends JupiterEditableView{
                 if (JupiterEditText.this.edit) {
                     titleTV.setVisibility(VISIBLE);
                     editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),25);
-                } else {
-                    titleTV.setVisibility(GONE);
-                    editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),50);
-                    hideInputMethodManager();
                 }
             }
         });
         editText.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && JupiterEditText.this.edit) {
+                if (AssertValue.isNotNullAndNotEmpty(editText.getText().toString())
+                        || hasFocus) {
                     titleTV.setVisibility(VISIBLE);
                     editText.getLayoutParams().height = PublicHelp.dip2px(JupiterEditText.this.getContext(),25);
                 } else {
