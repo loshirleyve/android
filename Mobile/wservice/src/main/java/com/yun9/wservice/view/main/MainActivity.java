@@ -65,6 +65,7 @@ public class MainActivity extends JupiterFragmentActivity {
 
     public static void start(Context context, Bundle bundle) {
         Intent intent = new Intent(context, MainActivity.class);
+
         if (AssertValue.isNotNull(bundle)) {
             intent.putExtras(bundle);
         }
@@ -137,13 +138,16 @@ public class MainActivity extends JupiterFragmentActivity {
         FuncFragmentHandler funcFragmentHandler = findHandler(type);
 
         if (AssertValue.isNotNull(funcFragmentHandler)) {
-            if (funcFragmentHandler.needLogin() && !sessionManager.isLogin()) {
+           /* if (funcFragmentHandler.needLogin() && !sessionManager.isLogin()) {
                 //还没有登陆系统，需要先登陆
                 LoginMainActivity.start(MainActivity.this, new LoginCommand());
             } else {
                 funcFragmentHandler.switchFragment();
                 setButton(v);
-            }
+            }*/
+
+            funcFragmentHandler.switchFragment();
+            setButton(v);
         }
     }
 

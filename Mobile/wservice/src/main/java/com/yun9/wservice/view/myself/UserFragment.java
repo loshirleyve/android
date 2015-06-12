@@ -2,6 +2,7 @@ package com.yun9.wservice.view.myself;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.client.ClientActivity;
 import com.yun9.wservice.view.other.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
@@ -44,6 +46,9 @@ public class UserFragment extends JupiterFragment {
 
     @ViewInject(id = R.id.switch_inst)
     private JupiterRowStyleTitleLayout switchInstLayout;
+
+    @ViewInject(id = R.id.about2)
+    private JupiterRowStyleTitleLayout client;
 
     private final static Logger logger = Logger.getLogger(UserFragment.class);
 
@@ -90,6 +95,15 @@ public class UserFragment extends JupiterFragment {
             @Override
             public void onClick(View v) {
                 SelectInstActivity.start(getActivity(),new SelectInstCommand().setUser(sessionManager.getUser()));
+            }
+        });
+
+        client.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(mContext, ClientActivity.class);
+                startActivity(intent);
             }
         });
 

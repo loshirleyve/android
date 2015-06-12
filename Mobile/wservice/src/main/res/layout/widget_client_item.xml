@@ -144,6 +144,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@color/whites"/>
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/arrow_right_iv"
                 android:layout_gravity="center"
