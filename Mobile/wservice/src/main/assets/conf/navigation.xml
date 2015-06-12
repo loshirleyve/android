@@ -16,6 +16,11 @@
             <clazz>com.yun9.wservice.view.demo.DemoFormEnterHandler</clazz>
         </enter>
 
+        <enter>
+            <name>waitingpay</name>
+            <clazz>com.yun9.wservice.view.order.DemoOrderCartEnterHandler</clazz>
+        </enter>
+
     </enters>
 
     <handlers>

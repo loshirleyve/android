@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
+import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
@@ -22,6 +24,9 @@ import java.util.List;
  * Created by huangbinglong on 15/6/12.
  */
 public class OrderManagerActivity extends JupiterFragmentActivity {
+
+    @ViewInject(id=R.id.title_bar)
+    private JupiterTitleBarLayout titleBarLayout;
 
     @ViewInject(id = R.id.order_category_list)
     private ListView orderCategoryLV;
@@ -60,6 +65,14 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     private void buildView() {
         orderCategoryLV.setAdapter(orderAdapter);
         rechargeHistoryLV.setAdapter(rechargeAdapter);
+
+        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(JupiterCommand.RESULT_CODE_CANCEL);
+                OrderManagerActivity.this.finish();
+            }
+        });
     }
 
     private void reLoadData() {

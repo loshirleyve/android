@@ -114,6 +114,7 @@ public class MicroAppFragment extends JupiterFragment {
         microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "locationdemo", "地理位置测试", NavigationBean.TYPE_ITEM));
         microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "login", "登录测试", NavigationBean.TYPE_ITEM));
         microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "demoform", "测试表单", NavigationBean.TYPE_ITEM));
+        microAppBeans.add(new NavigationBean(System.currentTimeMillis() + "", "waitingpay", "代付款订单", NavigationBean.TYPE_ITEM));
 
         NavigationBean microAppBeanGroup1 = new NavigationBean(System.currentTimeMillis() + "", "11", "申请", NavigationBean.TYPE_GROUP);
 

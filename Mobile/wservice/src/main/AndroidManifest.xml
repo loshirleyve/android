@@ -259,6 +259,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.order.OrderCartActivity"
+            android:label="@string/waiting_pay"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
 
 >>>>>>> 9315ae4dd8c02a536db3e631587e5f1696c1982a
     </application>
