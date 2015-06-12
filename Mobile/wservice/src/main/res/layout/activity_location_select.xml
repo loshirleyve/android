@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleLeftIcoVisibility="true"
+        tb:titleText="@string/location_select"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/title_color"
+            android:gravity="center">
+
+            <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/segmented"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal"
+                segmentedgroup:border_width="1dp"
+                segmentedgroup:checked_text_color="#7C4DFF"
+                segmentedgroup:corner_radius="10dp"
+                segmentedgroup:tint_color="@color/whites">
+
+                <RadioButton
+                    android:id="@+id/office_rb"
+                    style="@style/RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/location_select_office" />
+
+                <RadioButton
+                    android:id="@+id/business_rb"
+                    style="@style/RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/location_select_business" />
+
+                <RadioButton
+                    android:id="@+id/community_rb"
+                    style="@style/RadioButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/location_select_community" />
+
+
+            </info.hoang8f.android.segmented.SegmentedGroup>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/location_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:listSelector="@color/transparent">
+        </ListView>
+    </LinearLayout>
+
+
+</RelativeLayout>

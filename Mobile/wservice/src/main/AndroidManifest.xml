@@ -162,6 +162,8 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+
+        <activity
             android:name=".view.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"
@@ -172,15 +174,6 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
-        <activity
-            android:name=".view.login.MailRegisterMainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
-
-        <activity
-            android:name=".view.login.MailRegisterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
             android:name=".view.common.SimpleImageActivity"
@@ -237,6 +230,21 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+
+        <activity
+            android:name=".view.location.LocationSelectActivity"
+            android:label="@string/location_select"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.topic.TopicActivity"
+            android:label="@string/topic"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
 
 <<<<<<< HEAD
         <activity android:name=".view.client.ClientActivity"
