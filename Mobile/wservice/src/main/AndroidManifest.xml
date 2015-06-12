@@ -162,12 +162,6 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name="com.yun9.jupiter.form.MultiSelectActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
-
-        <activity
             android:name=".view.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"
@@ -242,6 +236,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:label="@string/app_send_msgcard"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.order.OrderManagerActivity"
+            android:label="@string/user_buyer"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
 

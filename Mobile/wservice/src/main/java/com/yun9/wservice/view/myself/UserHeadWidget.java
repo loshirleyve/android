@@ -17,6 +17,8 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     private LinearLayout docLL;
 
+    private LinearLayout userBuyer;
+
     private TextView userNameTV;
 
     private TextView companyTV;
@@ -46,6 +48,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         this.orgLL = (LinearLayout) this.findViewById(R.id.org);
         this.docLL = (LinearLayout) this.findViewById(R.id.sendUserFile);
+        this.userBuyer = (LinearLayout) this.findViewById(R.id.getUserBuyer);
 
         this.userNameTV = (TextView) this.findViewById(R.id.user_head_name_tv);
         this.companyTV = (TextView) this.findViewById(R.id.user_head_company);
@@ -68,6 +71,14 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     public void setDocLL(LinearLayout docLL) {
         this.docLL = docLL;
+    }
+
+    public LinearLayout getUserBuyer() {
+        return userBuyer;
+    }
+
+    public void setUserBuyer(LinearLayout userBuyer) {
+        this.userBuyer = userBuyer;
     }
 
     public TextView getUserNameTV() {
