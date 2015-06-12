@@ -95,4 +95,7 @@
     <string name="location_select_business">商家</string>
     <string name="location_select_community">小区</string>
 
+    <string name="topic">话题</string>
+    <string name="topic_tips">输入你想要查找的话题</string>
+
 </resources>

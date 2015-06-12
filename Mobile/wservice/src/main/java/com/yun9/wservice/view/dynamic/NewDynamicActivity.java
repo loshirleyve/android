@@ -33,6 +33,8 @@ import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 import com.yun9.wservice.view.org.OrgListActivity;
 import com.yun9.wservice.view.org.OrgListCommand;
+import com.yun9.wservice.view.topic.TopicActivity;
+import com.yun9.wservice.view.topic.TopicCommand;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,6 +98,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private boolean selectLocation = false;
 
     private LocationSelectCommand locationSelectCommand = new LocationSelectCommand();
+
+    private TopicCommand topicCommand = new TopicCommand();
 
     @Override
     protected int getContentView() {
@@ -263,6 +267,15 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 selectLocation = true;
             }
         }
+
+        if (requestCode == topicCommand.getRequestCode() && resultCode == TopicCommand.RESULT_CODE_OK) {
+            String topic = data.getStringExtra(TopicCommand.PARAM_TOPIC);
+
+            if (AssertValue.isNotNullAndNotEmpty(topic)) {
+                dynamicContentET.setText(dynamicContentET.getText() + topic);
+                dynamicContentET.setSelection(dynamicContentET.getText().length());
+            }
+        }
     }
 
     private View.OnClickListener onSelectImageClickListener = new View.OnClickListener() {
@@ -302,7 +315,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onSelectTopocClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            TopicActivity.start(NewDynamicActivity.this, topicCommand);
         }
     };
 
