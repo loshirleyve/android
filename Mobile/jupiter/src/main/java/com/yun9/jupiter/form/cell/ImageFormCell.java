@@ -104,6 +104,7 @@ public class ImageFormCell extends FormCell {
     }
 
     private void restore() {
+        itemList.clear();
         if (cellBean.getValue() == null) {
             return;
         }
@@ -224,6 +225,11 @@ public class ImageFormCell extends FormCell {
             return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
         }
         return null;
+    }
+
+    @Override
+    public void reload(FormCellBean bean) {
+        this.cellBean = (ImageFormCellBean) bean;
     }
 
 }

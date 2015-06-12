@@ -133,4 +133,9 @@ public class MultiSelectFormCell extends FormCell {
         }
         return null;
     }
+
+    @Override
+    public void reload(FormCellBean bean) {
+        this.cellBean = (MultiSelectFormCellBean) bean;
+    }
 }

@@ -10,6 +10,13 @@ import com.yun9.jupiter.form.cell.ImageFormCell;
 import com.yun9.jupiter.form.cell.MultiSelectFormCell;
 import com.yun9.jupiter.form.cell.TextFormCell;
 import com.yun9.jupiter.form.cell.UserFormCell;
+import com.yun9.jupiter.form.model.DetailFormCellBean;
+import com.yun9.jupiter.form.model.DocFormCellBean;
+import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.form.model.ImageFormCellBean;
+import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
+import com.yun9.jupiter.form.model.TextFormCellBean;
+import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +29,8 @@ public class FormUtilFactory {
     private static FormUtilFactory singleton;
 
     private Map<String,Class<? extends FormCell>> cellClassMap;
+
+    private Map<String,Class<? extends FormCellBean>> cellBeanClassMap;
 
     private Map<String,LoadValueHandler> loadValueHandlerMap;
 
@@ -38,9 +47,11 @@ public class FormUtilFactory {
 
     private FormUtilFactory() {
         cellClassMap = new HashMap<>();
+        cellBeanClassMap = new HashMap<>();
         loadValueHandlerMap = new HashMap<>();
         bizExecutorMap = new HashMap<>();
         initCellType();
+        initCellBeanType();
     }
 
     private void initCellType() {
@@ -52,10 +63,26 @@ public class FormUtilFactory {
         registerCellType("DetailFormCell", DetailFormCell.class);
     }
 
+    private void initCellBeanType() {
+        registerCellBeanType("TextFormCell", TextFormCellBean.class);
+        registerCellBeanType("DocFormCell", DocFormCellBean.class);
+        registerCellBeanType("ImageFormCell", ImageFormCellBean.class);
+        registerCellBeanType("MultiSelectFormCell", MultiSelectFormCellBean.class);
+        registerCellBeanType("UserFormCell", UserFormCellBean.class);
+        registerCellBeanType("DetailFormCell", DetailFormCellBean.class);
+    }
+
     public void registerCellType(String name,Class<? extends FormCell> cellClass) {
         if (AssertValue.isNotNullAndNotEmpty(name)
                 && cellClass != null) {
             cellClassMap.put(name,cellClass);
+        }
+    }
+
+    public void registerCellBeanType(String name,Class<? extends FormCellBean> cellClass) {
+        if (AssertValue.isNotNullAndNotEmpty(name)
+                && cellClass != null) {
+            cellBeanClassMap.put(name,cellClass);
         }
     }
 
@@ -66,6 +93,10 @@ public class FormUtilFactory {
      */
     public Class<? extends FormCell> getCellTypeClassByType(String type) {
         return cellClassMap.get(type);
+    }
+
+    public Class<? extends FormCellBean> getCellBeanTypeClassByType(String type) {
+        return cellBeanClassMap.get(type);
     }
 
     /**

@@ -32,7 +32,7 @@
         android:layout_height="1dp"
         android:background="@color/devide_line"
         android:layout_above="@id/submit"/>
-    <ScrollView
+    <com.yun9.jupiter.widget.JupiterScrollView
         android:id="@+id/form_sv"
         android:layout_below="@+id/titlebar"
         android:layout_above="@id/line_v"
@@ -55,5 +55,5 @@
                 android:background="@color/groupbackground">
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </com.yun9.jupiter.widget.JupiterScrollView>
 </RelativeLayout>

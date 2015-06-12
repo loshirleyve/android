@@ -6,5 +6,7 @@
     <com.yun9.jupiter.widget.JupiterEditIco
         android:id="@+id/edit_ico"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterEditIco>
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"></com.yun9.jupiter.widget.JupiterEditIco>
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.yun9.jupiter.form;
 import android.content.Context;
 import android.view.View;
 
+import com.yun9.jupiter.form.model.FormBean;
 import com.yun9.jupiter.form.model.FormCellBean;
 
 /**
@@ -34,4 +35,6 @@ public abstract class FormCell implements java.io.Serializable{
     public abstract FormCellBean getFormCellBean();
 
     public abstract String validate();
+
+    public abstract void reload(FormCellBean bean);
 }

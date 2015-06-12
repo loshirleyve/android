@@ -12,11 +12,18 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.form.model.FormBean;
+import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +62,28 @@ public class FormActivity extends JupiterFragmentActivity {
         activity.startActivityForResult(intent, requestCode);
     }
 
+    public static void start(Activity activity, int requestCode, String configJson,String valueJson) {
+        Intent intent = new Intent(activity, FormActivity.class);
+        intent.putExtra("formJson", configJson);
+        intent.putExtra("valueJson",valueJson);
+        activity.startActivityForResult(intent, requestCode);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityCallbackMap = new HashMap<>();
-        formBean = (FormBean) this.getIntent().getSerializableExtra("form");
+        String json =  this.getIntent().getStringExtra("formJson");
+        if (AssertValue.isNotNullAndNotEmpty(json)) {
+            formBean = FormBean.fromJson(json);
+        } else {
+            formBean = (FormBean) this.getIntent().getSerializableExtra("form");
+        }
         form = Form.getInstance(formBean);
+        String valueJson =  this.getIntent().getStringExtra("valueJson");
+        if (AssertValue.isNotNullAndNotEmpty(valueJson)) {
+            form.loadDataFromJson(valueJson);
+        }
         this.initView();
         this.builder();
         edit = !formBean.isEditableWhenLoaded(); // 因为下面的toggleState会再次取反edit

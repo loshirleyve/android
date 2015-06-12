@@ -36,6 +36,7 @@ public class DetailFormCell extends FormCell {
     }
 
     private void restore() {
+        detailFormBeans.clear();
         if (cellBean.getValue() == null){
             return;
         }
@@ -53,14 +54,13 @@ public class DetailFormCell extends FormCell {
         this.context = context;
         View rootView = LayoutInflater.from(context).inflate(R.layout.form_cell_detail, null);
         titleView = (JupiterRowStyleTitleLayout) rootView.findViewById(R.id.title);
-        titleView.getTitleTV().setText(cellBean.getLabel());
         titleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoDetailForm();
             }
         });
-        this.restore();
+        reload(this.cellBean);
         return rootView;
     }
 
@@ -101,6 +101,11 @@ public class DetailFormCell extends FormCell {
             return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
         }
         return null;
+    }
+
+    @Override
+    public void reload(FormCellBean bean) {
+        this.cellBean = (DetailFormCellBean) bean;
     }
 
     /**

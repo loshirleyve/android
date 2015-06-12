@@ -74,10 +74,11 @@ public class DocFormCell extends FormCell {
     }
 
     private void restore() {
+        itemList.clear();
         if (cellBean.getValue() == null) {
             return;
         }
-        String[] ids = ((String)cellBean.getValue()).split(",");
+        String[] ids = (String[]) cellBean.getValue();
         for (int i = 0; i < ids.length; i++) {
            createItem(ids[i]);
         }
@@ -118,14 +119,11 @@ public class DocFormCell extends FormCell {
 
     @Override
     public Object getValue() {
-        StringBuffer sb = new StringBuffer();
+        List<String> ids = new ArrayList<>();
         for (JupiterEditableView item : itemList) {
-            sb.append(item.getTag()).append(",");
+            ids.add((String) item.getTag());
         }
-        if (sb.length() > 0) {
-            return sb.substring(0,sb.length() - 1);
-        }
-        return sb;
+        return ids.toArray(new String[0]);
     }
 
     @Override
@@ -148,6 +146,11 @@ public class DocFormCell extends FormCell {
             return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
         }
         return null;
+    }
+
+    @Override
+    public void reload(FormCellBean bean) {
+        this.cellBean = (DocFormCellBean) bean;
     }
 
 }
