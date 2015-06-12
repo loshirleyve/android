@@ -27,6 +27,8 @@ import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.location.LocationSelectActivity;
+import com.yun9.wservice.view.location.LocationSelectCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 import com.yun9.wservice.view.org.OrgListActivity;
@@ -87,7 +89,13 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
     private LocationBean lastLocationBean;
 
+    private PoiInfoBean lastPoiInfoBean;
+
     private Date sendDate;
+
+    private boolean selectLocation = false;
+
+    private LocationSelectCommand locationSelectCommand = new LocationSelectCommand();
 
     @Override
     protected int getContentView() {
@@ -247,6 +255,14 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
             builderShareInfo();
         }
+
+        if (requestCode == locationSelectCommand.getRequestCode() && resultCode == LocationSelectCommand.RESULT_CODE_OK) {
+            lastPoiInfoBean = (PoiInfoBean) data.getSerializableExtra(LocationSelectCommand.PARAM_POIINFO);
+            if (AssertValue.isNotNull(lastPoiInfoBean) && AssertValue.isNotNullAndNotEmpty(lastPoiInfoBean.getName())) {
+                locationTV.setText(lastPoiInfoBean.getName());
+                selectLocation = true;
+            }
+        }
     }
 
     private View.OnClickListener onSelectImageClickListener = new View.OnClickListener() {
@@ -315,7 +331,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onLocationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            LocationSelectActivity.start(NewDynamicActivity.this, locationSelectCommand);
         }
     };
 
@@ -332,9 +348,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private OnGetPoiInfoListener onGetPoiInfoListener = new OnGetPoiInfoListener() {
         @Override
         public void onGetPoiInfo(List<PoiInfoBean> poiInfoBeans) {
-            if (AssertValue.isNotNullAndNotEmpty(poiInfoBeans)) {
-                PoiInfoBean poiInfoBean = poiInfoBeans.get(0);
-                locationTV.setText(poiInfoBean.getName());
+            if (AssertValue.isNotNullAndNotEmpty(poiInfoBeans) && !selectLocation) {
+                lastPoiInfoBean = poiInfoBeans.get(0);
+                locationTV.setText(lastPoiInfoBean.getName());
             } else {
                 //没有结果
             }

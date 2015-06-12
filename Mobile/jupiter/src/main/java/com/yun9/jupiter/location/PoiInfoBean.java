@@ -3,7 +3,7 @@ package com.yun9.jupiter.location;
 /**
  * Created by Leon on 15/5/28.
  */
-public class PoiInfoBean {
+public class PoiInfoBean implements java.io.Serializable {
     private String address;
 
     private String city;

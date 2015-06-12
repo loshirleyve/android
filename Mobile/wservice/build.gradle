@@ -31,5 +31,5 @@ dependencies {
     compile project(':ptr-lib')
     compile project(':viewpagerindicator')
     compile project(':residemenu')
-
+    compile project(':segmented')
 }
