@@ -80,6 +80,10 @@
     <string name="parent_org">上级部门</string>
 
     <string name="doc_composite_title">文档</string>
+    <string name="doc_image_location">本地图片</string>
+    <string name="doc_image_online">云图片</string>
+    <string name="doc_file_location">本地文件</string>
+    <string name="doc_file_online">云文件</string>
     <string name="please_select">请选择</string>
 
     <string name="register_user">注册用户</string>
