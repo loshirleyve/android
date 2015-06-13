@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.client;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.cell.DetailFormCell;
@@ -24,21 +26,29 @@ import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Client;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.main.MainActivity;
 import com.yun9.wservice.view.myself.UserFragment;
 import com.yun9.wservice.view.register.UserRegisterActivity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by li on 2015/6/11.
  */
-public class ClientActivity extends JupiterFragmentActivity{
+public class ClientActivity extends JupiterFragmentActivity {
 
     private EditText clientSearchEdt;
     private JupiterTitleBarLayout titleBarLayout;
@@ -47,11 +57,36 @@ public class ClientActivity extends JupiterFragmentActivity{
     private LinearLayout searchLL;
     private ImageView searchFIV;
 
+    private Client client;
+    private LinkedList<Client> clients;
+    private ClientListAdapter clientListAdapter;
+    private ListView clientListView;
+
+    private PtrClassicFrameLayout mPtrFrame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        clients = new LinkedList<>();
+        clientListView = (ListView) findViewById(R.id.client_list_ptr);
+        mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame_client);
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refreshClient();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+
+
         this.setClientSearchTextChanged();
-        titleBarLayout = (JupiterTitleBarLayout)findViewById(R.id.client_title);
+        titleBarLayout = (JupiterTitleBarLayout) findViewById(R.id.client_title);
         titleBarLayout.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +103,23 @@ public class ClientActivity extends JupiterFragmentActivity{
                 finish();
             }
         });
+
+
+        /*
+        *下面是示例代码
+         */
+
+        client = new Client();
+        client.setId("clientID:id1");
+        client.setName("clientName:name1");
+        client.setNo("clientNo:no1");
+        clients.addFirst(client);
+        /*
+        *上面是示例代码
+         */
+        clientListAdapter = new ClientListAdapter(this, clients);
+        clientListView.setAdapter(clientListAdapter);
+
     }
 
     @Override
@@ -76,11 +128,11 @@ public class ClientActivity extends JupiterFragmentActivity{
     }
 
 
-    private void setClientSearchTextChanged(){
-        clientSearchEdt = (EditText)findViewById(R.id.searchEdt);
-        searchLL = (LinearLayout)findViewById(R.id.searchLL);
-        searchFIV = (ImageView)findViewById(R.id.searchFIV);
-        searchEdt = (EditText)findViewById(R.id.searchEdt);
+    private void setClientSearchTextChanged() {
+        clientSearchEdt = (EditText) findViewById(R.id.searchEdt);
+        searchLL = (LinearLayout) findViewById(R.id.searchLL);
+        searchFIV = (ImageView) findViewById(R.id.searchFIV);
+        searchEdt = (EditText) findViewById(R.id.searchEdt);
 
         clientSearchEdt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,10 +147,10 @@ public class ClientActivity extends JupiterFragmentActivity{
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 searchFIV.setVisibility(View.VISIBLE);
-                if(s.length() == 0){
+                if (s.length() == 0) {
                     searchLL.setVisibility(View.VISIBLE);
 
-                }else {
+                } else {
                     searchLL.setVisibility(View.GONE);
                 }
             }
@@ -106,10 +158,10 @@ public class ClientActivity extends JupiterFragmentActivity{
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 searchFIV.setVisibility(View.VISIBLE);
-                if(s.length() == 0){
+                if (s.length() == 0) {
                     searchLL.setVisibility(View.VISIBLE);
 
-                }else {
+                } else {
                     searchLL.setVisibility(View.GONE);
                 }
             }
@@ -134,57 +186,12 @@ public class ClientActivity extends JupiterFragmentActivity{
 
         TextFormCellBean textFormCell = new TextFormCellBean();
         textFormCell.setType(TextFormCell.class.getSimpleName());
-        textFormCell.setKey("testText");
+        textFormCell.setKey("name");
         textFormCell.setDefaultValue("hello");
-        textFormCell.setLabel("测试文本输入");
+        textFormCell.setLabel("客户名称");
         textFormCell.setRequired(true);
         formBean.putCellBean(textFormCell);
 
-        ImageFormCellBean imageFormCell = new ImageFormCellBean();
-        imageFormCell.setMaxNum(3);
-        imageFormCell.setKey("testImage");
-        imageFormCell.setValue(new String[]{"1","2"});
-        imageFormCell.setType(ImageFormCell.class.getSimpleName());
-        imageFormCell.setLabel("测试图片选择");
-        formBean.putCellBean(imageFormCell);
-
-        DocFormCellBean docFormCell= new DocFormCellBean();
-        docFormCell.setKey("testDoc");
-        docFormCell.setType(DocFormCell.class.getSimpleName());
-        //docFormCell.setValue("1");
-        docFormCell.setMaxNum(3);
-        docFormCell.setMinNum(1);
-        docFormCell.setLabel("测试文档选择");
-        formBean.putCellBean(docFormCell);
-
-        UserFormCellBean userFormCellBean = new UserFormCellBean();
-        userFormCellBean.setKey("testUser");
-        userFormCellBean.setType(UserFormCell.class.getSimpleName());
-        userFormCellBean.setLabel("测试选择用户");
-       // userFormCellBean.setValue(userValue());
-        formBean.putCellBean(userFormCellBean);
-
-        DetailFormCellBean detailFormCell = new DetailFormCellBean();
-        detailFormCell.setLabel("测试子项目");
-        detailFormCell.setKey("testDetail");
-        //detailFormCell.setFormBean(this.builderSubForm());
-        detailFormCell.setType(DetailFormCell.class.getSimpleName());
-        detailFormCell.setTitlekey("testsubinput");
-        detailFormCell.setSubtitlekey("testsubinput2");
-        formBean.putCellBean(detailFormCell);
-
-        MultiSelectFormCellBean multiSelectFormCellBean = new MultiSelectFormCellBean();
-        multiSelectFormCellBean.setLabel("测试多选");
-        multiSelectFormCellBean.setKey("testMultiSelect");
-        multiSelectFormCellBean.setType(MultiSelectFormCell.class.getSimpleName());
-        multiSelectFormCellBean.setMaxNum(2);
-        multiSelectFormCellBean.setMinNum(1);
-        List<SerialableEntry<String,String>> list = new ArrayList<>();
-        list.add(new SerialableEntry<String, String>("1", "深圳顶聚科技"));
-        list.add(new SerialableEntry<String, String>("2", "深圳顶聚科技2"));
-        multiSelectFormCellBean.setValue(list);
-        //multiSelectFormCellBean.setOptionMap(this.builderOptions());
-        formBean.putCellBean(multiSelectFormCellBean);
         return formBean;
     }
 
@@ -193,6 +200,41 @@ public class ClientActivity extends JupiterFragmentActivity{
 
         super.onActivityResult(requestCode, resultCode, data);
         FormBean formBean = (FormBean) data.getSerializableExtra("form");
-        formBean.getCellBeanValue("testText");
+        //formBean.getCellBeanValue("testText");
+        //client.setName((String)formBean.getCellBeanValue("testText"));
+        client = new Client();
+        client.setName((String) formBean.getCellBeanValue("name"));
+        client.setNo((String) formBean.getCellBeanValue("name"));
+        client.setId((String) formBean.getCellBeanValue("name"));
+        clients.addFirst(client);
+
+        clientListAdapter.notifyDataSetChanged();
+    }
+
+
+    private void refreshClient() {
+        //TODO 执行服务器刷新
+        if (AssertValue.isNotNull(clients)) {
+            new GetDataTask().execute();
+        }
+    }
+
+    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
+
+        @Override
+        protected String[] doInBackground(Void... params) {
+            // Simulates a background job.
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            return new String[1];
+        }
+        @Override
+        protected void onPostExecute(String[] result) {
+            //completeRefreshProduct();
+            super.onPostExecute(result);
+        }
+
     }
 }
