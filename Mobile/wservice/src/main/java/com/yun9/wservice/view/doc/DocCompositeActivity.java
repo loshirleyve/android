@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -35,6 +36,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
+    @ViewInject(id = R.id.image_location)
+    private JupiterRowStyleSutitleLayout localImageBtn;
+
 
     public static void start(Activity activity,DocCompositeCommand command) {
         Intent intent = new Intent(activity, DocCompositeActivity.class);
@@ -57,7 +61,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         //获取参数
         command = (DocCompositeCommand) this.getIntent().getSerializableExtra("command");
 
-
+        localImageBtn.setOnClickListener(onLocalFileClickListener);
 
     }
 
@@ -65,6 +69,13 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    };
+
+    private View.OnClickListener onLocalFileClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            DocLocalImageActivity.start(DocCompositeActivity.this,new DocLocalImageCommand());
         }
     };
 }

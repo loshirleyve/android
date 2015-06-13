@@ -26,8 +26,10 @@ import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
 import com.yun9.wservice.view.inst.SelectInstActivity;
 import com.yun9.wservice.view.inst.SelectInstCommand;
+import com.yun9.wservice.view.order.OrderManagerActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
+import com.yun9.wservice.view.other.SettingActivity;
 
 /**
  *

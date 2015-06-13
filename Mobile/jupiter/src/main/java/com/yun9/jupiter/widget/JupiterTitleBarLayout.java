@@ -28,6 +28,8 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
     private LinearLayout titleCenter;
 
+    private ImageView titleCenterIV;
+
     private TextView titleTv;
 
     private TextView titleSutitleTv;
@@ -66,6 +68,7 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         this.titleLeft = (LinearLayout) this.findViewById(R.id.title_left_ll);
         this.titleRight = (RelativeLayout) this.findViewById(R.id.title_right_ll);
         this.titleCenter = (LinearLayout) this.findViewById(R.id.title_center_ll);
+        this.titleCenterIV = (ImageView) this.findViewById(R.id.title_center_iv);
         this.titleTv = (TextView) this.findViewById(R.id.title_tv);
         this.titleSutitleTv = (TextView) this.findViewById(R.id.title_sutitle_tv);
         this.titleLeftTv = (TextView) this.findViewById(R.id.title_left_tv);
@@ -154,6 +157,15 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
             }
         }
 
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleCenterIcoVisibility)){
+            boolean centerIcoVisibility = a.getBoolean(R.styleable.JupiterTitleBarLayout_titleCenterIcoVisibility,false);
+            if (centerIcoVisibility){
+                this.getTitleCenterIV().setVisibility(View.VISIBLE);
+            }else{
+                this.getTitleCenterIV().setVisibility(View.GONE);
+            }
+        }
+
         if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc)){
             int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleLeftIcoSrc, R.drawable.title_left_btn_return);
             this.getTitleLeftIV().setImageResource(resourceid);
@@ -166,8 +178,13 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
         }
 
         if (a.hasValue(R.styleable.JupiterTitleBarLayout_backgroungColor)){
-            int resourceid = a.getColor(R.styleable.JupiterTitleBarLayout_backgroungColor,R.color.title_color);
+            int resourceid = a.getColor(R.styleable.JupiterTitleBarLayout_backgroungColor, R.color.title_color);
             this.findViewById(R.id.title_bar_rl).setBackgroundColor(resourceid);
+        }
+
+        if (a.hasValue(R.styleable.JupiterTitleBarLayout_titleCenterIcoSrc)){
+            int resourceid = a.getResourceId(R.styleable.JupiterTitleBarLayout_titleCenterIcoSrc, R.drawable.arrow_down_grey);
+            this.getTitleCenterIV().setImageResource(resourceid);
         }
 
         a.recycle();
@@ -243,5 +260,13 @@ public class JupiterTitleBarLayout extends JupiterRelativeLayout {
 
     public void setTitleRightIV(ImageView titleRightIV) {
         this.titleRightIV = titleRightIV;
+    }
+
+    public ImageView getTitleCenterIV() {
+        return titleCenterIV;
+    }
+
+    public void setTitleCenterIV(ImageView titleCenterIV) {
+        this.titleCenterIV = titleCenterIV;
     }
 }

@@ -205,6 +205,13 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+            android:name=".view.doc.DocLocalImageActivity"
+            android:label="@string/doc_image_location"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+
+        <activity
             android:name=".view.common.MultiSelectActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
@@ -243,11 +250,13 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+
         <activity android:name=".view.client.ClientActivity"
             android:label="@string/user_mycontact"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
         <activity
             android:name=".view.order.OrderManagerActivity"
             android:label="@string/user_buyer"
