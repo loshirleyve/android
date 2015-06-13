@@ -19,18 +19,15 @@ import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-<<<<<<< HEAD
 import com.yun9.wservice.view.client.ClientActivity;
-=======
-import com.yun9.wservice.view.order.OrderManagerActivity;
->>>>>>> 9315ae4dd8c02a536db3e631587e5f1696c1982a
-import com.yun9.wservice.view.other.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
 import com.yun9.wservice.view.inst.SelectInstActivity;
 import com.yun9.wservice.view.inst.SelectInstCommand;
+import com.yun9.wservice.view.order.OrderManagerActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
+import com.yun9.wservice.view.other.SettingActivity;
 
 /**
  *
