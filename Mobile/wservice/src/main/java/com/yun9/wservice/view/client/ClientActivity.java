@@ -42,6 +42,7 @@ public class ClientActivity extends JupiterFragmentActivity{
 
     private EditText clientSearchEdt;
     private JupiterTitleBarLayout titleBarLayout;
+    private EditText searchEdt;
 
     private LinearLayout searchLL;
     private ImageView searchFIV;
@@ -64,10 +65,7 @@ public class ClientActivity extends JupiterFragmentActivity{
         titleBarLayout.getTitleLeftIV().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent();
-                intent.setClass(ClientActivity.this, MainActivity.class);
-                startActivity(intent);*/
-                ClientActivity.this.finish();
+                finish();
             }
         });
     }
@@ -82,10 +80,12 @@ public class ClientActivity extends JupiterFragmentActivity{
         clientSearchEdt = (EditText)findViewById(R.id.searchEdt);
         searchLL = (LinearLayout)findViewById(R.id.searchLL);
         searchFIV = (ImageView)findViewById(R.id.searchFIV);
+        searchEdt = (EditText)findViewById(R.id.searchEdt);
 
         clientSearchEdt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchEdt.setCursorVisible(true);
                 searchLL.setVisibility(View.GONE);
                 searchFIV.setVisibility(View.VISIBLE);
 
@@ -151,7 +151,7 @@ public class ClientActivity extends JupiterFragmentActivity{
         DocFormCellBean docFormCell= new DocFormCellBean();
         docFormCell.setKey("testDoc");
         docFormCell.setType(DocFormCell.class.getSimpleName());
-        docFormCell.setValue("1");
+        //docFormCell.setValue("1");
         docFormCell.setMaxNum(3);
         docFormCell.setMinNum(1);
         docFormCell.setLabel("测试文档选择");
@@ -188,4 +188,11 @@ public class ClientActivity extends JupiterFragmentActivity{
         return formBean;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        FormBean formBean = (FormBean) data.getSerializableExtra("form");
+        formBean.getCellBeanValue("testText");
+    }
 }
