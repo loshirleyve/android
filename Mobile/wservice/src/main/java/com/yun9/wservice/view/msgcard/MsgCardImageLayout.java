@@ -1,7 +1,6 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
@@ -24,8 +22,6 @@ import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCardAttachment;
-import com.yun9.wservice.view.common.Constants;
-import com.yun9.wservice.view.common.SimpleImageActivity;
 
 import java.util.List;
 
@@ -155,11 +151,11 @@ public class MsgCardImageLayout extends JupiterRelativeLayout {
     }
 
     protected void startImagePagerActivity(int position) {
-        Intent intent = new Intent(getContext(), SimpleImageActivity.class);
-        intent.putExtra(Constants.IMAGE.IMAGE_POSITION, position);
-        String[] images = getImageIdsFromAttachments();
-        intent.putExtra(Constants.IMAGE.IMAGE_LIST, images);
-        getContext().startActivity(intent);
+//        Intent intent = new Intent(getContext(), SimpleImageActivity.class);
+//        intent.putExtra(Constants.IMAGE.IMAGE_POSITION, position);
+//        String[] images = getImageIdsFromAttachments();
+//        intent.putExtra(Constants.IMAGE.IMAGE_LIST, images);
+//        getContext().startActivity(intent);
     }
 
     private String[] getImageIdsFromAttachments() {

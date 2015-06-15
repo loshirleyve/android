@@ -1,4 +1,4 @@
-package com.yun9.wservice.view.doc;
+package com.yun9.jupiter.model;
 
 import com.yun9.jupiter.util.AssertValue;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Leon on 15/6/13.
  */
-public class LocalImageBean implements java.io.Serializable{
+public class ImageBean implements java.io.Serializable{
 
     private int id;
     private int parentid = 0;
@@ -18,7 +18,7 @@ public class LocalImageBean implements java.io.Serializable{
     private String name;
     private String dateAdded;
 
-    private List<LocalImageBean> childs;
+    private List<ImageBean> childs;
 
     public int getId() {
         return id;
@@ -76,20 +76,20 @@ public class LocalImageBean implements java.io.Serializable{
         this.dateAdded = dateAdded;
     }
 
-    public List<LocalImageBean> getChilds() {
+    public List<ImageBean> getChilds() {
         return childs;
     }
 
-    public void setChilds(List<LocalImageBean> childs) {
+    public void setChilds(List<ImageBean> childs) {
         this.childs = childs;
     }
 
-    public void putChild(LocalImageBean localImageBean){
+    public void putChild(ImageBean imageBean){
         if (!AssertValue.isNotNull(childs)){
             childs = new ArrayList<>();
         }
 
-        childs.add(localImageBean);
+        childs.add(imageBean);
 
     }
 }

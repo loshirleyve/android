@@ -18,9 +18,11 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.yun9.jupiter.image.ImageBrowerActivity;
+import com.yun9.jupiter.image.ImageBrowerCommand;
+import com.yun9.jupiter.model.ImageBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -33,11 +35,11 @@ import java.util.List;
  */
 public class LocalImageActivity extends JupiterFragmentActivity {
 
-    private List<LocalImageBean> albums;
+    private List<ImageBean> albums;
 
-    private LocalImageBean currLocalImageBean;
+    private ImageBean currImageBean;
 
-    private List<LocalImageBean> currImages = new ArrayList<>();
+    private List<ImageBean> currImages = new ArrayList<>();
 
     private PopupWindow albumsPopW;
 
@@ -82,6 +84,7 @@ public class LocalImageActivity extends JupiterFragmentActivity {
 
         localImageGridViewAdapter = new LocalImageGridViewAdapter(getApplicationContext(), currImages);
         imageGV.setAdapter(localImageGridViewAdapter);
+        imageGV.setOnItemClickListener(onGridViewItemClickListener);
 
         this.loadImage();
         this.initPopW();
@@ -95,10 +98,10 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private void showAllImage() {
         if (AssertValue.isNotNullAndNotEmpty(albums)) {
             currImages.clear();
-            for (LocalImageBean localImageBean : albums) {
-                if (AssertValue.isNotNull(localImageBean) && AssertValue.isNotNullAndNotEmpty(localImageBean.getChilds())) {
-                    for (LocalImageBean localImageBean1 : localImageBean.getChilds()) {
-                        currImages.add(localImageBean1);
+            for (ImageBean imageBean : albums) {
+                if (AssertValue.isNotNull(imageBean) && AssertValue.isNotNullAndNotEmpty(imageBean.getChilds())) {
+                    for (ImageBean imageBean1 : imageBean.getChilds()) {
+                        currImages.add(imageBean1);
                     }
                 }
             }
@@ -111,8 +114,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
 
     private LocalImageLoadAsyncTask.OnImageLoadCallback onImageLoadCallback = new LocalImageLoadAsyncTask.OnImageLoadCallback() {
         @Override
-        public void onPostExecute(List<LocalImageBean> localImageBeans) {
-            albums = localImageBeans;
+        public void onPostExecute(List<ImageBean> imageBeans) {
+            albums = imageBeans;
             showAllImage();
         }
     };
@@ -139,10 +142,10 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private PopupWindow.OnDismissListener onPopWDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-            if (AssertValue.isNotNull(currLocalImageBean) && AssertValue.isNotNullAndNotEmpty(currLocalImageBean.getChilds())) {
+            if (AssertValue.isNotNull(currImageBean) && AssertValue.isNotNullAndNotEmpty(currImageBean.getChilds())) {
                 currImages.clear();
-                for (LocalImageBean localImageBean : currLocalImageBean.getChilds()) {
-                    currImages.add(localImageBean);
+                for (ImageBean imageBean : currImageBean.getChilds()) {
+                    currImages.add(imageBean);
                 }
                 if (AssertValue.isNotNull(localImageGridViewAdapter)) {
                     localImageGridViewAdapter.notifyDataSetChanged();
@@ -176,10 +179,17 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (AssertValue.isNotNull(view.getTag())) {
-                LocalImageBean localImageBean = (LocalImageBean) view.getTag();
-                currLocalImageBean = localImageBean;
+                ImageBean imageBean = (ImageBean) view.getTag();
+                currImageBean = imageBean;
                 albumsPopW.dismiss();
             }
+        }
+    };
+
+    private AdapterView.OnItemClickListener onGridViewItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ImageBrowerActivity.start(LocalImageActivity.this,new ImageBrowerCommand().setImageBeans(currImages).setPosition(position));
         }
     };
 

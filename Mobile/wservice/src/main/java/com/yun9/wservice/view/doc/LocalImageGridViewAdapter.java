@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yun9.jupiter.model.ImageBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -16,17 +17,17 @@ import java.util.List;
 public class LocalImageGridViewAdapter extends JupiterAdapter {
 
     private Context mContext;
-    private List<LocalImageBean> mLocalImageBeans;
+    private List<ImageBean> mImageBeans;
 
-    public LocalImageGridViewAdapter(Context context, List<LocalImageBean> localImageBeans) {
+    public LocalImageGridViewAdapter(Context context, List<ImageBean> imageBeans) {
         this.mContext = context;
-        this.mLocalImageBeans = localImageBeans;
+        this.mImageBeans = imageBeans;
     }
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNullAndNotEmpty(mLocalImageBeans)) {
-            return mLocalImageBeans.size();
+        if (AssertValue.isNotNullAndNotEmpty(mImageBeans)) {
+            return mImageBeans.size();
         } else {
             return 0;
         }
@@ -34,7 +35,7 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mLocalImageBeans.get(position);
+        return mImageBeans.get(position);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         AlbumImageGridItem albumImageGridItem = null;
-        LocalImageBean localImageBean = mLocalImageBeans.get(position);
+        ImageBean imageBean = mImageBeans.get(position);
 
         if (AssertValue.isNotNull(convertView)) {
             albumImageGridItem = (AlbumImageGridItem) convertView;
@@ -53,8 +54,8 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
             albumImageGridItem = new AlbumImageGridItem(mContext);
         }
 
-        ImageLoaderUtil.getInstance(mContext).displayImage("file://"+localImageBean.getThumbnailPath(), albumImageGridItem.getImageView());
-        albumImageGridItem.setTag(localImageBean);
+        ImageLoaderUtil.getInstance(mContext).displayImage("file://"+ imageBean.getThumbnailPath(), albumImageGridItem.getImageView());
+        albumImageGridItem.setTag(imageBean);
 
         return albumImageGridItem;
     }
