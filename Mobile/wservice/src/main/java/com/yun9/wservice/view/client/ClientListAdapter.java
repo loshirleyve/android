@@ -8,6 +8,8 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.wservice.model.Client;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public class ClientListAdapter extends JupiterAdapter {
     }
     @Override
     public int getCount() {
-        return clients.size();
+        return this.clients.size();
     }
 
     @Override
@@ -45,11 +47,9 @@ public class ClientListAdapter extends JupiterAdapter {
             clientItemLayout = new ClientItemLayout(context);
         }
 
-       for (int i = 0; i < clients.size(); i++){
-           clientItemLayout.getTitle_TV().setText(clients.get(i).getName());
-           clientItemLayout.getContact_TV().setText(clients.get(i).getId());
-           clientItemLayout.getPhone_TV().setText(clients.get(i).getNo());
-       }
+           clientItemLayout.getTitle_TV().setText(clients.get(position).getName());
+           clientItemLayout.getContact_TV().setText(clients.get(position).getId());
+           clientItemLayout.getPhone_TV().setText(clients.get(position).getNo());
 
         return clientItemLayout;
 

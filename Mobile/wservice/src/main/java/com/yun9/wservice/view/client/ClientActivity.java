@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,19 +58,20 @@ public class ClientActivity extends JupiterFragmentActivity {
     private LinearLayout searchLL;
     private ImageView searchFIV;
 
-    private Client client;
-    private LinkedList<Client> clients;
+    private LinkedList<Client> clients = new LinkedList<Client>();
     private ClientListAdapter clientListAdapter;
     private ListView clientListView;
+    private Client client;
 
-    private PtrClassicFrameLayout mPtrFrame;
+    //private PtrClassicFrameLayout mPtrFrame;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        clients = new LinkedList<>();
+        //clients = new LinkedList<>();
         clientListView = (ListView) findViewById(R.id.client_list_ptr);
+/*
         mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame_client);
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
@@ -83,20 +85,19 @@ public class ClientActivity extends JupiterFragmentActivity {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
+*/
 
 
         this.setClientSearchTextChanged();
         titleBarLayout = (JupiterTitleBarLayout) findViewById(R.id.client_title);
+
         titleBarLayout.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent intent = new Intent();
-                //这里跳转的对象到时候要换成表单
-                intent.setClass(ClientActivity.this, NewDynamicActivity.class);
-                startActivity(intent);*/
                 FormActivity.start(ClientActivity.this, 1, fakeData());
             }
         });
+
         titleBarLayout.getTitleLeftIV().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,23 +105,30 @@ public class ClientActivity extends JupiterFragmentActivity {
             }
         });
 
-
-        /*
-        *下面是示例代码
-         */
-
-        client = new Client();
-        client.setId("clientID:id1");
-        client.setName("clientName:name1");
-        client.setNo("clientNo:no1");
-        clients.addFirst(client);
-        /*
-        *上面是示例代码
-         */
-        clientListAdapter = new ClientListAdapter(this, clients);
-        clientListView.setAdapter(clientListAdapter);
+        //completeAddClient();
+        if(!AssertValue.isNotNull(clientListAdapter)) {
+            clientListAdapter = new ClientListAdapter(this, clients);
+            clientListView.setAdapter(clientListAdapter);
+        }else {
+            clientListAdapter.notifyDataSetChanged();
+        }
 
     }
+
+/*    private void completeAddClient(){
+        if(AssertValue.isNotNull(clients)){
+            clients = new LinkedList<>();
+        }
+
+        for(int i = 0; i < clients.size(); i++){
+            Client client = new Client();
+            client.setId("Id" + i);
+            client.setNo("No" + i);
+            client.setName("Name" + i);
+            clients.addFirst(client);
+        }
+    }*/
+
 
     @Override
     protected int getContentView() {
@@ -184,13 +192,38 @@ public class ClientActivity extends JupiterFragmentActivity {
         formBean.setTitle("测试表单");
         formBean.setKey("demoform");
 
-        TextFormCellBean textFormCell = new TextFormCellBean();
-        textFormCell.setType(TextFormCell.class.getSimpleName());
-        textFormCell.setKey("name");
-        textFormCell.setDefaultValue("hello");
-        textFormCell.setLabel("客户名称");
-        textFormCell.setRequired(true);
-        formBean.putCellBean(textFormCell);
+        TextFormCellBean textFormCell1 = new TextFormCellBean();
+        textFormCell1.setType(TextFormCell.class.getSimpleName());
+
+        textFormCell1.setKey("name");
+        textFormCell1.setDefaultValue("客户名XXX有限公司");
+
+        textFormCell1.setLabel("客户名称");
+        textFormCell1.setRequired(true);
+        formBean.putCellBean(textFormCell1);
+
+
+        TextFormCellBean textFormCell2 = new TextFormCellBean();
+        textFormCell2.setType(TextFormCell.class.getSimpleName());
+
+        textFormCell2.setKey("contactName");
+        textFormCell2.setDefaultValue("联系人名");
+
+        textFormCell2.setLabel("联系人名");
+        textFormCell2.setRequired(true);
+        formBean.putCellBean(textFormCell2);
+
+
+        TextFormCellBean textFormCell3 = new TextFormCellBean();
+        textFormCell3.setType(TextFormCell.class.getSimpleName());
+
+        textFormCell3.setKey("phoneNo");
+        textFormCell3.setDefaultValue("19800004500");
+
+        textFormCell3.setLabel("联系电话");
+        textFormCell3.setRequired(true);
+        formBean.putCellBean(textFormCell3);
+
 
         return formBean;
     }
@@ -204,15 +237,15 @@ public class ClientActivity extends JupiterFragmentActivity {
         //client.setName((String)formBean.getCellBeanValue("testText"));
         client = new Client();
         client.setName((String) formBean.getCellBeanValue("name"));
-        client.setNo((String) formBean.getCellBeanValue("name"));
-        client.setId((String) formBean.getCellBeanValue("name"));
+        client.setId((String) formBean.getCellBeanValue("contactName"));
+        client.setNo((String) formBean.getCellBeanValue("phoneNo"));
         clients.addFirst(client);
 
         clientListAdapter.notifyDataSetChanged();
     }
 
 
-    private void refreshClient() {
+/*    private void refreshClient() {
         //TODO 执行服务器刷新
         if (AssertValue.isNotNull(clients)) {
             new GetDataTask().execute();
@@ -232,9 +265,8 @@ public class ClientActivity extends JupiterFragmentActivity {
         }
         @Override
         protected void onPostExecute(String[] result) {
-            //completeRefreshProduct();
+            //completeAddClient();
             super.onPostExecute(result);
         }
-
-    }
+    }*/
 }
