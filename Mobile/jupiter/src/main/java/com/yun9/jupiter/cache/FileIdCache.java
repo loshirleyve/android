@@ -1,6 +1,4 @@
-package com.yun9.wservice.cache;
-
-import com.yun9.jupiter.cache.AbsCache;
+package com.yun9.jupiter.cache;
 
 /**
  * Created by huangbinglong on 15/5/22.

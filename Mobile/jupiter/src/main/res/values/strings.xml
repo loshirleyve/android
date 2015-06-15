@@ -18,5 +18,7 @@
     <string name="jupiter_row_cell_title">测试标题内容</string>
     <string name="jupiter_row_cell_time">1小时前</string>
 
+    <string name="jupiter_viewpager_indicator">%1$d/%2$d</string>
+
 
 </resources>

@@ -13,7 +13,7 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.cache.FileIdCache;
+import com.yun9.jupiter.cache.FileIdCache;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.model.MsgCardComment;

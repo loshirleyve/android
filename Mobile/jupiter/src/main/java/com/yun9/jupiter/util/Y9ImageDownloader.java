@@ -1,13 +1,11 @@
-package com.yun9.wservice.imageloader;
+package com.yun9.jupiter.util;
 
 import android.content.Context;
-import android.net.Uri;
 
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.Logger;
-import com.yun9.wservice.R;
-import com.yun9.wservice.cache.FileIdCache;
+
+import com.yun9.jupiter.R;
+import com.yun9.jupiter.cache.FileIdCache;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,10 +29,10 @@ public class Y9ImageDownloader extends BaseImageDownloader {
     protected InputStream getStreamFromOtherSource(String imageUri, Object extra) throws IOException {
         imageUri = FileIdCache.getInstance().getAsString(imageUri);
         if (AssertValue.isNotNullAndNotEmpty(imageUri)) {
-            return getStreamFromNetwork(imageUri,extra);
+            return getStreamFromNetwork(imageUri, extra);
         } else {
             // 如果没有找到缓冲的图片，返回空图片
-            return getStreamFromDrawable("drawable://" + R.drawable.ic_empty,extra);
+            return getStreamFromDrawable("drawable://" + R.drawable.ic_empty, extra);
         }
 
     }
