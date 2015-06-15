@@ -3,6 +3,8 @@ package com.yun9.wservice.view.doc;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -11,24 +13,31 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Leon on 15/6/13.
  */
-public class DocLocalImageActivity extends JupiterFragmentActivity {
+public class LocalImageActivity extends JupiterFragmentActivity {
 
     private List<LocalImageBean> albums;
+
+    private LocalImageBean currLocalImageBean;
+
+    private List<LocalImageBean> currImages = new ArrayList<>();
 
     private PopupWindow albumsPopW;
 
@@ -38,8 +47,13 @@ public class DocLocalImageActivity extends JupiterFragmentActivity {
 
     private LocalImageAlbumAdapter localImageAlbumAdapter;
 
+    private LocalImageGridViewAdapter localImageGridViewAdapter;
+
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
+
+    @ViewInject(id = R.id.image_local_gv)
+    private GridView imageGV;
 
 
     @Override
@@ -47,8 +61,8 @@ public class DocLocalImageActivity extends JupiterFragmentActivity {
         return R.layout.activity_doc_local_image;
     }
 
-    public static void start(Activity activity, DocLocalImageCommand command) {
-        Intent intent = new Intent(activity, DocLocalImageActivity.class);
+    public static void start(Activity activity, LocalImageCommand command) {
+        Intent intent = new Intent(activity, LocalImageActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -63,33 +77,52 @@ public class DocLocalImageActivity extends JupiterFragmentActivity {
         popuplv = (ListView) popupWView.findViewById(R.id.listview);
 
         this.titleBarLayout.getTitleCenter().setOnClickListener(onTitleCenterClickListener);
+        this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+        this.popuplv.setOnItemClickListener(onAlbumItemClickListener);
+
+        localImageGridViewAdapter = new LocalImageGridViewAdapter(getApplicationContext(), currImages);
+        imageGV.setAdapter(localImageGridViewAdapter);
 
         this.loadImage();
         this.initPopW();
     }
 
     private void loadImage() {
-        ImageLoadAsyncTask imageLoadAsyncTask = new ImageLoadAsyncTask(getContentResolver(), onImageLoadCallback);
-        imageLoadAsyncTask.execute("test");
+        LocalImageLoadAsyncTask localImageLoadAsyncTask = new LocalImageLoadAsyncTask(getContentResolver(), onImageLoadCallback);
+        localImageLoadAsyncTask.execute();
     }
 
-    private ImageLoadAsyncTask.OnImageLoadCallback onImageLoadCallback = new ImageLoadAsyncTask.OnImageLoadCallback() {
+    private void showAllImage() {
+        if (AssertValue.isNotNullAndNotEmpty(albums)) {
+            currImages.clear();
+            for (LocalImageBean localImageBean : albums) {
+                if (AssertValue.isNotNull(localImageBean) && AssertValue.isNotNullAndNotEmpty(localImageBean.getChilds())) {
+                    for (LocalImageBean localImageBean1 : localImageBean.getChilds()) {
+                        currImages.add(localImageBean1);
+                    }
+                }
+            }
+
+            if (AssertValue.isNotNull(localImageGridViewAdapter)) {
+                localImageGridViewAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private LocalImageLoadAsyncTask.OnImageLoadCallback onImageLoadCallback = new LocalImageLoadAsyncTask.OnImageLoadCallback() {
         @Override
         public void onPostExecute(List<LocalImageBean> localImageBeans) {
             albums = localImageBeans;
+            showAllImage();
         }
     };
 
     private void initPopW() {
-        if (!AssertValue.isNotNull(localImageAlbumAdapter)) {
-            localImageAlbumAdapter = new LocalImageAlbumAdapter(this.getApplicationContext(), albums);
-            popuplv.setAdapter(localImageAlbumAdapter);
-        }
 
         albumsPopW = new PopupWindow(popupWView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         albumsPopW.setOnDismissListener(onPopWDismissListener);
-        albumsPopW.setBackgroundDrawable(getDrawable(this.getApplicationContext()));
+        albumsPopW.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         albumsPopW.setFocusable(true);
         albumsPopW.setOutsideTouchable(true);
 
@@ -99,20 +132,54 @@ public class DocLocalImageActivity extends JupiterFragmentActivity {
             height = maxHeight;
         }
         albumsPopW.setHeight(maxHeight);
+
+
     }
 
     private PopupWindow.OnDismissListener onPopWDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-
+            if (AssertValue.isNotNull(currLocalImageBean) && AssertValue.isNotNullAndNotEmpty(currLocalImageBean.getChilds())) {
+                currImages.clear();
+                for (LocalImageBean localImageBean : currLocalImageBean.getChilds()) {
+                    currImages.add(localImageBean);
+                }
+                if (AssertValue.isNotNull(localImageGridViewAdapter)) {
+                    localImageGridViewAdapter.notifyDataSetChanged();
+                }
+            }
         }
     };
 
     private View.OnClickListener onTitleCenterClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            localImageAlbumAdapter.notifyDataSetChanged();
             albumsPopW.showAsDropDown(titleBarLayout);
+
+            if (!AssertValue.isNotNull(localImageAlbumAdapter)) {
+                localImageAlbumAdapter = new LocalImageAlbumAdapter(LocalImageActivity.this, albums);
+                popuplv.setAdapter(localImageAlbumAdapter);
+            } else {
+                localImageAlbumAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+    private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
+    };
+
+    private AdapterView.OnItemClickListener onAlbumItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (AssertValue.isNotNull(view.getTag())) {
+                LocalImageBean localImageBean = (LocalImageBean) view.getTag();
+                currLocalImageBean = localImageBean;
+                albumsPopW.dismiss();
+            }
         }
     };
 

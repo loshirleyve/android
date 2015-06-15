@@ -205,7 +205,7 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".view.doc.DocLocalImageActivity"
+            android:name=".view.doc.LocalImageActivity"
             android:label="@string/doc_image_location"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>

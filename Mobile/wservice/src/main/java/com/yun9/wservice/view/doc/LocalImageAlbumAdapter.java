@@ -4,7 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterAdapter;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class LocalImageAlbumAdapter extends JupiterAdapter {
     public int getCount() {
         if (AssertValue.isNotNull(mAlbums)) {
             return mAlbums.size();
-        }else{
+        } else {
             return 0;
         }
     }
@@ -48,14 +50,23 @@ public class LocalImageAlbumAdapter extends JupiterAdapter {
         LocalImageAlbumItemWidget localImageAlbumItemWidget = null;
         LocalImageBean localImageBean = mAlbums.get(position);
 
-        if (AssertValue.isNotNull(convertView)){
+        if (AssertValue.isNotNull(convertView)) {
             localImageAlbumItemWidget = (LocalImageAlbumItemWidget) convertView;
-        }else{
+        } else {
             localImageAlbumItemWidget = new LocalImageAlbumItemWidget(mContext);
         }
 
         localImageAlbumItemWidget.setTag(localImageBean);
         localImageAlbumItemWidget.getInfoTV().setText(localImageBean.getName());
+
+        ImageLoaderUtil.getInstance(mContext).displayImage("file://" + localImageBean.getThumbnailPath(), localImageAlbumItemWidget.getImageView());
+
+        if (AssertValue.isNotNullAndNotEmpty(localImageBean.getChilds())) {
+            localImageAlbumItemWidget.getNumTV().setText(localImageBean.getChilds().size() + "张图片");
+        } else {
+            localImageAlbumItemWidget.getNumTV().setText("0张图片");
+        }
+
 
         return localImageAlbumItemWidget;
     }

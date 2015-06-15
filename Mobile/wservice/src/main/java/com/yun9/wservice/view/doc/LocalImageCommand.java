@@ -5,6 +5,6 @@ import com.yun9.jupiter.command.JupiterCommand;
 /**
  * Created by Leon on 15/6/13.
  */
-public class DocLocalImageCommand extends JupiterCommand {
+public class LocalImageCommand extends JupiterCommand {
 
 }

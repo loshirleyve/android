@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Created by Leon on 15/6/13.
  */
-public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalImageBean>> {
+public class LocalImageLoadAsyncTask extends AsyncTask<Void, Integer, List<LocalImageBean>> {
 
     private ContentResolver mCr;
 
@@ -23,7 +23,7 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
 
     private OnImageLoadCallback onImageLoadCallback;
 
-    public ImageLoadAsyncTask(ContentResolver cr, OnImageLoadCallback callback) {
+    public LocalImageLoadAsyncTask(ContentResolver cr, OnImageLoadCallback callback) {
         this.mCr = cr;
         this.onImageLoadCallback = callback;
     }
@@ -42,7 +42,26 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
     }
 
     @Override
-    protected List<LocalImageBean> doInBackground(String... params) {
+    protected List<LocalImageBean> doInBackground(Void... params) {
+
+        Map<Integer, String> thumbnails = new HashMap<>();
+
+        String[] projection = {MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID, MediaStore.Images.Thumbnails.DATA};
+        Cursor curThumbnails = mCr.query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, null);
+
+        if (curThumbnails != null && curThumbnails.moveToFirst()) {
+            int image_id;
+            String image_path;
+            int image_idColumn = curThumbnails.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID);
+            int dataColumn = curThumbnails.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+            do {
+                image_id = curThumbnails.getInt(image_idColumn);
+                image_path = curThumbnails.getString(dataColumn);
+
+                thumbnails.put(image_id, image_path);
+            } while (curThumbnails.moveToNext());
+        }
+
         //获取原图
         Cursor cursor = mCr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, "date_modified DESC");
 
@@ -53,6 +72,11 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                 String album = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
                 String dateAdded = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
+                String thumbnailsPath = thumbnails.get(_id);
+                if (!AssertValue.isNotNullAndNotEmpty(thumbnailsPath)) {
+                    thumbnailsPath = path;
+                }
+
 
                 if (albums.containsKey(album) && AssertValue.isNotNull(albums.get(album))) {
                     LocalImageBean albumBean = albums.get(album);
@@ -64,6 +88,8 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
                     localImageBean.setParentid(albumBean.getId());
                     localImageBean.setAbsolutePath(path);
                     localImageBean.setFilePath("file://" + path);
+                    localImageBean.setThumbnailPath(thumbnailsPath);
+
 
                     albumBean.putChild(localImageBean);
 
@@ -74,6 +100,7 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
                     albumBean.setDateAdded(dateAdded);
                     albumBean.setFilePath("file://" + path);
                     albumBean.setAbsolutePath(path);
+                    albumBean.setThumbnailPath(thumbnailsPath);
                     albums.put(album, albumBean);
 
                     LocalImageBean localImageBean = new LocalImageBean();
@@ -83,6 +110,7 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
                     localImageBean.setParentid(albumBean.getId());
                     localImageBean.setAbsolutePath(path);
                     localImageBean.setFilePath("file://" + path);
+                    localImageBean.setThumbnailPath(thumbnailsPath);
                     albumBean.putChild(localImageBean);
                 }
 
@@ -91,10 +119,11 @@ public class ImageLoadAsyncTask extends AsyncTask<String, Integer, List<LocalIma
 
         List<LocalImageBean> localImageBeans = new ArrayList<>();
 
-        for(Map.Entry<String,LocalImageBean> entity:albums.entrySet()){
+        for (Map.Entry<String, LocalImageBean> entity : albums.entrySet()) {
             localImageBeans.add(entity.getValue());
         }
 
         return localImageBeans;
     }
+
 }

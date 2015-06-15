@@ -7,25 +7,19 @@
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tb:titleLeftIcoVisibility="true"
         tb:titleCenterIcoVisibility="true"
-        tb:titleText="@string/doc_image_location">
-    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+        tb:titleLeftIcoVisibility="true"
+        tb:titleText="@string/doc_image_location"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
-    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
+
+    <GridView
+        android:id="@+id/image_local_gv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.yun9.jupiter.view.JupiterGridView
-            android:id="@+id/image_local_gv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:listSelector="@color/transparent"
-            android:numColumns="3"
-            android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
-
-
-    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:descendantFocusability="beforeDescendants"
+        android:gravity="center"
+        android:listSelector="@color/transparent"
+        android:numColumns="3"></GridView>
 
 </RelativeLayout>

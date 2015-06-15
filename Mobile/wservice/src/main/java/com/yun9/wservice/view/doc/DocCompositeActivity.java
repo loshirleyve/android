@@ -62,6 +62,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         command = (DocCompositeCommand) this.getIntent().getSerializableExtra("command");
 
         localImageBtn.setOnClickListener(onLocalFileClickListener);
+        this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
 
     }
 
@@ -75,7 +76,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     private View.OnClickListener onLocalFileClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DocLocalImageActivity.start(DocCompositeActivity.this,new DocLocalImageCommand());
+            LocalImageActivity.start(DocCompositeActivity.this, new LocalImageCommand());
         }
     };
 }
