@@ -3,6 +3,7 @@ package com.yun9.jupiter.image;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -17,6 +18,8 @@ public class ImageBrowerPageItemWidget extends JupiterRelativeLayout {
     private PhotoView photoView;
 
     private ProgressBar loading;
+
+    private TextView pageNoTV;
 
     public ImageBrowerPageItemWidget(Context context) {
         super(context);
@@ -39,6 +42,11 @@ public class ImageBrowerPageItemWidget extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         photoView = (PhotoView) findViewById(R.id.iv_photo);
         loading = (ProgressBar) findViewById(R.id.loading);
+        pageNoTV = (TextView) findViewById(R.id.page_no_tv);
+    }
+
+    public TextView getPageNoTV() {
+        return pageNoTV;
     }
 
     public PhotoView getPhotoView() {

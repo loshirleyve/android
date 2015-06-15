@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:padding="1dip">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-	<uk.co.senab.photoview.PhotoView
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:id="@+id/iv_photo"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"/>
+        <uk.co.senab.photoview.PhotoView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/iv_photo"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-	<ProgressBar
-		android:id="@+id/loading"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center"
-		android:visibility="gone" />
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/page_no_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:text="111" />
+
+    </RelativeLayout>
 
 </FrameLayout>
