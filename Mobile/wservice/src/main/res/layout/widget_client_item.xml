@@ -66,9 +66,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                 <ImageView
+                    android:layout_marginTop="5dp"
                     android:id="@+id/contact_iv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:src="@drawable/user_head" />
 
@@ -133,6 +134,7 @@
                 android:text="意向客户"
                 android:textColor="@color/title_color"
                 android:layout_marginRight="5dp"
+                android:layout_marginLeft="2dp"
                 android:visibility="visible"
                 />
             <Button
