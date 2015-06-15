@@ -13,21 +13,115 @@
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
-    <LinearLayout
+
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_above="@+id/buttonbar"
-        android:layout_below="@+id/titlebar"
-        android:orientation="vertical">
-        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+        android:layout_below="@+id/titlebar">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            row:rowStyleSutitleTitleText="@string/app_complete"
-            row:rowStyleSutitleShowTimeText="false"
-            row:rowStyleSutitleText="-">
+            android:orientation="vertical">
 
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/image_online"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    row:rowStyleSutitleShowMainImage="false"
+                    row:rowStyleSutitleShowSutitleText="false"
+                    row:rowStyleSutitleShowTimeText="false"
+                    row:rowStyleSutitleTitleText="@string/doc_image_online" />
+
+                <com.yun9.jupiter.view.JupiterGridView
+                    android:id="@+id/image_online_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="4"
+                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/file_online"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    row:rowStyleSutitleShowMainImage="false"
+                    row:rowStyleSutitleShowSutitleText="false"
+                    row:rowStyleSutitleShowTimeText="false"
+                    row:rowStyleSutitleTitleText="@string/doc_file_online" />
+
+                <ListView
+                    android:id="@+id/file_online_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@color/transparent">
+
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/image_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    row:rowStyleSutitleShowMainImage="false"
+                    row:rowStyleSutitleShowSutitleText="false"
+                    row:rowStyleSutitleShowTimeText="false"
+                    row:rowStyleSutitleTitleText="@string/doc_image_location" />
+
+                <com.yun9.jupiter.view.JupiterGridView
+                    android:id="@+id/image_location_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="4"
+                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/file_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    row:rowStyleSutitleShowMainImage="false"
+                    row:rowStyleSutitleShowSutitleText="false"
+                    row:rowStyleSutitleShowTimeText="false"
+                    row:rowStyleSutitleTitleText="@string/doc_file_location" />
+
+                <ListView
+                    android:id="@+id/file_location_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@color/transparent">
+
+                </ListView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 
     <LinearLayout
         android:id="@+id/buttonbar"
@@ -41,19 +135,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            button:imageButtonText="@string/app_complete"/>
+            button:imageButtonText="@string/app_complete" />
 
         <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
             android:id="@+id/sendmsgcard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            button:imageButtonIcoSrc="@drawable/newpost"
             button:imageButtonShowIco="true"
-            button:imageButtonText="@string/app_send_msgcard"
-            button:imageButtonIcoSrc="@drawable/newpost">
-        </com.yun9.jupiter.widget.JupiterImageButtonLayout>
+            button:imageButtonText="@string/app_send_msgcard"></com.yun9.jupiter.widget.JupiterImageButtonLayout>
 
     </LinearLayout>
-
-
 </RelativeLayout>

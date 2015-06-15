@@ -87,7 +87,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/user_head" />
+                    android:src="@drawable/phone" />
 
                 <TextView
                     android:layout_centerVertical="true"

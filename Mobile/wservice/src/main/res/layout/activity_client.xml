@@ -26,13 +26,15 @@
                 android:id="@+id/searchRL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:background="@color/transparent">
 
                 <EditText
+                    android:cursorVisible="false"
                     android:paddingLeft="40dp"
                     android:id="@+id/searchEdt"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="25dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/edt_border"
                     android:singleLine="true"
@@ -42,11 +44,11 @@
 
 
             <LinearLayout
+                android:layout_margin="10dp"
                 android:id="@+id/searchLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
                 android:gravity="center">
 
 <!--
@@ -54,7 +56,7 @@
 -->
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:src="@drawable/discover" />
                 //到时候自定义onClick,使得单击时，ImageView消失
 
@@ -66,16 +68,16 @@
 
             //先隐藏，单击editText时再显示
             <LinearLayout
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/searchRL"
-                android:layout_margin="10dp">
+                android:layout_alignLeft="@id/searchRL">
 
                 <ImageView
                     android:visibility="gone"
                     android:id="@+id/searchFIV"
                     android:layout_width="40dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="25dp"
                     android:src="@drawable/discover" />
                 //到时候自定义onClick,使得单击时，ImageView显示
 
@@ -103,17 +105,30 @@
                 cube_ptr:ptr_resistance="1.7">
 
 
-                <ListView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <com.yun9.wservice.view.client.ClientItemLayout
+                <ListView
+                    android:id="@+id/client_list_ptr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:choiceMode="singleChoice"
+                    android:divider="@null"
+                    android:fadingEdge="none"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbarStyle="outsideOverlay">
+
+                    <!--<com.yun9.wservice.view.client.ClientItemLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        </com.yun9.wservice.view.client.ClientItemLayout>
+                        </com.yun9.wservice.view.client.ClientItemLayout>-->
 
                 </ListView>
+                </LinearLayout>
+
             </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
         </RelativeLayout>
