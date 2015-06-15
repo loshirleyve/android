@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         app:titleLeftIcoVisibility="true"
         app:sutitleTextVisibility="true"
-        app:sutitleText="正在为深圳XXXX公司代理记账"
+        app:sutitleText="正在为深圳XXXX公司代理购买"
         app:titleText="@string/waiting_pay">
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
@@ -25,25 +25,4 @@
         android:dividerHeight="10dp">
     </com.yun9.jupiter.widget.JupiterListView>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/devide_line"/>
-        <TextView
-            android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/pay_now"
-            android:background="@color/whites"
-            android:textColor="@color/red"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:padding="12dp"/>
-    </LinearLayout>
 </RelativeLayout>

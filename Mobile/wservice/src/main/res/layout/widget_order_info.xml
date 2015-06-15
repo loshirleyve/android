@@ -32,6 +32,7 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/contact_us_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -68,8 +69,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:layout_height="wrap_content">
@@ -78,10 +79,23 @@
                 android:layout_height="wrap_content"
                 android:text="@string/order_fee_tip"/>
             <TextView
+                android:id="@+id/order_fee_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
                 android:text="199元"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/pay_now_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/phone"/>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

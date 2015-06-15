@@ -55,7 +55,6 @@ public class JupiterSpringbackScrollView extends JupiterScrollView{
                 break;
             case MotionEvent.ACTION_UP:
                 if (isNeedAnimation()) {
-                    // Log.v("mlguitar", "will up and animation");
                     animation();
                 }
                 break;

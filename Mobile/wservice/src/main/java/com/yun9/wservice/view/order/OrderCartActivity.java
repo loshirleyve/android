@@ -14,6 +14,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
+import com.yun9.wservice.model.OrderCartInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
 
     private OrderCartCommand command;
 
-    private List<Order> orderList;
+    private List<OrderCartInfo> orderList;
 
     private boolean isProxy;
 
@@ -68,8 +69,8 @@ public class OrderCartActivity extends JupiterFragmentActivity{
 
     private void reload() {
         orderList = new ArrayList<>();
-        orderList.add(new Order());
-        orderList.add(new Order());
+        orderList.add(new OrderCartInfo());
+        orderList.add(new OrderCartInfo());
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {

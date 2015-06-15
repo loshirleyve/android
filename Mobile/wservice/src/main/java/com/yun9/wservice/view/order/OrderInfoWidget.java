@@ -4,21 +4,34 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
+import com.yun9.wservice.model.OrderCartInfo;
 
 /**
  * Created by huangbinglong on 15/6/12.
  */
 public class OrderInfoWidget extends JupiterRelativeLayout{
 
-    private ListView listView;
+    private ListView productLV;
 
-    private Order order;
+    private TextView instName;
+
+    private TextView instPhone;
+
+    private LinearLayout contactUsLL;
+
+    private TextView orderFeeTV;
+
+    private LinearLayout payNowLL;
+
+    private OrderCartInfo order;
 
     public OrderInfoWidget(Context context) {
         super(context);
@@ -32,7 +45,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(Order order) {
+    public void buildWithData(OrderCartInfo order) {
         this.order = order;
         reload();
     }
@@ -44,7 +57,12 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        listView = (ListView) this.findViewById(R.id.product_list);
+        productLV = (ListView) this.findViewById(R.id.product_list);
+        instName = (TextView) this.findViewById(R.id.inst_name);
+        instPhone = (TextView) this.findViewById(R.id.inst_phone);
+        contactUsLL = (LinearLayout) this.findViewById(R.id.contact_us_ll);
+        orderFeeTV = (TextView) this.findViewById(R.id.order_fee_tv);
+        payNowLL = (LinearLayout) this.findViewById(R.id.pay_now_ll);
         buildView();
     }
 
@@ -53,7 +71,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     }
 
     private void reload() {
-        listView.setAdapter(adapter);
+        productLV.setAdapter(adapter);
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
