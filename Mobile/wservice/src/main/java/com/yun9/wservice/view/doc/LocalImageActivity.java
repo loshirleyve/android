@@ -17,12 +17,14 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.yun9.jupiter.image.ImageBrowerActivity;
 import com.yun9.jupiter.image.ImageBrowerCommand;
 import com.yun9.jupiter.model.ImageBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -51,11 +53,21 @@ public class LocalImageActivity extends JupiterFragmentActivity {
 
     private LocalImageGridViewAdapter localImageGridViewAdapter;
 
+    private LocalImageCommand command;
+
+    private boolean edit;
+
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
     @ViewInject(id = R.id.image_local_gv)
     private GridView imageGV;
+
+    @ViewInject(id = R.id.complete)
+    private JupiterImageButtonLayout completeBtn;
+
+    @ViewInject(id = R.id.sendmsgcard)
+    private JupiterImageButtonLayout sendMsgCardBtn;
 
 
     @Override
@@ -69,25 +81,83 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         bundle.putSerializable("command", command);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        command = (LocalImageCommand) getIntent().getSerializableExtra("command");
+
+        //设置当前是否编辑状态
+        if (AssertValue.isNotNull(command)) {
+            this.setEdit(command.isEdit());
+        }
+
+        if (AssertValue.isNotNull(command)) {
+            this.titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+            this.titleBarLayout.getTitleRight().setOnClickListener(onEditClickListener);
+        }
+
         popupWView = LayoutInflater.from(this.getApplicationContext()).inflate(R.layout.popup_local_album_list, null);
         popuplv = (ListView) popupWView.findViewById(R.id.listview);
 
-        this.titleBarLayout.getTitleCenter().setOnClickListener(onTitleCenterClickListener);
+        //选择不同相册会有些混乱，所以取消，默认显示全部图片
+        //this.titleBarLayout.getTitleCenter().setOnClickListener(onTitleCenterClickListener);
         this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+
+        this.completeBtn.setOnClickListener(onCompleteClickListener);
+        this.sendMsgCardBtn.setOnClickListener(onCompleteClickListener);
+
         this.popuplv.setOnItemClickListener(onAlbumItemClickListener);
 
-        localImageGridViewAdapter = new LocalImageGridViewAdapter(getApplicationContext(), currImages);
+        localImageGridViewAdapter = new LocalImageGridViewAdapter(getApplicationContext(), edit, currImages);
         imageGV.setAdapter(localImageGridViewAdapter);
         imageGV.setOnItemClickListener(onGridViewItemClickListener);
 
         this.loadImage();
         this.initPopW();
+    }
+
+    private void setEdit(boolean editState) {
+        this.edit = editState;
+
+        if (this.edit) {
+            this.titleBarLayout.getTitleRightTv().setText(R.string.app_cancel);
+        } else {
+            this.titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
+        }
+
+        if (this.edit && AssertValue.isNotNull(command) && LocalImageCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
+            sendMsgCardBtn.setVisibility(View.VISIBLE);
+        } else {
+            sendMsgCardBtn.setVisibility(View.GONE);
+        }
+
+        if (this.edit && AssertValue.isNotNull(command) && LocalImageCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
+            completeBtn.setVisibility(View.VISIBLE);
+        } else {
+            completeBtn.setVisibility(View.GONE);
+        }
+
+        if (AssertValue.isNotNull(localImageGridViewAdapter)) {
+            localImageGridViewAdapter.setEdit(edit);
+        }
+
+        for (int i = 0; i < imageGV.getCount(); i++) {
+            AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) imageGV.getChildAt(i);
+            if (AssertValue.isNotNull(albumImageGridItem) && AssertValue.isNotNull(albumImageGridItem.getTag())) {
+                ImageBean imageBean = (ImageBean) albumImageGridItem.getTag();
+                if (this.edit && imageBean.isSelected()) {
+                    albumImageGridItem.getSelectImageView().setVisibility(View.VISIBLE);
+                } else {
+                    albumImageGridItem.getSelectImageView().setVisibility(View.GONE);
+                }
+            }
+        }
+
+
     }
 
     private void loadImage() {
@@ -101,6 +171,16 @@ public class LocalImageActivity extends JupiterFragmentActivity {
             for (ImageBean imageBean : albums) {
                 if (AssertValue.isNotNull(imageBean) && AssertValue.isNotNullAndNotEmpty(imageBean.getChilds())) {
                     for (ImageBean imageBean1 : imageBean.getChilds()) {
+
+                        //检查是否带入的参数选择状态
+                        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
+                            for (ImageBean selectIB : command.getSelectImages()) {
+                                if (selectIB.getId() == imageBean1.getId()) {
+                                    imageBean1.setSelected(true);
+                                }
+                            }
+                        }
+
                         currImages.add(imageBean1);
                     }
                 }
@@ -154,6 +234,20 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         }
     };
 
+    private int getSelectNum() {
+        int num = 0;
+
+        if (AssertValue.isNotNullAndNotEmpty(currImages)) {
+            for (ImageBean imageBean : currImages) {
+                if (imageBean.isSelected()) {
+                    num++;
+                }
+            }
+        }
+
+        return num;
+    }
+
     private View.OnClickListener onTitleCenterClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -189,7 +283,69 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private AdapterView.OnItemClickListener onGridViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ImageBrowerActivity.start(LocalImageActivity.this,new ImageBrowerCommand().setImageBeans(currImages).setPosition(position));
+            if (edit) {
+                ImageBean imageBean = (ImageBean) view.getTag();
+
+                if (!imageBean.isSelected() && AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0) {
+                    int selectNum = getSelectNum();
+                    if (selectNum >= command.getMaxSelectNum()) {
+                        CharSequence charSequence = getResources().getString(R.string.doc_select_num_max, command.getMaxSelectNum());
+                        Toast.makeText(getApplicationContext(), charSequence, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+
+                if (AssertValue.isNotNull(imageBean)) {
+                    imageBean.setSelected(!imageBean.isSelected());
+                    AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) view;
+                    if (imageBean.isSelected()) {
+                        albumImageGridItem.getSelectImageView().setVisibility(View.VISIBLE);
+                    } else {
+                        albumImageGridItem.getSelectImageView().setVisibility(View.GONE);
+                    }
+                }
+            } else {
+                ImageBrowerActivity.start(LocalImageActivity.this, new ImageBrowerCommand().setImageBeans(currImages).setPosition(position));
+            }
+        }
+    };
+
+    private View.OnClickListener onEditClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setEdit(!edit);
+        }
+    };
+
+    private View.OnClickListener onCompleteClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (AssertValue.isNotNull(command)) {
+
+                if (LocalImageCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
+                    ArrayList<ImageBean> onSelectImages = new ArrayList<>();
+                    if (AssertValue.isNotNullAndNotEmpty(currImages)) {
+                        for (ImageBean imageBean : currImages) {
+                            if (imageBean.isSelected()) {
+                                onSelectImages.add(imageBean);
+                            }
+                        }
+                    }
+
+                    Intent intent = new Intent();
+                    intent.putExtra(LocalImageCommand.PARAM_IMAGE, onSelectImages);
+                    setResult(LocalImageCommand.RESULT_CODE_OK, intent);
+                    finish();
+                }
+
+                if (LocalImageCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
+                    finish();
+                }
+            } else {
+                setResult(LocalImageCommand.RESULT_CODE_ERROR);
+                finish();
+            }
         }
     };
 

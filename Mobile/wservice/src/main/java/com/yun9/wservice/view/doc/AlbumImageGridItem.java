@@ -15,6 +15,8 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
     private ImageView imageView;
 
+    private ImageView selectImageView;
+
     private ProgressBar progressBar;
 
     public AlbumImageGridItem(Context context) {
@@ -38,6 +40,7 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         imageView = (ImageView) this.findViewById(R.id.image);
         progressBar = (ProgressBar) this.findViewById(R.id.progress);
+        selectImageView = (ImageView) this.findViewById(R.id.select_iv);
     }
 
     public ImageView getImageView() {
@@ -54,5 +57,9 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
     public void setProgressBar(ProgressBar progressBar) {
         this.progressBar = progressBar;
+    }
+
+    public ImageView getSelectImageView() {
+        return selectImageView;
     }
 }

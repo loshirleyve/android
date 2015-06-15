@@ -18,10 +18,21 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
 
     private Context mContext;
     private List<ImageBean> mImageBeans;
+    private boolean edit;
 
-    public LocalImageGridViewAdapter(Context context, List<ImageBean> imageBeans) {
+    public LocalImageGridViewAdapter(Context context,boolean edit, List<ImageBean> imageBeans) {
         this.mContext = context;
         this.mImageBeans = imageBeans;
+        this.edit = edit;
+
+    }
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
     }
 
     @Override
@@ -52,6 +63,12 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
             albumImageGridItem = (AlbumImageGridItem) convertView;
         } else {
             albumImageGridItem = new AlbumImageGridItem(mContext);
+        }
+
+        if (edit && imageBean.isSelected()){
+            albumImageGridItem.getSelectImageView().setVisibility(View.VISIBLE);
+        }else{
+            albumImageGridItem.getSelectImageView().setVisibility(View.GONE);
         }
 
         ImageLoaderUtil.getInstance(mContext).displayImage("file://"+ imageBean.getThumbnailPath(), albumImageGridItem.getImageView());

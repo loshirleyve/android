@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.yun9.jupiter.model.ImageBean;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
@@ -13,6 +15,8 @@ import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+
+import java.util.List;
 
 /**
  * Created by rxy on 15/6/1.
@@ -23,6 +27,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     private static final Logger logger = Logger.getLogger(DocCompositeActivity.class);
 
     private DocCompositeCommand command;
+
+    private LocalImageCommand localImageCommand;
 
     @ViewInject(id = R.id.buttonbar)
     private LinearLayout buttonbarLL;
@@ -39,8 +45,10 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.image_location)
     private JupiterRowStyleSutitleLayout localImageBtn;
 
+    private List<ImageBean> onSelectLocalImages;
 
-    public static void start(Activity activity,DocCompositeCommand command) {
+
+    public static void start(Activity activity, DocCompositeCommand command) {
         Intent intent = new Intent(activity, DocCompositeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
@@ -76,7 +84,24 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     private View.OnClickListener onLocalFileClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            LocalImageActivity.start(DocCompositeActivity.this, new LocalImageCommand());
+            if (!AssertValue.isNotNull(localImageCommand)) {
+                localImageCommand = new LocalImageCommand().setEdit(true).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(6);
+            }
+
+            if (AssertValue.isNotNullAndNotEmpty(onSelectLocalImages)) {
+                localImageCommand.setSelectImages(onSelectLocalImages);
+            }
+
+            LocalImageActivity.start(DocCompositeActivity.this, localImageCommand);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == localImageCommand.getRequestCode() && resultCode == LocalImageCommand.RESULT_CODE_OK) {
+            onSelectLocalImages = (List<ImageBean>) data.getSerializableExtra(LocalImageCommand.PARAM_IMAGE);
+        }
+    }
 }

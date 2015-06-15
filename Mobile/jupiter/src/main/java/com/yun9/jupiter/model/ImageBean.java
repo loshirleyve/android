@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Leon on 15/6/13.
  */
-public class ImageBean implements java.io.Serializable{
+public class ImageBean implements java.io.Serializable {
 
     private int id;
     private int parentid = 0;
@@ -17,6 +17,7 @@ public class ImageBean implements java.io.Serializable{
     private String thumbnailPath;
     private String name;
     private String dateAdded;
+    private boolean selected = false;
 
     private List<ImageBean> childs;
 
@@ -72,6 +73,14 @@ public class ImageBean implements java.io.Serializable{
         return dateAdded;
     }
 
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
     public void setDateAdded(String dateAdded) {
         this.dateAdded = dateAdded;
     }
@@ -84,8 +93,8 @@ public class ImageBean implements java.io.Serializable{
         this.childs = childs;
     }
 
-    public void putChild(ImageBean imageBean){
-        if (!AssertValue.isNotNull(childs)){
+    public void putChild(ImageBean imageBean) {
+        if (!AssertValue.isNotNull(childs)) {
             childs = new ArrayList<>();
         }
 
