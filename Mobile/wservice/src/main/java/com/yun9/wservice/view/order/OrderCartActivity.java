@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -29,6 +31,9 @@ public class OrderCartActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.order_list)
     private ListView orderLV;
+
+    @BeanInject
+    private SessionManager sessionManager;
 
     private OrderCartCommand command;
 

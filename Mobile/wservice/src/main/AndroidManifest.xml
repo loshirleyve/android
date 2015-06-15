@@ -269,6 +269,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.order.OrderListActivity"
+            android:label="@string/order_list"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
     </application>
 
 </manifest>

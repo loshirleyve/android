@@ -100,6 +100,7 @@
     <string name="waiting_pay">待付款</string>
     <string name="order_fee_tip">实付款:￥</string>
     <string name="pay_now">立即支付</string>
+    <string name="order_list">订单列表</string>
 
     <string name="location_select">选择位置</string>
     <string name="location_select_office">写字楼</string>
