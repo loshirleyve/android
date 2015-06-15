@@ -57,7 +57,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
         state = getIntent().getStringExtra("state");
         String stateName = getIntent().getStringExtra("stateName");
         if (AssertValue.isNotNullAndNotEmpty(stateName)) {
-            titleBarLayout.getTitleTv().setText(stateName);
+            titleBarLayout.getTitleTv().setText(stateName+"订单");
         }
 
         this.buildView();
@@ -73,7 +73,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
         orderLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showToast("订单详情功能尚未开发！");
+                OrderDetailActivity.start(OrderListActivity.this,"1");
             }
         });
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
