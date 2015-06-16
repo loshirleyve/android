@@ -107,6 +107,9 @@
     <string name="pay_detail">付款详情</string>
     <string name="advisor">专属顾问</string>
     <string name="service_provider">服务提供商</string>
+    <string name="submit_attach">提交资料</string>
+    <string name="checkout_attach">查看资料</string>
+    <string name="product_need_attach">服务需要提交相关资料</string>
 
     <string name="location_select">选择位置</string>
     <string name="location_select_office">写字楼</string>
