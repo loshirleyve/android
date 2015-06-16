@@ -2,6 +2,7 @@ package com.yun9.jupiter.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -38,7 +39,18 @@ public class JupiterSearchInputLayout extends JupiterRelativeLayout {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+        showLL = (LinearLayout)findViewById(R.id.search_show_ll);
+        editLL = (LinearLayout)findViewById(R.id.search_input_ll);
+        searchET = (EditText)findViewById(R.id.search_et);
 
+        showLL.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLL.setVisibility(View.GONE);
+                editLL.setVisibility(View.VISIBLE);
+                searchET.setCursorVisible(true);
+            }
+        });
     }
 
     public LinearLayout getShowLL() {
