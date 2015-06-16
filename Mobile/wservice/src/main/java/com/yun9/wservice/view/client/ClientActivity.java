@@ -1,44 +1,33 @@
 package com.yun9.wservice.view.client;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.form.FormActivity;
-import com.yun9.jupiter.form.cell.DetailFormCell;
-import com.yun9.jupiter.form.cell.DocFormCell;
-import com.yun9.jupiter.form.cell.ImageFormCell;
-import com.yun9.jupiter.form.cell.MultiSelectFormCell;
 import com.yun9.jupiter.form.cell.TextFormCell;
-import com.yun9.jupiter.form.cell.UserFormCell;
-import com.yun9.jupiter.form.model.DetailFormCellBean;
-import com.yun9.jupiter.form.model.DocFormCellBean;
 import com.yun9.jupiter.form.model.FormBean;
-import com.yun9.jupiter.form.model.ImageFormCellBean;
-import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
-import com.yun9.jupiter.form.model.UserFormCellBean;
-import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Client;
-import com.yun9.wservice.view.dynamic.NewDynamicActivity;
-import com.yun9.wservice.view.main.MainActivity;
-import com.yun9.wservice.view.myself.UserFragment;
-import com.yun9.wservice.view.register.UserRegisterActivity;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -61,8 +50,6 @@ public class ClientActivity extends JupiterFragmentActivity {
     private List<Client> clients = new ArrayList<>();
     private List<Client> showClients = new ArrayList<>();
 
-
-
     private ClientListAdapter clientListAdapter;
     private ListView clientListView;
     private Client client;
@@ -70,6 +57,12 @@ public class ClientActivity extends JupiterFragmentActivity {
     private int formRequestCode = 1000;
 
     private PtrClassicFrameLayout mPtrFrame;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
+    @BeanInject
+    private SessionManager sessionManager;
 
 
     @Override
@@ -83,7 +76,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                //refresh(false);
+                refresh();
             }
 
             @Override
@@ -92,7 +85,6 @@ public class ClientActivity extends JupiterFragmentActivity {
             }
         });
 
-        this.initClientSearchTextChanged();
 
         titleBarLayout.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,27 +99,48 @@ public class ClientActivity extends JupiterFragmentActivity {
             }
         });
 
-        clientListAdapter = new ClientListAdapter(this, clients);
+        clientListAdapter = new ClientListAdapter(this, showClients);
         clientListView.setAdapter(clientListAdapter);
 
-
+        clientListView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+               mPtrFrame.autoRefresh();
+            }
+        },100);
 
     }
 
-/*    private void completeAddClient(){
-        if(AssertValue.isNotNull(clients)){
-            clients = new LinkedList<>();
-        }
+    private void refresh() {
+        final Resource resource = resourceFactory.create("QueryInstClients");
 
-        for(int i = 0; i < clients.size(); i++){
-            Client client = new Client();
-            client.setId("Id" + i);
-            client.setNo("No" + i);
-            client.setName("Name" + i);
-            clients.addFirst(client);
-        }
-    }*/
+        resource.param("instid", sessionManager.getInst().getId());
+        resource.param("createby", sessionManager.getUser().getId());
+        showClients.clear();
 
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                clients = (List<Client>) response.getPayload();
+                if (AssertValue.isNotNullAndNotEmpty(clients)) {
+                    for (Client client : clients) {
+                        showClients.add(client);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(ClientActivity.this,response.getCause(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                mPtrFrame.refreshComplete();
+                clientListAdapter.notifyDataSetChanged();
+            }
+        });
+    }
 
     @Override
     protected int getContentView() {
@@ -135,56 +148,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     }
 
 
-    private void initClientSearchTextChanged() {
-        clientSearchEdt = (EditText) findViewById(R.id.searchEdt);
-        searchLL = (LinearLayout) findViewById(R.id.searchLL);
-        searchFIV = (ImageView) findViewById(R.id.searchFIV);
-        searchEdt = (EditText) findViewById(R.id.searchEdt);
 
-        clientSearchEdt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchEdt.setCursorVisible(true);
-                searchLL.setVisibility(View.GONE);
-                searchFIV.setVisibility(View.VISIBLE);
-
-            }
-        });
-        clientSearchEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                searchFIV.setVisibility(View.VISIBLE);
-                if (s.length() == 0) {
-                    searchLL.setVisibility(View.VISIBLE);
-
-                } else {
-                    searchLL.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchFIV.setVisibility(View.VISIBLE);
-                if (s.length() == 0) {
-                    searchLL.setVisibility(View.VISIBLE);
-
-                } else {
-                    searchLL.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                /**这是文本框改变之后 会执行的动作
-                 * 因为我们要做的就是，在文本框改变的同时，我们的listview的数据也进行相应的变动，并且如一的显示在界面上。
-                 * 所以这里我们就需要加上数据的修改的动作了。
-                 */
-                searchFIV.setVisibility(View.VISIBLE);
-                searchLL.setVisibility(View.GONE);
-            }
-        });
-    }
 
     public FormBean fakeData() {
         FormBean formBean = FormBean.getInstance();
@@ -238,18 +202,11 @@ public class ClientActivity extends JupiterFragmentActivity {
             client = new Client();
             client.setName((String) formBean.getCellBeanValue("name"));
             client.setId((String) formBean.getCellBeanValue("contactName"));
-            client.setNo((String) formBean.getCellBeanValue("phoneNo"));
+            client.setSn((String) formBean.getCellBeanValue("phoneNo"));
             clients.add(client);
 
             clientListAdapter.notifyDataSetChanged();
         }
     }
 
-
-    private void refreshClient() {
-        //TODO 执行服务器刷新
-        if (AssertValue.isNotNull(clients)) {
-            //new GetDataTask().execute();
-        }
-    }
 }

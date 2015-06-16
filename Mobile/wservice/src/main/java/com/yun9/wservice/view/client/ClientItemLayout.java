@@ -28,12 +28,12 @@ public class ClientItemLayout extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        title_TV = (TextView)findViewById(R.id.title_tv);
-        contact_IV = (ImageView)findViewById(R.id.contact_iv);
-        contact_TV = (TextView)findViewById(R.id.contact_tv);
-        phone_IV = (ImageView)findViewById(R.id.phone_iv);
-        phone_TV = (TextView)findViewById(R.id.phone_tv);
-        actOrder_BT = (Button)findViewById(R.id.actOrder_BT);
+//        title_TV = (TextView)findViewById(R.id.title_tv);
+//        contact_IV = (ImageView)findViewById(R.id.contact_iv);
+//        contact_TV = (TextView)findViewById(R.id.contact_tv);
+//        phone_IV = (ImageView)findViewById(R.id.phone_iv);
+//        phone_TV = (TextView)findViewById(R.id.phone_tv);
+//        actOrder_BT = (Button)findViewById(R.id.actOrder_BT);
     }
     public TextView getTitle_TV() {
         return title_TV;

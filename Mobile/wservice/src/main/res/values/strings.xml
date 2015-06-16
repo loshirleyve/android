@@ -113,4 +113,7 @@
     <string name="topic">话题</string>
     <string name="topic_tips">输入你想要查找的话题</string>
 
+    <string name="client_title">客户管理</string>
+    <string name="client_proxy_bill">代理下单</string>
+
 </resources>

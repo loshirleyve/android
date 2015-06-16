@@ -1,167 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/clientItemLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_style_background"
-    >
+    android:background="@drawable/row_style_background">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/devide_line"
-        android:layout_alignParentTop="true" />
     <RelativeLayout
-        android:id="@+id/row_style_sutitle"
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toLeftOf="@+id/arrow_right_ll">
 
-        <LinearLayout
-            android:id="@+id/image_title_ll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="26dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:visibility="visible"
-            android:layout_toLeftOf="@id/arrow_right_ll">
+        <RelativeLayout
+            android:padding="10dp"
+            android:id="@+id/client_info_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp">
+                android:textSize="16dp"
+                android:text="深圳市顶聚科技有限公司" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textSize="16dp"
+                android:text="意向客户"
+                android:textColor="@color/title_color"/>
+        </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/title_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:textColor="@color/black"
-                        android:textSize="16dp"
-                        android:text="@string/jupiter_row_cell_title" />
+        <LinearLayout
+            android:id="@+id/contact_ll"
+            android:layout_below="@+id/client_info_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/time_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textSize="12dp"
-                        android:text="@string/jupiter_row_cell_time"
-                        android:visibility="gone"/>
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <RelativeLayout
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
                 <ImageView
-                    android:layout_marginTop="5dp"
-                    android:id="@+id/contact_iv"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/user_head" />
+                    android:src="@drawable/user_head"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/contact_iv"
-                    android:id="@+id/contact_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:text="@string/contact_name" />
-                <ImageView
-                    android:layout_marginLeft="25dp"
-                    android:layout_toRightOf="@id/contact_tv"
-                    android:id="@+id/phone_iv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/phone" />
-
-                <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/phone_iv"
                     android:id="@+id/phone_tv"
+                    android:layout_marginLeft="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:text="19800004500" />
-                    </RelativeLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/subtitle_item_container"
-                    android:orientation="horizontal"
-                    android:showDividers="middle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                </LinearLayout>
+                    android:layout_gravity="center_vertical"
+                    android:text="联系人名称"/>
+
             </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/arrow_right_ll"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp">
 
             <LinearLayout
+                android:padding="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            <TextView
-                android:layout_marginTop="10dp"
-                android:id="@+id/hot_notice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="意向客户"
-                android:textColor="@color/title_color"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="2dp"
-                android:visibility="visible"
-                />
-            <Button
-                android:id="@+id/actOrder_BT"
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:text="代理下单"
-                android:layout_marginRight="5dp"
-                android:background="@color/whites"/>
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/phone"/>
+
+                <TextView
+                    android:id="@+id/contact_tv"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="135101010101"/>
+
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/arrow_right_iv"
-                android:layout_gravity="center"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/arrow_right" />
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/user_head"/>
+
+                <TextView
+                    android:id="@+id/proxy_tv"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/client_proxy_bill"/>
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <View
-            android:id="@+id/line_v"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/devide_line"
-            android:layout_alignParentBottom="true" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/arrow_right_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow_right"/>
+    </LinearLayout>
+
 </RelativeLayout>

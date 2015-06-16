@@ -19,10 +19,11 @@ public class ClientListAdapter extends JupiterAdapter {
     private Context context;
     private List<Client> clients;
 
-    public ClientListAdapter(Context context, List<Client> clients){
+    public ClientListAdapter(Context context, List<Client> clients) {
         this.context = context;
         this.clients = clients;
     }
+
     @Override
     public int getCount() {
         return this.clients.size();
@@ -41,15 +42,20 @@ public class ClientListAdapter extends JupiterAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ClientItemLayout clientItemLayout = null;
-        if(AssertValue.isNotNull(convertView)){
-            clientItemLayout = (ClientItemLayout)convertView;
-        }else {
+        Client client = clients.get(position);
+
+        if (AssertValue.isNotNull(convertView)) {
+            clientItemLayout = (ClientItemLayout) convertView;
+        } else {
             clientItemLayout = new ClientItemLayout(context);
         }
 
-           clientItemLayout.getTitle_TV().setText(clients.get(position).getName());
-           clientItemLayout.getContact_TV().setText(clients.get(position).getId());
-           clientItemLayout.getPhone_TV().setText(clients.get(position).getNo());
+        if (AssertValue.isNotNull(client)) {
+            clientItemLayout.getTitle_TV().setText(client.getName());
+            clientItemLayout.getContact_TV().setText(client.getId());
+            clientItemLayout.getPhone_TV().setText(client.getSn());
+            clientItemLayout.setTag(client);
+        }
 
         return clientItemLayout;
 

@@ -12,121 +12,52 @@
         tb:titleRightTextVisibility="true"
         tb:titleText="@string/detail_client" />
 
-    <FrameLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/client_title">
 
-        <RelativeLayout
+        <com.yun9.jupiter.widget.JupiterSearchInputLayout
+            android:id="@+id/searchRL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.yun9.jupiter.widget.JupiterSearchInputLayout>
+
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/rotate_header_list_view_frame_client"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/client_title">
-
-            <RelativeLayout
-                android:id="@+id/searchRL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/transparent">
-
-                <EditText
-                    android:id="@+id/searchEdt"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/edt_border"
-                    android:cursorVisible="false"
-                    android:paddingLeft="35dp"
-                    android:singleLine="true"
-                    android:textSize="18sp" />
-
-            </RelativeLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/searchRL"
+            android:background="@color/groupbackground"
+            cube_ptr:ptr_duration_to_close="200"
+            cube_ptr:ptr_duration_to_close_header="1000"
+            cube_ptr:ptr_keep_header_when_refresh="true"
+            cube_ptr:ptr_pull_to_fresh="false"
+            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+            cube_ptr:ptr_resistance="1.7">
 
 
             <LinearLayout
-                android:id="@+id/searchLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:gravity="center">
+                android:orientation="vertical">
 
-                <!--
-                                android:id="@+id/searchIV"
-                -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:src="@drawable/discover" />
-
-                <!--到时候自定义onClick,使得单击时，ImageView消失-->
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="搜索" />
-            </LinearLayout>
-
-            <!--先隐藏，单击editText时再显示-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/searchRL"
-                android:layout_margin="10dp">
-
-                <ImageView
-                    android:id="@+id/searchFIV"
-                    android:layout_width="40dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/discover"
-                    android:visibility="gone" />
-
-                <!--到时候自定义onClick,使得单击时，ImageView显示-->
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="搜索"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-            <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/rotate_header_list_view_frame_client"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@id/searchRL"
-                android:background="@color/groupbackground"
-                cube_ptr:ptr_duration_to_close="200"
-                cube_ptr:ptr_duration_to_close_header="1000"
-                cube_ptr:ptr_keep_header_when_refresh="true"
-                cube_ptr:ptr_pull_to_fresh="false"
-                cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-                cube_ptr:ptr_resistance="1.7">
-
-
-                <LinearLayout
+                <ListView
+                    android:id="@+id/client_list_ptr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ListView
-                        android:id="@+id/client_list_ptr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:choiceMode="singleChoice"
-                        android:divider="@null"
-                        android:fadingEdge="none"
-                        android:listSelector="@android:color/transparent"
-                        android:scrollbarStyle="outsideOverlay">
-                    </ListView>
-                </LinearLayout>
-            </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+                    android:choiceMode="singleChoice"
+                    android:divider="@null"
+                    android:fadingEdge="none"
+                    android:listSelector="@android:color/transparent"
+                    android:scrollbarStyle="outsideOverlay"></ListView>
+            </LinearLayout>
+        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
-
-    </FrameLayout>
 </RelativeLayout>
