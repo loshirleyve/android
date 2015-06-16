@@ -1,7 +1,6 @@
-package com.yun9.wservice.func.store;
+package com.yun9.wservice.view.store;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 

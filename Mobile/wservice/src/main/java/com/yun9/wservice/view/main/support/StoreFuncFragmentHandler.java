@@ -3,7 +3,7 @@ package com.yun9.wservice.view.main.support;
 import android.support.v4.app.FragmentManager;
 
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.wservice.func.store.StoreFragment;
+import com.yun9.wservice.view.store.StoreFragment;
 import com.yun9.wservice.view.main.FuncFragmentHandler;
 
 /**

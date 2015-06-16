@@ -18,13 +18,13 @@
         tb:titleRightTextVisibility="true"
         tb:titleText="@string/app_store" />
 
-    <com.yun9.wservice.func.store.ProductCategoryLayout
+    <com.yun9.wservice.view.store.ProductCategoryLayout
         android:id="@+id/category_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/store_title"
         android:layout_marginTop="0.5dp">
-    </com.yun9.wservice.func.store.ProductCategoryLayout>
+    </com.yun9.wservice.view.store.ProductCategoryLayout>
 
     <!--    <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
             android:id="@+id/productsImgScroll"

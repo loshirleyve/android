@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.store;
+package com.yun9.wservice.view.store;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.wservice.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

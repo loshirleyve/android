@@ -1,4 +1,4 @@
-package com.yun9.wservice.func.store;
+package com.yun9.wservice.view.store;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
