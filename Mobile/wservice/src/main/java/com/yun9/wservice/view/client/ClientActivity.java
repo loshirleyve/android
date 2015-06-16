@@ -58,26 +58,32 @@ public class ClientActivity extends JupiterFragmentActivity {
     private LinearLayout searchLL;
     private ImageView searchFIV;
 
-    private LinkedList<Client> clients = new LinkedList<Client>();
+    private List<Client> clients = new ArrayList<>();
+    private List<Client> showClients = new ArrayList<>();
+
+
+
     private ClientListAdapter clientListAdapter;
     private ListView clientListView;
     private Client client;
 
-    //private PtrClassicFrameLayout mPtrFrame;
+    private int formRequestCode = 1000;
+
+    private PtrClassicFrameLayout mPtrFrame;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //clients = new LinkedList<>();
+        titleBarLayout = (JupiterTitleBarLayout) findViewById(R.id.client_title);
         clientListView = (ListView) findViewById(R.id.client_list_ptr);
-/*
         mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame_client);
+
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshClient();
+                //refresh(false);
             }
 
             @Override
@@ -85,19 +91,15 @@ public class ClientActivity extends JupiterFragmentActivity {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
-*/
 
-
-        this.setClientSearchTextChanged();
-        titleBarLayout = (JupiterTitleBarLayout) findViewById(R.id.client_title);
+        this.initClientSearchTextChanged();
 
         titleBarLayout.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FormActivity.start(ClientActivity.this, 1, fakeData());
+                FormActivity.start(ClientActivity.this, formRequestCode, fakeData());
             }
         });
-
         titleBarLayout.getTitleLeftIV().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,13 +107,10 @@ public class ClientActivity extends JupiterFragmentActivity {
             }
         });
 
-        //completeAddClient();
-        if(!AssertValue.isNotNull(clientListAdapter)) {
-            clientListAdapter = new ClientListAdapter(this, clients);
-            clientListView.setAdapter(clientListAdapter);
-        }else {
-            clientListAdapter.notifyDataSetChanged();
-        }
+        clientListAdapter = new ClientListAdapter(this, clients);
+        clientListView.setAdapter(clientListAdapter);
+
+
 
     }
 
@@ -136,7 +135,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     }
 
 
-    private void setClientSearchTextChanged() {
+    private void initClientSearchTextChanged() {
         clientSearchEdt = (EditText) findViewById(R.id.searchEdt);
         searchLL = (LinearLayout) findViewById(R.id.searchLL);
         searchFIV = (ImageView) findViewById(R.id.searchFIV);
@@ -230,43 +229,27 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-        FormBean formBean = (FormBean) data.getSerializableExtra("form");
-        //formBean.getCellBeanValue("testText");
-        //client.setName((String)formBean.getCellBeanValue("testText"));
-        client = new Client();
-        client.setName((String) formBean.getCellBeanValue("name"));
-        client.setId((String) formBean.getCellBeanValue("contactName"));
-        client.setNo((String) formBean.getCellBeanValue("phoneNo"));
-        clients.addFirst(client);
 
-        clientListAdapter.notifyDataSetChanged();
+        if (requestCode == formRequestCode && resultCode == FormActivity.RESULT_OK) {
+            FormBean formBean = (FormBean) data.getSerializableExtra("form");
+            //formBean.getCellBeanValue("testText");
+            //client.setName((String)formBean.getCellBeanValue("testText"));
+            client = new Client();
+            client.setName((String) formBean.getCellBeanValue("name"));
+            client.setId((String) formBean.getCellBeanValue("contactName"));
+            client.setNo((String) formBean.getCellBeanValue("phoneNo"));
+            clients.add(client);
+
+            clientListAdapter.notifyDataSetChanged();
+        }
     }
 
 
-/*    private void refreshClient() {
+    private void refreshClient() {
         //TODO 执行服务器刷新
         if (AssertValue.isNotNull(clients)) {
-            new GetDataTask().execute();
+            //new GetDataTask().execute();
         }
     }
-
-    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
-
-        @Override
-        protected String[] doInBackground(Void... params) {
-            // Simulates a background job.
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-            return new String[1];
-        }
-        @Override
-        protected void onPostExecute(String[] result) {
-            //completeAddClient();
-            super.onPostExecute(result);
-        }
-    }*/
 }
