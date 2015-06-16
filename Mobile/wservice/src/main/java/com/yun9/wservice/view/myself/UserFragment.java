@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -104,7 +105,7 @@ public class UserFragment extends JupiterFragment {
         switchInstLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectInstActivity.start(getActivity(),new SelectInstCommand().setUser(sessionManager.getUser()));
+                SelectInstActivity.start(getActivity(), new SelectInstCommand().setUser(sessionManager.getUser()));
             }
         });
 
@@ -117,7 +118,12 @@ public class UserFragment extends JupiterFragment {
             }
         });
 
-        this.refresh();
+        userHeadWidget.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+            }
+        },100);
     }
 
 
@@ -151,6 +157,7 @@ public class UserFragment extends JupiterFragment {
                     userHeadWidget.getCompanyTV().setText("");
                     userHeadWidget.getOrgTV().setText("");
                     userHeadWidget.getSignTV().setText("");
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

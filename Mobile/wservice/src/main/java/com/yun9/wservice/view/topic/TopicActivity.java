@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -111,7 +112,7 @@ public class TopicActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-
+                    Toast.makeText(mContext,response.getCause(),Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

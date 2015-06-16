@@ -103,6 +103,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
 
                 response.setCode("300");
                 callback.onFailure(response);
+                callback.onFinally(response);
             }
             return;
         }
