@@ -103,7 +103,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
      * @param orderGroup
      */
     private void openOrderListActivity(OrderBuyManagerInfo.OrderGroup orderGroup) {
-        showToast("订单列表功能还未完成！");
+        OrderListActivity.start(this,orderGroup.getState(),orderGroup.getStatename());
     }
 
     private void openRechargeHistoryActivity(OrderBuyManagerInfo.RechargeGroup rechargeGroup) {
@@ -140,7 +140,8 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
                 row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
                 row.getMainIV().setVisibility(View.GONE);
                 row.getHotNitoceTV().setVisibility(View.VISIBLE);
-                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.whites));
+                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.drak));
+                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -185,7 +186,8 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
                 row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
                 row.getMainIV().setVisibility(View.GONE);
                 row.getHotNitoceTV().setVisibility(View.VISIBLE);
-                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.whites));
+                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.drak));
+                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
