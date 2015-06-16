@@ -428,4 +428,18 @@ public class DateUtil {
         return jj;
     }
 
+    public static Date getDate(long date, int n) {
+        if (!AssertValue.isNotNull(date)) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(DateFormatUtil.parse(date));
+        cal.add(Calendar.HOUR, n);
+        return cal.getTime();
+    }
+
+    public static String getDateStr(long date) {
+        return DateFormatUtil.format(getDate(date, 0),
+                StringPool.DATE_FORMAT_DATETIME);
+    }
 }

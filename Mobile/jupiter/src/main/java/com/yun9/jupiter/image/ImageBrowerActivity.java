@@ -32,8 +32,8 @@ public class ImageBrowerActivity extends JupiterFragmentActivity {
         mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
         command = (ImageBrowerCommand) this.getIntent().getSerializableExtra("command");
 
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getImageBeans())) {
-            ImageBrowerPagerAdapter imageBrowerPagerAdapter = new ImageBrowerPagerAdapter(getApplicationContext(), command.getImageBeans());
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getLocalFileBeans())) {
+            ImageBrowerPagerAdapter imageBrowerPagerAdapter = new ImageBrowerPagerAdapter(getApplicationContext(), command.getLocalFileBeans());
             mViewPager.setAdapter(imageBrowerPagerAdapter);
         }
 

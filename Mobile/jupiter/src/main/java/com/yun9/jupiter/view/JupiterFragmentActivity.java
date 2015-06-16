@@ -16,10 +16,13 @@ import com.yun9.jupiter.view.injected.ViewInjectedUtil;
 
 public abstract class JupiterFragmentActivity extends JupiterBaseFragmentActivity {
 
+    protected Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(this.getContentView());
+        mContext = getApplicationContext();
     }
 }
