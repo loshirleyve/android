@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleCenterIcoVisibility="false"
+        tb:titleLeftIcoVisibility="true"
+        tb:titleRightTextVisibility="true"
+        tb:titleRightText="@string/app_select"
+        tb:titleText="@string/doc_file_location"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+
+    <ListView
+        android:id="@+id/file_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:layout_above="@+id/buttonbar">
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/buttonbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whites">
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            button:imageButtonText="@string/app_complete"
+            android:visibility="gone"/>
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sendmsgcard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            button:imageButtonIcoSrc="@drawable/newpost"
+            button:imageButtonShowIco="true"
+            button:imageButtonText="@string/app_send_msgcard"
+            android:visibility="gone"></com.yun9.jupiter.widget.JupiterImageButtonLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

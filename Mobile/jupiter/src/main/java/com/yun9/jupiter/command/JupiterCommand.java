@@ -12,6 +12,8 @@ public abstract class JupiterCommand implements java.io.Serializable {
 
     private static int REQUEST_INDEX = 1000;
 
+    public static final String PARAM_COMMAND = "command";
+
     private int requestCode = -1;
 
     public int getRequestCode() {

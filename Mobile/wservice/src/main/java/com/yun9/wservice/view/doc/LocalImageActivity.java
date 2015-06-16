@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.yun9.jupiter.image.ImageBrowerActivity;
 import com.yun9.jupiter.image.ImageBrowerCommand;
-import com.yun9.jupiter.model.ImageBean;
+import com.yun9.jupiter.model.LocalFileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
@@ -37,11 +37,11 @@ import java.util.List;
  */
 public class LocalImageActivity extends JupiterFragmentActivity {
 
-    private List<ImageBean> albums;
+    private List<LocalFileBean> albums;
 
-    private ImageBean currImageBean;
+    private LocalFileBean currLocalFileBean;
 
-    private List<ImageBean> currImages = new ArrayList<>();
+    private List<LocalFileBean> currImages = new ArrayList<>();
 
     private PopupWindow albumsPopW;
 
@@ -126,7 +126,7 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         if (this.edit) {
             this.titleBarLayout.getTitleRightTv().setText(R.string.app_cancel);
         } else {
-            this.titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
+            this.titleBarLayout.getTitleRightTv().setText(R.string.app_select);
         }
 
         if (this.edit && AssertValue.isNotNull(command) && LocalImageCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
@@ -148,8 +148,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         for (int i = 0; i < imageGV.getCount(); i++) {
             AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) imageGV.getChildAt(i);
             if (AssertValue.isNotNull(albumImageGridItem) && AssertValue.isNotNull(albumImageGridItem.getTag())) {
-                ImageBean imageBean = (ImageBean) albumImageGridItem.getTag();
-                if (this.edit && imageBean.isSelected()) {
+                LocalFileBean localFileBean = (LocalFileBean) albumImageGridItem.getTag();
+                if (this.edit && localFileBean.isSelected()) {
                     albumImageGridItem.getSelectBadgeView().show();
                 } else {
                     albumImageGridItem.getSelectBadgeView().hide();
@@ -168,20 +168,20 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private void showAllImage() {
         if (AssertValue.isNotNullAndNotEmpty(albums)) {
             currImages.clear();
-            for (ImageBean imageBean : albums) {
-                if (AssertValue.isNotNull(imageBean) && AssertValue.isNotNullAndNotEmpty(imageBean.getChilds())) {
-                    for (ImageBean imageBean1 : imageBean.getChilds()) {
+            for (LocalFileBean localFileBean : albums) {
+                if (AssertValue.isNotNull(localFileBean) && AssertValue.isNotNullAndNotEmpty(localFileBean.getChilds())) {
+                    for (LocalFileBean localFileBean1 : localFileBean.getChilds()) {
 
                         //检查是否带入的参数选择状态
                         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
-                            for (ImageBean selectIB : command.getSelectImages()) {
-                                if (selectIB.getId() == imageBean1.getId()) {
-                                    imageBean1.setSelected(true);
+                            for (LocalFileBean selectIB : command.getSelectImages()) {
+                                if (selectIB.getId() == localFileBean1.getId()) {
+                                    localFileBean1.setSelected(true);
                                 }
                             }
                         }
 
-                        currImages.add(imageBean1);
+                        currImages.add(localFileBean1);
                     }
                 }
             }
@@ -194,8 +194,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
 
     private LocalImageLoadAsyncTask.OnImageLoadCallback onImageLoadCallback = new LocalImageLoadAsyncTask.OnImageLoadCallback() {
         @Override
-        public void onPostExecute(List<ImageBean> imageBeans) {
-            albums = imageBeans;
+        public void onPostExecute(List<LocalFileBean> localFileBeans) {
+            albums = localFileBeans;
             showAllImage();
         }
     };
@@ -222,10 +222,10 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private PopupWindow.OnDismissListener onPopWDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-            if (AssertValue.isNotNull(currImageBean) && AssertValue.isNotNullAndNotEmpty(currImageBean.getChilds())) {
+            if (AssertValue.isNotNull(currLocalFileBean) && AssertValue.isNotNullAndNotEmpty(currLocalFileBean.getChilds())) {
                 currImages.clear();
-                for (ImageBean imageBean : currImageBean.getChilds()) {
-                    currImages.add(imageBean);
+                for (LocalFileBean localFileBean : currLocalFileBean.getChilds()) {
+                    currImages.add(localFileBean);
                 }
                 if (AssertValue.isNotNull(localImageGridViewAdapter)) {
                     localImageGridViewAdapter.notifyDataSetChanged();
@@ -238,8 +238,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         int num = 0;
 
         if (AssertValue.isNotNullAndNotEmpty(currImages)) {
-            for (ImageBean imageBean : currImages) {
-                if (imageBean.isSelected()) {
+            for (LocalFileBean localFileBean : currImages) {
+                if (localFileBean.isSelected()) {
                     num++;
                 }
             }
@@ -273,8 +273,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (AssertValue.isNotNull(view.getTag())) {
-                ImageBean imageBean = (ImageBean) view.getTag();
-                currImageBean = imageBean;
+                LocalFileBean localFileBean = (LocalFileBean) view.getTag();
+                currLocalFileBean = localFileBean;
                 albumsPopW.dismiss();
             }
         }
@@ -284,9 +284,9 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             if (edit) {
-                ImageBean imageBean = (ImageBean) view.getTag();
+                LocalFileBean localFileBean = (LocalFileBean) view.getTag();
 
-                if (!imageBean.isSelected() && AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0) {
+                if (!localFileBean.isSelected() && AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0) {
                     int selectNum = getSelectNum();
                     if (selectNum >= command.getMaxSelectNum()) {
                         CharSequence charSequence = getResources().getString(R.string.doc_select_num_max, command.getMaxSelectNum());
@@ -296,17 +296,17 @@ public class LocalImageActivity extends JupiterFragmentActivity {
                 }
 
 
-                if (AssertValue.isNotNull(imageBean)) {
-                    imageBean.setSelected(!imageBean.isSelected());
+                if (AssertValue.isNotNull(localFileBean)) {
+                    localFileBean.setSelected(!localFileBean.isSelected());
                     AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) view;
-                    if (imageBean.isSelected()) {
+                    if (localFileBean.isSelected()) {
                         albumImageGridItem.getSelectBadgeView().show();
                     } else {
                         albumImageGridItem.getSelectBadgeView().hide();
                     }
                 }
             } else {
-                ImageBrowerActivity.start(LocalImageActivity.this, new ImageBrowerCommand().setImageBeans(currImages).setPosition(position));
+                ImageBrowerActivity.start(LocalImageActivity.this, new ImageBrowerCommand().setLocalFileBeans(currImages).setPosition(position));
             }
         }
     };
@@ -324,11 +324,11 @@ public class LocalImageActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNull(command)) {
 
                 if (LocalImageCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
-                    ArrayList<ImageBean> onSelectImages = new ArrayList<>();
+                    ArrayList<LocalFileBean> onSelectImages = new ArrayList<>();
                     if (AssertValue.isNotNullAndNotEmpty(currImages)) {
-                        for (ImageBean imageBean : currImages) {
-                            if (imageBean.isSelected()) {
-                                onSelectImages.add(imageBean);
+                        for (LocalFileBean localFileBean : currImages) {
+                            if (localFileBean.isSelected()) {
+                                onSelectImages.add(localFileBean);
                             }
                         }
                     }
