@@ -66,9 +66,9 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
         }
 
         if (edit && imageBean.isSelected()){
-            albumImageGridItem.getSelectImageView().setVisibility(View.VISIBLE);
+            albumImageGridItem.getSelectBadgeView().show();
         }else{
-            albumImageGridItem.getSelectImageView().setVisibility(View.GONE);
+            albumImageGridItem.getSelectBadgeView().hide();
         }
 
         ImageLoaderUtil.getInstance(mContext).displayImage("file://"+ imageBean.getThumbnailPath(), albumImageGridItem.getImageView());

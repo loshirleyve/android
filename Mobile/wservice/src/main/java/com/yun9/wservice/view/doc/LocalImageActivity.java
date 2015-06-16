@@ -150,9 +150,9 @@ public class LocalImageActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNull(albumImageGridItem) && AssertValue.isNotNull(albumImageGridItem.getTag())) {
                 ImageBean imageBean = (ImageBean) albumImageGridItem.getTag();
                 if (this.edit && imageBean.isSelected()) {
-                    albumImageGridItem.getSelectImageView().setVisibility(View.VISIBLE);
+                    albumImageGridItem.getSelectBadgeView().show();
                 } else {
-                    albumImageGridItem.getSelectImageView().setVisibility(View.GONE);
+                    albumImageGridItem.getSelectBadgeView().hide();
                 }
             }
         }
@@ -300,9 +300,9 @@ public class LocalImageActivity extends JupiterFragmentActivity {
                     imageBean.setSelected(!imageBean.isSelected());
                     AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) view;
                     if (imageBean.isSelected()) {
-                        albumImageGridItem.getSelectImageView().setVisibility(View.VISIBLE);
+                        albumImageGridItem.getSelectBadgeView().show();
                     } else {
-                        albumImageGridItem.getSelectImageView().setVisibility(View.GONE);
+                        albumImageGridItem.getSelectBadgeView().hide();
                     }
                 }
             } else {

@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.yun9.jupiter.view.JupiterBadgeView;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 
@@ -15,7 +16,10 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
     private ImageView imageView;
 
-    private ImageView selectImageView;
+    private JupiterBadgeView selectBadgeView;
+
+    private JupiterBadgeView deleteBadgeView;
+
 
     private ProgressBar progressBar;
 
@@ -38,9 +42,22 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+
         imageView = (ImageView) this.findViewById(R.id.image);
         progressBar = (ProgressBar) this.findViewById(R.id.progress);
-        selectImageView = (ImageView) this.findViewById(R.id.select_iv);
+
+        selectBadgeView = new JupiterBadgeView(context, imageView);
+        selectBadgeView.setBadgePosition(JupiterBadgeView.POSITION_BOTTOM_RIGHT);
+        selectBadgeView.setBackgroundResource(R.drawable.selector);
+        selectBadgeView.setBadgeSize(25, 25);
+
+        deleteBadgeView = new JupiterBadgeView(context, imageView);
+        deleteBadgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
+        deleteBadgeView.setBackgroundResource(R.drawable.icn_delete);
+        deleteBadgeView.setBadgeSize(25, 25);
+
+
+
     }
 
     public ImageView getImageView() {
@@ -59,7 +76,19 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
         this.progressBar = progressBar;
     }
 
-    public ImageView getSelectImageView() {
-        return selectImageView;
+    public JupiterBadgeView getSelectBadgeView() {
+        return selectBadgeView;
+    }
+
+    public void setSelectBadgeView(JupiterBadgeView selectBadgeView) {
+        this.selectBadgeView = selectBadgeView;
+    }
+
+    public JupiterBadgeView getDeleteBadgeView() {
+        return deleteBadgeView;
+    }
+
+    public void setDeleteBadgeView(JupiterBadgeView deleteBadgeView) {
+        this.deleteBadgeView = deleteBadgeView;
     }
 }

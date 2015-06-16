@@ -46,7 +46,7 @@ public class ImageBrowerPagerAdapter extends PagerAdapter {
         ImageBean imageBean = imageBeans.get(position);
         imageBrowerPageItemWidget.setTag(imageBean);
 
-        CharSequence text = mContext.getResources().getString(R.string.jupiter_viewpager_indicator, position, imageBeans.size());
+        CharSequence text = mContext.getResources().getString(R.string.jupiter_viewpager_indicator, position+1, imageBeans.size());
 
         imageBrowerPageItemWidget.getPageNoTV().setText(text);
 

@@ -13,10 +13,9 @@
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
-
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/buttonbar"
         android:layout_below="@+id/titlebar">
 
@@ -39,14 +38,6 @@
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/doc_image_online" />
 
-                <com.yun9.jupiter.view.JupiterGridView
-                    android:id="@+id/image_online_gv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:listSelector="@color/transparent"
-                    android:numColumns="4"
-                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
 
             </LinearLayout>
 
@@ -64,19 +55,12 @@
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/doc_file_online" />
 
-                <ListView
-                    android:id="@+id/file_online_lv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:listSelector="@color/transparent">
-
-                </ListView>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/image_location"
@@ -91,10 +75,9 @@
                     android:id="@+id/image_location_gv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:listSelector="@color/transparent"
-                    android:numColumns="4"
-                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+                    android:scrollbars="none"
+                    android:numColumns="3"></com.yun9.jupiter.view.JupiterGridView>
             </LinearLayout>
 
             <LinearLayout
@@ -110,17 +93,8 @@
                     row:rowStyleSutitleShowSutitleText="false"
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/doc_file_location" />
-
-                <ListView
-                    android:id="@+id/file_location_lv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:listSelector="@color/transparent">
-
-                </ListView>
             </LinearLayout>
         </LinearLayout>
-
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 
     <LinearLayout
