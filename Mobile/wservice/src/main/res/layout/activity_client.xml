@@ -30,13 +30,13 @@
                 android:background="@color/transparent">
 
                 <EditText
-                    android:cursorVisible="false"
-                    android:paddingLeft="35dp"
                     android:id="@+id/searchEdt"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_margin="10dp"
                     android:background="@drawable/edt_border"
+                    android:cursorVisible="false"
+                    android:paddingLeft="35dp"
                     android:singleLine="true"
                     android:textSize="18sp" />
 
@@ -44,21 +44,22 @@
 
 
             <LinearLayout
-                android:layout_margin="10dp"
                 android:id="@+id/searchLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:gravity="center">
 
-<!--
-                android:id="@+id/searchIV"
--->
+                <!--
+                                android:id="@+id/searchIV"
+                -->
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:src="@drawable/discover" />
-                //到时候自定义onClick,使得单击时，ImageView消失
+
+                <!--到时候自定义onClick,使得单击时，ImageView消失-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -66,31 +67,31 @@
                     android:text="搜索" />
             </LinearLayout>
 
-            //先隐藏，单击editText时再显示
+            <!--先隐藏，单击editText时再显示-->
             <LinearLayout
-                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/searchRL">
+                android:layout_alignLeft="@id/searchRL"
+                android:layout_margin="10dp">
 
                 <ImageView
-                    android:visibility="gone"
                     android:id="@+id/searchFIV"
                     android:layout_width="40dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/discover" />
-                //到时候自定义onClick,使得单击时，ImageView显示
+                    android:src="@drawable/discover"
+                    android:visibility="gone" />
+
+                <!--到时候自定义onClick,使得单击时，ImageView显示-->
 
                 <TextView
-                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="搜索" />
+                    android:text="搜索"
+                    android:visibility="gone" />
             </LinearLayout>
 
-<!--            <in.srain.cube.views.ptr.PtrClassicFrameLayout
-                xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+            <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/rotate_header_list_view_frame_client"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,28 +104,25 @@
                 cube_ptr:ptr_pull_to_fresh="false"
                 cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
                 cube_ptr:ptr_resistance="1.7">
-            </in.srain.cube.views.ptr.PtrClassicFrameLayout>-->
 
 
                 <LinearLayout
-                    android:layout_below="@id/searchRL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <ListView
-                    android:id="@+id/client_list_ptr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:choiceMode="singleChoice"
-                    android:divider="@null"
-                    android:fadingEdge="none"
-                    android:listSelector="@android:color/transparent"
-                    android:scrollbarStyle="outsideOverlay">
-
-
-                </ListView>
+                    <ListView
+                        android:id="@+id/client_list_ptr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:choiceMode="singleChoice"
+                        android:divider="@null"
+                        android:fadingEdge="none"
+                        android:listSelector="@android:color/transparent"
+                        android:scrollbarStyle="outsideOverlay">
+                    </ListView>
                 </LinearLayout>
+            </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
 
         </RelativeLayout>
