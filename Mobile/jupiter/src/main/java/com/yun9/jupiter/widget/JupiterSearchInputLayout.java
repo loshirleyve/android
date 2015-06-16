@@ -46,8 +46,8 @@ public class JupiterSearchInputLayout extends JupiterRelativeLayout {
         showLL.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLL.setVisibility(View.GONE);
-                editLL.setVisibility(View.VISIBLE);
+                showLL.setVisibility(GONE);
+                editLL.setVisibility(VISIBLE);
                 searchET.setCursorVisible(true);
             }
         });
