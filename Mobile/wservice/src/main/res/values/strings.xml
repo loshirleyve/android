@@ -110,6 +110,7 @@
     <string name="submit_attach">提交资料</string>
     <string name="checkout_attach">查看资料</string>
     <string name="product_need_attach">服务需要提交相关资料</string>
+    <string name="work_order_state">工单状态</string>
 
     <string name="location_select">选择位置</string>
     <string name="location_select_office">写字楼</string>

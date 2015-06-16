@@ -33,6 +33,9 @@
             <com.yun9.wservice.view.order.OrderDetailProviderWidget
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 </RelativeLayout>
