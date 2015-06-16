@@ -91,12 +91,14 @@
                 android:textSize="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#374760"
                 android:text="订单号: "/>
             <TextView
                 android:id="@+id/order_sn_tv"
                 android:textSize="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#374760"
                 android:text="3888898983993"/>
         </LinearLayout>
     </RelativeLayout>

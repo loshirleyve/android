@@ -44,7 +44,11 @@ public class OrderDetailAttachWidget extends JupiterRelativeLayout{
 
     private void buildView() {
         titleLayout.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
-        titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
+        titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
+//        titleLayout.getHotNitoceTV().getPaint().setFakeBoldText(true);
         titleLayout.getHotNitoceTV().setText(R.string.checkout_attach);
+        titleLayout.getTitleTV().setTextSize(14);
+        titleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.purple_font));
+
     }
 }

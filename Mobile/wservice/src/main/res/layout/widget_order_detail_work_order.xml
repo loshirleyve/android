@@ -15,6 +15,7 @@
             android:id="@+id/work_order_id_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#374760"
             android:text="工单号 9898989898"/>
         <TextView
             android:id="@+id/work_order_name_tv"
@@ -22,6 +23,7 @@
             android:layout_height="wrap_content"
             android:textSize="12dp"
             android:layout_marginTop="5dp"
+            android:textColor="#374760"
             android:text="代理缴交社保"/>
     </LinearLayout>
     <RelativeLayout
@@ -35,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:textSize="10dp"
+            android:textSize="12dp"
             android:layout_marginTop="5dp"
             android:textColor="@color/devide_line"
             android:text="已完成"/>

@@ -46,7 +46,11 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
         sutitleLayout.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
         sutitleLayout.getHotNitoceTV().setVisibility(VISIBLE);
         sutitleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.red));
+        sutitleLayout.getHotNitoceTV().getPaint().setFakeBoldText(true);
         sutitleLayout.getHotNitoceTV().setText("立即付款");
+        sutitleLayout.getTitleTV().setTextSize(14);
+        sutitleLayout.getSutitleTv().setTextColor(getResources().getColor(R.color.purple_font));
+        sutitleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.red));
     }
 
 }
