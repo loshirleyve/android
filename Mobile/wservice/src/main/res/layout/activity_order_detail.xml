@@ -13,14 +13,30 @@
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_below="@id/title_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <com.yun9.wservice.view.order.OrderDetailBaseWidget
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.yun9.wservice.view.order.OrderDetailBaseWidget>
+                android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailPayinfoWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailAttachWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailAdvisorWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailProviderWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 </RelativeLayout>

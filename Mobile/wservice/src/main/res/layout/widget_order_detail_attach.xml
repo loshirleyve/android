@@ -4,21 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/pay_detail_tip_tv"
+        android:id="@+id/attach_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="10dp"
         android:textSize="14dp"
         android:textColor="@color/devide_line"
-        android:text="@string/pay_detail"/>
-    <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-        android:id="@+id/subtitle_layout"
-        android:layout_below="@id/pay_detail_tip_tv"
+        android:text="@string/submit_attach"/>
+    <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+        android:id="@+id/title_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:rowStyleSutitleTitleText="未付款"
-        app:rowStyleSutitleText="余额: 0元"
-        app:rowStyleSutitleShowMainImage="false"
-        app:rowStyleSutitleShowTimeText="false"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+        app:rowStyleTitleShowMainImage="false"
+        app:rowStyleTitleShowHotText="true"
+        app:rowStyleTitleText="@string/product_need_attach"
+        android:layout_below="@id/attach_tip">
+    </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 </RelativeLayout>

@@ -21,11 +21,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
     private ListView productLV;
 
-    private TextView instName;
-
-    private TextView instPhone;
-
-    private LinearLayout contactUsLL;
+    private OrderProviderWidget providerWidget;
 
     private TextView orderFeeTV;
 
@@ -58,9 +54,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         productLV = (ListView) this.findViewById(R.id.product_list);
-        instName = (TextView) this.findViewById(R.id.inst_name);
-        instPhone = (TextView) this.findViewById(R.id.inst_phone);
-        contactUsLL = (LinearLayout) this.findViewById(R.id.contact_us_ll);
+        providerWidget = (OrderProviderWidget) this.findViewById(R.id.inst_cell);
         orderFeeTV = (TextView) this.findViewById(R.id.order_fee_tv);
         payNowLL = (LinearLayout) this.findViewById(R.id.pay_now_ll);
         buildView();
