@@ -50,9 +50,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     android:inputType="textMultiLine"
-                    android:minLines="2"
+                    android:gravity="top"
+                    android:minLines="4"
                     android:maxLines="10"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"/>

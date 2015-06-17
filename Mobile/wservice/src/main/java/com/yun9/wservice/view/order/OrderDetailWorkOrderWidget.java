@@ -1,7 +1,9 @@
 package com.yun9.wservice.view.order;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -50,5 +52,15 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         commentWorkOrderTV = (TextView) this.findViewById(R.id.comment_work_order_tv);
         checkoutWorkOrderCommentTV = (TextView) this.findViewById(R.id.checkout_work_order_comment_tv);
         appendWorkOrderCommentTV = (TextView) this.findViewById(R.id.append_comment_work_order_tv);
+        buildView();
+    }
+
+    private void buildView() {
+        commentWorkOrderTV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderCommentActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),"");
+            }
+        });
     }
 }
