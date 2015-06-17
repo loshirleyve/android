@@ -29,7 +29,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/image_online"
@@ -39,6 +39,14 @@
                     row:rowStyleSutitleShowSutitleText="false"
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/doc_image_online" />
+
+                <com.yun9.jupiter.view.JupiterGridView
+                    android:id="@+id/image_yun_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="3"
+                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
 
 
             </LinearLayout>

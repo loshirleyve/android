@@ -2,30 +2,33 @@ package com.yun9.jupiter.http;
 
 public interface Response {
 
-	public ResponseOriginal getOriginal();
+    public ResponseOriginal getOriginal();
 
-	public void setOriginal(ResponseOriginal original);
+    public void setOriginal(ResponseOriginal original);
 
-	public ResponseOriginal createOriginal();
+    public ResponseOriginal createOriginal();
 
-	public String getData();
+    public String getData();
 
-	public void setData(String data);
+    public void setData(String data);
 
-	public String getCause();
+    public String getCause();
 
-	public void setCause(String cause);
+    public void setCause(String cause);
 
-	public String getCode();
+    public String getCode();
 
-	public void setCode(String code);
+    public void setCode(String code);
 
-	public Object getPayload();
+    public Object getPayload();
 
-	public void setPayload(Object payload);
+    public void setPayload(Object payload);
 
-	public Request getRequest();
+    public Request getRequest();
 
-	public void setRequest(Request request);
+    public void setRequest(Request request);
 
+    public ResponseCache getResponseCache();
+
+    public void setResponseCache(ResponseCache responseCache);
 }
