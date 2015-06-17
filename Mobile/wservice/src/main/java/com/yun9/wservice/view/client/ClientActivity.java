@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.client;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -55,7 +56,6 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private ClientListAdapter clientListAdapter;
     private ListView clientListView;
-    private Client client;
 
     private int formRequestCode = 1000;
 
@@ -66,6 +66,8 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     @BeanInject
     private SessionManager sessionManager;
+
+    private Context context;
 
 
     @Override
@@ -131,8 +133,8 @@ public class ClientActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                mPtrFrame.refreshComplete();
                 clientListAdapter.notifyDataSetChanged();
+                mPtrFrame.refreshComplete();
             }
         });
     }
@@ -180,14 +182,37 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         if (requestCode == formRequestCode && resultCode == FormActivity.RESULT_OK) {
             FormBean formBean = (FormBean) data.getSerializableExtra("form");
-            client = new Client();
+            Client client = new Client();
             client.setName((String) formBean.getCellBeanValue("name"));
             client.setId((String) formBean.getCellBeanValue("contactName"));
             client.setSn((String) formBean.getCellBeanValue("phoneNo"));
-            clients.add(client);
 
+            showClients.add(client);
             clientListAdapter.notifyDataSetChanged();
+/*
+            addToDB(client);
+*/
         }
+    }
+    private void addToDB(Client client) {
+        Resource resource = resourceFactory.create("tianjia");
+        resource.param("name",client.getName());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                refresh();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -217,7 +242,7 @@ public class ClientActivity extends JupiterFragmentActivity {
                     }
                 }
             }
-            refresh();
+            clientListAdapter.notifyDataSetChanged();
         }
     };
 

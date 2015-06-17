@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_style_background">
+    android:background="@drawable/row_style_background"
+    android:layout_marginTop="2dp">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -17,6 +18,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/title_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
@@ -48,7 +50,7 @@
                     android:src="@drawable/user_head"/>
 
                 <TextView
-                    android:id="@+id/phone_tv"
+                    android:id="@+id/contact_tv"
                     android:layout_marginLeft="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -68,7 +70,7 @@
                     android:src="@drawable/phone"/>
 
                 <TextView
-                    android:id="@+id/contact_tv"
+                    android:id="@+id/phone_tv"
                     android:layout_marginLeft="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,7 +90,7 @@
                     android:src="@drawable/user_head"/>
 
                 <TextView
-                    android:id="@+id/proxy_tv"
+                    android:id="@+id/actOrder_BT"
                     android:layout_marginLeft="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
