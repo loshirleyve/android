@@ -23,6 +23,7 @@ import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
+import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpException;
@@ -32,12 +33,10 @@ import com.yun9.jupiter.http.RequestParams;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.http.ResponseOriginal;
 import com.yun9.jupiter.manager.DeviceManager;
+import com.yun9.jupiter.model.CacheFile;
 import com.yun9.jupiter.repository.RepositoryOutput;
 import com.yun9.jupiter.repository.RepositoryParam;
 import com.yun9.jupiter.repository.Resource;
-import com.yun9.jupiter.repository.support.DefaultRequest;
-import com.yun9.jupiter.repository.support.DefaultRequestParams;
-import com.yun9.jupiter.repository.support.DefaultResponse;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.util.AssertArgument;
 import com.yun9.jupiter.util.AssertValue;
@@ -129,13 +128,13 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                             if ("100".equals(response.getCode())) {
                                 try {
                                     callback.onSuccess(response);
-                                }finally {
+                                } finally {
                                     callback.onFinally(response);
                                 }
                             } else {
                                 try {
                                     callback.onFailure(response);
-                                }finally {
+                                } finally {
                                     callback.onFinally(response);
                                 }
                             }
@@ -150,7 +149,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                                     statusCode, headers, responseBody, error);
                             try {
                                 callback.onFailure(response);
-                            }finally {
+                            } finally {
                                 callback.onFinally(response);
                             }
                         }
@@ -285,6 +284,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 response.setCause(jsonObj.getString("cause"));
                 response.setCode(jsonObj.getString("code"));
                 response.setData(jsonObj.getString("data"));
+                response.setResponseCache(new DefaultResponseCache(jsonObj.getString("cache")));
                 // logger.d("Response json:" + json);
                 // logger.d("Data json:" + response.getData().toString());
             } else {
@@ -293,10 +293,14 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 }
                 response.setCode(statusCode + "");
                 response.setData(null);
+                response.setResponseCache(null);
             }
 
             // 解析payload
             this.builderPayload(response);
+
+            //缓存数据
+            this.cacheData(response);
         } catch (Exception e) {
             e.printStackTrace();
             logger.exception(e);
@@ -354,6 +358,14 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         }
 
         return response;
+    }
+
+    private void cacheData(Response response) {
+        if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheFiles())) {
+            for (Map.Entry<String, CacheFile> entry : response.getResponseCache().getCacheFiles().entrySet()) {
+                FileCache.getInstance().putFile(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     @Override

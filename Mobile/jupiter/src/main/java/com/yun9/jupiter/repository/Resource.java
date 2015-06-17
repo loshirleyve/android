@@ -6,42 +6,53 @@ import java.util.Map;
 
 
 public interface Resource {
-	
-	public class HEADER {
-		public static final String USERID = "userid";
-		public static final String INSTID = "instid";
-		public static final String DEVICEMODEL = "devicemodel";
-		public static final String DEVICEID = "deviceid";
 
-		public static final String LOCATIONX = "locationx";
-		public static final String LOCATIONY = "locationy";
-		public static final String LOCATIONLABEL = "locationlabel";
-		public static final String LOCATIONSCALE = "locationscale";
+    public final class HEADER {
+        public static final String USERID = "userid";
+        public static final String INSTID = "instid";
+        public static final String DEVICEMODEL = "devicemodel";
+        public static final String DEVICEID = "deviceid";
 
-		public static final String LASTUPID = "lastupid";
-		public static final String LASTDOWNID = "lastdownid";
-		public static final String LIMITROW = "limitrow";
-	}
+        public static final String LOCATIONX = "locationx";
+        public static final String LOCATIONY = "locationy";
+        public static final String LOCATIONLABEL = "locationlabel";
+        public static final String LOCATIONSCALE = "locationscale";
 
-	public void invok(AsyncHttpResponseCallback callback);
+        public static final String LASTUPID = "lastupid";
+        public static final String LASTDOWNID = "lastdownid";
+        public static final String LIMITROW = "limitrow";
+    }
 
-	public void invokSync(AsyncHttpResponseCallback callback);
-	
-	public Map<String, Object> getParams();
+    public final class PULL_TYPE {
+		public static final String DOWN = "down";
+        public static final String UP ="up";
+    }
 
-	public void setParams(Map<String, Object> params);
+    public void invok(AsyncHttpResponseCallback callback);
 
-	public Resource param(String key, Object value);
+    public void invokSync(AsyncHttpResponseCallback callback);
 
-	public Resource header(String key, Object value);
+    public Map<String, Object> getParams();
 
-	public Map<String, Object> getHeader();
+    public void setParams(Map<String, Object> params);
 
-	public void setHeader(Map<String, Object> header);
+    public Resource param(String key, Object value);
 
-	public Repository getRepository();
-	
-	public boolean isFromService();
-	
-	public void setFromService(boolean fromService);
+    public Resource header(String key, Object value);
+
+    public Map<String, Object> getHeader();
+
+    public void setHeader(Map<String, Object> header);
+
+    public Repository getRepository();
+
+    public boolean isFromService();
+
+    public void setFromService(boolean fromService);
+
+    public Resource pullUp(String id);
+
+    public Resource pullDown(String id);
+
+    public String getPullType();
 }

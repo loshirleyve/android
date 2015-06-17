@@ -13,7 +13,7 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.jupiter.cache.FileIdCache;
+import com.yun9.jupiter.cache.FileCache;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.model.MsgCardComment;
@@ -68,12 +68,12 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         // 预先缓冲一些测试图片
-        FileIdCache.getInstance().put("0","http://tabletpcssource.com/wp-content/uploads/2011/05/android-logo.png");
-        FileIdCache.getInstance().put("2","http://radiotray.sourceforge.net/radio.png");
-        FileIdCache.getInstance().put("3","http://wrong.site.com/corruptedLink");
-        FileIdCache.getInstance().put("4","http://bit.ly/soBiXr");
-        FileIdCache.getInstance().put("5","http://img001.us.expono.com/100001/100001-1bc30-2d736f_m.jpg");
-        FileIdCache.getInstance().put("7", "");
+        FileCache.getInstance().put("0","http://tabletpcssource.com/wp-content/uploads/2011/05/android-logo.png");
+        FileCache.getInstance().put("2","http://radiotray.sourceforge.net/radio.png");
+        FileCache.getInstance().put("3","http://wrong.site.com/corruptedLink");
+        FileCache.getInstance().put("4","http://bit.ly/soBiXr");
+        FileCache.getInstance().put("5","http://img001.us.expono.com/100001/100001-1bc30-2d736f_m.jpg");
+        FileCache.getInstance().put("7", "");
 
         //获取传递的参数
         if (AssertValue.isNotNull(this.getIntent().getExtras())) {

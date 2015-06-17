@@ -5,7 +5,8 @@ import android.content.Context;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.cache.FileIdCache;
+import com.yun9.jupiter.cache.FileCache;
+import com.yun9.jupiter.model.CacheFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,13 +28,16 @@ public class Y9ImageDownloader extends BaseImageDownloader {
 
     @Override
     protected InputStream getStreamFromOtherSource(String imageUri, Object extra) throws IOException {
-        imageUri = FileIdCache.getInstance().getAsString(imageUri);
-        if (AssertValue.isNotNullAndNotEmpty(imageUri)) {
-            return getStreamFromNetwork(imageUri, extra);
-        } else {
-            // 如果没有找到缓冲的图片，返回空图片
-            return getStreamFromDrawable("drawable://" + R.drawable.ic_empty, extra);
+        CacheFile cacheFile = FileCache.getInstance().getFile(imageUri);
+        String newUrl = "";
+        if (AssertValue.isNotNull(cacheFile)) {
+            newUrl = cacheFile.getUrl();
         }
 
+        if (AssertValue.isNotNullAndNotEmpty(newUrl)) {
+            return getStreamFromNetwork(newUrl, extra);
+        } else {
+            throw new UnsupportedOperationException(String.format("UIL doesn\'t support scheme(protocol) by default [%s]. You should implement this support yourself (BaseImageDownloader.getStreamFromOtherSource(...))", new Object[]{imageUri}));
+        }
     }
 }

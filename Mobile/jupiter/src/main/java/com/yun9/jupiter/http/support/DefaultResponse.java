@@ -1,8 +1,9 @@
-package com.yun9.jupiter.repository.support;
+package com.yun9.jupiter.http.support;
 
 
 import com.yun9.jupiter.http.Request;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.http.ResponseCache;
 import com.yun9.jupiter.http.ResponseOriginal;
 
 public class DefaultResponse implements Response {
@@ -18,7 +19,11 @@ public class DefaultResponse implements Response {
 
 	private String code;
 
+	private String cache;
+
 	private Request request;
+
+	private ResponseCache responseCache;
 
 	public String getData() {
 		return data;
@@ -81,4 +86,19 @@ public class DefaultResponse implements Response {
 		this.request = request;
 	}
 
+	public String getCache() {
+		return cache;
+	}
+
+	public void setCache(String cache) {
+		this.cache = cache;
+	}
+
+	public ResponseCache getResponseCache() {
+		return responseCache;
+	}
+
+	public void setResponseCache(ResponseCache responseCache) {
+		this.responseCache = responseCache;
+	}
 }

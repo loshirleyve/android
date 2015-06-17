@@ -265,6 +265,7 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            setResult(LocalImageCommand.RESULT_CODE_CANCEL);
             finish();
         }
     };

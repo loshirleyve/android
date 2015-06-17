@@ -19,12 +19,9 @@ import com.yun9.jupiter.R;
  * Created by Leon on 15/6/15.
  */
 public class ImageLoaderUtil {
-    private ImageLoader imageLoader = ImageLoader.getInstance();
-
     private static ImageLoaderUtil instance;
 
-    DisplayImageOptions options;
-
+    private DisplayImageOptions options;
 
     private ImageLoaderUtil() {
     }
@@ -60,22 +57,19 @@ public class ImageLoaderUtil {
                 .build();
         config.defaultDisplayImageOptions(options);
 
-        imageLoader.init(config.build());
+        ImageLoader.getInstance().init(config.build());
     }
 
     public void displayImage(String uri, ImageView imageView) {
-        this.getImageLoader().displayImage(uri, imageView);
+        ImageLoader.getInstance().displayImage(uri, imageView);
     }
 
     public void displayImage(String uri, ImageView imageView, SimpleImageLoadingListener simpleImageLoadingListener) {
-        this.getImageLoader().displayImage(uri, imageView, options, simpleImageLoadingListener);
+        ImageLoader.getInstance().displayImage(uri, imageView, options, simpleImageLoadingListener);
     }
 
     public void displayImage(String uri, ImageView imageView, SimpleImageLoadingListener simpleImageLoadingListener, ImageLoadingProgressListener imageLoadingProgressListener) {
-        this.getImageLoader().displayImage(uri, imageView, options, simpleImageLoadingListener, imageLoadingProgressListener);
+        ImageLoader.getInstance().displayImage(uri, imageView, options, simpleImageLoadingListener, imageLoadingProgressListener);
     }
 
-    public ImageLoader getImageLoader() {
-        return imageLoader;
-    }
 }

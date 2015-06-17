@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 查询文件服务可分页 -->
+    <repository>
+        <name>QueryFile</name>
+        <action>com.yun9.sys.inst.serivce.QueryFileService</action>
+        <output>
+            <classname>com.yun9.jupiter.model.SysFileBean</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+</repositorys>

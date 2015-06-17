@@ -42,12 +42,27 @@ public class FileBean implements java.io.Serializable {
     private String type;
     private String size;
     private String storageType = FILE_STORAGE_TYPE_LOCAL;
-    private int icoResource;
+    private int icoResource = R.drawable.small_ico_unkwon;
     private boolean selected = false;
 
     private List<FileBean> childs;
 
+    private SysFileBean sysFileBean;
+
     public FileBean() {
+    }
+
+    public FileBean(SysFileBean sysFileBean){
+        this.sysFileBean = sysFileBean;
+        filePath = sysFileBean.getId();
+        absolutePath = sysFileBean.getId();
+        name = sysFileBean.getName();
+        extensionName = sysFileBean.getType();
+        dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
+        type = FILE_STORAGE_TYPE_YUN;
+        size = "";
+        id = sysFileBean.getId();
+        initIcoResource();
     }
 
     public FileBean(File file) {
@@ -179,6 +194,14 @@ public class FileBean implements java.io.Serializable {
 
     public void setIcoResource(int icoResource) {
         this.icoResource = icoResource;
+    }
+
+    public SysFileBean getSysFileBean() {
+        return sysFileBean;
+    }
+
+    public void setSysFileBean(SysFileBean sysFileBean) {
+        this.sysFileBean = sysFileBean;
     }
 
     public void setChilds(List<FileBean> childs) {

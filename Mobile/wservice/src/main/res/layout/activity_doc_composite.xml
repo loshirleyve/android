@@ -29,7 +29,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/image_online"
@@ -40,13 +40,22 @@
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/doc_image_online" />
 
+                <com.yun9.jupiter.view.JupiterGridView
+                    android:id="@+id/image_yun_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="3"
+                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/file_online"
@@ -57,11 +66,23 @@
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/doc_file_online" />
 
+
+                <com.yun9.jupiter.widget.JupiterListView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/file_online_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                </com.yun9.jupiter.widget.JupiterListView>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
@@ -85,6 +106,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
@@ -99,7 +121,6 @@
                 <com.yun9.jupiter.widget.JupiterListView
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
                     android:id="@+id/file_local_lv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

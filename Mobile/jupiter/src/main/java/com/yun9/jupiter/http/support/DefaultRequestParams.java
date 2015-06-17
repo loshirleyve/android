@@ -1,4 +1,4 @@
-package com.yun9.jupiter.repository.support;
+package com.yun9.jupiter.http.support;
 
 import com.yun9.jupiter.http.RequestParams;
 import com.yun9.jupiter.util.AssertValue;
