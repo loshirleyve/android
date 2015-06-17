@@ -19,7 +19,7 @@ public class ClientItemLayout extends JupiterRelativeLayout{
     private TextView contact_TV;
     private ImageView phone_IV;
     private TextView phone_TV;
-    private Button actOrder_BT;
+    private TextView actOrder_BT;
 
     @Override
     protected int getContextView() {
@@ -28,12 +28,12 @@ public class ClientItemLayout extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-//        title_TV = (TextView)findViewById(R.id.title_tv);
+        title_TV = (TextView)findViewById(R.id.title_tv);
 //        contact_IV = (ImageView)findViewById(R.id.contact_iv);
-//        contact_TV = (TextView)findViewById(R.id.contact_tv);
+        contact_TV = (TextView)findViewById(R.id.contact_tv);
 //        phone_IV = (ImageView)findViewById(R.id.phone_iv);
-//        phone_TV = (TextView)findViewById(R.id.phone_tv);
-//        actOrder_BT = (Button)findViewById(R.id.actOrder_BT);
+        phone_TV = (TextView)findViewById(R.id.phone_tv);
+        actOrder_BT = (TextView)findViewById(R.id.actOrder_BT);
     }
     public TextView getTitle_TV() {
         return title_TV;
@@ -75,7 +75,7 @@ public class ClientItemLayout extends JupiterRelativeLayout{
         this.phone_TV = phone_TV;
     }
 
-    public Button getActOrder_BT() {
+    public TextView getActOrder_BT() {
         return actOrder_BT;
     }
 
