@@ -9,23 +9,23 @@
         android:layout_height="wrap_content"
         tb:titleCenterIcoVisibility="false"
         tb:titleLeftIcoVisibility="true"
-        tb:titleRightTextVisibility="true"
         tb:titleRightText="@string/app_select"
+        tb:titleRightTextVisibility="true"
         tb:titleText="@string/doc_image_online"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
     <RelativeLayout
 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/buttonbar"
         android:layout_below="@+id/titlebar">
 
         <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rotate_header_list_view_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/buttonbar"
-            android:layout_centerInParent="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
             android:background="@color/groupbackground"
             cube_ptr:ptr_duration_to_close="200"
             cube_ptr:ptr_duration_to_close_header="1000"
@@ -42,32 +42,32 @@
                 android:listSelector="@color/transparent"
                 android:numColumns="3"></GridView>
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
-
-        <LinearLayout
-            android:id="@+id/buttonbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/whites">
-
-            <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/complete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                button:imageButtonText="@string/app_complete" />
-
-            <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/sendmsgcard"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:visibility="gone"
-                button:imageButtonIcoSrc="@drawable/newpost"
-                button:imageButtonShowIco="true"
-                button:imageButtonText="@string/app_send_msgcard"></com.yun9.jupiter.widget.JupiterImageButtonLayout>
-
-        </LinearLayout>
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whites">
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            button:imageButtonText="@string/app_complete" />
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/sendmsgcard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="gone"
+            button:imageButtonIcoSrc="@drawable/newpost"
+            button:imageButtonShowIco="true"
+            button:imageButtonText="@string/app_send_msgcard"></com.yun9.jupiter.widget.JupiterImageButtonLayout>
+
+    </LinearLayout>
 </RelativeLayout>
