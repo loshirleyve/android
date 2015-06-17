@@ -12,87 +12,109 @@ import java.util.Map;
 
 public class DefaultResource implements Resource {
 
-	private Repository repository;
+    private Repository repository;
 
-	private ResourceFactory resourceFactory;
+    private ResourceFactory resourceFactory;
 
-	private Map<String, Object> params;
+    private Map<String, Object> params;
 
-	private Map<String, Object> header;
-	
-	private boolean fromService;
+    private Map<String, Object> header;
 
-	public DefaultResource(Repository repository,
-			ResourceFactory resourceFactory) {
-		this.repository = repository;
-		this.resourceFactory = resourceFactory;
-	}
+    private String pullType = PULL_TYPE.UP;
 
-	@Override
-	public void invok(AsyncHttpResponseCallback callback) {
-		this.resourceFactory.invok(this, callback);
-	}
+    private boolean fromService;
 
-	@Override
-	public void invokSync(AsyncHttpResponseCallback callback) {
-		resourceFactory.invokSync(this, callback);
-	}
-	
-	public Repository getRepository() {
-		return repository;
-	}
+    public DefaultResource(Repository repository,
+                           ResourceFactory resourceFactory) {
+        this.repository = repository;
+        this.resourceFactory = resourceFactory;
+    }
 
-	public Map<String, Object> getParams() {
-		return params;
-	}
+    @Override
+    public void invok(AsyncHttpResponseCallback callback) {
+        this.resourceFactory.invok(this, callback);
+    }
 
-	public void setParams(Map<String, Object> params) {
-		this.params = params;
-	}
+    @Override
+    public void invokSync(AsyncHttpResponseCallback callback) {
+        resourceFactory.invokSync(this, callback);
+    }
 
-	public Map<String, Object> getHeader() {
-		return header;
-	}
+    public Repository getRepository() {
+        return repository;
+    }
 
-	public void setHeader(Map<String, Object> header) {
-		this.header = header;
-	}
+    public Map<String, Object> getParams() {
+        return params;
+    }
 
-	public Resource param(String key, Object value) {
+    public void setParams(Map<String, Object> params) {
+        this.params = params;
+    }
 
-		if (!AssertValue.isNotNull(params)) {
-			this.params = new HashMap<String, Object>();
-		}
+    public Map<String, Object> getHeader() {
+        return header;
+    }
 
-		if (AssertValue.isNotNull(key) && AssertValue.isNotNull(value)) {
-			this.params.put(key, value);
-		}
+    public void setHeader(Map<String, Object> header) {
+        this.header = header;
+    }
 
-		return this;
-	}
+    public Resource param(String key, Object value) {
 
-	@Override
-	public Resource header(String key, Object value) {
+        if (!AssertValue.isNotNull(params)) {
+            this.params = new HashMap<String, Object>();
+        }
 
-		if (!AssertValue.isNotNull(header)) {
-			this.header = new HashMap<String, Object>();
-		}
+        if (AssertValue.isNotNull(key) && AssertValue.isNotNull(value)) {
+            this.params.put(key, value);
+        }
 
-		if (AssertValue.isNotNull(key) && AssertValue.isNotNull(value)) {
-			this.header.put(key, value);
-		}
+        return this;
+    }
 
-		return this;
-	}
+    @Override
+    public Resource header(String key, Object value) {
 
-	public boolean isFromService() {
-		return fromService;
-	}
+        if (!AssertValue.isNotNull(header)) {
+            this.header = new HashMap<String, Object>();
+        }
 
-	public void setFromService(boolean fromService) {
-		this.fromService = fromService;
-	}
+        if (AssertValue.isNotNull(key) && AssertValue.isNotNull(value)) {
+            this.header.put(key, value);
+        }
 
-	
+        return this;
+    }
+
+    public boolean isFromService() {
+        return fromService;
+    }
+
+    public void setFromService(boolean fromService) {
+        this.fromService = fromService;
+    }
+
+    @Override
+    public Resource pullUp(String id) {
+        this.header(HEADER.LASTUPID, id);
+        this.header(HEADER.LASTDOWNID, null);
+        pullType = PULL_TYPE.UP;
+        return this;
+    }
+
+    @Override
+    public Resource pullDown(String id) {
+        this.header(HEADER.LASTDOWNID, id);
+        this.header(HEADER.LASTUPID, null);
+        pullType = PULL_TYPE.DOWN;
+        return this;
+    }
+
+    @Override
+    public String getPullType() {
+        return pullType;
+    }
+
 
 }

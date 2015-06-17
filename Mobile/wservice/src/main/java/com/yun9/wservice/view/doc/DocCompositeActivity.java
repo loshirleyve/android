@@ -42,6 +42,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
 
     private LocalFileCommand localFileCommand;
 
+    private YunFileCommand yunFileCommand;
+
     @ViewInject(id = R.id.buttonbar)
     private LinearLayout buttonbarLL;
 
@@ -60,15 +62,30 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.file_local)
     private JupiterRowStyleSutitleLayout localFileBtn;
 
+    @ViewInject(id = R.id.file_online)
+    private JupiterRowStyleSutitleLayout yunFileBtn;
+
+    @ViewInject(id = R.id.image_online)
+    private JupiterRowStyleSutitleLayout yunImageBtn;
+
+
     @ViewInject(id = R.id.image_local_gv)
     private JupiterGridView localImagesGV;
 
     @ViewInject(id = R.id.file_local_lv)
     private JupiterListView localFileLV;
 
+    @ViewInject(id = R.id.file_online_lv)
+    private JupiterListView yunFileLV;
+
+
     private List<FileBean> onSelectLocalImages = new ArrayList<>();
 
     private List<FileBean> onSelectLocalFiles = new ArrayList<>();
+
+    private List<FileBean> onSelectYunFiles = new ArrayList<>();
+
+    private List<FileBean> onSelectYunImages = new ArrayList<>();
 
     private boolean mEdit;
 
@@ -101,6 +118,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
 
         localImageBtn.setOnClickListener(onLocalImageClickListener);
         localFileBtn.setOnClickListener(onLocalFileClickListener);
+        yunFileBtn.setOnClickListener(onYunFileClickListener);
+        yunImageBtn.setOnClickListener(onYunImageClickListener);
 
         this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
 
@@ -110,9 +129,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         localFileLV.setAdapter(localFileListViewAdapter);
         localFileLV.setOnItemClickListener(onLocalFileListViewItemClickListener);
 
-    }
-
-    private void initLocalImageGV() {
+        yunFileLV.setAdapter(yunFileListViewAdapter);
+        yunFileLV.setOnItemClickListener(onYunFileListViewItemClickListener);
 
     }
 
@@ -148,6 +166,25 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         }
     };
 
+    private View.OnClickListener onYunFileClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!AssertValue.isNotNull(yunFileCommand)) {
+                yunFileCommand = new YunFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK);
+            }
+            yunFileCommand.setSelectFiles(onSelectYunFiles);
+            YunFileActivity.start(DocCompositeActivity.this, yunFileCommand);
+        }
+    };
+
+    private View.OnClickListener onYunImageClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+
+        }
+    };
+
 
     private AdapterView.OnItemClickListener onLocalImageGridViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
@@ -160,7 +197,15 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //TODO 打开文件详情
-            Toast.makeText(mContext,"打开文件详情。",Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "打开文件详情。", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private AdapterView.OnItemClickListener onYunFileListViewItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //TODO 打开文件详情
+            Toast.makeText(mContext, "打开文件详情。", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -177,6 +222,12 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
             onSelectLocalFiles = (List<FileBean>) data.getSerializableExtra(LocalFileCommand.PARAM_FILE);
             localFileListViewAdapter.notifyDataSetChanged();
         }
+
+        if (AssertValue.isNotNull(yunFileCommand) && requestCode == yunFileCommand.getRequestCode() && resultCode == YunFileCommand.RESULT_CODE_OK) {
+            onSelectYunFiles = (List<FileBean>) data.getSerializableExtra(YunFileCommand.PARAM_FILE);
+            yunFileListViewAdapter.notifyDataSetChanged();
+        }
+
     }
 
     private JupiterAdapter localImageSelectsGVAdapter = new JupiterAdapter() {
@@ -269,6 +320,55 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                     FileBean deleteFileBean = (FileBean) v.getTag();
                     onSelectLocalFiles.remove(deleteFileBean);
                     localFileListViewAdapter.notifyDataSetChanged();
+                }
+            });
+
+
+            return fileItemWidget;
+        }
+    };
+
+    private JupiterAdapter yunFileListViewAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return onSelectYunFiles.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return onSelectYunFiles.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            FileItemWidget fileItemWidget = null;
+            FileBean fileBean = onSelectYunFiles.get(position);
+
+            if (AssertValue.isNotNull(convertView)) {
+                fileItemWidget = (FileItemWidget) convertView;
+            } else {
+                fileItemWidget = new FileItemWidget(mContext);
+            }
+
+            fileItemWidget.getIcoImaveView().setImageResource(fileBean.getIcoResource());
+            fileItemWidget.getFileNameTV().setText(fileBean.getName());
+            fileItemWidget.getFileSizeTV().setText(fileBean.getSize());
+            fileItemWidget.getFileTimeTV().setText(fileBean.getDateAdded());
+            fileItemWidget.setTag(fileBean);
+            fileItemWidget.getDeleteStateIV().setVisibility(View.VISIBLE);
+            fileItemWidget.getStateLL().setTag(fileBean);
+            fileItemWidget.getStateLL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FileBean deleteFileBean = (FileBean) v.getTag();
+                    onSelectYunFiles.remove(deleteFileBean);
+                    yunFileListViewAdapter.notifyDataSetChanged();
                 }
             });
 

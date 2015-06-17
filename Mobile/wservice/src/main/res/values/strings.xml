@@ -27,6 +27,7 @@
     <string name="app_send">发送</string>
     <string name="app_show_location">显示位置</string>
     <string name="app_share_scope">分享范围</string>
+    <string name="app_no_more_data">没有更多的数据了</string>
 
 
     <string name="user_buyer">购买管理</string>

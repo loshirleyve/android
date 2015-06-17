@@ -21,5 +21,7 @@
 
     <string name="jupiter_viewpager_indicator">%1$d/%2$d</string>
 
+    <string name="jupiter_paging_listview_loadmore">点击加载更多</string>
+
 
 </resources>
