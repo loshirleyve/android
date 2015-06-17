@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -17,12 +17,12 @@ import java.util.List;
 public class LocalImageGridViewAdapter extends JupiterAdapter {
 
     private Context mContext;
-    private List<LocalFileBean> mLocalFileBeans;
+    private List<FileBean> mFileBeans;
     private boolean edit;
 
-    public LocalImageGridViewAdapter(Context context,boolean edit, List<LocalFileBean> localFileBeans) {
+    public LocalImageGridViewAdapter(Context context,boolean edit, List<FileBean> fileBeans) {
         this.mContext = context;
-        this.mLocalFileBeans = localFileBeans;
+        this.mFileBeans = fileBeans;
         this.edit = edit;
 
     }
@@ -37,8 +37,8 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNullAndNotEmpty(mLocalFileBeans)) {
-            return mLocalFileBeans.size();
+        if (AssertValue.isNotNullAndNotEmpty(mFileBeans)) {
+            return mFileBeans.size();
         } else {
             return 0;
         }
@@ -46,7 +46,7 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mLocalFileBeans.get(position);
+        return mFileBeans.get(position);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         AlbumImageGridItem albumImageGridItem = null;
-        LocalFileBean localFileBean = mLocalFileBeans.get(position);
+        FileBean fileBean = mFileBeans.get(position);
 
         if (AssertValue.isNotNull(convertView)) {
             albumImageGridItem = (AlbumImageGridItem) convertView;
@@ -65,14 +65,14 @@ public class LocalImageGridViewAdapter extends JupiterAdapter {
             albumImageGridItem = new AlbumImageGridItem(mContext);
         }
 
-        if (edit && localFileBean.isSelected()){
+        if (edit && fileBean.isSelected()){
             albumImageGridItem.getSelectBadgeView().show();
         }else{
             albumImageGridItem.getSelectBadgeView().hide();
         }
 
-        ImageLoaderUtil.getInstance(mContext).displayImage("file://"+ localFileBean.getThumbnailPath(), albumImageGridItem.getImageView());
-        albumImageGridItem.setTag(localFileBean);
+        ImageLoaderUtil.getInstance(mContext).displayImage("file://"+ fileBean.getThumbnailPath(), albumImageGridItem.getImageView());
+        albumImageGridItem.setTag(fileBean);
 
         return albumImageGridItem;
     }

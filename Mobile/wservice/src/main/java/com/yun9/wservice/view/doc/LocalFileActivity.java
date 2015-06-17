@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -29,7 +29,7 @@ public class LocalFileActivity extends JupiterFragmentActivity {
 
     private LocalFileCommand command;
 
-    private List<LocalFileBean> mLocalFileBeans = new ArrayList<>();
+    private List<FileBean> mFileBeans = new ArrayList<>();
 
     @ViewInject(id = R.id.file_lv)
     private ListView fileListView;
@@ -85,8 +85,8 @@ public class LocalFileActivity extends JupiterFragmentActivity {
 
     private int getSelectNum() {
         int num = 0;
-        for (LocalFileBean localFileBean : mLocalFileBeans) {
-            if (localFileBean.isSelected()) {
+        for (FileBean fileBean : mFileBeans) {
+            if (fileBean.isSelected()) {
                 num++;
             }
         }
@@ -121,21 +121,21 @@ public class LocalFileActivity extends JupiterFragmentActivity {
 
     private LoadFileAsyncTask.OnFileLoadCallback onFileLoadCallback = new LoadFileAsyncTask.OnFileLoadCallback() {
         @Override
-        public void onPostExecute(List<LocalFileBean> localFileBeans) {
-            if (AssertValue.isNotNullAndNotEmpty(localFileBeans)) {
-                mLocalFileBeans.clear();
-                for (LocalFileBean localFileBean : localFileBeans) {
+        public void onPostExecute(List<FileBean> fileBeans) {
+            if (AssertValue.isNotNullAndNotEmpty(fileBeans)) {
+                mFileBeans.clear();
+                for (FileBean fileBean : fileBeans) {
 
                     //检查是否被选中
                     if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectFiles())) {
-                        for (LocalFileBean selectFile : command.getSelectFiles()) {
-                            if (AssertValue.isNotNull(selectFile) && AssertValue.isNotNullAndNotEmpty(selectFile.getFilePath()) && selectFile.getFilePath().equals(localFileBean.getFilePath())) {
-                                localFileBean.setSelected(true);
+                        for (FileBean selectFile : command.getSelectFiles()) {
+                            if (AssertValue.isNotNull(selectFile) && AssertValue.isNotNullAndNotEmpty(selectFile.getFilePath()) && selectFile.getFilePath().equals(fileBean.getFilePath())) {
+                                fileBean.setSelected(true);
                             }
                         }
                     }
 
-                    mLocalFileBeans.add(localFileBean);
+                    mFileBeans.add(fileBean);
 
                 }
 
@@ -147,10 +147,10 @@ public class LocalFileActivity extends JupiterFragmentActivity {
     private AdapterView.OnItemClickListener onFileListViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            LocalFileBean localFileBean = (LocalFileBean) view.getTag();
+            FileBean fileBean = (FileBean) view.getTag();
 
             if (mEdit) {
-                if (AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0 && !localFileBean.isSelected()) {
+                if (AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0 && !fileBean.isSelected()) {
                     int num = getSelectNum();
                     if (num >= command.getMaxSelectNum()) {
                         CharSequence charSequence = getResources().getString(R.string.doc_select_num_max, command.getMaxSelectNum());
@@ -159,8 +159,8 @@ public class LocalFileActivity extends JupiterFragmentActivity {
                     }
                 }
                 FileItemWidget fileItemWidget = (FileItemWidget) view;
-                localFileBean.setSelected(!localFileBean.isSelected());
-                fileItemWidget.selected(localFileBean.isSelected());
+                fileBean.setSelected(!fileBean.isSelected());
+                fileItemWidget.selected(fileBean.isSelected());
             } else {
                 //TODO 打开文件按详情
 
@@ -190,12 +190,12 @@ public class LocalFileActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNull(command)) {
 
                 if (LocalFileCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
-                    ArrayList<LocalFileBean> onSelectFiles = new ArrayList<>();
+                    ArrayList<FileBean> onSelectFiles = new ArrayList<>();
 
-                    if (AssertValue.isNotNullAndNotEmpty(mLocalFileBeans)) {
-                        for (LocalFileBean localFileBean : mLocalFileBeans) {
-                            if (localFileBean.isSelected()) {
-                                onSelectFiles.add(localFileBean);
+                    if (AssertValue.isNotNullAndNotEmpty(mFileBeans)) {
+                        for (FileBean fileBean : mFileBeans) {
+                            if (fileBean.isSelected()) {
+                                onSelectFiles.add(fileBean);
                             }
                         }
                     }
@@ -221,12 +221,12 @@ public class LocalFileActivity extends JupiterFragmentActivity {
     private JupiterAdapter localFileListViewAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            return mLocalFileBeans.size();
+            return mFileBeans.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return mLocalFileBeans.get(position);
+            return mFileBeans.get(position);
         }
 
         @Override
@@ -237,7 +237,7 @@ public class LocalFileActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             FileItemWidget fileItemWidget = null;
-            LocalFileBean localFileBean = mLocalFileBeans.get(position);
+            FileBean fileBean = mFileBeans.get(position);
 
             if (AssertValue.isNotNull(convertView)) {
                 fileItemWidget = (FileItemWidget) convertView;
@@ -245,14 +245,14 @@ public class LocalFileActivity extends JupiterFragmentActivity {
                 fileItemWidget = new FileItemWidget(mContext);
             }
 
-            fileItemWidget.getIcoImaveView().setImageResource(localFileBean.getIcoResource());
-            fileItemWidget.getFileNameTV().setText(localFileBean.getName());
-            fileItemWidget.getFileSizeTV().setText(localFileBean.getSize());
-            fileItemWidget.getFileTimeTV().setText(localFileBean.getDateAdded());
-            fileItemWidget.setTag(localFileBean);
+            fileItemWidget.getIcoImaveView().setImageResource(fileBean.getIcoResource());
+            fileItemWidget.getFileNameTV().setText(fileBean.getName());
+            fileItemWidget.getFileSizeTV().setText(fileBean.getSize());
+            fileItemWidget.getFileTimeTV().setText(fileBean.getDateAdded());
+            fileItemWidget.setTag(fileBean);
 
             if (mEdit) {
-                fileItemWidget.selected(localFileBean.isSelected());
+                fileItemWidget.selected(fileBean.isSelected());
             } else {
                 fileItemWidget.selectMode(false);
             }

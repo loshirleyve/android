@@ -36,7 +36,7 @@ public class FileUtil {
                 String doc = ".doc";
                 String docx = ".docx";
                 String pdf = ".pdf";
-                String txt = ".txt";
+                // String txt = ".txt";
                 String xls = ".xls";
                 String xlsx = ".xlsx";
                 String ppt = ".ppt";
@@ -49,8 +49,7 @@ public class FileUtil {
                         filename.endsWith(xlsx) ||
                         filename.endsWith(ppt) ||
                         filename.endsWith(pptx) ||
-                        filename.endsWith(wps) ||
-                        filename.endsWith(txt)) {
+                        filename.endsWith(wps)) {
                     return true;
                 } else {
                     return false;

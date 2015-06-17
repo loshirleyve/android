@@ -1,7 +1,7 @@
 package com.yun9.wservice.view.doc;
 
 import com.yun9.jupiter.command.JupiterCommand;
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class LocalImageCommand extends JupiterCommand {
 
     private boolean edit;
 
-    private List<LocalFileBean> selectImages;
+    private List<FileBean> selectImages;
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
 
@@ -35,21 +35,21 @@ public class LocalImageCommand extends JupiterCommand {
     }
 
 
-    public List<LocalFileBean> getSelectImages() {
+    public List<FileBean> getSelectImages() {
         return selectImages;
     }
 
-    public LocalImageCommand setSelectImages(List<LocalFileBean> selectImages) {
+    public LocalImageCommand setSelectImages(List<FileBean> selectImages) {
         this.selectImages = selectImages;
         return this;
     }
 
-    public LocalImageCommand putSelectImage(LocalFileBean localFileBean) {
+    public LocalImageCommand putSelectImage(FileBean fileBean) {
         if (!AssertValue.isNotNull(selectImages)) {
             this.selectImages = new ArrayList<>();
         }
 
-        this.selectImages.add(localFileBean);
+        this.selectImages.add(fileBean);
         return this;
     }
 

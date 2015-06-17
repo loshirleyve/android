@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class LocalImageAlbumAdapter extends JupiterAdapter {
 
-    private List<LocalFileBean> mAlbums;
+    private List<FileBean> mAlbums;
 
     private Context mContext;
 
-    public LocalImageAlbumAdapter(Context context, List<LocalFileBean> albums) {
+    public LocalImageAlbumAdapter(Context context, List<FileBean> albums) {
         this.mAlbums = albums;
         this.mContext = context;
     }
@@ -47,7 +47,7 @@ public class LocalImageAlbumAdapter extends JupiterAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LocalImageAlbumItemWidget localImageAlbumItemWidget = null;
-        LocalFileBean localFileBean = mAlbums.get(position);
+        FileBean fileBean = mAlbums.get(position);
 
         if (AssertValue.isNotNull(convertView)) {
             localImageAlbumItemWidget = (LocalImageAlbumItemWidget) convertView;
@@ -55,13 +55,13 @@ public class LocalImageAlbumAdapter extends JupiterAdapter {
             localImageAlbumItemWidget = new LocalImageAlbumItemWidget(mContext);
         }
 
-        localImageAlbumItemWidget.setTag(localFileBean);
-        localImageAlbumItemWidget.getInfoTV().setText(localFileBean.getName());
+        localImageAlbumItemWidget.setTag(fileBean);
+        localImageAlbumItemWidget.getInfoTV().setText(fileBean.getName());
 
-        ImageLoaderUtil.getInstance(mContext).displayImage("file://" + localFileBean.getThumbnailPath(), localImageAlbumItemWidget.getImageView());
+        ImageLoaderUtil.getInstance(mContext).displayImage("file://" + fileBean.getThumbnailPath(), localImageAlbumItemWidget.getImageView());
 
-        if (AssertValue.isNotNullAndNotEmpty(localFileBean.getChilds())) {
-            localImageAlbumItemWidget.getNumTV().setText(localFileBean.getChilds().size() + "张图片");
+        if (AssertValue.isNotNullAndNotEmpty(fileBean.getChilds())) {
+            localImageAlbumItemWidget.getNumTV().setText(fileBean.getChilds().size() + "张图片");
         } else {
             localImageAlbumItemWidget.getNumTV().setText("0张图片");
         }

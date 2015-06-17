@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 
@@ -20,18 +20,18 @@ import java.util.List;
  */
 public class ImageBrowerPagerAdapter extends PagerAdapter {
 
-    private List<LocalFileBean> localFileBeans;
+    private List<FileBean> fileBeans;
     private Context mContext;
 
-    public ImageBrowerPagerAdapter(Context context, List<LocalFileBean> localFileBeans) {
-        this.localFileBeans = localFileBeans;
+    public ImageBrowerPagerAdapter(Context context, List<FileBean> fileBeans) {
+        this.fileBeans = fileBeans;
         this.mContext = context;
     }
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNullAndNotEmpty(localFileBeans)) {
-            return localFileBeans.size();
+        if (AssertValue.isNotNullAndNotEmpty(fileBeans)) {
+            return fileBeans.size();
         } else {
             return 0;
         }
@@ -40,16 +40,16 @@ public class ImageBrowerPagerAdapter extends PagerAdapter {
     @Override
     public View instantiateItem(ViewGroup container, int position) {
         final ImageBrowerPageItemWidget imageBrowerPageItemWidget = new ImageBrowerPageItemWidget(mContext);
-        LocalFileBean localFileBean = localFileBeans.get(position);
-        imageBrowerPageItemWidget.setTag(localFileBean);
+        FileBean fileBean = fileBeans.get(position);
+        imageBrowerPageItemWidget.setTag(fileBean);
 
-        CharSequence text = mContext.getResources().getString(R.string.jupiter_viewpager_indicator, position+1, localFileBeans.size());
+        CharSequence text = mContext.getResources().getString(R.string.jupiter_viewpager_indicator, position+1, fileBeans.size());
 
         imageBrowerPageItemWidget.getPageNoTV().setText(text);
 
 
         container.addView(imageBrowerPageItemWidget, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        ImageLoaderUtil.getInstance(mContext).displayImage(localFileBean.getFilePath(), imageBrowerPageItemWidget.getPhotoView(),new SimpleImageLoadingListener(){
+        ImageLoaderUtil.getInstance(mContext).displayImage(fileBean.getFilePath(), imageBrowerPageItemWidget.getPhotoView(),new SimpleImageLoadingListener(){
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 super.onLoadingStarted(imageUri, view);

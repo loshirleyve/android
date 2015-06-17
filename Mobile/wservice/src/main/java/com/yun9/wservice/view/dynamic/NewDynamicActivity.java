@@ -31,8 +31,6 @@ import com.yun9.wservice.view.location.LocationSelectActivity;
 import com.yun9.wservice.view.location.LocationSelectCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
-import com.yun9.wservice.view.org.OrgListActivity;
-import com.yun9.wservice.view.org.OrgListCommand;
 import com.yun9.wservice.view.topic.TopicActivity;
 import com.yun9.wservice.view.topic.TopicCommand;
 

@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.yun9.jupiter.image.ImageBrowerActivity;
 import com.yun9.jupiter.image.ImageBrowerCommand;
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
@@ -66,9 +66,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.file_local_lv)
     private JupiterListView localFileLV;
 
-    private List<LocalFileBean> onSelectLocalImages = new ArrayList<>();
+    private List<FileBean> onSelectLocalImages = new ArrayList<>();
 
-    private List<LocalFileBean> onSelectLocalFiles = new ArrayList<>();
+    private List<FileBean> onSelectLocalFiles = new ArrayList<>();
 
     private boolean mEdit;
 
@@ -152,7 +152,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     private AdapterView.OnItemClickListener onLocalImageGridViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            ImageBrowerActivity.start(DocCompositeActivity.this, new ImageBrowerCommand().setLocalFileBeans(onSelectLocalImages).setPosition(position));
+            ImageBrowerActivity.start(DocCompositeActivity.this, new ImageBrowerCommand().setFileBeans(onSelectLocalImages).setPosition(position));
         }
     };
 
@@ -169,12 +169,12 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (AssertValue.isNotNull(localImageCommand) && requestCode == localImageCommand.getRequestCode() && resultCode == LocalImageCommand.RESULT_CODE_OK) {
-            onSelectLocalImages = (List<LocalFileBean>) data.getSerializableExtra(LocalImageCommand.PARAM_IMAGE);
+            onSelectLocalImages = (List<FileBean>) data.getSerializableExtra(LocalImageCommand.PARAM_IMAGE);
             localImageSelectsGVAdapter.notifyDataSetChanged();
         }
 
         if (AssertValue.isNotNull(localFileCommand) && requestCode == localFileCommand.getRequestCode() && resultCode == LocalFileCommand.RESULT_CODE_OK) {
-            onSelectLocalFiles = (List<LocalFileBean>) data.getSerializableExtra(LocalFileCommand.PARAM_FILE);
+            onSelectLocalFiles = (List<FileBean>) data.getSerializableExtra(LocalFileCommand.PARAM_FILE);
             localFileListViewAdapter.notifyDataSetChanged();
         }
     }
@@ -203,7 +203,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             AlbumImageGridItem albumImageGridItem = null;
-            LocalFileBean localFileBean = onSelectLocalImages.get(position);
+            FileBean fileBean = onSelectLocalImages.get(position);
 
             if (AssertValue.isNotNull(convertView)) {
                 albumImageGridItem = (AlbumImageGridItem) convertView;
@@ -211,15 +211,15 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                 albumImageGridItem = new AlbumImageGridItem(DocCompositeActivity.this);
             }
 
-            ImageLoaderUtil.getInstance(getApplicationContext()).displayImage("file://" + localFileBean.getThumbnailPath(), albumImageGridItem.getImageView());
-            albumImageGridItem.setTag(localFileBean);
-            albumImageGridItem.getDeleteBadgeView().setTag(localFileBean);
+            ImageLoaderUtil.getInstance(getApplicationContext()).displayImage("file://" + fileBean.getThumbnailPath(), albumImageGridItem.getImageView());
+            albumImageGridItem.setTag(fileBean);
+            albumImageGridItem.getDeleteBadgeView().setTag(fileBean);
             albumImageGridItem.getDeleteBadgeView().show();
             albumImageGridItem.getDeleteBadgeView().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LocalFileBean deleteLocalFileBean = (LocalFileBean) v.getTag();
-                    onSelectLocalImages.remove(deleteLocalFileBean);
+                    FileBean deleteFileBean = (FileBean) v.getTag();
+                    onSelectLocalImages.remove(deleteFileBean);
                     localImageSelectsGVAdapter.notifyDataSetChanged();
                 }
             });
@@ -248,7 +248,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             FileItemWidget fileItemWidget = null;
-            LocalFileBean localFileBean = onSelectLocalFiles.get(position);
+            FileBean fileBean = onSelectLocalFiles.get(position);
 
             if (AssertValue.isNotNull(convertView)) {
                 fileItemWidget = (FileItemWidget) convertView;
@@ -256,18 +256,18 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                 fileItemWidget = new FileItemWidget(mContext);
             }
 
-            fileItemWidget.getIcoImaveView().setImageResource(localFileBean.getIcoResource());
-            fileItemWidget.getFileNameTV().setText(localFileBean.getName());
-            fileItemWidget.getFileSizeTV().setText(localFileBean.getSize());
-            fileItemWidget.getFileTimeTV().setText(localFileBean.getDateAdded());
-            fileItemWidget.setTag(localFileBean);
+            fileItemWidget.getIcoImaveView().setImageResource(fileBean.getIcoResource());
+            fileItemWidget.getFileNameTV().setText(fileBean.getName());
+            fileItemWidget.getFileSizeTV().setText(fileBean.getSize());
+            fileItemWidget.getFileTimeTV().setText(fileBean.getDateAdded());
+            fileItemWidget.setTag(fileBean);
             fileItemWidget.getDeleteStateIV().setVisibility(View.VISIBLE);
-            fileItemWidget.getStateLL().setTag(localFileBean);
+            fileItemWidget.getStateLL().setTag(fileBean);
             fileItemWidget.getStateLL().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LocalFileBean deleteLocalFileBean = (LocalFileBean) v.getTag();
-                    onSelectLocalFiles.remove(deleteLocalFileBean);
+                    FileBean deleteFileBean = (FileBean) v.getTag();
+                    onSelectLocalFiles.remove(deleteFileBean);
                     localFileListViewAdapter.notifyDataSetChanged();
                 }
             });

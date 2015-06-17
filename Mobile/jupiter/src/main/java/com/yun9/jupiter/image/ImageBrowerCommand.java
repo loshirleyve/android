@@ -1,7 +1,7 @@
 package com.yun9.jupiter.image;
 
 import com.yun9.jupiter.command.JupiterCommand;
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ImageBrowerCommand extends JupiterCommand{
     private int position;
 
-    private List<LocalFileBean> localFileBeans;
+    private List<FileBean> fileBeans;
 
     public int getPosition() {
         return position;
@@ -24,21 +24,21 @@ public class ImageBrowerCommand extends JupiterCommand{
         return this;
     }
 
-    public List<LocalFileBean> getLocalFileBeans() {
-        return localFileBeans;
+    public List<FileBean> getFileBeans() {
+        return fileBeans;
     }
 
-    public ImageBrowerCommand setLocalFileBeans(List<LocalFileBean> localFileBeans) {
-        this.localFileBeans = localFileBeans;
+    public ImageBrowerCommand setFileBeans(List<FileBean> fileBeans) {
+        this.fileBeans = fileBeans;
         return this;
     }
 
-    public ImageBrowerCommand putImageBean(LocalFileBean localFileBean){
-        if (!AssertValue.isNotNull(localFileBeans)){
-            this.localFileBeans = new ArrayList<>();
+    public ImageBrowerCommand putImageBean(FileBean fileBean){
+        if (!AssertValue.isNotNull(fileBeans)){
+            this.fileBeans = new ArrayList<>();
         }
 
-        this.localFileBeans.add(localFileBean);
+        this.fileBeans.add(fileBean);
         return this;
     }
 }

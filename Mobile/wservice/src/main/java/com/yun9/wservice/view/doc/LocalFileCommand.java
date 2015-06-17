@@ -1,7 +1,7 @@
 package com.yun9.wservice.view.doc;
 
 import com.yun9.jupiter.command.JupiterCommand;
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class LocalFileCommand extends JupiterCommand {
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
 
-    private List<LocalFileBean> selectFiles;
+    private List<FileBean> selectFiles;
 
     private boolean edit;
 
@@ -51,21 +51,21 @@ public class LocalFileCommand extends JupiterCommand {
         return this;
     }
 
-    public List<LocalFileBean> getSelectFiles() {
+    public List<FileBean> getSelectFiles() {
         return selectFiles;
     }
 
-    public LocalFileCommand setSelectFiles(List<LocalFileBean> selectFiles) {
+    public LocalFileCommand setSelectFiles(List<FileBean> selectFiles) {
         this.selectFiles = selectFiles;
         return this;
     }
 
-    public void putSelectFile(LocalFileBean localFileBean){
+    public void putSelectFile(FileBean fileBean){
         if (!AssertValue.isNotNull(selectFiles)){
             this.selectFiles = new ArrayList<>();
         }
 
-        this.selectFiles.add(localFileBean);
+        this.selectFiles.add(fileBean);
     }
 
 

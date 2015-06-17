@@ -2,11 +2,10 @@ package com.yun9.wservice.view.doc;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
 
-import com.yun9.jupiter.model.LocalFileBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.FileUtil;
 import com.yun9.wservice.R;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Created by Leon on 15/6/16.
  */
-public class LoadFileAsyncTask extends AsyncTask<Void, Void, List<LocalFileBean>> {
+public class LoadFileAsyncTask extends AsyncTask<Void, Void, List<FileBean>> {
 
     private OnFileLoadCallback onFileLoadCallback;
 
@@ -39,28 +38,28 @@ public class LoadFileAsyncTask extends AsyncTask<Void, Void, List<LocalFileBean>
     }
 
     @Override
-    protected List<LocalFileBean> doInBackground(Void... params) {
+    protected List<FileBean> doInBackground(Void... params) {
 
         File extFile = Environment.getExternalStorageDirectory();
 
         List<File> files = new ArrayList<>();
-        List<LocalFileBean> localFileBeans = new ArrayList<>();
+        List<FileBean> fileBeans = new ArrayList<>();
         FileUtil.searchFile(extFile, files);
 
         if (AssertValue.isNotNullAndNotEmpty(files)) {
             for (File file : files) {
-                localFileBeans.add(new LocalFileBean(file));
+                fileBeans.add(new FileBean(file));
             }
         }
-        return localFileBeans;
+        return fileBeans;
     }
 
     @Override
-    protected void onPostExecute(List<LocalFileBean> localFileBeans) {
-        super.onPostExecute(localFileBeans);
+    protected void onPostExecute(List<FileBean> fileBeans) {
+        super.onPostExecute(fileBeans);
 
         if (AssertValue.isNotNull(onFileLoadCallback)) {
-            onFileLoadCallback.onPostExecute(localFileBeans);
+            onFileLoadCallback.onPostExecute(fileBeans);
         }
 
         if (AssertValue.isNotNull(progressDialog)) {
@@ -69,6 +68,6 @@ public class LoadFileAsyncTask extends AsyncTask<Void, Void, List<LocalFileBean>
     }
 
     public interface OnFileLoadCallback {
-        public void onPostExecute(List<LocalFileBean> localFileBeans);
+        public void onPostExecute(List<FileBean> fileBeans);
     }
 }

@@ -1,21 +1,85 @@
 package com.yun9.jupiter.model;
 
+import com.yun9.jupiter.R;
+import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
+import com.yun9.jupiter.util.FileUtil;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 /**
- * Created by Leon on 15/6/11.
+ * Created by Leon on 15/6/13.
  */
-public class FileBean {
+public class FileBean implements java.io.Serializable {
 
     public static final String FILE_TYPE_IMAGE = "image";
 
     public static final String FILE_TYPE_DOC = "doc";
 
+    public static final String FILE_STORAGE_TYPE_YUN = "yun";
+    public static final String FILE_STORAGE_TYPE_LOCAL = "local";
+
+    public static String TYPE_TXT = "txt";
+    public static String TYPE_PDF = "pdf";
+    public static String TYPE_DOC = "doc";
+    public static String TYPE_DOCX = "docx";
+    public static String TYPE_PPT = "ppt";
+    public static String TYPE_PPTX = "pptx";
+    public static String TYPE_XLS = "xls";
+    public static String TYPE_XLSX = "xlsx";
+    public static String TYPE_WPS = "wps";
+
     private String id;
-
+    private String filePath;
+    private String absolutePath;
+    private String thumbnailPath;
     private String name;
-
-    private String url;
-
+    private String dateAdded;
+    private String extensionName;
     private String type;
+    private String size;
+    private String storageType = FILE_STORAGE_TYPE_LOCAL;
+    private int icoResource;
+    private boolean selected = false;
+
+    private List<FileBean> childs;
+
+    public FileBean() {
+    }
+
+    public FileBean(File file) {
+        filePath = file.getPath();
+        absolutePath = file.getAbsolutePath();
+        name = FileUtil.getFileNameNoEx(file);
+        extensionName = FileUtil.getExtensionName(file);
+        dateAdded = DateUtil.getDateStr(file.lastModified());
+        type = FILE_TYPE_DOC;
+        size = FileUtil.getFileSize(file);
+        id = UUID.randomUUID().toString();
+        initIcoResource();
+
+    }
+
+    private void initIcoResource() {
+        if (FileBean.TYPE_PDF.equals(this.type)) {
+            icoResource = R.drawable.small_ico_pdf;
+        } else if (FileBean.TYPE_TXT.equals(this.type)) {
+            icoResource = R.drawable.small_ico_txt;
+        } else if (FileBean.TYPE_DOC.equals(this.type) || FileBean.TYPE_DOCX.equals(this.type)) {
+            icoResource = R.drawable.small_ico_doc;
+        } else if (FileBean.TYPE_PPT.equals(this.type) || FileBean.TYPE_PPTX.equals(this.type)) {
+            icoResource = R.drawable.small_ico_ppt;
+        } else if (FileBean.TYPE_WPS.equals(this.type)) {
+            icoResource = R.drawable.small_ico_wps;
+        } else if (FileBean.TYPE_XLS.equals(this.type) || FileBean.TYPE_XLSX.equals(this.type)) {
+            icoResource = R.drawable.small_ico_xls;
+        } else {
+            icoResource = R.drawable.small_ico_unkwon;
+        }
+    }
 
     public String getId() {
         return id;
@@ -23,6 +87,30 @@ public class FileBean {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(String absolutePath) {
+        this.absolutePath = absolutePath;
+    }
+
+    public String getThumbnailPath() {
+        return thumbnailPath;
+    }
+
+    public void setThumbnailPath(String thumbnailPath) {
+        this.thumbnailPath = thumbnailPath;
     }
 
     public String getName() {
@@ -33,12 +121,32 @@ public class FileBean {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDateAdded() {
+        return dateAdded;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public List<FileBean> getChilds() {
+        return childs;
+    }
+
+    public String getExtensionName() {
+        return extensionName;
+    }
+
+    public void setExtensionName(String extensionName) {
+        this.extensionName = extensionName;
     }
 
     public String getType() {
@@ -47,5 +155,42 @@ public class FileBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public int getIcoResource() {
+        return icoResource;
+    }
+
+    public String getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(String storageType) {
+        this.storageType = storageType;
+    }
+
+    public void setIcoResource(int icoResource) {
+        this.icoResource = icoResource;
+    }
+
+    public void setChilds(List<FileBean> childs) {
+        this.childs = childs;
+    }
+
+    public void putChild(FileBean fileBean) {
+        if (!AssertValue.isNotNull(childs)) {
+            childs = new ArrayList<>();
+        }
+
+        childs.add(fileBean);
+
     }
 }
