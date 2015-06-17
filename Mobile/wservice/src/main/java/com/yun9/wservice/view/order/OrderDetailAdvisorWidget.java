@@ -18,7 +18,7 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
 
     private ImageView userHeadIV;
     private TextView userNameTV;
-    private ImageView contactUsIV;
+    private TextView contactUsIV;
 
     public OrderDetailAdvisorWidget(Context context) {
         super(context);
@@ -45,6 +45,6 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         userHeadIV  = (ImageView) this.findViewById(R.id.user_head_iv);
         userNameTV = (TextView) this.findViewById(R.id.user_name_tv);
-        contactUsIV = (ImageView) this.findViewById(R.id.contact_us_iv);
+        contactUsIV = (TextView) this.findViewById(R.id.contact_us_iv);
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whites">
+       <com.yun9.jupiter.widget.JupiterListView
+           android:id="@+id/product_list_lv"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+       </com.yun9.jupiter.widget.JupiterListView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/devide_line"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+            <LinearLayout
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentLeft="true"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/order_sn_tip"
+                    android:textSize="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#374760"
+                    android:text="订单号: "/>
+                <TextView
+                    android:id="@+id/order_sn_tv"
+                    android:textSize="14dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#374760"
+                    android:text="3888898983993"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/order_state_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:singleLine="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:textColor="#B9D2DB"
+                android:text="服务中"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
