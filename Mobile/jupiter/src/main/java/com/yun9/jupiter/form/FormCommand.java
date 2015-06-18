@@ -14,6 +14,8 @@ public class FormCommand extends JupiterCommand{
 
     private String valueJson;
 
+    private FormCompleteCallback callback;
+
     public FormBean getFormBean() {
         return formBean;
     }
@@ -36,5 +38,17 @@ public class FormCommand extends JupiterCommand{
 
     public void setValueJson(String valueJson) {
         this.valueJson = valueJson;
+    }
+
+    public FormCompleteCallback getCallback() {
+        return callback;
+    }
+
+    public void setCallback(FormCompleteCallback callback) {
+        this.callback = callback;
+    }
+
+    public interface FormCompleteCallback {
+        public boolean callback(FormBean formBean);
     }
 }

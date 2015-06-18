@@ -238,9 +238,20 @@ public class FormActivity extends JupiterFragmentActivity {
             this.showToast(message);
             return;
         }
-        gatherFormBean();
-        FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-        FormActivity.this.finish();
+        if (command.getCallback() != null){
+            if (command.getCallback().callback(form.getFormBean())){
+                gatherFormBean();
+                FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
+                FormActivity.this.finish();
+                return;
+            }
+        } else {
+            gatherFormBean();
+            FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
+            FormActivity.this.finish();
+        }
+
+
     }
 
     private void doCancel() {
