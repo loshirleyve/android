@@ -48,9 +48,13 @@ public class JupiterSearchInputLayout extends JupiterRelativeLayout {
             public void onClick(View v) {
                 showLL.setVisibility(GONE);
                 editLL.setVisibility(VISIBLE);
-                searchET.setCursorVisible(true);
+
+                searchET.setFocusableInTouchMode(true);
+                searchET.requestFocus();
             }
         });
+
+
     }
 
     public LinearLayout getShowLL() {
