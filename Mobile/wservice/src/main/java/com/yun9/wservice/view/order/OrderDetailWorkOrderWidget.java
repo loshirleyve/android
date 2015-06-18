@@ -62,5 +62,19 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
                 OrderCommentActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),"");
             }
         });
+        checkoutWorkOrderCommentTV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
+                                                                                "","");
+            }
+        });
+        appendWorkOrderCommentTV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
+                        "","");
+            }
+        });
     }
 }

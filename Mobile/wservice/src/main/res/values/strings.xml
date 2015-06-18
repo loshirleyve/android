@@ -115,7 +115,9 @@
     <string name="complain">投诉</string>
     <string name="comment_work_order">评价工单</string>
     <string name="write_comment">撰写评论</string>
+    <string name="append_comment">追加评论</string>
     <string name="order_score">服务评分</string>
+    <string name="comment_detail">评价详情</string>
 
 
     <string name="location_select">选择位置</string>
