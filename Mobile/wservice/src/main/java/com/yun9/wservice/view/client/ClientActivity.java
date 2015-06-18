@@ -15,8 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.form.FormActivity;
+import com.yun9.jupiter.form.cell.MultiSelectFormCell;
 import com.yun9.jupiter.form.cell.TextFormCell;
 import com.yun9.jupiter.form.model.FormBean;
+import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -77,7 +79,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListView = (ListView) findViewById(R.id.client_list_ptr);
         mPtrFrame = (PtrClassicFrameLayout) findViewById(R.id.rotate_header_list_view_frame_client);
 
-        jupiterSearchInputLayout = (JupiterSearchInputLayout)this.findViewById(R.id.searchRL);
+        jupiterSearchInputLayout = (JupiterSearchInputLayout) this.findViewById(R.id.searchRL);
 
         jupiterSearchInputLayout.getSearchET().addTextChangedListener(textWatcher);
 
@@ -103,9 +105,9 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListView.postDelayed(new Runnable() {
             @Override
             public void run() {
-               mPtrFrame.autoRefresh();
+                mPtrFrame.autoRefresh();
             }
-        },100);
+        }, 100);
 
     }
 
@@ -149,29 +151,93 @@ public class ClientActivity extends JupiterFragmentActivity {
         formBean.setTitle("测试表单");
         formBean.setKey("demoform");
 
-        TextFormCellBean textFormCell1 = new TextFormCellBean();
-        textFormCell1.setType(TextFormCell.class.getSimpleName());
-        textFormCell1.setKey("name");
-        textFormCell1.setDefaultValue("客户名XXX有限公司");
-        textFormCell1.setLabel("客户名称");
-        textFormCell1.setRequired(true);
-        formBean.putCellBean(textFormCell1);
+        TextFormCellBean instidTFC = new TextFormCellBean();
+        instidTFC.setType(TextFormCell.class.getSimpleName());
+        instidTFC.setKey("instid");
+        instidTFC.setDefaultValue("2");
+        instidTFC.setLabel("ID");
+        instidTFC.setRequired(true);
+        formBean.putCellBean(instidTFC);
 
-        TextFormCellBean textFormCell2 = new TextFormCellBean();
-        textFormCell2.setType(TextFormCell.class.getSimpleName());
-        textFormCell2.setKey("contactName");
-        textFormCell2.setDefaultValue("联系人名");
-        textFormCell2.setLabel("联系人名");
-        textFormCell2.setRequired(true);
-        formBean.putCellBean(textFormCell2);
+        TextFormCellBean nameTFC = new TextFormCellBean();
+        nameTFC.setType(TextFormCell.class.getSimpleName());
+        nameTFC.setKey("name");
+        nameTFC.setDefaultValue("客户名XXX有限公司");
+        nameTFC.setLabel("公司简称");
+        nameTFC.setRequired(true);
+        formBean.putCellBean(nameTFC);
 
-        TextFormCellBean textFormCell3 = new TextFormCellBean();
-        textFormCell3.setType(TextFormCell.class.getSimpleName());
-        textFormCell3.setKey("phoneNo");
-        textFormCell3.setDefaultValue("19800004500");
-        textFormCell3.setLabel("联系电话");
-        textFormCell3.setRequired(true);
-        formBean.putCellBean(textFormCell3);
+        TextFormCellBean fullnameTFC = new TextFormCellBean();
+        fullnameTFC.setType(TextFormCell.class.getSimpleName());
+        fullnameTFC.setKey("fullname");
+        fullnameTFC.setDefaultValue("客户名XXX有限公司全称");
+        fullnameTFC.setLabel("公司全称");
+        fullnameTFC.setRequired(true);
+        formBean.putCellBean(fullnameTFC);
+
+        MultiSelectFormCellBean typeMSFC = new MultiSelectFormCellBean();
+        typeMSFC.setType(MultiSelectFormCell.class.getSimpleName());
+        typeMSFC.setCtrlCode("clientlevel");
+        typeMSFC.setKey("type");
+        typeMSFC.setLabel("类型");
+        //typeMSFC.setRequired(true);
+        formBean.putCellBean(typeMSFC);
+
+        MultiSelectFormCellBean levelMSFC = new MultiSelectFormCellBean();
+        levelMSFC.setType(MultiSelectFormCell.class.getSimpleName());
+        levelMSFC.setCtrlCode("clientlevel");
+        levelMSFC.setKey("level");
+        levelMSFC.setLabel("客户等级");
+        //levelMSFC.setRequired(true);
+        formBean.putCellBean(levelMSFC);
+
+        TextFormCellBean contactmanTFC = new TextFormCellBean();
+        contactmanTFC.setType(TextFormCell.class.getSimpleName());
+        contactmanTFC.setKey("contactman");
+        contactmanTFC.setDefaultValue("联系人名");
+        contactmanTFC.setLabel("联系人名");
+        contactmanTFC.setRequired(true);
+        formBean.putCellBean(contactmanTFC);
+
+        TextFormCellBean contactphoneTFC = new TextFormCellBean();
+        contactphoneTFC.setType(TextFormCell.class.getSimpleName());
+        contactphoneTFC.setKey("contactphone");
+        contactphoneTFC.setDefaultValue("19800004500");
+        contactphoneTFC.setLabel("联系电话");
+        contactphoneTFC.setRequired(true);
+        formBean.putCellBean(contactphoneTFC);
+
+        TextFormCellBean regionTFC = new TextFormCellBean();
+        regionTFC.setType(TextFormCell.class.getSimpleName());
+        regionTFC.setKey("region");
+        regionTFC.setDefaultValue("1");
+        regionTFC.setLabel("区域");
+        regionTFC.setRequired(true);
+        formBean.putCellBean(regionTFC);
+
+        MultiSelectFormCellBean sourceMSFC = new MultiSelectFormCellBean();
+        sourceMSFC.setType(MultiSelectFormCell.class.getSimpleName());
+        sourceMSFC.setCtrlCode("clientsource");
+        sourceMSFC.setKey("source");
+        sourceMSFC.setLabel("来源");
+       // sourceMSFC.setRequired(true);
+        formBean.putCellBean(sourceMSFC);
+
+        MultiSelectFormCellBean industryMSFC = new MultiSelectFormCellBean();
+        industryMSFC.setType(MultiSelectFormCell.class.getSimpleName());
+        industryMSFC.setCtrlCode("clientindustry");
+        industryMSFC.setKey("industry");
+        industryMSFC.setLabel("行业");
+        //industryMSFC.setRequired(true);
+        formBean.putCellBean(industryMSFC);
+
+        MultiSelectFormCellBean contactpositionMSFC = new MultiSelectFormCellBean();
+        contactpositionMSFC.setType(MultiSelectFormCell.class.getSimpleName());
+        contactpositionMSFC.setCtrlCode("contactposition");
+        contactpositionMSFC.setKey("contactposition");
+        contactpositionMSFC.setLabel("职位");
+        //contactpositionMSFC.setRequired(true);
+        formBean.putCellBean(contactpositionMSFC);
 
         return formBean;
     }
@@ -180,24 +246,50 @@ public class ClientActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == formRequestCode && resultCode == FormActivity.RESULT_OK) {
-            FormBean formBean = (FormBean) data.getSerializableExtra("form");
-            Client client = new Client();
-            client.setName((String) formBean.getCellBeanValue("name"));
-            client.setId((String) formBean.getCellBeanValue("contactName"));
-            client.setSn((String) formBean.getCellBeanValue("phoneNo"));
+        // if (requestCode == formRequestCode && resultCode == FormActivity.RESULT_OK) {
+        FormBean formBean = (FormBean) data.getSerializableExtra("form");
+        Client client = new Client();
+        client.setInstid((String) formBean.getCellBeanValue("instid"));
+        client.setName((String) formBean.getCellBeanValue("name"));
+        client.setFullname((String) formBean.getCellBeanValue("fullname"));
 
-            showClients.add(client);
-            clientListAdapter.notifyDataSetChanged();
-/*
-            addToDB(client);
-*/
-        }
+        //client.setType((String) formBean.getCellBeanValue("type"));
+        client.setType("dnterprise");
+        //client.setLevel((String) formBean.getCellBeanValue("level"));
+        client.setLevel("A");
+        client.setContactman((String) formBean.getCellBeanValue("contactman"));
+        client.setContactphone((String) formBean.getCellBeanValue("contactphone"));
+        client.setRegion((String) formBean.getCellBeanValue("region"));
+
+        //client.setSource((String) formBean.getCellBeanValue("source"));
+        client.setSource("network");
+        //client.setIndustry((String) formBean.getCellBeanValue("industry"));
+        client.setIndustry("retail");
+        //client.setContactposition((String) formBean.getCellBeanValue("contactposition"));
+        client.setContactposition("legalperson");
+
+        addToDB(client);
+        // }
     }
+
     private void addToDB(Client client) {
-        Resource resource = resourceFactory.create("tianjia");
-        resource.param("name",client.getName());
-        resource.invok(new AsyncHttpResponseCallback() {
+        Resource resource = resourceFactory.create("AddInstClients");
+
+        resource.param("instid", client.getInstid());
+        resource.param("name", client.getName());
+        resource.param("fullname", client.getFullname());
+        resource.param("type", client.getType());
+        resource.param("level", client.getLevel());
+        resource.param("contactman", client.getContactman());
+        resource.param("contactphone", client.getContactphone());
+        resource.param("region", client.getRegion());
+        resource.param("source", client.getSource());
+        resource.param("industry", client.getIndustry());
+        resource.param("contactposition", client.getContactposition());
+        resource.param("createby", sessionManager.getUser().getId());
+
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+
             @Override
             public void onSuccess(Response response) {
                 refresh();
@@ -205,12 +297,12 @@ public class ClientActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-
+                showToast("-------------------------------");
             }
 
             @Override
             public void onFinally(Response response) {
-
+                refresh();
             }
         });
     }
@@ -229,15 +321,15 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-               showClients.clear();
+            showClients.clear();
 
-            if(!AssertValue.isNotNullAndNotEmpty(s.toString())){
-                for(Client client : clients){
+            if (!AssertValue.isNotNullAndNotEmpty(s.toString())) {
+                for (Client client : clients) {
                     showClients.add(client);
                 }
-            }else {
-                for(Client client : clients){
-                    if(StringUtil.contains(client.getName(), s.toString(), true)){
+            } else {
+                for (Client client : clients) {
+                    if (StringUtil.contains(client.getName(), s.toString(), true)) {
                         showClients.add(client);
                     }
                 }
