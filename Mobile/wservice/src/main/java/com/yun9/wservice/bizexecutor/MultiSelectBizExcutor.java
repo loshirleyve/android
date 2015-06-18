@@ -12,6 +12,7 @@ import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.wservice.view.common.MultiSelectActivity;
+import com.yun9.wservice.view.common.MultiSelectCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 
@@ -30,10 +31,12 @@ public class MultiSelectBizExcutor implements FormUtilFactory.BizExecutor {
         Intent intent = new Intent(activity,MultiSelectActivity.class);
         final MultiSelectFormCell formCell = (MultiSelectFormCell) cell;
         MultiSelectFormCellBean cellBean = (MultiSelectFormCellBean) cell.getFormCellBean();
-        intent.putExtra("isCancelable",true);
-        intent.putExtra("ctrlCode",cellBean.getCtrlCode());
-        intent.putExtra("options", (Serializable) cellBean.getOptionMap());
-        intent.putExtra("selectedList", (Serializable) cell.getValue());
+        MultiSelectCommand command = new MultiSelectCommand();
+        command.setIsCancelable(true);
+        command.setCtrlCode(cellBean.getCtrlCode());
+        command.setOptions(cellBean.getOptionMap());
+        command.setSelectedList((List<SerialableEntry<String, String>>) cell.getValue());
+        intent.putExtra(MultiSelectCommand.PARAM_COMMAND,command);
         int requestCode = activity.addActivityCallback(new FormActivity.IFormActivityCallback() {
             @Override
             public void onActivityResult(int resultCode, Intent data) {

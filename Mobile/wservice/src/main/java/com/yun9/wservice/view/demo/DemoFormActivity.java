@@ -145,6 +145,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         multiSelectFormCellBean.setLabel("测试多选");
         multiSelectFormCellBean.setKey("testMultiSelect");
         multiSelectFormCellBean.setType(MultiSelectFormCell.class.getSimpleName());
+        multiSelectFormCellBean.setCtrlCode("cycle");
         multiSelectFormCellBean.setMaxNum(2);
         multiSelectFormCellBean.setMinNum(1);
         List<SerialableEntry<String,String>> list = new ArrayList<>();
