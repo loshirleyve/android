@@ -246,7 +246,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // if (requestCode == formRequestCode && resultCode == FormActivity.RESULT_OK) {
+        if (requestCode == formRequestCode && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
         FormBean formBean = (FormBean) data.getSerializableExtra("form");
         Client client = new Client();
         client.setInstid((String) formBean.getCellBeanValue("instid"));
@@ -269,7 +269,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         client.setContactposition("legalperson");
 
         addToDB(client);
-        // }
+        }
     }
 
     private void addToDB(Client client) {
@@ -297,12 +297,13 @@ public class ClientActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                showToast("-------------------------------");
+                Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinally(Response response) {
-                refresh();
+                clientListAdapter.notifyDataSetChanged();
+                mPtrFrame.refreshComplete();
             }
         });
     }
