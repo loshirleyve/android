@@ -10,4 +10,16 @@
         </output>
         <type>yun9</type>
     </repository>
+
+    <!--上传机构客户信息-->
+    <repository>
+        <name>AddInstClients</name>
+        <action>com.yun9.ws.biz.service.AddInstClientsService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Client</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>
