@@ -2,8 +2,13 @@ package com.yun9.wservice.view.order;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -33,6 +38,10 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         super.onCreate(savedInstanceState);
         orderId = getIntent().getStringExtra("orderid");
         this.buildView();
+
+
+        // 测试圆形
+
     }
 
     @Override

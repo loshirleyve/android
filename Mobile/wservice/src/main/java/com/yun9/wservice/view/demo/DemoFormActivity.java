@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.yun9.jupiter.form.Form;
 import com.yun9.jupiter.form.FormActivity;
+import com.yun9.jupiter.form.FormCommand;
 import com.yun9.jupiter.form.cell.DetailFormCell;
 import com.yun9.jupiter.form.cell.DocFormCell;
 import com.yun9.jupiter.form.cell.ImageFormCell;
@@ -51,6 +52,8 @@ public class DemoFormActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.content)
     private TextView contentTV;
 
+    private FormCommand command;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_demo_form;
@@ -82,7 +85,10 @@ public class DemoFormActivity extends JupiterFragmentActivity {
             public void onClick(View view) {
                 FormBean formBean = fakeData();
                 String valueJson = contentTV.getText().toString();
-                FormActivity.start(DemoFormActivity.this, REQUEST_CODE.NORMAL, JsonUtil.beanToJson(formBean),valueJson);
+                command = new FormCommand();
+                command.setConfigJson(JsonUtil.beanToJson(formBean));
+                command.setValueJson(valueJson);
+                FormActivity.start(DemoFormActivity.this, command);
             }
         });
 
@@ -139,6 +145,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         multiSelectFormCellBean.setLabel("测试多选");
         multiSelectFormCellBean.setKey("testMultiSelect");
         multiSelectFormCellBean.setType(MultiSelectFormCell.class.getSimpleName());
+        multiSelectFormCellBean.setCtrlCode("cycle");
         multiSelectFormCellBean.setMaxNum(2);
         multiSelectFormCellBean.setMinNum(1);
         List<SerialableEntry<String,String>> list = new ArrayList<>();
@@ -195,7 +202,7 @@ public class DemoFormActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE.NORMAL
+        if (requestCode == command.getRequestCode()
                 && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
             FormBean formBean = (FormBean) data.getSerializableExtra("form");
             contentTV.setText(beanToJson(formBean.getValue()));
@@ -207,8 +214,4 @@ public class DemoFormActivity extends JupiterFragmentActivity {
         return gson.toJson(bean);
     }
 
-
-    public class REQUEST_CODE {
-        public static final int NORMAL = 100;
-    }
 }

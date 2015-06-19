@@ -10,4 +10,15 @@
         </output>
         <type>yun9</type>
     </repository>
+
+    <!--获取控制编码-->
+    <repository>
+        <name>QueryCtrlCode</name>
+        <action>com.yun9.sys.md.service.QueryMdCtrlcodeService</action>
+        <output>
+            <classname>com.yun9.wservice.model.CtrlCode</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 </repositorys>

@@ -51,36 +51,32 @@ public class FormActivity extends JupiterFragmentActivity {
 
     private int baseRequestCode = 10000;
 
+    private FormCommand command;
+
     @Override
     protected int getContentView() {
         return R.layout.form_page;
     }
 
-    public static void start(Activity activity, int requestCode, FormBean formBan) {
+    public static void start(Activity activity, FormCommand command) {
         Intent intent = new Intent(activity, FormActivity.class);
-        intent.putExtra("form", formBan);
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    public static void start(Activity activity, int requestCode, String configJson,String valueJson) {
-        Intent intent = new Intent(activity, FormActivity.class);
-        intent.putExtra("formJson", configJson);
-        intent.putExtra("valueJson",valueJson);
-        activity.startActivityForResult(intent, requestCode);
+        intent.putExtra(FormCommand.PARAM_COMMAND, command);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityCallbackMap = new HashMap<>();
-        String json =  this.getIntent().getStringExtra("formJson");
+        command = (FormCommand) this.getIntent().getSerializableExtra(FormCommand.PARAM_COMMAND);
+        String json =  command.getConfigJson();
         if (AssertValue.isNotNullAndNotEmpty(json)) {
             formBean = FormBean.fromJson(json);
         } else {
-            formBean = (FormBean) this.getIntent().getSerializableExtra("form");
+            formBean = command.getFormBean();
         }
         form = Form.getInstance(formBean);
-        String valueJson =  this.getIntent().getStringExtra("valueJson");
+        String valueJson =  command.getValueJson();
         if (AssertValue.isNotNullAndNotEmpty(valueJson)) {
             form.loadDataFromJson(valueJson);
         }
@@ -242,9 +238,20 @@ public class FormActivity extends JupiterFragmentActivity {
             this.showToast(message);
             return;
         }
-        gatherFormBean();
-        FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
-        FormActivity.this.finish();
+        if (command.getCallback() != null){
+            if (command.getCallback().callback(form.getFormBean())){
+                gatherFormBean();
+                FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
+                FormActivity.this.finish();
+                return;
+            }
+        } else {
+            gatherFormBean();
+            FormActivity.this.setResult(RESPONSE_CODE.COMPLETE, getIntent());
+            FormActivity.this.finish();
+        }
+
+
     }
 
     private void doCancel() {

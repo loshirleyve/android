@@ -1,6 +1,6 @@
 package com.yun9.wservice.view.common;
 
-import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,12 +8,21 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.CtrlCode;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +43,16 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
     private List<SerialableEntry<String, String>> selectedList;
     private List<SerialableEntry<String, String>> options;
 
+    private MultiSelectCommand command;
+
+    public static void start(Activity activity, MultiSelectCommand command) {
+        Intent intent = new Intent(activity,MultiSelectActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MultiSelectCommand.PARAM_COMMAND,command);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent,command.getRequestCode());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,32 +61,60 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         submitTV = (TextView) this.findViewById(R.id.submit);
         initData();
         this.build();
-        this.setupAdapter();
+        this.loadOptions();
     }
 
     private void initData() {
-
-        Serializable tmp;
-        tmp = getIntent().getSerializableExtra("options");
-        if (tmp != null) {
-            options = (List<SerialableEntry<String, String>>) tmp;
-        } else {
+        command = (MultiSelectCommand) getIntent().getSerializableExtra(MultiSelectCommand.PARAM_COMMAND);
+        options = command.getOptions();
+        if (options == null) {
             options = new ArrayList<>();
-        } 
-        tmp = getIntent().getSerializableExtra("selectedList");
-        if (tmp != null) {
-            selectedList = (List<SerialableEntry<String, String>>) tmp;
-        } else {
+        }
+        selectedList = command.getSelectedList();
+        if (selectedList == null) {
             selectedList = new ArrayList<>();
         }
-        tmp = getIntent().getStringExtra("ctrlCode");
-        if (tmp != null) {
-            ctrlCode = (String) tmp;
-        }
-        boolean isCancelable = getIntent().getBooleanExtra("isCancelable", false);
+        ctrlCode = command.getCtrlCode();
+        boolean isCancelable = command.isCancelable();
         if (isCancelable) {
-            options.add(0, new SerialableEntry<String, String>(CACEL_ITEM_ID,CACEL_ITEM_NAME));
+            options.add(0, new SerialableEntry<String, String>(CACEL_ITEM_ID, CACEL_ITEM_NAME));
         }
+
+    }
+
+    private void loadOptions() {
+        if (!AssertValue.isNotNullAndNotEmpty(ctrlCode)) {
+            this.setupAdapter();
+            return;
+        }
+        ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
+        Resource resource = resourceFactory.create("QueryCtrlCode");
+        resource.param("defno",ctrlCode);
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                if (response.getPayload() == null){
+                    return;
+                }
+                List<CtrlCode> ctrlCodes = (List<CtrlCode>) response.getPayload();
+                CtrlCode ctrlCode;
+                for (int i = 0; i < ctrlCodes.size(); i++) {
+                    ctrlCode = ctrlCodes.get(i);
+                    options.add(new SerialableEntry<String, String>(ctrlCode.getNo()
+                                                                        ,ctrlCode.getName()));
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                setupAdapter();
+            }
+        });
     }
     
     private void build() {

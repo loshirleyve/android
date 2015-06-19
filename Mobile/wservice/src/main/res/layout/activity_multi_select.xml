@@ -8,11 +8,15 @@
         android:layout_height="wrap_content"
         tb:titleLeftIcoVisibility="true"
         tb:titleText="@string/please_select" />
-    <ListView
-        android:id="@+id/listview"
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar"></ListView>
+        android:layout_below="@id/title_bar">
+        <com.yun9.jupiter.widget.JupiterListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterListView>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
     <TextView
         android:id="@+id/submit"
         android:layout_width="match_parent"

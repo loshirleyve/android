@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterBadgeView;
 
@@ -99,7 +100,7 @@ public class JupiterTextIco extends JupiterEditableView{
         // 设置图片
         if (AssertValue.isNotNullAndNotEmpty(image)) {
             itemImage.setVisibility(VISIBLE);
-            ImageLoader.getInstance().displayImage(image, itemImage);
+            ImageLoaderUtil.getInstance(this.getContext()).displayImage(image, itemImage);
         } else {
             itemImage.setVisibility(GONE);
         }

@@ -76,7 +76,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:rating="3"
-                    android:isIndicator="true"
                     android:progressDrawable="@drawable/room_rating_bar"
                     android:numStars="5"/>
             </LinearLayout>
