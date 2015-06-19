@@ -11,6 +11,7 @@ import com.yun9.jupiter.http.HttpFactory;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
+import com.yun9.jupiter.model.SysFileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.wservice.R;
 
@@ -138,7 +139,16 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
                 @Override
                 public void onSuccess(Response response) {
                     uploadFileBeanWrapper.setSuccessed(true);
-                    uploadFileBeanWrapper.getFileBean().setStorageType(FileBean.FILE_STORAGE_TYPE_YUN);
+
+                    if (AssertValue.isNotNull(response.getPayload()) && AssertValue.isNotNull(response.getPayload())){
+                        List<SysFileBean> sysFileBeans = (List<SysFileBean>) response.getPayload();
+
+                        if (AssertValue.isNotNullAndNotEmpty(sysFileBeans)) {
+                            uploadFileBeanWrapper.getFileBean().setSysFileBean(sysFileBeans.get(0));
+                        }
+                    }
+
+
                 }
 
                 @Override

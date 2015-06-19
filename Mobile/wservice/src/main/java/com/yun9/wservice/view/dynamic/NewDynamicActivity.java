@@ -405,7 +405,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
             UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(NewDynamicActivity.this, FileBean.FILE_LEVEL_USER, fileBeans, new UploadFileAsyncTask.OnFileUploadCallback() {
                 @Override
                 public void onPostExecute(List<FileBean> fileBeans) {
-
+                    fileBeans.size();
                 }
             });
             uploadFileAsyncTask.execute();

@@ -15,5 +15,5 @@ public interface HttpFactory {
 
 	public void uploadFile(String userid, String instid, String floderid, String level, String filetype, String descr, File file, AsyncHttpResponseCallback callback);
 
-	public void uploadFileSync(String userid, String instid, String floderid, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback);
+	//public void uploadFileSync(String userid, String instid, String floderid, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback);
 }

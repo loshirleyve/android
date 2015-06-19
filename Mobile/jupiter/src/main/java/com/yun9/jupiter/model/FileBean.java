@@ -58,18 +58,7 @@ public class FileBean implements java.io.Serializable {
     }
 
     public FileBean(SysFileBean sysFileBean) {
-        this.sysFileBean = sysFileBean;
-        filePath = sysFileBean.getId();
-        absolutePath = sysFileBean.getId();
-        thumbnailPath = sysFileBean.getId();
-        name = sysFileBean.getName();
-        extensionName = sysFileBean.getType();
-        dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
-        type = FILE_STORAGE_TYPE_YUN;
-        storageType = FileBean.FILE_STORAGE_TYPE_YUN;
-        size = "";
-        id = sysFileBean.getId();
-        initIcoResource();
+        this.setSysFileBean(sysFileBean);
     }
 
     public FileBean(File file) {
@@ -98,6 +87,21 @@ public class FileBean implements java.io.Serializable {
         this.type = type;
         this.size = FileUtil.getFileSize(size);
         this.storageType = FileBean.FILE_STORAGE_TYPE_LOCAL;
+    }
+
+    public void setSysFileBean(SysFileBean sysFileBean){
+        this.sysFileBean = sysFileBean;
+        filePath = sysFileBean.getId();
+        absolutePath = sysFileBean.getId();
+        thumbnailPath = sysFileBean.getId();
+        name = sysFileBean.getName();
+        extensionName = sysFileBean.getType();
+        dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
+        type = FILE_STORAGE_TYPE_YUN;
+        storageType = FileBean.FILE_STORAGE_TYPE_YUN;
+        size = "";
+        id = sysFileBean.getId();
+        initIcoResource();
     }
 
     private void initIcoResource() {
@@ -220,10 +224,6 @@ public class FileBean implements java.io.Serializable {
 
     public SysFileBean getSysFileBean() {
         return sysFileBean;
-    }
-
-    public void setSysFileBean(SysFileBean sysFileBean) {
-        this.sysFileBean = sysFileBean;
     }
 
     public String getAlbum() {
