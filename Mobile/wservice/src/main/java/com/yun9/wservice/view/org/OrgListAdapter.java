@@ -1,8 +1,10 @@
 package com.yun9.wservice.view.org;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.util.AssertValue;
@@ -82,7 +84,17 @@ public class OrgListAdapter extends JupiterAdapter {
         item.getSutitleTv().setText(orgListBean.getUserNames());
         item.select(orgListBean.isSelected());
         item.setTag(orgListBean);
+        item.setOnClickListener(onClickNewOrgListener);
 
         return item;
     }
+
+
+    private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgListBean bean=(OrgListBean) v.getTag();
+            OrgEditActivity.start((Activity)mContext, new OrgEditCommand().setEdit(true).setOrgid(bean.getId()));
+        }
+    };
 }

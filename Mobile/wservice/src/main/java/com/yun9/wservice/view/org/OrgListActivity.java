@@ -250,6 +250,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
         }
     };
 
+
     private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

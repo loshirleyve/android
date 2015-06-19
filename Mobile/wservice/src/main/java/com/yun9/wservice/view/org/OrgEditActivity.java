@@ -6,8 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.form.model.ImageFormCellBean;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
@@ -18,8 +23,10 @@ import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.OrgCompositeInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +63,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.edit_ico_orgs)
     private JupiterEditIco jupiterEditorgIco;
 
-    public OrgEditActivity() {
-    }
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
 
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
@@ -80,6 +88,13 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
 
         jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText("成员列表");
+        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+        titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrgEditActivity.this.setEdit(!edit);
+            }
+        });
 
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
 
@@ -92,13 +107,16 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         //如果没有orgid则进入新增状态
         if(!AssertValue.isNotNull(command) ||  !AssertValue.isNotNullAndNotEmpty(command.getOrgid()))
         {
-//            neworg.setEnabled(true);
-//            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
-//            orgtips.setText("[向左滑动可编辑]");
-//            jupiterEdituserIco.setVisibility(View.GONE);
-//            jupiterEditorgIco.setVisibility(View.GONE);
+            neworg.setEnabled(true);
+            titleBarLayout.getTitleRightTv().setText("保存");
+            jupiterEdituserIco.setVisibility(View.GONE);
+            jupiterEditorgIco.setVisibility(View.GONE);
         }
-
+        else {
+            neworg.setEnabled(false);
+            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+            orgtips.setText("[向左滑动可编辑]");
+        }
     }
 
     public void initWeight()
@@ -106,7 +124,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         useritemList = new ArrayList<>();
         orgitemList = new ArrayList<>();
         setupEditIco();
-       // builder();
+        builder();
     }
 
 
@@ -122,9 +140,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             }
         });
         useritemList.add(useritem);
-//        useradapter = new BasicJupiterEditAdapter(useritemList);
-//        useradapter.edit(true);
-//        jupiterEdituserIco.setAdapter(useradapter);
+        useradapter = new BasicJupiterEditAdapter(useritemList);
+        useradapter.edit(true);
+        jupiterEdituserIco.setAdapter(useradapter);
 
 
         JupiterTextIco orgitem=new JupiterTextIcoWithoutCorner(getApplicationContext());
@@ -137,9 +155,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             }
         });
         orgitemList.add(orgitem);
-//        orgadapter = new BasicJupiterEditAdapter(orgitemList);
-//        orgadapter.edit(true);
-//        jupiterEditorgIco.setAdapter(orgadapter);
+        orgadapter = new BasicJupiterEditAdapter(orgitemList);
+        orgadapter.edit(true);
+        jupiterEditorgIco.setAdapter(orgadapter);
     }
 
     public void builder()
@@ -226,7 +244,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private void setEdit(boolean edit){
         this.edit = edit;
-
     }
 
     private void setAdd(){
@@ -246,4 +263,28 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             finish();
         }
     };
+
+    public void bulieInfo()
+    {
+        Resource resource = resourceFactory.create("QueryOrgCompositeInfo");
+        resource.param("orgid", command.getOrgid());
+
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
+    }
+
 }

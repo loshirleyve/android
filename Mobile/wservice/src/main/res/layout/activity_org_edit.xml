@@ -67,6 +67,7 @@
             android:background="@color/whites"
             android:enabled="false"
             android:paddingLeft="20dp"
+            android:hint="@string/new_org_tip"
             android:textColor="@color/black" />
 
     </LinearLayout>
