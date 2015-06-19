@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
@@ -43,13 +44,20 @@ public class ImageBrowerPagerAdapter extends PagerAdapter {
         FileBean fileBean = fileBeans.get(position);
         imageBrowerPageItemWidget.setTag(fileBean);
 
-        CharSequence text = mContext.getResources().getString(R.string.jupiter_viewpager_indicator, position+1, fileBeans.size());
+        CharSequence text = mContext.getResources().getString(R.string.jupiter_viewpager_indicator, position + 1, fileBeans.size());
 
         imageBrowerPageItemWidget.getPageNoTV().setText(text);
 
 
         container.addView(imageBrowerPageItemWidget, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        ImageLoaderUtil.getInstance(mContext).displayImage(fileBean.getFilePath(), imageBrowerPageItemWidget.getPhotoView(),new SimpleImageLoadingListener(){
+
+        //尝试查找原版本
+        String path = FileCache.getInstance().getFileUrl(fileBean.getId());
+        if (!AssertValue.isNotNullAndNotEmpty(path)) {
+            path = fileBean.getFilePath();
+        }
+
+        ImageLoaderUtil.getInstance(mContext).displayImage(path, imageBrowerPageItemWidget.getPhotoView(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 super.onLoadingStarted(imageUri, view);

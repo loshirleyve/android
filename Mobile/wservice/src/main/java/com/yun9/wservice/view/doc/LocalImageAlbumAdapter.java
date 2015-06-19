@@ -58,7 +58,7 @@ public class LocalImageAlbumAdapter extends JupiterAdapter {
         localImageAlbumItemWidget.setTag(fileBean);
         localImageAlbumItemWidget.getInfoTV().setText(fileBean.getName());
 
-        ImageLoaderUtil.getInstance(mContext).displayImage("file://" + fileBean.getThumbnailPath(), localImageAlbumItemWidget.getImageView());
+        ImageLoaderUtil.getInstance(mContext).displayImage(fileBean.getThumbnailPath(), localImageAlbumItemWidget.getImageView());
 
         if (AssertValue.isNotNullAndNotEmpty(fileBean.getChilds())) {
             localImageAlbumItemWidget.getNumTV().setText(fileBean.getChilds().size() + "张图片");

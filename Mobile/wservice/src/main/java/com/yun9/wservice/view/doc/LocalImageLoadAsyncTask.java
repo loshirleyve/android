@@ -21,7 +21,7 @@ public class LocalImageLoadAsyncTask extends AsyncTask<Void, Integer, List<FileB
 
     private ContentResolver mCr;
 
-    private Map<String, FileBean> albums = new HashMap<>();
+    private List<FileBean> albums = new ArrayList<>();
 
     private OnImageLoadCallback onImageLoadCallback;
 
@@ -74,9 +74,10 @@ public class LocalImageLoadAsyncTask extends AsyncTask<Void, Integer, List<FileB
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                 String album = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME));
                 String tempSize = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.SIZE));
-                String size = "";
-                if (AssertValue.isNotNullAndNotEmpty(tempSize)){
-                    size = FileUtil.getFileSize(Long.parseLong(tempSize));
+                String name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+                long size = 0;
+                if (AssertValue.isNotNullAndNotEmpty(tempSize)) {
+                    size = Long.parseLong(tempSize);
                 }
 
                 String dateAdded = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATE_ADDED));
@@ -84,57 +85,12 @@ public class LocalImageLoadAsyncTask extends AsyncTask<Void, Integer, List<FileB
                 if (!AssertValue.isNotNullAndNotEmpty(thumbnailsPath)) {
                     thumbnailsPath = path;
                 }
-
-
-                if (albums.containsKey(album) && AssertValue.isNotNull(albums.get(album))) {
-                    FileBean albumBean = albums.get(album);
-                    FileBean fileBean = new FileBean();
-
-                    fileBean.setId(_id + "");
-                    fileBean.setName(album);
-                    fileBean.setDateAdded(dateAdded);
-                    fileBean.setAbsolutePath(path);
-                    fileBean.setFilePath("file://" + path);
-                    fileBean.setThumbnailPath(thumbnailsPath);
-                    fileBean.setType(FileBean.FILE_TYPE_IMAGE);
-                    fileBean.setSize(size);
-
-                    albumBean.putChild(fileBean);
-
-                } else {
-                    FileBean albumBean = new FileBean();
-                    albumBean.setId(_id + "");
-                    albumBean.setName(album);
-                    albumBean.setDateAdded(dateAdded);
-                    albumBean.setFilePath("file://" + path);
-                    albumBean.setAbsolutePath(path);
-                    albumBean.setThumbnailPath(thumbnailsPath);
-                    albumBean.setType(FileBean.FILE_TYPE_IMAGE);
-                    albumBean.setSize(size);
-                    albums.put(album, albumBean);
-
-                    FileBean fileBean = new FileBean();
-                    fileBean.setId(_id + "");
-                    fileBean.setName(album);
-                    fileBean.setDateAdded(dateAdded);
-                    fileBean.setAbsolutePath(path);
-                    fileBean.setFilePath("file://" + path);
-                    fileBean.setThumbnailPath(thumbnailsPath);
-                    fileBean.setType(FileBean.FILE_TYPE_IMAGE);
-                    fileBean.setSize(size);
-                    albumBean.putChild(fileBean);
-                }
+                albums.add(new FileBean(_id + "", name, album, dateAdded, path, thumbnailsPath, FileBean.FILE_TYPE_IMAGE, size));
 
             } while (cursor.moveToNext());
         }
 
-        List<FileBean> fileBeans = new ArrayList<>();
-
-        for (Map.Entry<String, FileBean> entity : albums.entrySet()) {
-            fileBeans.add(entity.getValue());
-        }
-
-        return fileBeans;
+        return albums;
     }
 
 }

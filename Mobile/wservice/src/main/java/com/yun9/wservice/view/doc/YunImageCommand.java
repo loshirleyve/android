@@ -24,6 +24,10 @@ public class YunImageCommand extends JupiterCommand {
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
 
+    private String userid;
+
+    private String instid;
+
 
     public boolean isEdit() {
         return edit;
@@ -68,6 +72,24 @@ public class YunImageCommand extends JupiterCommand {
 
     public YunImageCommand setMaxSelectNum(int maxSelectNum) {
         this.maxSelectNum = maxSelectNum;
+        return this;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public YunImageCommand setUserid(String userid) {
+        this.userid = userid;
+        return this;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public YunImageCommand setInstid(String instid) {
+        this.instid = instid;
         return this;
     }
 }

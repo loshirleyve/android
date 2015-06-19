@@ -169,21 +169,15 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNullAndNotEmpty(albums)) {
             currImages.clear();
             for (FileBean fileBean : albums) {
-                if (AssertValue.isNotNull(fileBean) && AssertValue.isNotNullAndNotEmpty(fileBean.getChilds())) {
-                    for (FileBean fileBean1 : fileBean.getChilds()) {
-
-                        //检查是否带入的参数选择状态
-                        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
-                            for (FileBean selectIB : command.getSelectImages()) {
-                                if (selectIB.getId() == fileBean1.getId()) {
-                                    fileBean1.setSelected(true);
-                                }
-                            }
+                //检查是否带入的参数选择状态
+                if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
+                    for (FileBean selectIB : command.getSelectImages()) {
+                        if (selectIB.getId().equals(fileBean.getId())) {
+                            fileBean.setSelected(true);
                         }
-
-                        currImages.add(fileBean1);
                     }
                 }
+                currImages.add(fileBean);
             }
 
             if (AssertValue.isNotNull(localImageGridViewAdapter)) {

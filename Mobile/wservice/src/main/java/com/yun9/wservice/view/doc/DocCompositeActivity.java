@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.yun9.jupiter.image.ImageBrowerActivity;
 import com.yun9.jupiter.image.ImageBrowerCommand;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
@@ -22,6 +23,7 @@ import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
@@ -70,7 +72,6 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.image_online)
     private JupiterRowStyleSutitleLayout yunImageBtn;
 
-
     @ViewInject(id = R.id.image_local_gv)
     private JupiterGridView localImagesGV;
 
@@ -83,6 +84,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.file_online_lv)
     private JupiterListView yunFileLV;
 
+    @BeanInject
+    private SessionManager sessionManager;
 
     private List<FileBean> onSelectLocalImages = new ArrayList<>();
 
@@ -96,6 +99,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
 
     private int maxSelectNum = 6;
 
+    private String mUserid;
+    private String mInstid;
+
 
     public static void start(Activity activity, DocCompositeCommand command) {
         Intent intent = new Intent(activity, DocCompositeActivity.class);
@@ -103,7 +109,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         bundle.putSerializable("command", command);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
@@ -118,7 +124,19 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         command = (DocCompositeCommand) this.getIntent().getSerializableExtra("command");
 
         if (AssertValue.isNotNull(command)) {
-            mEdit = command.isEdit();
+            this.setEdit(command.isEdit());
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
+            mUserid = command.getUserid();
+        } else {
+            mUserid = sessionManager.getUser().getId();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
+            mInstid = command.getInstid();
+        } else {
+            mInstid = sessionManager.getInst().getId();
         }
 
         localImageBtn.setOnClickListener(onLocalImageClickListener);
@@ -127,6 +145,10 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         yunImageBtn.setOnClickListener(onYunImageClickListener);
 
         this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+        this.titleBarLayout.getTitleRight().setOnClickListener(onEditClickListener);
+
+        completeButton.setOnClickListener(onCompleteClickListener);
+        sendMsgCardButton.setOnClickListener(onCompleteClickListener);
 
         localImagesGV.setAdapter(localImageSelectsGVAdapter);
         localImagesGV.setOnItemClickListener(onLocalImageGridViewItemClickListener);
@@ -140,12 +162,76 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         yunFileLV.setAdapter(yunFileListViewAdapter);
         yunFileLV.setOnItemClickListener(onYunFileListViewItemClickListener);
 
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectFiles())) {
+            for (FileBean fileBean : command.getOnSelectFiles()) {
+
+                if (FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
+                    onSelectYunFiles.add(fileBean);
+                }
+
+                if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBean.getStorageType())) {
+                    onSelectLocalFiles.add(fileBean);
+                }
+            }
+
+            localFileListViewAdapter.notifyDataSetChanged();
+            yunFileListViewAdapter.notifyDataSetChanged();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectImages())) {
+            for (FileBean fileBean : command.getOnSelectImages()) {
+
+                if (FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
+                    onSelectYunImages.add(fileBean);
+                }
+
+                if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBean.getStorageType())) {
+                    onSelectLocalImages.add(fileBean);
+                }
+            }
+
+            localImageSelectsGVAdapter.notifyDataSetChanged();
+            yunImageSelectsGVAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void setEdit(boolean edit) {
+        this.mEdit = edit;
+
+        if (mEdit) {
+            titleBarLayout.getTitleRightTv().setText(R.string.app_cancel);
+        } else {
+            titleBarLayout.getTitleRightTv().setText(R.string.app_select);
+        }
+
+        if (this.mEdit && AssertValue.isNotNull(command) && DocCompositeCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
+            sendMsgCardButton.setVisibility(View.VISIBLE);
+        } else {
+            sendMsgCardButton.setVisibility(View.GONE);
+        }
+
+        if (this.mEdit
+                && AssertValue.isNotNull(command) && DocCompositeCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
+            completeButton.setVisibility(View.VISIBLE);
+        } else {
+            completeButton.setVisibility(View.GONE);
+        }
+
     }
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            setResult(DocCompositeCommand.RESULT_CODE_CANCEL);
             finish();
+        }
+    };
+
+    private View.OnClickListener onEditClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setEdit(!mEdit);
         }
     };
 
@@ -153,7 +239,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (!AssertValue.isNotNull(localImageCommand)) {
-                localImageCommand = new LocalImageCommand().setEdit(mEdit).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum);
+                localImageCommand = new LocalImageCommand().setEdit(mEdit).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(mUserid).setInstid(mInstid);
             }
             localImageCommand.setSelectImages(onSelectLocalImages);
             LocalImageActivity.start(DocCompositeActivity.this, localImageCommand);
@@ -166,7 +252,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
 
             if (!AssertValue.isNotNull(localFileCommand)) {
-                localFileCommand = new LocalFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(LocalFileCommand.COMPLETE_TYPE_CALLBACK);
+                localFileCommand = new LocalFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(LocalFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
             }
             localFileCommand.setSelectFiles(onSelectLocalFiles);
             LocalFileActivity.start(DocCompositeActivity.this, localFileCommand);
@@ -178,7 +264,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (!AssertValue.isNotNull(yunFileCommand)) {
-                yunFileCommand = new YunFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK);
+                yunFileCommand = new YunFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
             }
             yunFileCommand.setSelectFiles(onSelectYunFiles);
             YunFileActivity.start(DocCompositeActivity.this, yunFileCommand);
@@ -189,7 +275,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (!AssertValue.isNotNull(yunImageCommand)) {
-                yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK);
+                yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
             }
             yunImageCommand.setSelectImages(onSelectYunImages);
             YunImageActivity.start(DocCompositeActivity.this, yunImageCommand);
@@ -225,6 +311,58 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //TODO 打开文件详情
             Toast.makeText(mContext, "打开文件详情。", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener onCompleteClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (AssertValue.isNotNull(command)) {
+
+                if (DocCompositeCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
+                    ArrayList<FileBean> onSelectFiles = new ArrayList<>();
+                    ArrayList<FileBean> onSelectImages = new ArrayList<>();
+
+                    if (AssertValue.isNotNullAndNotEmpty(onSelectLocalFiles)) {
+                        for (FileBean fileBean : onSelectLocalFiles) {
+                            onSelectFiles.add(fileBean);
+                        }
+                    }
+
+                    if (AssertValue.isNotNullAndNotEmpty(onSelectYunFiles)) {
+                        for (FileBean fileBean : onSelectYunFiles) {
+                            onSelectFiles.add(fileBean);
+                        }
+                    }
+
+                    if (AssertValue.isNotNullAndNotEmpty(onSelectLocalImages)) {
+                        for (FileBean fileBean : onSelectLocalImages) {
+                            onSelectImages.add(fileBean);
+                        }
+                    }
+
+                    if (AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
+                        for (FileBean fileBean : onSelectYunImages) {
+                            onSelectImages.add(fileBean);
+                        }
+                    }
+
+                    Intent intent = new Intent();
+                    intent.putExtra(DocCompositeCommand.PARAM_FILE, onSelectFiles);
+                    intent.putExtra(DocCompositeCommand.PARAM_IMAGE, onSelectImages);
+                    setResult(LocalFileCommand.RESULT_CODE_OK, intent);
+                    finish();
+
+                }
+
+                if (DocCompositeCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
+                    //TODO 调用发送动态
+                    finish();
+                }
+            } else {
+                setResult(DocCompositeCommand.RESULT_CODE_ERROR);
+                finish();
+            }
         }
     };
 
@@ -286,7 +424,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                 albumImageGridItem = new AlbumImageGridItem(DocCompositeActivity.this);
             }
 
-            ImageLoaderUtil.getInstance(getApplicationContext()).displayImage("file://" + fileBean.getThumbnailPath(), albumImageGridItem.getImageView());
+            ImageLoaderUtil.getInstance(getApplicationContext()).displayImage(fileBean.getThumbnailPath(), albumImageGridItem.getImageView());
             albumImageGridItem.setTag(fileBean);
             albumImageGridItem.getDeleteBadgeView().setTag(fileBean);
             albumImageGridItem.getDeleteBadgeView().show();

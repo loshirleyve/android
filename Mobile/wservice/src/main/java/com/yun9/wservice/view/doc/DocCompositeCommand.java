@@ -1,6 +1,9 @@
 package com.yun9.wservice.view.doc;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.model.FileBean;
+
+import java.util.List;
 
 /**
  * Created by Leon on 15/6/2.
@@ -9,6 +12,10 @@ public class DocCompositeCommand extends JupiterCommand {
     public static final String COMPLETE_TYPE_SENDMSGCARD = "sendmsgcard";
     public static final String COMPLETE_TYPE_CALLBACK = "callback";
 
+    public static final String PARAM_FILE = "file";
+    public static final String PARAM_IMAGE = "image";
+
+
     private boolean edit;
 
     private String instid;
@@ -16,6 +23,10 @@ public class DocCompositeCommand extends JupiterCommand {
     private String userid;
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
+
+    private List<FileBean> onSelectFiles;
+
+    private List<FileBean> onSelectImages;
 
 
     public boolean isEdit() {
@@ -53,4 +64,23 @@ public class DocCompositeCommand extends JupiterCommand {
         this.completeType = completeType;
         return this;
     }
+
+    public List<FileBean> getOnSelectFiles() {
+        return onSelectFiles;
+    }
+
+    public DocCompositeCommand setOnSelectFiles(List<FileBean> onSelectFiles) {
+        this.onSelectFiles = onSelectFiles;
+        return this;
+    }
+
+    public List<FileBean> getOnSelectImages() {
+        return onSelectImages;
+    }
+
+    public DocCompositeCommand setOnSelectImages(List<FileBean> onSelectImages) {
+        this.onSelectImages = onSelectImages;
+        return this;
+    }
 }
+
