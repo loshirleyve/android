@@ -52,8 +52,8 @@ public class ClientListAdapter extends JupiterAdapter {
 
         if (AssertValue.isNotNull(client)) {
             clientItemLayout.getTitle_TV().setText(client.getName());
-            clientItemLayout.getContact_TV().setText(client.getId());
-            clientItemLayout.getPhone_TV().setText(client.getSn());
+            clientItemLayout.getContact_TV().setText(client.getContactman());
+            clientItemLayout.getPhone_TV().setText(client.getContactphone());
             clientItemLayout.setTag(client);
         }
 
