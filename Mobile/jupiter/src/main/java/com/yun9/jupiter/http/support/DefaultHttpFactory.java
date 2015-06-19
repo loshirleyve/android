@@ -1,6 +1,7 @@
 package com.yun9.jupiter.http.support;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
@@ -98,9 +99,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 response.setCause(appContext.getApplicationContext()
                         .getResources()
                         .getString(network_error_resource));
-
-
-                response.setCode("300");
+                response.setCode(Response.RESPONSE_CODE_NETWORKERROR);
                 callback.onFailure(response);
                 callback.onFinally(response);
             }
@@ -115,15 +114,9 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                     public void onSuccess(int statusCode, Header[] headers,
                                           byte[] responseBody) {
 
-                        try {
-                            String result = new String(responseBody, "utf-8");
-                            Log.i("", result);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-
                         Response response = createResponse(request, statusCode,
                                 headers, responseBody, null);
+
                         if (AssertValue.isNotNull(callback)) {
                             if ("100".equals(response.getCode())) {
                                 try {
@@ -385,7 +378,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 response.setCause(appContext.getApplicationContext()
                         .getResources()
                         .getString(network_error_resource));
-                response.setCode("300");
+                response.setCode(Response.RESPONSE_CODE_NETWORKERROR);
                 callback.onFailure(response);
             }
             return;
@@ -394,19 +387,24 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         AsyncHttpClient client = this.getAsyncHttpClient();
 
         String baseUrl = propertiesManager.getString("app.config.resource.yun9.file.upload.baseUrl", "utf-8");
-        String url = baseUrl + "?floderid=" + floderid + "&userid=" + userid
-                + "&instid=" + instid + "&level=" + level
-                + "&filetype=" + filetype
-                + "&descr=" + descr;
-        String contentType = "multipart/form-data";
-        String uploadFileKey = "22223";
-        // logger.d(url);
 
+//        String url = baseUrl + "?floderid=" + floderid + "&userid=" + userid
+//                + "&instid=" + instid + "&level=" + level
+//                + "&filetype=" + filetype
+//                + "&descr=" + descr;
+
+        String url = baseUrl;
+        String contentType = "multipart/form-data";
         com.loopj.android.http.RequestParams params = new com.loopj.android.http.RequestParams();
         try {
-            params.put(uploadFileKey, file, contentType);
-        } catch (Exception e) {
-            throw new RuntimeException("never appear");
+            params.put("filecontext", file, contentType);
+            params.put("userid", userid);
+            params.put("instid", instid);
+            params.put("filetype", filetype);
+            params.put("descr", descr);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
         }
 
         client.post(appContext.getApplicationContext(), url, params,
@@ -415,17 +413,18 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                     public void onSuccess(int i, Header[] headers, byte[] bytes) {
                         Response response = createResponse(null, i, headers, bytes, null);
 
-//						try {
-//							String resultValue = new String(bytes, "utf-8");
-//							Log.i("resultValue", resultValue);
-//						} catch (UnsupportedEncodingException e) {
-//							e.printStackTrace();
-//						}
-
                         if ("100".equals(response.getCode())) {
-                            callback.onSuccess(response);
+                            try {
+                                callback.onSuccess(response);
+                            } finally {
+                                callback.onFinally(response);
+                            }
                         } else {
-                            callback.onFailure(response);
+                            try {
+                                callback.onFailure(response);
+                            } finally {
+                                callback.onFinally(response);
+                            }
                         }
                     }
 
@@ -434,7 +433,11 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                                           byte[] bytes, Throwable throwable) {
                         Response response = createResponse(null, i, headers,
                                 bytes, throwable);
-                        callback.onFailure(response);
+                        try {
+                            callback.onFailure(response);
+                        } finally {
+                            callback.onFinally(response);
+                        }
                     }
                 });
     }
@@ -554,7 +557,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 response.setCause(appContext.getApplicationContext()
                         .getResources()
                         .getString(network_error_resource));
-                response.setCode("300");
+                response.setCode(Response.RESPONSE_CODE_NETWORKERROR);
                 callback.onFailure(response);
             }
             return;
@@ -567,21 +570,28 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers,
                                           byte[] responseBody) {
-
                         try {
                             String result = new String(responseBody, "utf-8");
-                            Log.i("", result);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
 
                         Response response = createResponse(request, statusCode,
                                 headers, responseBody, null);
+
                         if (AssertValue.isNotNull(callback)) {
                             if ("100".equals(response.getCode())) {
-                                callback.onSuccess(response);
+                                try {
+                                    callback.onSuccess(response);
+                                } finally {
+                                    callback.onFinally(response);
+                                }
                             } else {
-                                callback.onFailure(response);
+                                try {
+                                    callback.onFailure(response);
+                                } finally {
+                                    callback.onFinally(response);
+                                }
                             }
                         }
                     }
@@ -592,7 +602,11 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                         if (AssertValue.isNotNull(callback)) {
                             Response response = createResponse(request,
                                     statusCode, headers, responseBody, error);
-                            callback.onFailure(response);
+                            try {
+                                callback.onFailure(response);
+                            } finally {
+                                callback.onFinally(response);
+                            }
                         }
                     }
                 });

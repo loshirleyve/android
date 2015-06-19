@@ -3,8 +3,6 @@ package com.yun9.jupiter.util;
 import android.content.Context;
 
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-
-import com.yun9.jupiter.R;
 import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.model.CacheFile;
 
@@ -31,8 +29,14 @@ public class Y9ImageDownloader extends BaseImageDownloader {
         CacheFile cacheFile = FileCache.getInstance().getFile(imageUri);
         String newUrl = "";
         if (AssertValue.isNotNull(cacheFile)) {
-            newUrl = cacheFile.getUrl();
+            newUrl = cacheFile.getThumbnailUrl();
+
+            if (!AssertValue.isNotNullAndNotEmpty(newUrl)){
+                newUrl = cacheFile.getUrl();
+            }
+
         }
+
 
         if (AssertValue.isNotNullAndNotEmpty(newUrl)) {
             return getStreamFromNetwork(newUrl, extra);

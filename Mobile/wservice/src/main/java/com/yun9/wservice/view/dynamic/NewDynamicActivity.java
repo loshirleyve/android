@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,16 +19,24 @@ import com.yun9.jupiter.location.LocationFactory;
 import com.yun9.jupiter.location.OnGetPoiInfoListener;
 import com.yun9.jupiter.location.OnLocationListener;
 import com.yun9.jupiter.location.PoiInfoBean;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
+import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.doc.AlbumImageGridItem;
+import com.yun9.wservice.view.doc.DocCompositeActivity;
+import com.yun9.wservice.view.doc.DocCompositeCommand;
+import com.yun9.wservice.view.doc.FileItemWidget;
 import com.yun9.wservice.view.location.LocationSelectActivity;
 import com.yun9.wservice.view.location.LocationSelectCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
@@ -58,6 +68,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.images_gv)
     private JupiterGridView imageGV;
 
+    @ViewInject(id = R.id.file_lv)
+    private ListView fileLV;
+
     @ViewInject(id = R.id.share_to_gv)
     private JupiterGridView shareToGV;
 
@@ -79,11 +92,16 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.location_ll)
     private LinearLayout locationLL;
 
+    @BeanInject
+    private SessionManager sessionManager;
+
     private NewDynamicCommand command;
 
     private List<OrgAndUserBean> selectOrgAndUsers = new ArrayList<>();
 
-    private List<FileBean> selectFiles;
+    private List<FileBean> onSelectFiles = new ArrayList<>();
+
+    private List<FileBean> onSelectImages = new ArrayList<>();
 
     private NewDynamicShareInfoAdapter newDynamicShareInfoAdapter;
 
@@ -95,9 +113,16 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
     private boolean selectLocation = false;
 
+    private String userid;
+
+    private String instid;
+
     private LocationSelectCommand locationSelectCommand = new LocationSelectCommand();
 
     private TopicCommand topicCommand = new TopicCommand();
+
+    private DocCompositeCommand docCompositeCommand = new DocCompositeCommand();
+
 
     @Override
     protected int getContentView() {
@@ -118,6 +143,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         this.command = (NewDynamicCommand) this.getIntent().getSerializableExtra("command");
 
+        userid = sessionManager.getUser().getId();
+        instid = sessionManager.getInst().getId();
+
         this.selectImageRL.setOnClickListener(onSelectImageClickListener);
         this.selectUserRL.setOnClickListener(onSelectUserClickListener);
 //        this.selectOrgRL.setOnClickListener(onSelectOrgClickListener);
@@ -131,6 +159,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
         sendDate = DateUtil.getNowDate();
         this.timeTV.setText(DateUtil.getStringDate());
+
+        this.imageGV.setAdapter(imageGridViewAdapter);
+        this.fileLV.setAdapter(fileListViewAdapter);
 
         //载入参数代入的发送对象
         this.loadCommandSelectInfo();
@@ -226,12 +257,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void putFile(FileBean fileBean) {
-        if (!AssertValue.isNotNull(this.selectFiles)) {
-            this.selectFiles = new ArrayList<>();
-        }
-        this.selectFiles.add(fileBean);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -274,18 +299,47 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 dynamicContentET.setSelection(dynamicContentET.getText().length());
             }
         }
+
+        if (requestCode == docCompositeCommand.getRequestCode() && resultCode == DocCompositeCommand.RESULT_CODE_OK) {
+            List<FileBean> selectFiles = (List<FileBean>) data.getSerializableExtra(DocCompositeCommand.PARAM_FILE);
+            List<FileBean> selectImages = (List<FileBean>) data.getSerializableExtra(DocCompositeCommand.PARAM_IMAGE);
+
+            onSelectImages.clear();
+            onSelectFiles.clear();
+
+            if (AssertValue.isNotNullAndNotEmpty(selectImages)) {
+                for (FileBean fileBean : selectImages) {
+                    onSelectImages.add(fileBean);
+                }
+            }
+
+            if (AssertValue.isNotNullAndNotEmpty(selectFiles)) {
+                for (FileBean fileBean : selectFiles) {
+                    onSelectFiles.add(fileBean);
+                }
+            }
+
+            imageGridViewAdapter.notifyDataSetChanged();
+            fileListViewAdapter.notifyDataSetChanged();
+        }
     }
 
     private View.OnClickListener onSelectImageClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            docCompositeCommand.setEdit(true).setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK).setUserid(userid).setInstid(instid);
+
+            docCompositeCommand.setOnSelectFiles(onSelectFiles);
+            docCompositeCommand.setOnSelectImages(onSelectImages);
+
+            DocCompositeActivity.start(NewDynamicActivity.this, docCompositeCommand);
         }
     };
 
     private View.OnClickListener onSelectUserClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK);
+            OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).setUserid(userid).setInstid(instid);
 
             if (AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
                 for (OrgAndUserBean orgAndUserBean : selectOrgAndUsers) {
@@ -365,6 +419,96 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
             } else {
                 //没有结果
             }
+        }
+    };
+
+    private JupiterAdapter imageGridViewAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return onSelectImages.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return onSelectImages.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            AlbumImageGridItem albumImageGridItem = null;
+            FileBean fileBean = onSelectImages.get(position);
+
+            if (AssertValue.isNotNull(convertView)) {
+                albumImageGridItem = (AlbumImageGridItem) convertView;
+            } else {
+                albumImageGridItem = new AlbumImageGridItem(mContext);
+            }
+
+            ImageLoaderUtil.getInstance(getApplicationContext()).displayImage(fileBean.getThumbnailPath(), albumImageGridItem.getImageView());
+            albumImageGridItem.setTag(fileBean);
+            albumImageGridItem.getDeleteBadgeView().setTag(fileBean);
+            albumImageGridItem.getDeleteBadgeView().show();
+            albumImageGridItem.getDeleteBadgeView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FileBean deleteFileBean = (FileBean) v.getTag();
+                    onSelectImages.remove(deleteFileBean);
+                    imageGridViewAdapter.notifyDataSetChanged();
+                }
+            });
+            return albumImageGridItem;
+        }
+    };
+
+    private JupiterAdapter fileListViewAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return onSelectFiles.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return onSelectFiles.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            FileItemWidget fileItemWidget = null;
+            FileBean fileBean = onSelectFiles.get(position);
+
+            if (AssertValue.isNotNull(convertView)) {
+                fileItemWidget = (FileItemWidget) convertView;
+            } else {
+                fileItemWidget = new FileItemWidget(mContext);
+            }
+
+            fileItemWidget.getIcoImaveView().setImageResource(fileBean.getIcoResource());
+            fileItemWidget.getFileNameTV().setText(fileBean.getName());
+            fileItemWidget.getFileSizeTV().setText(fileBean.getSize());
+            fileItemWidget.getFileTimeTV().setText(fileBean.getDateAdded());
+            fileItemWidget.setTag(fileBean);
+            fileItemWidget.getDeleteStateIV().setVisibility(View.VISIBLE);
+            fileItemWidget.getStateLL().setTag(fileBean);
+            fileItemWidget.getStateLL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FileBean deleteFileBean = (FileBean) v.getTag();
+                    onSelectFiles.remove(deleteFileBean);
+                    fileListViewAdapter.notifyDataSetChanged();
+                }
+            });
+
+            return fileItemWidget;
         }
     };
 }

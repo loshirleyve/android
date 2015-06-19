@@ -79,7 +79,8 @@
             <LinearLayout
                 android:id="@+id/image_ll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
 
                 <com.yun9.jupiter.view.JupiterGridView
@@ -90,6 +91,14 @@
                     android:listSelector="@color/transparent"
                     android:numColumns="3"
                     android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+
+                <ListView
+                    android:id="@+id/file_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@color/transparent"
+                    android:scrollbars="none">
+                </ListView>
 
             </LinearLayout>
         </LinearLayout>

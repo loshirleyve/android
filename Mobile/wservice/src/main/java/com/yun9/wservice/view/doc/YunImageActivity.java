@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -20,10 +19,12 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.gridview.PagingGridView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -41,6 +42,8 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class YunImageActivity extends JupiterFragmentActivity {
 
+    private static Logger logger = Logger.getLogger(YunImageActivity.class);
+
     private boolean mEdit;
 
     private YunImageCommand command;
@@ -50,8 +53,8 @@ public class YunImageActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id = R.id.image_local_gv)
-    private GridView imageGV;
+    @ViewInject(id = R.id.image_yun_gv)
+    private PagingGridView imageGV;
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mFrame;
@@ -85,10 +88,10 @@ public class YunImageActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        logger.d("开始初始化云相册");
 
         command = (YunImageCommand) getIntent().getSerializableExtra(YunFileCommand.PARAM_COMMAND);
 
-        imageGV.setAdapter(gridViewAdapter);
         imageGV.setOnItemClickListener(onGridViewItemClickListener);
 
         titleBarLayout.getTitleRight().setOnClickListener(onEditClickListener);
@@ -96,6 +99,23 @@ public class YunImageActivity extends JupiterFragmentActivity {
 
         completeBtn.setOnClickListener(onCompleteClickListener);
         sendMsgCardBtn.setOnClickListener(onCompleteClickListener);
+
+
+        imageGV.setHasMoreItems(true);
+        imageGV.setPagingableListener(new PagingGridView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(mFileBeans)) {
+                    logger.d("达到加载更多条件执行加载");
+                    FileBean fileBean = mFileBeans.get(mFileBeans.size() - 1);
+                    refresh(null, fileBean.getId());
+                } else {
+                    imageGV.onFinishLoading(true, null);
+                }
+            }
+        });
+
+        imageGV.setAdapter(gridViewAdapter);
 
         //设置当前是否编辑状态
         if (AssertValue.isNotNull(command)) {
@@ -130,7 +150,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("level", "user");
         resource.param("filetype", "image");
-        resource.header("limitrow", "20");
+        resource.header("limitrow", "18");
 
         if (AssertValue.isNotNullAndNotEmpty(lastupid)) {
             resource.pullUp(lastupid);
@@ -148,11 +168,44 @@ public class YunImageActivity extends JupiterFragmentActivity {
                 if (AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Resource.PULL_TYPE.UP.equals(resource.getPullType())) {
                     for (int i = sysFileBeans.size(); i > 0; i--) {
                         FileBean fileBean = new FileBean(sysFileBeans.get(i - 1));
+
+                        //检查当前文件是否已经被选中
+                        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
+                            for (FileBean onSelectFileBean : command.getSelectImages()) {
+                                if (fileBean.getId().equals(onSelectFileBean.getId())) {
+                                    fileBean.setSelected(true);
+                                }
+                            }
+                        }
+
                         mFileBeans.addFirst(fileBean);
                     }
+
+                    gridViewAdapter.notifyDataSetChanged();
                 }
 
-                gridViewAdapter.notifyDataSetChanged();
+                if (AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
+                    for (SysFileBean sysFileBean : sysFileBeans) {
+                        FileBean fileBean = new FileBean(sysFileBean);
+
+                        //检查当前文件是否已经被选中
+                        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
+                            for (FileBean onSelectFileBean : command.getSelectImages()) {
+                                if (fileBean.getId().equals(onSelectFileBean.getId())) {
+                                    fileBean.setSelected(true);
+                                }
+                            }
+                        }
+
+                        mFileBeans.addLast(fileBean);
+                    }
+                    gridViewAdapter.notifyDataSetChanged();
+                }
+
+                if (!AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
+                    logger.d("加载更多没有数据。关闭加载更多。");
+                    imageGV.onFinishLoading(false, null);
+                }
             }
 
             @Override
@@ -164,6 +217,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
             @Override
             public void onFinally(Response response) {
                 mFrame.refreshComplete();
+                imageGV.onFinishLoading(true, null);
             }
         });
     }
@@ -203,13 +257,15 @@ public class YunImageActivity extends JupiterFragmentActivity {
         }
 
         for (int i = 0; i < imageGV.getCount(); i++) {
-            AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) imageGV.getChildAt(i);
-            if (AssertValue.isNotNull(albumImageGridItem) && AssertValue.isNotNull(albumImageGridItem.getTag())) {
-                FileBean fileBean = (FileBean) albumImageGridItem.getTag();
-                if (this.mEdit && fileBean.isSelected()) {
-                    albumImageGridItem.getSelectBadgeView().show();
-                } else {
-                    albumImageGridItem.getSelectBadgeView().hide();
+            if (imageGV.getChildAt(i) instanceof AlbumImageGridItem) {
+                AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) imageGV.getChildAt(i);
+                if (AssertValue.isNotNull(albumImageGridItem) && AssertValue.isNotNull(albumImageGridItem.getTag())) {
+                    FileBean fileBean = (FileBean) albumImageGridItem.getTag();
+                    if (this.mEdit && fileBean.isSelected()) {
+                        albumImageGridItem.getSelectBadgeView().show();
+                    } else {
+                        albumImageGridItem.getSelectBadgeView().hide();
+                    }
                 }
             }
         }
@@ -319,13 +375,23 @@ public class YunImageActivity extends JupiterFragmentActivity {
                 albumImageGridItem = (AlbumImageGridItem) convertView;
             } else {
                 albumImageGridItem = new AlbumImageGridItem(mContext);
+
+            }
+
+            FileBean tempTag = (FileBean) albumImageGridItem.getTag();
+            if (AssertValue.isNotNull(tempTag) && tempTag.getId().equals(fileBean.getFilePath())) {
+                //logger.d("相同的图片文件不需要加载图片！");
+            } else {
+                ImageLoaderUtil.getInstance(mContext).displayImage(fileBean.getFilePath(), albumImageGridItem.getImageView());
+            }
+
+            if (mEdit && fileBean.isSelected()) {
+                albumImageGridItem.getSelectBadgeView().show();
+            } else {
+                albumImageGridItem.getSelectBadgeView().hide();
             }
 
             albumImageGridItem.setTag(fileBean);
-
-            String fileid = fileBean.getFilePath();
-            ImageLoaderUtil.getInstance(mContext).displayImage(fileid, albumImageGridItem.getImageView());
-
             return albumImageGridItem;
         }
     };
