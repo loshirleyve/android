@@ -33,6 +33,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.task.UploadFileAsyncTask;
 import com.yun9.wservice.view.doc.AlbumImageGridItem;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
@@ -382,7 +383,38 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //TODO 检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
 
+            //TODO 检查地理位置获取情况。如果没有获取到地理位置允许继续发送
+
+            //TODO 合并发送的图片和文件，并执行上传任务（任务中只处理存储类型为本地的文件）
+            List<FileBean> fileBeans = new ArrayList<>();
+
+            if (AssertValue.isNotNullAndNotEmpty(onSelectFiles)) {
+                for (FileBean fileBean : onSelectFiles) {
+                    fileBeans.add(fileBean);
+                }
+            }
+
+            if (AssertValue.isNotNullAndNotEmpty(onSelectImages)) {
+                for (FileBean fileBean : onSelectImages) {
+                    fileBeans.add(fileBean);
+                }
+            }
+
+            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(NewDynamicActivity.this, FileBean.FILE_LEVEL_USER, fileBeans, new UploadFileAsyncTask.OnFileUploadCallback() {
+                @Override
+                public void onPostExecute(List<FileBean> fileBeans) {
+
+                }
+            });
+            uploadFileAsyncTask.execute();
+
+            //TODO 组合参数
+
+            //TODO 执行发送消息
+
+            //TODO 关闭，并通知发送成功
         }
     };
 
