@@ -267,7 +267,9 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
             response.setOriginal(responseOriginal);
 
             responseOriginal.setStatusCode(statusCode);
-            responseOriginal.setHeaders(headers);
+            if (AssertValue.isNotNullAndNotEmpty(headers)) {
+                responseOriginal.setHeaders(headers);
+            }
             responseOriginal.setResponseBody(responseBody);
             responseOriginal.setError(error);
 
@@ -404,6 +406,12 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
             params.put("descr", descr);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Response response = createResponse(null, 500, null, null, null);
+            try {
+                callback.onFailure(response);
+            } finally {
+                callback.onFinally(response);
+            }
             return;
         }
 

@@ -22,6 +22,10 @@ public class FileBean implements java.io.Serializable {
     public static final String FILE_STORAGE_TYPE_YUN = "yun";
     public static final String FILE_STORAGE_TYPE_LOCAL = "local";
 
+    public static final String FILE_LEVEL_USER = "user";
+
+    public static final String FILE_LEVEL_SYSTEM = "system";
+
     public static String TYPE_TXT = "txt";
     public static String TYPE_PDF = "pdf";
     public static String TYPE_DOC = "doc";
@@ -233,6 +237,7 @@ public class FileBean implements java.io.Serializable {
     public void setChilds(List<FileBean> childs) {
         this.childs = childs;
     }
+
 
     public void putChild(FileBean fileBean) {
         if (!AssertValue.isNotNull(childs)) {

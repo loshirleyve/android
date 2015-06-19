@@ -23,5 +23,5 @@
 	<config name="app.config.session.sp.name">com.yun9.wservice</config>
 	
 	<config name="app.config.jm.url">http://app.ibiart.com</config>
-	<config name="app.config.resource.yun9.file.upload.baseUrl">http://120.24.84.201/service/common/file/upload.yun9?floderid=1</config>
+	<config name="app.config.resource.yun9.file.upload.baseUrl">http://120.25.201.15:9080/ws-biz/common/file/upload.yun9</config>
 </configs>
