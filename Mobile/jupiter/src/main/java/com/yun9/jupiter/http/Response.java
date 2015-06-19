@@ -1,6 +1,10 @@
 package com.yun9.jupiter.http;
 
 public interface Response {
+    public final static String RESPONSE_CODE_SERVICEERROR = "500";
+    public final static String RESPONSE_CODE_NETWORKERROR = "502";
+
+
 
     public ResponseOriginal getOriginal();
 

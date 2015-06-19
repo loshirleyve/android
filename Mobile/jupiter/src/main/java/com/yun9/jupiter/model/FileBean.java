@@ -37,6 +37,7 @@ public class FileBean implements java.io.Serializable {
     private String absolutePath;
     private String thumbnailPath;
     private String name;
+    private String album;
     private String dateAdded;
     private String extensionName;
     private String type;
@@ -52,14 +53,16 @@ public class FileBean implements java.io.Serializable {
     public FileBean() {
     }
 
-    public FileBean(SysFileBean sysFileBean){
+    public FileBean(SysFileBean sysFileBean) {
         this.sysFileBean = sysFileBean;
         filePath = sysFileBean.getId();
         absolutePath = sysFileBean.getId();
+        thumbnailPath = sysFileBean.getId();
         name = sysFileBean.getName();
         extensionName = sysFileBean.getType();
         dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
         type = FILE_STORAGE_TYPE_YUN;
+        storageType = FileBean.FILE_STORAGE_TYPE_YUN;
         size = "";
         id = sysFileBean.getId();
         initIcoResource();
@@ -68,14 +71,29 @@ public class FileBean implements java.io.Serializable {
     public FileBean(File file) {
         filePath = file.getPath();
         absolutePath = file.getAbsolutePath();
+        thumbnailPath = file.getPath();
         name = FileUtil.getFileNameNoEx(file);
         extensionName = FileUtil.getExtensionName(file);
         dateAdded = DateUtil.getDateStr(file.lastModified());
         type = FILE_TYPE_DOC;
         size = FileUtil.getFileSize(file);
+        storageType = FileBean.FILE_STORAGE_TYPE_LOCAL;
         id = UUID.randomUUID().toString();
         initIcoResource();
 
+    }
+
+    public FileBean(String id, String name,String album, String dateAdded, String path, String thumbnailsPath, String type,long size) {
+        this.id = id;
+        this.name = name;
+        this.album = album;
+        this.dateAdded = dateAdded;
+        this.absolutePath = path;
+        this.filePath = "file://" + path;
+        this.thumbnailPath = "file://" + thumbnailsPath;
+        this.type = type;
+        this.size = FileUtil.getFileSize(size);
+        this.storageType = FileBean.FILE_STORAGE_TYPE_LOCAL;
     }
 
     private void initIcoResource() {
@@ -202,6 +220,14 @@ public class FileBean implements java.io.Serializable {
 
     public void setSysFileBean(SysFileBean sysFileBean) {
         this.sysFileBean = sysFileBean;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public void setChilds(List<FileBean> childs) {

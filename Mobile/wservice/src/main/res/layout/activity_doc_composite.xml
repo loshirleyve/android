@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tb:titleLeftIcoVisibility="true"
+        tb:titleRightText="@string/app_select"
+        tb:titleRightTextVisibility="true"
         tb:titleText="@string/doc_composite_title">
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
@@ -68,11 +70,11 @@
 
 
                 <com.yun9.jupiter.widget.JupiterListView
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:id="@+id/file_online_lv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:scrollbars="none">
 
                 </com.yun9.jupiter.widget.JupiterListView>
@@ -119,11 +121,11 @@
                     row:rowStyleSutitleTitleText="@string/doc_file_location" />
 
                 <com.yun9.jupiter.widget.JupiterListView
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
                     android:id="@+id/file_local_lv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:scrollbars="none">
 
                 </com.yun9.jupiter.widget.JupiterListView>
@@ -144,6 +146,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             button:imageButtonText="@string/app_complete" />
 
         <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
@@ -151,6 +154,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="gone"
             button:imageButtonIcoSrc="@drawable/newpost"
             button:imageButtonShowIco="true"
             button:imageButtonText="@string/app_send_msgcard"></com.yun9.jupiter.widget.JupiterImageButtonLayout>

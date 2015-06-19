@@ -24,6 +24,10 @@ public class YunFileCommand extends JupiterCommand {
 
     private int maxSelectNum = 0;
 
+    private String userid;
+
+    private String instid;
+
     public boolean isEdit() {
         return edit;
     }
@@ -48,6 +52,24 @@ public class YunFileCommand extends JupiterCommand {
 
     public YunFileCommand setCompleteType(String completeType) {
         this.completeType = completeType;
+        return this;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public YunFileCommand setUserid(String userid) {
+        this.userid = userid;
+        return this;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public YunFileCommand setInstid(String instid) {
+        this.instid = instid;
         return this;
     }
 
