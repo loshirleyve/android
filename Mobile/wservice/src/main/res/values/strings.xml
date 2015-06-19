@@ -131,4 +131,6 @@
     <string name="client_title">客户管理</string>
     <string name="client_proxy_bill">代理下单</string>
 
+    <string name="org_add">添加组织</string>
+    <string name="org_name">组织名称</string>
 </resources>

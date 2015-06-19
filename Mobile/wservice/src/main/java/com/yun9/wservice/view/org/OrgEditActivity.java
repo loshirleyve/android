@@ -4,14 +4,25 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
+import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
+import com.yun9.jupiter.widget.JupiterEditAdapter;
+import com.yun9.jupiter.widget.JupiterEditableView;
+import com.yun9.jupiter.widget.JupiterTextIco;
+import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Leon on 15/6/2.
@@ -25,8 +36,25 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
+    private BasicJupiterEditAdapter useradapter;
+    private BasicJupiterEditAdapter orgadapter;
+
+    private List<JupiterEditableView> useritemList;
+    private List<JupiterEditableView> orgitemList;
+
+
+    @ViewInject(id=R.id.neworg)
+    private EditText neworg;
+
+    @ViewInject(id=R.id.orgtips)
+    private TextView orgtips;
+
+
     @ViewInject(id=R.id.edit_ico_users)
-    private JupiterEditIco jupiterEditIco;
+    private JupiterEditIco jupiterEdituserIco;
+
+    @ViewInject(id=R.id.edit_ico_orgs)
+    private JupiterEditIco jupiterEditorgIco;
 
     public OrgEditActivity() {
     }
@@ -51,15 +79,150 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
 
+        jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText("成员列表");
+
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+
+        initWeight();
 
         //检查是否进入编辑状态
         if (AssertValue.isNotNull(command) && command.isEdit()){
-            this.setEdit(command.isEdit());
+
         }
         //如果没有orgid则进入新增状态
+        if(!AssertValue.isNotNull(command) ||  !AssertValue.isNotNullAndNotEmpty(command.getOrgid()))
+        {
+//            neworg.setEnabled(true);
+//            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+//            orgtips.setText("[向左滑动可编辑]");
+//            jupiterEdituserIco.setVisibility(View.GONE);
+//            jupiterEditorgIco.setVisibility(View.GONE);
+        }
 
     }
+
+    public void initWeight()
+    {
+        useritemList = new ArrayList<>();
+        orgitemList = new ArrayList<>();
+        setupEditIco();
+       // builder();
+    }
+
+
+
+    private void setupEditIco() {
+        JupiterTextIco useritem = new JupiterTextIcoWithoutCorner(getApplicationContext());
+        useritem.setTitle(null);
+        useritem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
+        useritem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewUserOne("drawable://" + com.yun9.jupiter.R.drawable.upload_icon);
+            }
+        });
+        useritemList.add(useritem);
+//        useradapter = new BasicJupiterEditAdapter(useritemList);
+//        useradapter.edit(true);
+//        jupiterEdituserIco.setAdapter(useradapter);
+
+
+        JupiterTextIco orgitem=new JupiterTextIcoWithoutCorner(getApplicationContext());
+        orgitem.setTitle(null);
+        orgitem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
+        orgitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewOrgOne("drawable://" + com.yun9.jupiter.R.drawable.upload_icon);
+            }
+        });
+        orgitemList.add(orgitem);
+//        orgadapter = new BasicJupiterEditAdapter(orgitemList);
+//        orgadapter.edit(true);
+//        jupiterEditorgIco.setAdapter(orgadapter);
+    }
+
+    public void builder()
+    {
+        for(int i=1;i<5;i++)
+        {
+            final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
+            useritem.setTitle(null);
+            useritem.hideCorner();
+            useritem.setImage("drawable://" + R.drawable.buyer);
+            useritem.setTitle(null);
+            useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
+            useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteUserItem(useritem);
+                }
+            });
+            useritemList.add(useritem);
+            useradapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void addNewUserOne(String id) {
+        final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
+        useritem.setTitle(null);
+        useritem.setImage(id);
+        useritem.hideCorner();
+        useritem.setTag(id);
+        useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
+
+        useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteUserItem(useritem);
+            }
+        });
+        useritem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        useritemList.add(useritem);
+        useradapter.notifyDataSetChanged();
+    }
+
+
+    private void addNewOrgOne(String id) {
+        final JupiterTextIco orgitem = new JupiterTextIco(getApplicationContext());
+        orgitem.setTitle(null);
+        orgitem.setImage(id);
+        orgitem.hideCorner();
+        orgitem.setTag(id);
+        orgitem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
+
+        orgitem.getBadgeView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteOrgItem(orgitem);
+            }
+        });
+        orgitem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        orgitemList.add(orgitem);
+        orgadapter.notifyDataSetChanged();
+    }
+
+    private void deleteUserItem(JupiterEditableView item) {
+        useritemList.remove(item);
+        useradapter.notifyDataSetChanged();
+    }
+
+    private void deleteOrgItem(JupiterEditableView item) {
+        orgitemList.remove(item);
+        orgadapter.notifyDataSetChanged();
+    }
+
 
     private void setEdit(boolean edit){
         this.edit = edit;

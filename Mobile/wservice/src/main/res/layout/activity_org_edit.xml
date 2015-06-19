@@ -9,9 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tb:titleText="@string/org_edit_new"
-        tb:titleLeftIcoVisibility="true">
+        tb:titleLeftIcoVisibility="true"
+        tb:titleRightText="@string/org_add"
+        tb:titleRightTextVisibility="false"
+        >
 
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
 
     <LinearLayout
         android:id="@+id/editdept"
@@ -42,43 +46,58 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/devide_line"
-            android:text="@string/parent_org"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/devide_line"
-                android:text="@string/parent_org"/>
-            </LinearLayout>
+                android:text="@string/org_name"
+                />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/whites"
-                android:enabled="false"
-                android:editable="false"
-                android:paddingLeft="20dp"
-                android:textColor="@color/red"
-                android:hint="@string/parent_org"
-                android:text="@string/parent_org"/>
-
-
+            <TextView
+                android:id="@+id/orgtips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/devide_line" />
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/neworg"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/whites"
+            android:enabled="false"
+            android:paddingLeft="20dp"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
-    <com.yun9.jupiter.widget.JupiterEditIco
-        android:id="@+id/edit_ico_users"
-        android:layout_below="@+id/editdept"
+    <com.yun9.jupiter.widget.JupiterScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterEditIco>
+        android:layout_below="@+id/editdept"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+
+            <com.yun9.jupiter.widget.JupiterEditIco
+                android:id="@+id/edit_ico_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.yun9.jupiter.widget.JupiterEditIco>
+
+
+            <com.yun9.jupiter.widget.JupiterEditIco
+                android:id="@+id/edit_ico_orgs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.yun9.jupiter.widget.JupiterEditIco>
+
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterScrollView>
+
 
 </RelativeLayout>
