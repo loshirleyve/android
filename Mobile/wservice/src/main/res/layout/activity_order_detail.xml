@@ -26,6 +26,10 @@
             <com.yun9.wservice.view.order.OrderDetailBaseWidget
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderDetailProcessWidget
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.yun9.wservice.view.order.OrderDetailProcessWidget>
             <com.yun9.wservice.view.order.OrderDetailPayinfoWidget
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

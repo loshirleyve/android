@@ -21,7 +21,6 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
     private TextView workOrderStateTV;
     private TextView commentWorkOrderTV;
     private TextView checkoutWorkOrderCommentTV;
-    private TextView appendWorkOrderCommentTV;
 
     public OrderDetailWorkOrderWidget(Context context) {
         super(context);
@@ -51,7 +50,6 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderStateTV = (TextView) this.findViewById(R.id.work_order_state_tv);
         commentWorkOrderTV = (TextView) this.findViewById(R.id.comment_work_order_tv);
         checkoutWorkOrderCommentTV = (TextView) this.findViewById(R.id.checkout_work_order_comment_tv);
-        appendWorkOrderCommentTV = (TextView) this.findViewById(R.id.append_comment_work_order_tv);
         buildView();
     }
 
@@ -67,13 +65,6 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
             public void onClick(View v) {
                 OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
                                                                                 "","");
-            }
-        });
-        appendWorkOrderCommentTV.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
-                        "","");
             }
         });
     }
