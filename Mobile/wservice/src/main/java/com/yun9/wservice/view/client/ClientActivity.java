@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.form.FormActivity;
+import com.yun9.jupiter.form.FormCommand;
 import com.yun9.jupiter.form.cell.MultiSelectFormCell;
 import com.yun9.jupiter.form.cell.TextFormCell;
 import com.yun9.jupiter.form.model.FormBean;
@@ -59,7 +63,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     private ClientListAdapter clientListAdapter;
     private ListView clientListView;
 
-    private int formRequestCode = 1000;
+    //private int formRequestCode = 1000;
 
     private PtrClassicFrameLayout mPtrFrame;
 
@@ -72,6 +76,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     private Context context;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +87,6 @@ public class ClientActivity extends JupiterFragmentActivity {
         jupiterSearchInputLayout = (JupiterSearchInputLayout) this.findViewById(R.id.searchRL);
 
         jupiterSearchInputLayout.getSearchET().addTextChangedListener(textWatcher);
-
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
@@ -102,13 +106,17 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListAdapter = new ClientListAdapter(this, showClients);
         clientListView.setAdapter(clientListAdapter);
 
+        this.autoRefresh();
+
+    }
+
+    private void autoRefresh(){
         clientListView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPtrFrame.autoRefresh();
             }
         }, 100);
-
     }
 
     private void refresh() {
@@ -151,36 +159,28 @@ public class ClientActivity extends JupiterFragmentActivity {
         formBean.setTitle("测试表单");
         formBean.setKey("demoform");
 
-        TextFormCellBean instidTFC = new TextFormCellBean();
-        instidTFC.setType(TextFormCell.class.getSimpleName());
-        instidTFC.setKey("instid");
-        instidTFC.setDefaultValue("2");
-        instidTFC.setLabel("ID");
-        instidTFC.setRequired(true);
-        formBean.putCellBean(instidTFC);
-
         TextFormCellBean nameTFC = new TextFormCellBean();
         nameTFC.setType(TextFormCell.class.getSimpleName());
+        nameTFC.setDefaultValue("x");
         nameTFC.setKey("name");
-        nameTFC.setDefaultValue("客户名XXX有限公司");
         nameTFC.setLabel("公司简称");
         nameTFC.setRequired(true);
         formBean.putCellBean(nameTFC);
 
         TextFormCellBean fullnameTFC = new TextFormCellBean();
         fullnameTFC.setType(TextFormCell.class.getSimpleName());
+        fullnameTFC.setDefaultValue("xx");
         fullnameTFC.setKey("fullname");
-        fullnameTFC.setDefaultValue("客户名XXX有限公司全称");
         fullnameTFC.setLabel("公司全称");
         fullnameTFC.setRequired(true);
         formBean.putCellBean(fullnameTFC);
 
         MultiSelectFormCellBean typeMSFC = new MultiSelectFormCellBean();
         typeMSFC.setType(MultiSelectFormCell.class.getSimpleName());
-        typeMSFC.setCtrlCode("clientlevel");
+        typeMSFC.setCtrlCode("clienttype");
         typeMSFC.setKey("type");
         typeMSFC.setLabel("类型");
-        //typeMSFC.setRequired(true);
+        typeMSFC.setRequired(true);
         formBean.putCellBean(typeMSFC);
 
         MultiSelectFormCellBean levelMSFC = new MultiSelectFormCellBean();
@@ -193,24 +193,24 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         TextFormCellBean contactmanTFC = new TextFormCellBean();
         contactmanTFC.setType(TextFormCell.class.getSimpleName());
+        contactmanTFC.setDefaultValue("s");
         contactmanTFC.setKey("contactman");
-        contactmanTFC.setDefaultValue("联系人名");
         contactmanTFC.setLabel("联系人名");
         contactmanTFC.setRequired(true);
         formBean.putCellBean(contactmanTFC);
 
         TextFormCellBean contactphoneTFC = new TextFormCellBean();
         contactphoneTFC.setType(TextFormCell.class.getSimpleName());
+        contactphoneTFC.setDefaultValue("13252525252");
         contactphoneTFC.setKey("contactphone");
-        contactphoneTFC.setDefaultValue("19800004500");
         contactphoneTFC.setLabel("联系电话");
         contactphoneTFC.setRequired(true);
         formBean.putCellBean(contactphoneTFC);
 
         TextFormCellBean regionTFC = new TextFormCellBean();
         regionTFC.setType(TextFormCell.class.getSimpleName());
-        regionTFC.setKey("region");
         regionTFC.setDefaultValue("1");
+        regionTFC.setKey("region");
         regionTFC.setLabel("区域");
         regionTFC.setRequired(true);
         formBean.putCellBean(regionTFC);
@@ -220,7 +220,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         sourceMSFC.setCtrlCode("clientsource");
         sourceMSFC.setKey("source");
         sourceMSFC.setLabel("来源");
-       // sourceMSFC.setRequired(true);
+        //sourceMSFC.setRequired(true);
         formBean.putCellBean(sourceMSFC);
 
         MultiSelectFormCellBean industryMSFC = new MultiSelectFormCellBean();
@@ -246,27 +246,22 @@ public class ClientActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == formRequestCode && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
+        //if (requestCode == formRequestCode && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
+        if (resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
         FormBean formBean = (FormBean) data.getSerializableExtra("form");
         Client client = new Client();
-        client.setInstid((String) formBean.getCellBeanValue("instid"));
         client.setName((String) formBean.getCellBeanValue("name"));
         client.setFullname((String) formBean.getCellBeanValue("fullname"));
 
-        //client.setType((String) formBean.getCellBeanValue("type"));
-        client.setType("dnterprise");
-        //client.setLevel((String) formBean.getCellBeanValue("level"));
-        client.setLevel("A");
+        client.setType((String) formBean.getCellBeanValue("clienttype"));
+        client.setLevel((String) formBean.getCellBeanValue("clientlevel"));
         client.setContactman((String) formBean.getCellBeanValue("contactman"));
         client.setContactphone((String) formBean.getCellBeanValue("contactphone"));
         client.setRegion((String) formBean.getCellBeanValue("region"));
 
-        //client.setSource((String) formBean.getCellBeanValue("source"));
-        client.setSource("network");
-        //client.setIndustry((String) formBean.getCellBeanValue("industry"));
-        client.setIndustry("retail");
-        //client.setContactposition((String) formBean.getCellBeanValue("contactposition"));
-        client.setContactposition("legalperson");
+        client.setSource((String) formBean.getCellBeanValue("source"));
+        client.setIndustry((String) formBean.getCellBeanValue("industry"));
+        client.setContactposition((String) formBean.getCellBeanValue("contactposition"));
 
         addToDB(client);
         }
@@ -275,7 +270,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     private void addToDB(Client client) {
         Resource resource = resourceFactory.create("AddInstClients");
 
-        resource.param("instid", client.getInstid());
+        resource.param("instid", sessionManager.getInst().getId());
         resource.param("name", client.getName());
         resource.param("fullname", client.getFullname());
         resource.param("type", client.getType());
@@ -302,6 +297,7 @@ public class ClientActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
+                autoRefresh();
                 clientListAdapter.notifyDataSetChanged();
                 mPtrFrame.refreshComplete();
             }
@@ -311,12 +307,12 @@ public class ClientActivity extends JupiterFragmentActivity {
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            jupiterSearchInputLayout.getSearchET().setCursorVisible(true);
+            //jupiterSearchInputLayout.getSearchET().setCursorVisible(true);
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            jupiterSearchInputLayout.getSearchET().setCursorVisible(true);
+            //jupiterSearchInputLayout.getSearchET().setCursorVisible(true);
 
         }
 
@@ -342,7 +338,9 @@ public class ClientActivity extends JupiterFragmentActivity {
     private View.OnClickListener onTitleRightTvClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            FormActivity.start(ClientActivity.this, formRequestCode, fakeData());
+            FormCommand formCommand = new FormCommand();
+            formCommand.setFormBean(fakeData());
+            FormActivity.start(ClientActivity.this, formCommand);
         }
     };
 
@@ -352,4 +350,14 @@ public class ClientActivity extends JupiterFragmentActivity {
             finish();
         }
     };
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        jupiterSearchInputLayout.getEditLL().setVisibility(View.GONE);
+        jupiterSearchInputLayout.getShowLL().setVisibility(View.VISIBLE);
+        inputMethodManager.hideSoftInputFromWindow(jupiterSearchInputLayout.getSearchET().getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
+    }
 }
