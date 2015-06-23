@@ -2,26 +2,36 @@ package com.yun9.wservice.view.dynamic;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.special.ResideMenu.ResideMenu;
 import com.special.ResideMenu.ResideMenuItem;
+import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.model.Org;
-import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.model.CacheUser;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
-import com.yun9.jupiter.widget.JupiterPagingListView;
+import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgSession;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
+import com.yun9.wservice.view.msgcard.MsgCardListCommand;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -37,20 +47,21 @@ public class DynamicSessionFragment extends JupiterFragment {
     @BeanInject
     private SessionManager sessionManager;
 
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
     @ViewInject(id = R.id.dynamic_title_tb)
     private JupiterTitleBarLayout titleBar;
 
     @ViewInject(id = R.id.dynamic_sessions_lv)
-    private JupiterPagingListView dynamicSessionList;
+    private ListView dynamicSessionList;
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
     private ResideMenu resideMenu;
 
-    private DynamicSessionAdapter dynamicSessionAdapter;
-
-    private LinkedList<MsgSession> msgSessions;
+    private LinkedList<MsgSession> msgSessions = new LinkedList<>();
 
 
     /**
@@ -79,18 +90,14 @@ public class DynamicSessionFragment extends JupiterFragment {
     @Override
     protected void initViews(View view) {
 
+        this.dynamicSessionList.setAdapter(dynamicSessionAdapter);
         this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MsgSession msgSession = (MsgSession) view.getTag();
-
-                logger.d("动态会话表格点击。" + msgSession.getFromusername());
-
-                Bundle bundle = new Bundle();
-                bundle.putString(MsgCardListActivity.ARG_TYPE, "toUser");
-                bundle.putString(MsgCardListActivity.ARG_VALUE, "186");
-
-                MsgCardListActivity.start(DynamicSessionFragment.this.mContext, bundle);
+                if (AssertValue.isNotNull(msgSession)) {
+                    MsgCardListActivity.start(getActivity(), new MsgCardListCommand().setType(MsgCardListCommand.TYPE_USER_GIVEME).setFromuserid(msgSession.getFromuserid()).setUserid(msgSession.getTouserid()));
+                }
             }
         });
 
@@ -104,7 +111,7 @@ public class DynamicSessionFragment extends JupiterFragment {
         this.titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewDynamicActivity.start(getActivity(),new NewDynamicCommand());
+                NewDynamicActivity.start(getActivity(), new NewDynamicCommand());
             }
         });
 
@@ -112,7 +119,8 @@ public class DynamicSessionFragment extends JupiterFragment {
         mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh(false);
+                //暂时不支持分页，全部数据检索
+                refresh(null, null);
             }
         });
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
@@ -122,21 +130,10 @@ public class DynamicSessionFragment extends JupiterFragment {
             }
         }, 100);
 
-        //设置加载更多
-        dynamicSessionList.setPagingableListener(new JupiterPagingListView.Pagingable() {
-            @Override
-            public void onLoadMoreItems() {
-                refresh(true);
-            }
-        });
-
-        dynamicSessionList.setHasMoreItems(true);
-
-       // this.setUpMenu();
+        // this.setUpMenu();
     }
 
     private void setUpMenu() {
-
         // attach to current activity;
         resideMenu = new ResideMenu(this.getActivity());
         //resideMenu.setBackground(R.drawable.menu_background);
@@ -146,63 +143,51 @@ public class DynamicSessionFragment extends JupiterFragment {
         resideMenu.setScaleValue(0.6f);
 
         for (int i = 0; i < 6; i++) {
-            ResideMenuItem itemMenu = new ResideMenuItem(this.getActivity(), R.drawable.write, "话题"+i);
+            ResideMenuItem itemMenu = new ResideMenuItem(this.getActivity(), R.drawable.write, "话题" + i);
             resideMenu.addMenuItem(itemMenu, ResideMenu.DIRECTION_LEFT);
         }
     }
 
-    private void refresh(final boolean loadMore) {
-        mPtrClassicFrameLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                completeRefresh(loadMore);
-            }
-        }, 2000);
-    }
+    private void refresh(String lastupid, String lastdownid) {
+        String userid = sessionManager.getUser().getId();
+        String instid = sessionManager.getInst().getId();
 
-    private void completeRefresh(boolean loadMore) {
-        this.initMsgSession(loadMore);
+        if (AssertValue.isNotNullAndNotEmpty(userid) && AssertValue.isNotNullAndNotEmpty(instid)) {
+            Resource resource = resourceFactory.create("QueryMsgsGroup");
+            resource.param("instid", instid).param("userid", userid);
 
-        if (!AssertValue.isNotNull(dynamicSessionAdapter)) {
-            dynamicSessionAdapter = new DynamicSessionAdapter(mContext, msgSessions);
-            dynamicSessionList.setAdapter(dynamicSessionAdapter);
-        } else {
-            dynamicSessionAdapter.notifyDataSetChanged();
-        }
+            resource.invok(new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    List<MsgSession> tempMsgSessions = (List<MsgSession>) response.getPayload();
+                    msgSessions.clear();
+                    if (AssertValue.isNotNullAndNotEmpty(tempMsgSessions)) {
+                        for (int i = tempMsgSessions.size(); i > 0; i--) {
+                            MsgSession msgSession = tempMsgSessions.get(i - 1);
+                            msgSessions.addFirst(msgSession);
+                        }
+                    }
+                    dynamicSessionAdapter.notifyDataSetChanged();
+                }
 
-        if (loadMore) {
-            dynamicSessionList.onFinishLoading(true);
-        } else {
-            mPtrClassicFrameLayout.refreshComplete();
-        }
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+                }
 
-    }
-
-    private int dpToPx(int dp) {
-        return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
-    }
-
-
-    private void initMsgSession(boolean loadMore) {
-        if (!AssertValue.isNotNull(msgSessions)) {
-            msgSessions = new LinkedList<>();
-        }
-
-        int size = msgSessions.size();
-        int maxsize = size + 5;
-
-
-        for (int i = size; i < maxsize; i++) {
-            MsgSession msgSession = new MsgSession();
-            msgSession.setFromusername("Leon" + i);
-            if (loadMore) {
-                msgSessions.addLast(msgSession);
-            } else {
-                msgSessions.addFirst(msgSession);
-            }
-
+                @Override
+                public void onFinally(Response response) {
+                    mPtrClassicFrameLayout.refreshComplete();
+                }
+            });
         }
     }
+
+
+//    private int dpToPx(int dp) {
+//        return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
+//    }
+
 
     private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
         @Override
@@ -213,6 +198,49 @@ public class DynamicSessionFragment extends JupiterFragment {
         @Override
         public void closeMenu() {
             //Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private JupiterAdapter dynamicSessionAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return msgSessions.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return msgSessions.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            MsgSession msgSession = msgSessions.get(position);
+            JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = null;
+
+            if (convertView == null) {
+                jupiterRowStyleSutitleLayout = new JupiterRowStyleSutitleLayout(mContext);
+            } else {
+                jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
+            }
+
+            jupiterRowStyleSutitleLayout.setTag(msgSession);
+            jupiterRowStyleSutitleLayout.getTitleTV().setText(msgSession.getFromuserid());
+            jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgSession.getLastcontent());
+
+            //获取用户信息
+            CacheUser cacheUser = UserCache.getInstance().getUser(msgSession.getFromuserid());
+
+            if (AssertValue.isNotNull(cacheUser)) {
+                ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());
+                jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
+            }
+
+            return jupiterRowStyleSutitleLayout;
         }
     };
 }

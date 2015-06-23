@@ -9,7 +9,7 @@ import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.wservice.cache.OrgCache;
-import com.yun9.wservice.cache.UserCache;
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 

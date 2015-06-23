@@ -1,6 +1,7 @@
-package com.yun9.wservice.cache;
+package com.yun9.jupiter.cache;
 
-import com.yun9.jupiter.cache.AbsCache;
+import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.User;
 
 /**
@@ -8,7 +9,7 @@ import com.yun9.jupiter.model.User;
  */
 public class UserCache extends AbsCache {
 
-    private static final String CACHE_KEY = "users";
+    private static final String CACHE_KEY = "yun9_user_id";
     private static UserCache instance;
 
     public static UserCache getInstance() {
@@ -21,8 +22,12 @@ public class UserCache extends AbsCache {
         return instance;
     }
 
-    public User getUser(String id) {
-        return this.get(id,User.class);
+    public CacheUser getUser(String userid) {
+        return this.get(userid, CacheUser.class);
+    }
+
+    public void putUser(String userid, CacheUser cacheUser) {
+        this.put(userid, cacheUser);
     }
 
     private UserCache() {

@@ -28,6 +28,7 @@ import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
 import com.yun9.jupiter.cache.FileCache;
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpException;
@@ -38,6 +39,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.http.ResponseOriginal;
 import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.SysFileBean;
 import com.yun9.jupiter.repository.RepositoryOutput;
@@ -346,6 +348,12 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheFiles())) {
             for (Map.Entry<String, CacheFile> entry : response.getResponseCache().getCacheFiles().entrySet()) {
                 FileCache.getInstance().putFile(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheUsers())) {
+            for (Map.Entry<String, CacheUser> entry : response.getResponseCache().getCacheUsers().entrySet()) {
+                UserCache.getInstance().putUser(entry.getKey(), entry.getValue());
             }
         }
     }
