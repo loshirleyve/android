@@ -27,7 +27,8 @@
 
         </com.yun9.jupiter.widget.JupiterSearchInputLayout>
 
-        <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        <in.srain.cube.views.ptr.PtrClassicFrameLayout
+            xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rotate_header_list_view_frame_client"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
