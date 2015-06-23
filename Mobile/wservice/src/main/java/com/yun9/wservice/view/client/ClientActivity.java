@@ -27,6 +27,7 @@ import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -62,8 +63,6 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private ClientListAdapter clientListAdapter;
     private ListView clientListView;
-
-    //private int formRequestCode = 1000;
 
     private PtrClassicFrameLayout mPtrFrame;
 
@@ -135,12 +134,10 @@ public class ClientActivity extends JupiterFragmentActivity {
                     }
                 }
             }
-
             @Override
             public void onFailure(Response response) {
                 Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onFinally(Response response) {
                 clientListAdapter.notifyDataSetChanged();
@@ -161,7 +158,6 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         TextFormCellBean nameTFC = new TextFormCellBean();
         nameTFC.setType(TextFormCell.class.getSimpleName());
-        nameTFC.setDefaultValue("x");
         nameTFC.setKey("name");
         nameTFC.setLabel("公司简称");
         nameTFC.setRequired(true);
@@ -169,7 +165,6 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         TextFormCellBean fullnameTFC = new TextFormCellBean();
         fullnameTFC.setType(TextFormCell.class.getSimpleName());
-        fullnameTFC.setDefaultValue("xx");
         fullnameTFC.setKey("fullname");
         fullnameTFC.setLabel("公司全称");
         fullnameTFC.setRequired(true);
@@ -188,12 +183,11 @@ public class ClientActivity extends JupiterFragmentActivity {
         levelMSFC.setCtrlCode("clientlevel");
         levelMSFC.setKey("level");
         levelMSFC.setLabel("客户等级");
-        //levelMSFC.setRequired(true);
+        levelMSFC.setRequired(true);
         formBean.putCellBean(levelMSFC);
 
         TextFormCellBean contactmanTFC = new TextFormCellBean();
         contactmanTFC.setType(TextFormCell.class.getSimpleName());
-        contactmanTFC.setDefaultValue("s");
         contactmanTFC.setKey("contactman");
         contactmanTFC.setLabel("联系人名");
         contactmanTFC.setRequired(true);
@@ -201,7 +195,6 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         TextFormCellBean contactphoneTFC = new TextFormCellBean();
         contactphoneTFC.setType(TextFormCell.class.getSimpleName());
-        contactphoneTFC.setDefaultValue("13252525252");
         contactphoneTFC.setKey("contactphone");
         contactphoneTFC.setLabel("联系电话");
         contactphoneTFC.setRequired(true);
@@ -209,7 +202,6 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         TextFormCellBean regionTFC = new TextFormCellBean();
         regionTFC.setType(TextFormCell.class.getSimpleName());
-        regionTFC.setDefaultValue("1");
         regionTFC.setKey("region");
         regionTFC.setLabel("区域");
         regionTFC.setRequired(true);
@@ -234,9 +226,9 @@ public class ClientActivity extends JupiterFragmentActivity {
         MultiSelectFormCellBean contactpositionMSFC = new MultiSelectFormCellBean();
         contactpositionMSFC.setType(MultiSelectFormCell.class.getSimpleName());
         contactpositionMSFC.setCtrlCode("contactposition");
-        contactpositionMSFC.setKey("contactposition");
+        contactpositionMSFC.setKey("contacterposition");
         contactpositionMSFC.setLabel("职位");
-        //contactpositionMSFC.setRequired(true);
+        contactpositionMSFC.setRequired(true);
         formBean.putCellBean(contactpositionMSFC);
 
         return formBean;
@@ -246,29 +238,39 @@ public class ClientActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //if (requestCode == formRequestCode && resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
         if (resultCode == FormActivity.RESPONSE_CODE.COMPLETE) {
         FormBean formBean = (FormBean) data.getSerializableExtra("form");
         Client client = new Client();
         client.setName((String) formBean.getCellBeanValue("name"));
         client.setFullname((String) formBean.getCellBeanValue("fullname"));
+        List<SerialableEntry<String,String>> typLs = (List<SerialableEntry<String, String>>) formBean.getCellBeanValue("type");
+        client.setType(typLs.get(0).getValue());
 
-        client.setType((String) formBean.getCellBeanValue("clienttype"));
-        client.setLevel((String) formBean.getCellBeanValue("clientlevel"));
+        /*List<SerialableEntry<String,String>> levLs = (List<SerialableEntry<String, String>>)formBean.getCellBeanValue("level");
+        client.setLevel(levLs.get(0).getValue());*/
+            client.setLevel("A");
+
         client.setContactman((String) formBean.getCellBeanValue("contactman"));
         client.setContactphone((String) formBean.getCellBeanValue("contactphone"));
         client.setRegion((String) formBean.getCellBeanValue("region"));
 
-        client.setSource((String) formBean.getCellBeanValue("source"));
-        client.setIndustry((String) formBean.getCellBeanValue("industry"));
-        client.setContactposition((String) formBean.getCellBeanValue("contactposition"));
+           /* List<SerialableEntry<String, String>> souLs = (List<SerialableEntry<String, String>>)formBean.getCellBeanValue("source");
+            client.setSource(souLs.get(0).getValue());*/
+            client.setSource("network");
+
+            /*List<SerialableEntry<String, String>> indLs = (List<SerialableEntry<String, String>>)formBean.getCellBeanValue("industry");
+            client.setIndustry(indLs.get(0).getValue());*/
+            client.setIndustry("retail");
+
+            List<SerialableEntry<String, String>> conLs = (List<SerialableEntry<String, String>>)formBean.getCellBeanValue("contacterposition");
+            client.setContactposition(conLs.get(0).getValue());
 
         addToDB(client);
         }
     }
 
     private void addToDB(Client client) {
-        Resource resource = resourceFactory.create("AddInstClients");
+        final Resource resource = resourceFactory.create("AddInstClients");
 
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("name", client.getName());
@@ -292,7 +294,7 @@ public class ClientActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -307,15 +309,10 @@ public class ClientActivity extends JupiterFragmentActivity {
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            //jupiterSearchInputLayout.getSearchET().setCursorVisible(true);
         }
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            //jupiterSearchInputLayout.getSearchET().setCursorVisible(true);
-
         }
-
         @Override
         public void afterTextChanged(Editable s) {
             showClients.clear();
