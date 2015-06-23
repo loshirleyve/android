@@ -33,6 +33,17 @@
         <type>yun9</type>
     </repository>
 
+    <!--查询组织详情-->
+    <repository>
+        <name>QueryOrgDetailsByOrgid</name>
+        <action>com.yun9.sys.user.service.QueryOrgDetailsByOrgidService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrgDetailInfoBean</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 
 
 </repositorys>

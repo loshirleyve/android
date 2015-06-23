@@ -8,17 +8,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.model.Org;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
-import com.yun9.jupiter.widget.JupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
@@ -26,7 +25,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.OrgCompositeInfoBean;
+import com.yun9.wservice.model.OrgDetailInfoBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +48,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     private List<JupiterEditableView> useritemList;
     private List<JupiterEditableView> orgitemList;
 
+    @ViewInject(id=R.id.parentorgname)
+    private EditText parentorgname;
 
     @ViewInject(id=R.id.neworg)
     private EditText neworg;
@@ -66,7 +67,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @BeanInject
     private ResourceFactory resourceFactory;
 
-
+    private OrgDetailInfoBean bean;
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
         Bundle bundle = new Bundle();
@@ -100,6 +101,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
         initWeight();
 
+        parentorgname.setText(command.getParentorgname());
         //检查是否进入编辑状态
         if (AssertValue.isNotNull(command) && command.isEdit()){
 
@@ -113,8 +115,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             jupiterEditorgIco.setVisibility(View.GONE);
         }
         else {
+            bulieInfo();
             neworg.setEnabled(false);
-            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+            titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
             orgtips.setText("[向左滑动可编辑]");
         }
     }
@@ -124,7 +127,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         useritemList = new ArrayList<>();
         orgitemList = new ArrayList<>();
         setupEditIco();
-        builder();
     }
 
 
@@ -160,27 +162,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         jupiterEditorgIco.setAdapter(orgadapter);
     }
 
-    public void builder()
-    {
-        for(int i=1;i<5;i++)
-        {
-            final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
-            useritem.setTitle(null);
-            useritem.hideCorner();
-            useritem.setImage("drawable://" + R.drawable.buyer);
-            useritem.setTitle(null);
-            useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
-            useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    deleteUserItem(useritem);
-                }
-            });
-            useritemList.add(useritem);
-            useradapter.notifyDataSetChanged();
-        }
-
-    }
 
     private void addNewUserOne(String id) {
         final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
@@ -246,9 +227,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         this.edit = edit;
     }
 
-    private void setAdd(){
 
-    }
 
     private View.OnClickListener onCompleteClickListener = new View.OnClickListener(){
         @Override
@@ -264,15 +243,18 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         }
     };
 
-    public void bulieInfo()
+    private void bulieInfo()
     {
-        Resource resource = resourceFactory.create("QueryOrgCompositeInfo");
+        Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
         resource.param("orgid", command.getOrgid());
-
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-
+                bean = (OrgDetailInfoBean) response.getPayload();
+                if(bean!=null) {
+                    neworg.setText(bean.getName());
+                    builder(bean);
+                }
             }
 
             @Override
@@ -287,4 +269,46 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
     }
 
+
+    private void builder(OrgDetailInfoBean bean)
+    {
+        if(AssertValue.isNotNullAndNotEmpty(bean.getUsers()))
+        {
+            for (User user:bean.getUsers())
+            {
+                final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
+                useritem.setTitle(user.getName());
+                useritem.hideCorner();
+                useritem.setImage(user.getHeaderfileid());
+                useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
+                useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteUserItem(useritem);
+                    }
+                });
+                useritemList.add(useritem);
+                useradapter.notifyDataSetChanged();
+            }
+        }
+        if(AssertValue.isNotNullAndNotEmpty(bean.getChildren()))
+        {
+            for (Org org:bean.getChildren())
+            {
+                final JupiterTextIco orgitem = new JupiterTextIco(getApplicationContext());
+                orgitem.setTitle(org.getName());
+                orgitem.hideCorner();
+               // orgitem.setImage("drawable://" + com.yun9.jupiter.R.drawable.waiting);
+                orgitem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
+                orgitem.getBadgeView().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteOrgItem(orgitem);
+                    }
+                });
+                orgitemList.add(orgitem);
+                orgadapter.notifyDataSetChanged();
+            }
+        }
+    }
 }

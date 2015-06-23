@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         tb:titleText="@string/org_edit_new"
         tb:titleLeftIcoVisibility="true"
-        tb:titleRightText="@string/org_add"
         tb:titleRightTextVisibility="false"
         >
 
@@ -32,14 +31,14 @@
             android:text="@string/parent_org"/>
 
         <EditText
+            android:id="@+id/parentorgname"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/whites"
             android:enabled="false"
             android:editable="false"
             android:paddingLeft="20dp"
-            android:textColor="@color/red"
-            android:text="@string/parent_org"/>
+            android:textColor="@color/red" />
 
         <LinearLayout
             android:layout_width="match_parent"

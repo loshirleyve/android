@@ -20,6 +20,8 @@ public class OrgEditCommand extends JupiterCommand {
 
     private String userid;
 
+    private String parentorgname;
+
     public boolean isEdit() {
         return edit;
     }
@@ -53,4 +55,14 @@ public class OrgEditCommand extends JupiterCommand {
     public void setUserid(String userid) {
         this.userid = userid;
     }
+
+    public String getParentorgname() {
+        return parentorgname;
+    }
+
+    public OrgEditCommand setParentorgname(String parentorgname) {
+        this.parentorgname = parentorgname;
+        return this;
+    }
+
 }

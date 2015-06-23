@@ -94,7 +94,7 @@ public class OrgListAdapter extends JupiterAdapter {
         @Override
         public void onClick(View v) {
             OrgListBean bean=(OrgListBean) v.getTag();
-            OrgEditActivity.start((Activity)mContext, new OrgEditCommand().setEdit(true).setOrgid(bean.getId()));
+            OrgEditActivity.start((Activity)mContext, new OrgEditCommand().setEdit(true).setParentorgname(bean.getName()).setOrgid(bean.getId()));
         }
     };
 }
