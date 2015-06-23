@@ -16,8 +16,7 @@
         <name>AddInstClients</name>
         <action>com.yun9.ws.biz.service.AddInstClientsService</action>
         <output>
-            <classname>com.yun9.wservice.model.Client</classname>
-            <type>list</type>
+            <type>object</type>
         </output>
         <type>yun9</type>
     </repository>
