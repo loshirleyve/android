@@ -2,6 +2,7 @@ package com.yun9.wservice.view.myself;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
     private TextView orgTV;
 
     private TextView signTV;
+
+    private ImageView userHeaderIV;
 
     public UserHeadWidget(Context context) {
         super(context);
@@ -54,6 +57,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
         this.companyTV = (TextView) this.findViewById(R.id.user_head_company);
         this.orgTV = (TextView) this.findViewById(R.id.user_head_dept);
         this.signTV = (TextView) this.findViewById(R.id.user_head_sign);
+        this.userHeaderIV = (ImageView) this.findViewById(R.id.user_head_iv);
     }
 
 
@@ -111,5 +115,9 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     public void setSignTV(TextView signTV) {
         this.signTV = signTV;
+    }
+
+    public ImageView getUserHeaderIV() {
+        return userHeaderIV;
     }
 }
