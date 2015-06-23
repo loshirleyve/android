@@ -2,20 +2,23 @@ package com.yun9.wservice.task;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
 import com.yun9.jupiter.app.JupiterApplication;
-import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpFactory;
 import com.yun9.jupiter.http.Response;
-import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.SysFileBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageUtil;
 import com.yun9.wservice.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,17 +29,11 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
 
     private OnFileUploadCallback onFileUploadCallback;
 
+    private OnProgressUpdateCallback onProgressUpdateCallback;
+
     private Activity mActivity;
 
     private HttpFactory httpFactory;
-
-    private SessionManager sessionManager;
-
-    private String userid;
-
-    private String instid;
-
-    private String level;
 
     private List<UploadFileBeanWrapper> uploadFileBeanWrappers;
 
@@ -44,36 +41,29 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
 
     private ProgressDialog progressDialog = null;
 
-    public UploadFileAsyncTask(Activity activity, String level, List<FileBean> fileBeans, OnFileUploadCallback onFileUploadCallback) {
-        JupiterApplication jupiterApplication = (JupiterApplication) activity.getApplicationContext();
-        this.init(activity, null, null, level, fileBeans, onFileUploadCallback);
+    private boolean compImage = false;
+
+
+    public UploadFileAsyncTask(Activity activity, List<FileBean> fileBeans) {
+        this.init(activity, fileBeans);
     }
 
-    public UploadFileAsyncTask(Activity activity, String userid, String instid, String level, OnFileUploadCallback onFileUploadCallback) {
-        this.init(activity, userid, instid, level, fileBeans, onFileUploadCallback);
-    }
-
-    private void init(Activity activity, String userid, String instid, String level, List<FileBean> fileBeans, OnFileUploadCallback onFileUploadCallback) {
-
-        this.onFileUploadCallback = onFileUploadCallback;
+    private void init(Activity activity, List<FileBean> fileBeans) {
         this.mActivity = activity;
-        this.level = level;
         this.fileBeans = fileBeans;
         uploadFileBeanWrappers = this.builderWrapper(fileBeans);
 
         JupiterApplication jupiterApplication = (JupiterApplication) activity.getApplicationContext();
         httpFactory = jupiterApplication.getBeanManager().get(HttpFactory.class);
-        sessionManager = jupiterApplication.getBeanManager().get(SessionManager.class);
-
-        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
-            this.userid = sessionManager.getUser().getId();
-        }
-
-        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
-            this.instid = sessionManager.getInst().getId();
-        }
     }
 
+    public void setOnFileUploadCallback(OnFileUploadCallback onFileUploadCallback) {
+        this.onFileUploadCallback = onFileUploadCallback;
+    }
+
+    public void setOnProgressUpdateCallback(OnProgressUpdateCallback onProgressUpdateCallback) {
+        this.onProgressUpdateCallback = onProgressUpdateCallback;
+    }
 
     @Override
     protected void onPreExecute() {
@@ -106,9 +96,7 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
 
         if (AssertValue.isNotNullAndNotEmpty(fileBeans)) {
             for (FileBean fileBean : fileBeans) {
-                if (AssertValue.isNotNull(fileBean) && FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBean.getStorageType())) {
-                    uploadFileBeanWrappers.add(new UploadFileBeanWrapper(fileBean));
-                }
+                uploadFileBeanWrappers.add(new UploadFileBeanWrapper(fileBean));
             }
         }
         return uploadFileBeanWrappers;
@@ -133,27 +121,56 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
     }
 
     private void upload(final UploadFileBeanWrapper uploadFileBeanWrapper) {
-        if (AssertValue.isNotNull(uploadFileBeanWrapper) && !uploadFileBeanWrapper.isUploaded()) {
 
-            httpFactory.uploadFile(userid, instid, "", level, uploadFileBeanWrapper.getFileBean().getType(), "", new File(uploadFileBeanWrapper.getFileBean().getAbsolutePath()), new AsyncHttpResponseCallback() {
+        //如果已经是云文件则直接上传成功。
+        if (AssertValue.isNotNull(uploadFileBeanWrapper) && FileBean.FILE_STORAGE_TYPE_YUN.equals(uploadFileBeanWrapper.getFileBean().getStorageType())) {
+            uploadFileBeanWrapper.setUploaded(true);
+            uploadFileBeanWrapper.setSuccessed(true);
+            uploadSuccess(uploadFileBeanWrapper);
+            noticeUpload();
+            return;
+        }
+
+
+        //如果是本地文件并且还为上传过，执行上传动作
+        if (AssertValue.isNotNull(uploadFileBeanWrapper) && !uploadFileBeanWrapper.isUploaded() && FileBean.FILE_STORAGE_TYPE_LOCAL.equals(uploadFileBeanWrapper.getFileBean().getStorageType())) {
+
+            InputStream is = null;
+            if (compImage && FileBean.FILE_TYPE_IMAGE.equals(uploadFileBeanWrapper.getFileBean().getType())) {
+                Bitmap bitmap = ImageUtil.getimage(uploadFileBeanWrapper.getFileBean().getAbsolutePath());
+                is = ImageUtil.bitmap2InputStream(bitmap);
+            } else {
+                File tempFile = new File(uploadFileBeanWrapper.getFileBean().getAbsolutePath());
+                try {
+                    is = new FileInputStream(tempFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    uploadFileBeanWrapper.setSuccessed(false);
+                    uploadFailure(uploadFileBeanWrapper);
+                    return;
+                }
+            }
+
+
+            httpFactory.uploadFile(uploadFileBeanWrapper.getFileBean(), is, new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
                     uploadFileBeanWrapper.setSuccessed(true);
 
-                    if (AssertValue.isNotNull(response.getPayload()) && AssertValue.isNotNull(response.getPayload())){
+                    if (AssertValue.isNotNull(response.getPayload()) && AssertValue.isNotNull(response.getPayload())) {
                         List<SysFileBean> sysFileBeans = (List<SysFileBean>) response.getPayload();
 
                         if (AssertValue.isNotNullAndNotEmpty(sysFileBeans)) {
                             uploadFileBeanWrapper.getFileBean().setSysFileBean(sysFileBeans.get(0));
                         }
                     }
-
-
+                    uploadSuccess(uploadFileBeanWrapper);
                 }
 
                 @Override
                 public void onFailure(Response response) {
                     uploadFileBeanWrapper.setSuccessed(false);
+                    uploadFailure(uploadFileBeanWrapper);
                 }
 
                 @Override
@@ -165,28 +182,27 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
         }
     }
 
-    public String getUserid() {
-        return userid;
+    private void uploadSuccess(UploadFileBeanWrapper uploadFileBeanWrapper) {
+        if (AssertValue.isNotNull(onProgressUpdateCallback)) {
+            uploadFileBeanWrapper.getFileBean().setState(FileBean.FILE_STATE_SUCCESS);
+            onProgressUpdateCallback.onProgressUpdate(uploadFileBeanWrapper.getFileBean());
+        }
     }
 
-    public void setUserid(String userid) {
-        this.userid = userid;
+    private void uploadFailure(UploadFileBeanWrapper uploadFileBeanWrapper) {
+        if (AssertValue.isNotNull(onProgressUpdateCallback)) {
+            uploadFileBeanWrapper.getFileBean().setState(FileBean.FILE_STATE_FAILURE);
+            onProgressUpdateCallback.onProgressUpdate(uploadFileBeanWrapper.getFileBean());
+        }
     }
 
-    public String getInstid() {
-        return instid;
+
+    public boolean isCompImage() {
+        return compImage;
     }
 
-    public void setInstid(String instid) {
-        this.instid = instid;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
+    public void setCompImage(boolean compImage) {
+        this.compImage = compImage;
     }
 
     @Override
@@ -202,7 +218,17 @@ public class UploadFileAsyncTask extends AsyncTask<Void, FileBean, List<FileBean
         }
     }
 
+    @Override
+    protected void onProgressUpdate(FileBean... values) {
+        super.onProgressUpdate(values);
+
+    }
+
     public interface OnFileUploadCallback {
         public void onPostExecute(List<FileBean> fileBeans);
+    }
+
+    public interface OnProgressUpdateCallback {
+        public void onProgressUpdate(FileBean values);
     }
 }

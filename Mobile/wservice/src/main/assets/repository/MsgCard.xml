@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 发送消息 -->
+    <repository>
+        <name>AddMsgCard</name>
+        <action>com.yun9.ws.biz.service.AddMsgCardService</action>
+        <type>yun9</type>
+    </repository>
+
+</repositorys>

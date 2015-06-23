@@ -134,4 +134,11 @@
     <string name="org_add">添加组织</string>
     <string name="org_name">组织名称</string>
     <string name="new_org_tip">请输入部门/小组名称</string>
+
+    <string name="new_dynamic_upload_error">上传动态附件出现错误，请重新尝试！</string>
+    <string name="new_dynamic_send_notuser">发送动态出现错误，无法获取当前用户信息！</string>
+    <string name="new_dynamic_send_notinst">发送动态出现错误，无法获取当前机构信息！</string>
+    <string name="new_dynamic_send_notcontent">你还没有输入要分享的内容。</string>
+    <string name="new_dynamic_send_success">动态发送成功！</string>
+    <string name="new_dynamic_send_error">动态发送时出现错误！%1$s</string>
 </resources>

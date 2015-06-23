@@ -67,8 +67,11 @@ public class FileUtil {
      * @return
      */
     public static String getExtensionName(File file) {
+       return getExtensionName(file.getName());
+    }
+
+    public static String getExtensionName(String fileName) {
         try {
-            String fileName = file.getName();
             if ((fileName != null) && (fileName.length() > 0)) {
                 int dot = fileName.lastIndexOf('.');
                 if ((dot > -1) && (dot < (fileName.length() - 1))) {

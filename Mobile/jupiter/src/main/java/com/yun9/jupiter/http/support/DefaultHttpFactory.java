@@ -1,7 +1,9 @@
 package com.yun9.jupiter.http.support;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.http.ResponseOriginal;
 import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.SysFileBean;
 import com.yun9.jupiter.repository.RepositoryOutput;
 import com.yun9.jupiter.repository.RepositoryParam;
@@ -312,7 +315,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
             return response;
         }
 
-        if (AssertValue.isNotNullAndNotEmpty(response.getData())) {
+        if (AssertValue.isNotNullAndNotEmpty(response.getData()) && AssertValue.isNotNull(output)) {
             Gson gson = new Gson();
 
             if (AssertValue.isNotNull(output)
@@ -352,11 +355,13 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         // TODO Auto-generated method stub
     }
 
+    public void uploadFile(FileBean fileBean, InputStream fileIo, AsyncHttpResponseCallback callback) {
+        this.uploadFile(fileBean.getUserid(), fileBean.getInstid(), fileBean.getName(), fileBean.getLevel(), fileBean.getType(), "", fileIo, callback);
+    }
 
-    @Override
-    public void uploadFile(String userid, String instid, String floderid, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback) {
+    public void uploadFile(String userid, String instid, String name, String level, String filetype, String descr, InputStream fileIO, final AsyncHttpResponseCallback callback) {
         AssertArgument.isNotNull(callback, "callback");
-        AssertArgument.isNotNull(file, "file");
+        AssertArgument.isNotNull(fileIO, "fileIO");
         // 检查网络状态
         if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
             if (AssertValue.isNotNull(callback)) {
@@ -375,30 +380,18 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
 
         String baseUrl = propertiesManager.getString("app.config.resource.yun9.file.upload.baseUrl", "utf-8");
 
+
         String url = baseUrl + "?floderid=1" + "&userid=" + userid
                 + "&instid=" + instid + "&level=" + level
                 + "&filetype=" + filetype
-                + "&descr=" + descr;
+                + "&descr=" + descr
+                + "&name=" + name;
 
         //String url = baseUrl;
         String contentType = "multipart/form-data";
         com.loopj.android.http.RequestParams params = new com.loopj.android.http.RequestParams();
-        try {
-            params.put("filecontext", file, contentType);
-//            params.put("userid", userid);
-//            params.put("instid", instid);
-//            params.put("filetype", filetype);
-//            params.put("descr", descr);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Response response = createResponse(null, 500, null, null, null);
-            try {
-                callback.onFailure(response);
-            } finally {
-                callback.onFinally(response);
-            }
-            return;
-        }
+
+        params.put("filecontext", fileIO, contentType);
 
         client.post(appContext.getApplicationContext(), url, params,
                 new AsyncHttpResponseHandler() {
@@ -443,6 +436,23 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void uploadFile(String userid, String instid, String name, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            uploadFile(userid, instid, name, level, filetype, descr, inputStream, callback);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Response response = createResponse(null, 500, null, null, null);
+            try {
+                callback.onFailure(response);
+            } finally {
+                callback.onFinally(response);
+            }
+            return;
+        }
     }
 
     private SyncHttpClient getSyncHttpClient() {
