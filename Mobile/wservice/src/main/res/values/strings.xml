@@ -126,6 +126,7 @@
     <string name="recharge_hint">建议转入100元以上金额</string>
     <string name="payment_ways">支付方式</string>
     <string name="payment_ways_hint">请选择支付方式</string>
+    <string name="recharge_type_hint">实时支付，无需审核</string>
 
 
     <string name="location_select">选择位置</string>
