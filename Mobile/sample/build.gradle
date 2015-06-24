@@ -9,7 +9,6 @@ dependencies {
     compile project(':jupiter')
     compile project(':ptr-lib')
     compile project(':viewpagerindicator')
-    compile project(':residemenu')
 }
 
 android {
