@@ -6,7 +6,7 @@ import com.yun9.wservice.model.RechargeType;
 /**
  * Created by huangbinglong on 15/6/23.
  */
-public class PaymentChoiceWaysCommand extends JupiterCommand{
+public class RechargeChoiceWaysCommand extends JupiterCommand{
 
     private RechargeType selectedType;
 

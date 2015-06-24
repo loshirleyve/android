@@ -2,11 +2,14 @@ package com.yun9.wservice.view.order;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
+import com.yun9.wservice.view.payment.PaymentOrderActivity;
+import com.yun9.wservice.view.payment.PaymentOrderCommand;
 
 /**
  * Created by huangbinglong on 15/6/16.
@@ -51,6 +54,13 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
         sutitleLayout.getTitleTV().setTextSize(14);
         sutitleLayout.getSutitleTv().setTextColor(getResources().getColor(R.color.purple_font));
         sutitleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.red));
+
+        sutitleLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentOrderActivity.start(OrderDetailPayinfoWidget.this.getContext(),new PaymentOrderCommand());
+            }
+        });
     }
 
 }

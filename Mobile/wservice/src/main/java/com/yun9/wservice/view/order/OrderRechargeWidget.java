@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.payment.PaymentRechargeActivity;
+import com.yun9.wservice.view.payment.RechargeActivity;
 
 /**
  * Created by huangbinglong on 15/6/12.
@@ -53,7 +53,7 @@ public class OrderRechargeWidget extends JupiterRelativeLayout{
         rechargeIV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentRechargeActivity.start(OrderRechargeWidget.this.getContext());
+                RechargeActivity.start(OrderRechargeWidget.this.getContext());
             }
         });
     }
