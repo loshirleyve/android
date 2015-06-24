@@ -1,14 +1,15 @@
 package com.yun9.wservice.view.dynamic;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.special.ResideMenu.ResideMenu;
-import com.special.ResideMenu.ResideMenuItem;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -19,6 +20,7 @@ import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
@@ -59,10 +61,11 @@ public class DynamicSessionFragment extends JupiterFragment {
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
-    private ResideMenu resideMenu;
-
     private LinkedList<MsgSession> msgSessions = new LinkedList<>();
 
+    private PopupWindow scenePopW;
+
+    private ScenePopListLayout scenePopListLayout;
 
     /**
      * 使用工厂方法创建一个新的动态实例，
@@ -104,7 +107,9 @@ public class DynamicSessionFragment extends JupiterFragment {
         this.titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
+                int maxHeight = dynamicSessionList.getHeight();
+                scenePopW.setHeight(maxHeight);
+                scenePopW.showAsDropDown(titleBar);
             }
         });
 
@@ -123,29 +128,30 @@ public class DynamicSessionFragment extends JupiterFragment {
                 refresh(null, null);
             }
         });
+
+        this.initPopMenu();
+
         mPtrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPtrClassicFrameLayout.autoRefresh();
             }
         }, 100);
-
-        // this.setUpMenu();
     }
 
-    private void setUpMenu() {
-        // attach to current activity;
-        resideMenu = new ResideMenu(this.getActivity());
-        //resideMenu.setBackground(R.drawable.menu_background);
-        resideMenu.attachToActivity(this.getActivity());
-        resideMenu.setMenuListener(menuListener);
-        //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
-        resideMenu.setScaleValue(0.6f);
-
-        for (int i = 0; i < 6; i++) {
-            ResideMenuItem itemMenu = new ResideMenuItem(this.getActivity(), R.drawable.write, "话题" + i);
-            resideMenu.addMenuItem(itemMenu, ResideMenu.DIRECTION_LEFT);
-        }
+    private void initPopMenu() {
+        scenePopListLayout = new ScenePopListLayout(mContext);
+        scenePopW = new PopupWindow(scenePopListLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        scenePopW.setOnDismissListener(onDismissListener);
+        scenePopW.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        scenePopW.setOutsideTouchable(true);
+        scenePopW.setFocusable(true);
+        int maxHeight = PublicHelp.getDeviceHeightPixels(getActivity());
+        int scWidht = PublicHelp.getDeviceWidthPixels(getActivity());
+        scenePopW.setHeight(maxHeight);
+        scenePopW.setWidth((scWidht/3)*2);
+        scenePopW.setAnimationStyle(R.style.secen_popwindow);
     }
 
     private void refresh(String lastupid, String lastdownid) {
@@ -183,21 +189,10 @@ public class DynamicSessionFragment extends JupiterFragment {
         }
     }
 
-
-//    private int dpToPx(int dp) {
-//        return (int) (getResources().getDisplayMetrics().density * dp + 0.5f);
-//    }
-
-
-    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
         @Override
-        public void openMenu() {
-            //Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
-        }
+        public void onDismiss() {
 
-        @Override
-        public void closeMenu() {
-            //Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
         }
     };
 
