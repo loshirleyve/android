@@ -11,6 +11,20 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 更新用户头像 -->
+    <repository>
+        <name>UpdateUserByHeaderfileid</name>
+        <action>com.yun9.sys.user.service.UpdateUserByHeaderfileidService</action>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 更新用户签名 -->
+    <repository>
+        <name>UpdateUserBySignature</name>
+        <action>com.yun9.sys.user.service.UpdateUserBySignatureService</action>
+        <type>yun9</type>
+    </repository>
+
     <!-- 查询用户的机构列表 -->
     <repository>
         <name>QueryUserInsts</name>

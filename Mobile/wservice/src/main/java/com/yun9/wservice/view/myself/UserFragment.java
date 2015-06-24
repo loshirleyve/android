@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
@@ -123,15 +126,15 @@ public class UserFragment extends JupiterFragment {
             public void run() {
                 refresh();
             }
-        },100);
+        }, 100);
     }
 
 
-    private void refresh(){
-        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())){
+    private void refresh() {
+        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())) {
             Resource resource = resourceFactory.create("QueryUserInfoByIdService");
-            resource.param("userid",sessionManager.getUser().getId());
-            resource.param("instid",sessionManager.getInst().getId());
+            resource.param("userid", sessionManager.getUser().getId());
+            resource.param("instid", sessionManager.getInst().getId());
 
             final ProgressDialog registerDialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.app_wating), true);
 
@@ -141,13 +144,16 @@ public class UserFragment extends JupiterFragment {
                 public void onSuccess(Response response) {
                     User user = (User) response.getPayload();
 
-                    if (AssertValue.isNotNull(user)){
+                    if (AssertValue.isNotNull(user)) {
                         userHeadWidget.getUserNameTV().setText(user.getName());
                         //TODO 等待服务完善返回机构信息后增加
                         userHeadWidget.getCompanyTV().setText(sessionManager.getInst().getName());
                         userHeadWidget.getOrgTV().setText(user.getOrgNames());
                         userHeadWidget.getSignTV().setText(user.getSignature());
-                        //TODO 头像待服务完善
+                        CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
+                        if (AssertValue.isNotNull(cacheUser)) {
+                            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userHeadWidget.getUserHeaderIV());
+                        }
                     }
                 }
 

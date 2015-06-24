@@ -73,7 +73,7 @@
         <item name="android:text">Sample Item</item>
     </style>
 
-    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal"/>
+    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal" />
 
     <style name="user_hader_btnbar">
         <item name="android:layout_width">0dp</item>
@@ -99,9 +99,14 @@
         <item name="android:textSize">14dp</item>
     </style>
 
-        <style name="roomRatingBar" parent="@android:style/Widget.RatingBar">
-            <item name="android:progressDrawable">@drawable/room_rating_bar</item>
-            <item name="android:minHeight">16dp</item>
-            <item name="android:maxHeight">16dp</item>
-        </style>
+    <style name="roomRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/room_rating_bar</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">16dp</item>
+    </style>
+
+    <style name="secen_popwindow">
+        <item name="android:windowEnterAnimation">@anim/secen_in_form_left</item>
+        <item name="android:windowExitAnimation">@anim/secen_out_to_left</item>
+    </style>
 </resources>

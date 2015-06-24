@@ -1,6 +1,7 @@
 package com.yun9.jupiter.http;
 
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.CacheUser;
 
 import java.util.Map;
 
@@ -11,5 +12,10 @@ public interface ResponseCache {
 
     public static final String CACHE_TYPE_FILE = "file";
 
+    public static final String CACHE_TYPE_USER = "user";
+
     public Map<String, CacheFile> getCacheFiles();
+
+    public Map<String, CacheUser> getCacheUsers();
+
 }

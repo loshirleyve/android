@@ -85,7 +85,7 @@ public class LocalImageLoadAsyncTask extends AsyncTask<Void, Integer, List<FileB
                 if (!AssertValue.isNotNullAndNotEmpty(thumbnailsPath)) {
                     thumbnailsPath = path;
                 }
-                albums.add(new FileBean(_id + "", name, album, dateAdded, path, thumbnailsPath, FileBean.FILE_TYPE_IMAGE, size));
+                albums.add(new FileBean(_id + "", null, null, name, album, dateAdded, path, thumbnailsPath, FileBean.FILE_TYPE_IMAGE, size));
 
             } while (cursor.moveToNext());
         }

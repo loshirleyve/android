@@ -38,6 +38,9 @@
     <uses-permission android:name="com.yun9.wservice.permission.MIPUSH_RECEIVE" />
     <!--这里com.xiaomi.mipushdemo改成app的包名-->
 
+    <!--添加可以向外拨打电话的权限  -->
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -313,6 +316,18 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         <activity
             android:name=".view.order.OrderCommentDetailActivity"
             android:label="@string/comment_detail"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+        android:name=".view.payment.PaymentRechargeActivity"
+        android:label="@string/recharge"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.payment.PaymentChoiceWaysActivity"
+            android:label="@string/recharge"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 

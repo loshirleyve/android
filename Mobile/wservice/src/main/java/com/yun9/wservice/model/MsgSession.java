@@ -5,12 +5,19 @@ package com.yun9.wservice.model;
  */
 public class MsgSession {
 
+    private int unreadnum;
     private String fromuserid;
-    private String fromuserheadid;
-    private String fromusername;
-    private String lastmsgconttext;
     private long lastmsgdate;
-    private int unreadmsgnum;
+    private String lastcontent;
+    private String touserid;
+
+    public int getUnreadnum() {
+        return unreadnum;
+    }
+
+    public void setUnreadnum(int unreadnum) {
+        this.unreadnum = unreadnum;
+    }
 
     public String getFromuserid() {
         return fromuserid;
@@ -18,30 +25,6 @@ public class MsgSession {
 
     public void setFromuserid(String fromuserid) {
         this.fromuserid = fromuserid;
-    }
-
-    public String getFromuserheadid() {
-        return fromuserheadid;
-    }
-
-    public void setFromuserheadid(String fromuserheadid) {
-        this.fromuserheadid = fromuserheadid;
-    }
-
-    public String getFromusername() {
-        return fromusername;
-    }
-
-    public void setFromusername(String fromusername) {
-        this.fromusername = fromusername;
-    }
-
-    public String getLastmsgconttext() {
-        return lastmsgconttext;
-    }
-
-    public void setLastmsgconttext(String lastmsgconttext) {
-        this.lastmsgconttext = lastmsgconttext;
     }
 
     public long getLastmsgdate() {
@@ -52,11 +35,19 @@ public class MsgSession {
         this.lastmsgdate = lastmsgdate;
     }
 
-    public int getUnreadmsgnum() {
-        return unreadmsgnum;
+    public String getLastcontent() {
+        return lastcontent;
     }
 
-    public void setUnreadmsgnum(int unreadmsgnum) {
-        this.unreadmsgnum = unreadmsgnum;
+    public void setLastcontent(String lastcontent) {
+        this.lastcontent = lastcontent;
+    }
+
+    public String getTouserid() {
+        return touserid;
+    }
+
+    public void setTouserid(String touserid) {
+        this.touserid = touserid;
     }
 }

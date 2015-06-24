@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 发送消息 -->
+    <repository>
+        <name>AddMsgCard</name>
+        <action>com.yun9.ws.biz.service.AddMsgCardService</action>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 获取用户分组消息 -->
+    <repository>
+        <name>QueryMsgsGroup</name>
+        <action>com.yun9.ws.biz.service.QueryMsgsGroupService</action>
+        <output>
+            <classname>com.yun9.wservice.model.MsgSession</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 根据不同场景获取消息卡片 -->
+    <repository>
+        <name>QueryMsgCardByScene</name>
+        <action>com.yun9.ws.biz.service.QueryMsgCardBySceneService</action>
+        <output>
+            <classname>com.yun9.wservice.model.MsgCard</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+
+
+</repositorys>

@@ -14,6 +14,10 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by huangbinglong on 15/6/15.
@@ -22,6 +26,27 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
+
+    @ViewInject(id=R.id.order_detail_base_widget)
+    private OrderDetailBaseWidget orderDetailBaseWidget;
+
+    @ViewInject(id=R.id.order_detail_process_widget)
+    private OrderDetailProcessWidget orderDetailProcessWidget;
+
+    @ViewInject(id=R.id.order_detail_payinfo_widget)
+    private OrderDetailPayinfoWidget orderDetailPayinfoWidget;
+
+    @ViewInject(id=R.id.order_detail_attach_widget)
+    private OrderDetailAttachWidget orderDetailAttachWidget;
+
+    @ViewInject(id=R.id.order_detail_advisor_widget)
+    private OrderDetailAdvisorWidget orderDetailAdvisorWidget;
+
+    @ViewInject(id=R.id.order_detail_provider_widget)
+    private OrderDetailProviderWidget orderDetailProviderWidget;
+
+    @ViewInject(id=R.id.order_detail_work_order_list_widget)
+    private OrderDetailWorkOrderListWidget orderDetailWorkOrderListWidget;
 
     private String orderId;
 
@@ -38,10 +63,6 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         super.onCreate(savedInstanceState);
         orderId = getIntent().getStringExtra("orderid");
         this.buildView();
-
-
-        // 测试圆形
-
     }
 
     @Override
@@ -60,8 +81,21 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderComplainActivity.start(OrderDetailActivity.this,orderId);
+                OrderComplainActivity.start(OrderDetailActivity.this, orderId);
             }
         });
+
+        orderDetailProcessWidget.buildWithData(fakeData().getOrderlogs());
+    }
+
+    private Order fakeData() {
+        Order order = new Order();
+        List<Order.OrderLog> logs = new ArrayList<>();
+        logs.add(new Order.OrderLog());
+        logs.add(new Order.OrderLog());
+        logs.add(new Order.OrderLog());
+        logs.add(new Order.OrderLog());
+        order.setOrderlogs(logs);
+        return order;
     }
 }

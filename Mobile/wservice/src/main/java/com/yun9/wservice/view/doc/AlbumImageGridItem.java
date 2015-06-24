@@ -2,6 +2,7 @@ package com.yun9.wservice.view.doc;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -20,6 +21,9 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
     private JupiterBadgeView deleteBadgeView;
 
+    private ImageView successIV;
+
+    private ImageView failureIV;
 
     private ProgressBar progressBar;
 
@@ -45,6 +49,8 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
         imageView = (ImageView) this.findViewById(R.id.image);
         progressBar = (ProgressBar) this.findViewById(R.id.progress);
+        successIV = (ImageView) this.findViewById(R.id.success_iv);
+        failureIV = (ImageView) this.findViewById(R.id.failure_iv);
 
         selectBadgeView = new JupiterBadgeView(context, imageView);
         selectBadgeView.setBadgePosition(JupiterBadgeView.POSITION_BOTTOM_RIGHT);
@@ -90,5 +96,28 @@ public class AlbumImageGridItem extends JupiterRelativeLayout {
 
     public void setDeleteBadgeView(JupiterBadgeView deleteBadgeView) {
         this.deleteBadgeView = deleteBadgeView;
+    }
+
+    public ImageView getSuccessIV() {
+        return successIV;
+    }
+
+    public void setSuccessIV(ImageView successIV) {
+        this.successIV = successIV;
+    }
+
+    public void setSuccess(boolean success){
+        if (success){
+            successIV.setVisibility(View.VISIBLE);
+            failureIV.setVisibility(View.GONE);
+        }else{
+            successIV.setVisibility(View.GONE);
+            failureIV.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void cleanState(){
+        successIV.setVisibility(View.GONE);
+        failureIV.setVisibility(View.GONE);
     }
 }

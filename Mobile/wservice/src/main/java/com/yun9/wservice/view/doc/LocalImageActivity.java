@@ -23,6 +23,7 @@ import com.yun9.jupiter.image.ImageBrowerActivity;
 import com.yun9.jupiter.image.ImageBrowerCommand;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -204,7 +205,7 @@ public class LocalImageActivity extends JupiterFragmentActivity {
         albumsPopW.setOutsideTouchable(true);
 
         int height = albumsPopW.getHeight();
-        int maxHeight = (int) (this.getDeviceHeightPixels(this) * 0.5);
+        int maxHeight = (int) (PublicHelp.getDeviceHeightPixels(this) * 0.5);
         if (height >= maxHeight) {
             height = maxHeight;
         }
@@ -343,21 +344,4 @@ public class LocalImageActivity extends JupiterFragmentActivity {
             }
         }
     };
-
-    private Drawable getDrawable(Context context) {
-        ShapeDrawable bgdrawable = new ShapeDrawable(new OvalShape());
-        bgdrawable.getPaint().setColor(context.getResources().getColor(android.R.color.transparent));
-        return bgdrawable;
-    }
-
-    /**
-     * @param activity
-     * @return 屏幕像素高度
-     */
-    public int getDeviceHeightPixels(Activity activity) {
-        DisplayMetrics metric = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int height = metric.heightPixels;   // 屏幕高度（像素）
-        return height;
-    }
 }

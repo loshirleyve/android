@@ -26,6 +26,13 @@ public class FileBean implements java.io.Serializable {
 
     public static final String FILE_LEVEL_SYSTEM = "system";
 
+    public static final String FILE_STATE_SUCCESS = "success";
+
+    public static final String FILE_STATE_FAILURE = "failure";
+
+    public static final String FILE_STATE_NONE = "none";
+
+
     public static String TYPE_TXT = "txt";
     public static String TYPE_PDF = "pdf";
     public static String TYPE_DOC = "doc";
@@ -40,15 +47,19 @@ public class FileBean implements java.io.Serializable {
     private String filePath;
     private String absolutePath;
     private String thumbnailPath;
+    private String userid;
+    private String instid;
     private String name;
     private String album;
     private String dateAdded;
     private String extensionName;
     private String type;
     private String size;
+    private String level = FILE_LEVEL_USER;
     private String storageType = FILE_STORAGE_TYPE_LOCAL;
     private int icoResource = R.drawable.small_ico_unkwon;
     private boolean selected = false;
+    private String state = FILE_STATE_NONE;
 
     private List<FileBean> childs;
 
@@ -58,18 +69,7 @@ public class FileBean implements java.io.Serializable {
     }
 
     public FileBean(SysFileBean sysFileBean) {
-        this.sysFileBean = sysFileBean;
-        filePath = sysFileBean.getId();
-        absolutePath = sysFileBean.getId();
-        thumbnailPath = sysFileBean.getId();
-        name = sysFileBean.getName();
-        extensionName = sysFileBean.getType();
-        dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
-        type = FILE_STORAGE_TYPE_YUN;
-        storageType = FileBean.FILE_STORAGE_TYPE_YUN;
-        size = "";
-        id = sysFileBean.getId();
-        initIcoResource();
+        this.setSysFileBean(sysFileBean);
     }
 
     public FileBean(File file) {
@@ -87,9 +87,12 @@ public class FileBean implements java.io.Serializable {
 
     }
 
-    public FileBean(String id, String name,String album, String dateAdded, String path, String thumbnailsPath, String type,long size) {
+    public FileBean(String id, String name, String userid, String instid, String album, String dateAdded, String path, String thumbnailsPath, String type, long size) {
         this.id = id;
         this.name = name;
+        this.extensionName = FileUtil.getExtensionName(name);
+        this.userid = userid;
+        this.instid = instid;
         this.album = album;
         this.dateAdded = dateAdded;
         this.absolutePath = path;
@@ -98,6 +101,23 @@ public class FileBean implements java.io.Serializable {
         this.type = type;
         this.size = FileUtil.getFileSize(size);
         this.storageType = FileBean.FILE_STORAGE_TYPE_LOCAL;
+    }
+
+    public void setSysFileBean(SysFileBean sysFileBean) {
+        this.userid = sysFileBean.getCreateby();
+        this.instid = sysFileBean.getInstid();
+        this.sysFileBean = sysFileBean;
+        filePath = sysFileBean.getId();
+        absolutePath = sysFileBean.getId();
+        thumbnailPath = sysFileBean.getId();
+        name = sysFileBean.getName();
+        extensionName = sysFileBean.getType();
+        dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
+        type = FILE_STORAGE_TYPE_YUN;
+        storageType = FileBean.FILE_STORAGE_TYPE_YUN;
+        size = "";
+        id = sysFileBean.getId();
+        initIcoResource();
     }
 
     private void initIcoResource() {
@@ -222,16 +242,44 @@ public class FileBean implements java.io.Serializable {
         return sysFileBean;
     }
 
-    public void setSysFileBean(SysFileBean sysFileBean) {
-        this.sysFileBean = sysFileBean;
-    }
-
     public String getAlbum() {
         return album;
     }
 
     public void setAlbum(String album) {
         this.album = album;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public void setInstid(String instid) {
+        this.instid = instid;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public void setChilds(List<FileBean> childs) {

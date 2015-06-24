@@ -21,6 +21,10 @@ public class NewDynamicCommand extends JupiterCommand {
         return selectOrgs;
     }
 
+    private String userid;
+
+    private String instid;
+
     public NewDynamicCommand setSelectOrgs(List<Org> selectOrgs) {
         this.selectOrgs = selectOrgs;
         return this;
@@ -50,6 +54,24 @@ public class NewDynamicCommand extends JupiterCommand {
         }
 
         this.selectOrgs.add(org);
+        return this;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public NewDynamicCommand setInstid(String instid) {
+        this.instid = instid;
+        return this;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public NewDynamicCommand setUserid(String userid) {
+        this.userid = userid;
         return this;
     }
 }

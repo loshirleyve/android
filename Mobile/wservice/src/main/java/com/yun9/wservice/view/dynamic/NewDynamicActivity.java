@@ -1,9 +1,12 @@
 package com.yun9.wservice.view.dynamic;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -12,8 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.location.LocationBean;
 import com.yun9.jupiter.location.LocationFactory;
 import com.yun9.jupiter.location.OnGetPoiInfoListener;
@@ -23,9 +29,12 @@ import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -33,6 +42,9 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.NewMsgCard;
+import com.yun9.wservice.model.NewMsgCardAttachment;
+import com.yun9.wservice.model.NewMsgCardUser;
 import com.yun9.wservice.task.UploadFileAsyncTask;
 import com.yun9.wservice.view.doc.AlbumImageGridItem;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
@@ -96,6 +108,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
 
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
     private NewDynamicCommand command;
 
     private List<OrgAndUserBean> selectOrgAndUsers = new ArrayList<>();
@@ -144,9 +159,21 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         this.command = (NewDynamicCommand) this.getIntent().getSerializableExtra("command");
 
-        userid = sessionManager.getUser().getId();
-        instid = sessionManager.getInst().getId();
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
+            userid = command.getUserid();
+        }
 
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
+            instid = command.getInstid();
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+            userid = sessionManager.getUser().getId();
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+            instid = sessionManager.getInst().getId();
+        }
         this.selectImageRL.setOnClickListener(onSelectImageClickListener);
         this.selectUserRL.setOnClickListener(onSelectUserClickListener);
 //        this.selectOrgRL.setOnClickListener(onSelectOrgClickListener);
@@ -258,6 +285,164 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         }
     }
 
+    private void sendDynamic() {
+
+
+        NewMsgCard newMsgCard = new NewMsgCard();
+        newMsgCard.setUserid(this.userid);
+        newMsgCard.setInstid(this.instid);
+        //不处理话题，服务器分析内容的话题进行处理
+
+        newMsgCard.setContent(dynamicContentET.getText().toString());
+        newMsgCard.setSubject("-");
+        //添加接收人
+        if (AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
+            for (OrgAndUserBean orgAndUserBean : selectOrgAndUsers) {
+                if (OrgAndUserBean.TYPE_ORG.equals(orgAndUserBean.getType())) {
+                    NewMsgCardUser user = new NewMsgCardUser();
+                    user.setType(OrgAndUserBean.TYPE_ORG);
+                    user.setUserid(orgAndUserBean.getOrg().getId());
+                    newMsgCard.putUser(user);
+                }
+
+                if (OrgAndUserBean.TYPE_USER.equals(orgAndUserBean.getType())) {
+                    NewMsgCardUser user = new NewMsgCardUser();
+                    user.setType(OrgAndUserBean.TYPE_USER);
+                    user.setUserid(orgAndUserBean.getUser().getId());
+                    newMsgCard.putUser(user);
+                }
+            }
+        }
+
+        //添加附件
+        if (AssertValue.isNotNullAndNotEmpty(onSelectFiles)) {
+            for (FileBean fileBean : onSelectFiles) {
+                if (FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
+                    NewMsgCardAttachment attachment = new NewMsgCardAttachment();
+                    attachment.setFileid(fileBean.getId());
+                    newMsgCard.putAttachment(attachment);
+                }
+            }
+        }
+
+        if (AssertValue.isNotNullAndNotEmpty(onSelectImages)) {
+            for (FileBean fileBean : onSelectImages) {
+                if (FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
+                    NewMsgCardAttachment attachment = new NewMsgCardAttachment();
+                    attachment.setFileid(fileBean.getId());
+                    newMsgCard.putAttachment(attachment);
+                }
+            }
+        }
+
+        final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
+
+
+        // 执行发送消息
+        Resource resource = resourceFactory.create("AddMsgCard");
+        resource.param("userid", newMsgCard.getUserid());
+        resource.param("instid", newMsgCard.getInstid());
+        resource.param("subject", newMsgCard.getSubject());
+        resource.param("content", newMsgCard.getContent());
+        resource.param("source", newMsgCard.getSource());
+        resource.param("scope", newMsgCard.getScope());
+
+        if (AssertValue.isNotNull(lastPoiInfoBean)) {
+            resource.header("locationx", lastPoiInfoBean.getLatitude() + "");
+            resource.header("locationy", lastPoiInfoBean.getLontitude() + "");
+            resource.header("locationlabel", lastPoiInfoBean.getName());
+        }
+
+        if (AssertValue.isNotNull(lastLocationBean)) {
+            resource.header("locationscale", lastLocationBean.getRadius() + "");
+        }
+
+        if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
+            resource.param("users", newMsgCard.getUsers());
+        }
+        if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getActions())) {
+            resource.param("actions", newMsgCard.getActions());
+        }
+        if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getAttachments())) {
+            resource.param("attachments", newMsgCard.getAttachments());
+        }
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_success, Toast.LENGTH_SHORT).show();
+                setResult(NewDynamicCommand.RESULT_CODE_OK);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                CharSequence msg = mContext.getResources().getString(R.string.new_dynamic_send_error, response.getCause());
+                Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                progressDialog.dismiss();
+            }
+        });
+
+
+    }
+
+    private void uploadFiles() {
+
+        //合并发送的图片和文件，并执行上传任务（任务中只处理存储类型为本地的文件）
+        List<FileBean> fileBeans = new ArrayList<>();
+
+        if (AssertValue.isNotNullAndNotEmpty(onSelectFiles)) {
+            for (FileBean fileBean : onSelectFiles) {
+                fileBean.setUserid(userid);
+                fileBean.setInstid(instid);
+                fileBeans.add(fileBean);
+            }
+        }
+
+        if (AssertValue.isNotNullAndNotEmpty(onSelectImages)) {
+            for (FileBean fileBean : onSelectImages) {
+                fileBean.setUserid(userid);
+                fileBean.setInstid(instid);
+                fileBeans.add(fileBean);
+            }
+        }
+        UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(NewDynamicActivity.this, fileBeans);
+        uploadFileAsyncTask.setCompImage(true);
+        uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
+            @Override
+            public void onPostExecute(List<FileBean> fileBeans) {
+                //上传文件完成后,检查是否所有文件都已经成功上传，启动发送动态
+                boolean upload = true;
+                if (AssertValue.isNotNull(fileBeans)) {
+                    for (FileBean fileBean : fileBeans) {
+                        if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBean.getStorageType())) {
+                            upload = false;
+                        }
+                    }
+                }
+
+                if (!upload) {
+                    Toast.makeText(mContext, R.string.new_dynamic_upload_error, Toast.LENGTH_SHORT);
+                } else {
+                    //上传文件成功，激活动态发送
+                    sendDynamic();
+                }
+            }
+        });
+
+        uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
+            @Override
+            public void onProgressUpdate(FileBean values) {
+                //异步刷新界面
+                mHandler.sendEmptyMessage(1);
+
+            }
+        });
+        uploadFileAsyncTask.execute();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -383,38 +568,36 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //TODO 检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
 
-            //TODO 检查地理位置获取情况。如果没有获取到地理位置允许继续发送
-
-            //TODO 合并发送的图片和文件，并执行上传任务（任务中只处理存储类型为本地的文件）
-            List<FileBean> fileBeans = new ArrayList<>();
-
-            if (AssertValue.isNotNullAndNotEmpty(onSelectFiles)) {
-                for (FileBean fileBean : onSelectFiles) {
-                    fileBeans.add(fileBean);
-                }
+            if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            if (AssertValue.isNotNullAndNotEmpty(onSelectImages)) {
-                for (FileBean fileBean : onSelectImages) {
-                    fileBeans.add(fileBean);
-                }
+            if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notinst, Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(NewDynamicActivity.this, FileBean.FILE_LEVEL_USER, fileBeans, new UploadFileAsyncTask.OnFileUploadCallback() {
-                @Override
-                public void onPostExecute(List<FileBean> fileBeans) {
+            if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                }
-            });
-            uploadFileAsyncTask.execute();
 
-            //TODO 组合参数
+            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
+            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
+                //未选择任何分享范围
+                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
+            }
 
-            //TODO 执行发送消息
+            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
+            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
+                //未获取到地理位置信息，暂时允许继续发送
+            }
 
-            //TODO 关闭，并通知发送成功
+            //上传文件以及图片
+            uploadFiles();
         }
     };
 
@@ -493,6 +676,19 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                     imageGridViewAdapter.notifyDataSetChanged();
                 }
             });
+
+            if (FileBean.FILE_STATE_SUCCESS.equals(fileBean.getState())) {
+                albumImageGridItem.setSuccess(true);
+            }
+
+            if (FileBean.FILE_STATE_FAILURE.equals(fileBean.getState())) {
+                albumImageGridItem.setSuccess(false);
+            }
+
+            if (FileBean.FILE_STATE_NONE.equals(fileBean.getState())) {
+                albumImageGridItem.cleanState();
+            }
+
             return albumImageGridItem;
         }
     };
@@ -540,7 +736,17 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 }
             });
 
+
             return fileItemWidget;
+        }
+    };
+
+    Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0 || msg.what == 1) {
+                imageGridViewAdapter.notifyDataSetChanged();
+            }
         }
     };
 }

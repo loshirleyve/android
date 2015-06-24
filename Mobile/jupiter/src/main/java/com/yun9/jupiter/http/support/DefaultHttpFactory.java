@@ -1,8 +1,11 @@
 package com.yun9.jupiter.http.support;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.Header;
@@ -25,6 +28,7 @@ import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
 import com.yun9.jupiter.cache.FileCache;
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.HttpException;
@@ -35,6 +39,9 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.http.ResponseOriginal;
 import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.CacheUser;
+import com.yun9.jupiter.model.FileBean;
+import com.yun9.jupiter.model.SysFileBean;
 import com.yun9.jupiter.repository.RepositoryOutput;
 import com.yun9.jupiter.repository.RepositoryParam;
 import com.yun9.jupiter.repository.Resource;
@@ -179,24 +186,6 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         return client;
     }
 
-    private AsyncHttpClient getAsyncHttpClient() {
-
-        if (client == null) {
-            synchronized (DefaultHttpFactory.class) {
-                if (client == null) {
-                    client = new AsyncHttpClient();
-                    client.setTimeout(propertiesManager.getInt(
-                            "app.config.http.timeout", 60 * 1000));
-                    client.setUserAgent(propertiesManager.getString(
-                            "app.config.http.useragent", "android app"));
-
-                    client.setCookieStore(new PersistentCookieStore(appContext
-                            .getApplicationContext()));
-                }
-            }
-        }
-        return client;
-    }
 
     @Override
     public Class<?> getType() {
@@ -328,7 +317,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
             return response;
         }
 
-        if (AssertValue.isNotNullAndNotEmpty(response.getData())) {
+        if (AssertValue.isNotNullAndNotEmpty(response.getData()) && AssertValue.isNotNull(output)) {
             Gson gson = new Gson();
 
             if (AssertValue.isNotNull(output)
@@ -361,6 +350,12 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 FileCache.getInstance().putFile(entry.getKey(), entry.getValue());
             }
         }
+
+        if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheUsers())) {
+            for (Map.Entry<String, CacheUser> entry : response.getResponseCache().getCacheUsers().entrySet()) {
+                UserCache.getInstance().putUser(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     @Override
@@ -368,11 +363,13 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         // TODO Auto-generated method stub
     }
 
+    public void uploadFile(FileBean fileBean, InputStream fileIo, AsyncHttpResponseCallback callback) {
+        this.uploadFile(fileBean.getUserid(), fileBean.getInstid(), fileBean.getName(), fileBean.getLevel(), fileBean.getType(), "", fileIo, callback);
+    }
 
-    @Override
-    public void uploadFile(String userid, String instid, String floderid, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback) {
+    public void uploadFile(String userid, String instid, String name, String level, String filetype, String descr, InputStream fileIO, final AsyncHttpResponseCallback callback) {
         AssertArgument.isNotNull(callback, "callback");
-        AssertArgument.isNotNull(file, "file");
+        AssertArgument.isNotNull(fileIO, "fileIO");
         // 检查网络状态
         if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
             if (AssertValue.isNotNull(callback)) {
@@ -386,40 +383,39 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
             return;
         }
 
-        AsyncHttpClient client = this.getAsyncHttpClient();
+        //AsyncHttpClient client = this.getAsyncHttpClient();
+        SyncHttpClient client = getSyncHttpClient();
 
         String baseUrl = propertiesManager.getString("app.config.resource.yun9.file.upload.baseUrl", "utf-8");
 
-//        String url = baseUrl + "?floderid=" + floderid + "&userid=" + userid
-//                + "&instid=" + instid + "&level=" + level
-//                + "&filetype=" + filetype
-//                + "&descr=" + descr;
 
-        String url = baseUrl;
+        String url = baseUrl + "?floderid=1" + "&userid=" + userid
+                + "&instid=" + instid + "&level=" + level
+                + "&filetype=" + filetype
+                + "&descr=" + descr
+                + "&name=" + name;
+
+        //String url = baseUrl;
         String contentType = "multipart/form-data";
         com.loopj.android.http.RequestParams params = new com.loopj.android.http.RequestParams();
-        try {
-            params.put("filecontext", file, contentType);
-            params.put("userid", userid);
-            params.put("instid", instid);
-            params.put("filetype", filetype);
-            params.put("descr", descr);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            Response response = createResponse(null, 500, null, null, null);
-            try {
-                callback.onFailure(response);
-            } finally {
-                callback.onFinally(response);
-            }
-            return;
-        }
+
+        params.put("filecontext", fileIO, contentType);
 
         client.post(appContext.getApplicationContext(), url, params,
                 new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int i, Header[] headers, byte[] bytes) {
                         Response response = createResponse(null, i, headers, bytes, null);
+
+                        if (AssertValue.isNotNullAndNotEmpty(response.getData())) {
+                            try {
+                                List<SysFileBean> sysFileBeans = JsonUtil.jsonToBeanList(response.getData(), SysFileBean.class);
+                                response.setPayload(sysFileBeans);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                response.setCode(Response.RESPONSE_CODE_PARAMSERROR);
+                            }
+                        }
 
                         if ("100".equals(response.getCode())) {
                             try {
@@ -451,68 +447,20 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
     }
 
     @Override
-    public void uploadFileSync(String userid, String instid, String floderid, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback) {
-        AssertArgument.isNotNull(callback, "callback");
-        AssertArgument.isNotNull(file, "file");
-        // 检查网络状态
-        if (!PublicHelp.isOpenNetwork(appContext.getApplicationContext())) {
-            if (AssertValue.isNotNull(callback)) {
-                Response response = new DefaultResponse();
-                response.setCause(appContext.getApplicationContext()
-                        .getResources()
-                        .getString(network_error_resource));
-                response.setCode("300");
+    public void uploadFile(String userid, String instid, String name, String level, String filetype, String descr, File file, final AsyncHttpResponseCallback callback) {
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            uploadFile(userid, instid, name, level, filetype, descr, inputStream, callback);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Response response = createResponse(null, 500, null, null, null);
+            try {
                 callback.onFailure(response);
+            } finally {
+                callback.onFinally(response);
             }
             return;
         }
-
-        SyncHttpClient client = getSyncHttpClient();
-
-        String baseUrl = propertiesManager.getString("app.config.resource.yun9.file.upload.baseUrl", "utf-8");
-        String url = baseUrl + "?floderid=" + floderid + "&userid=" + userid
-                + "&instid=" + instid + "&level=" + level
-                + "&filetype=" + filetype
-                + "&descr=" + descr;
-        String contentType = "multipart/form-data";
-        String uploadFileKey = "22223";
-        // logger.d(url);
-
-        com.loopj.android.http.RequestParams params = new com.loopj.android.http.RequestParams();
-        try {
-            params.put(uploadFileKey, file, contentType);
-        } catch (Exception e) {
-            throw new RuntimeException("never appear");
-        }
-
-        client.post(appContext.getApplicationContext(), url, params,
-                new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                        Response response = createResponse(null, i, headers, bytes, null);
-
-//						try {
-//							String resultValue = new String(bytes, "utf-8");
-//							Log.i("resultValue", resultValue);
-//						} catch (UnsupportedEncodingException e) {
-//							e.printStackTrace();
-//						}
-
-                        if ("100".equals(response.getCode())) {
-                            callback.onSuccess(response);
-                        } else {
-                            callback.onFailure(response);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int i, Header[] headers,
-                                          byte[] bytes, Throwable throwable) {
-                        Response response = createResponse(null, i, headers,
-                                bytes, throwable);
-                        callback.onFailure(response);
-                    }
-                });
     }
 
     private SyncHttpClient getSyncHttpClient() {
