@@ -13,6 +13,7 @@ public class OrgDetailInfoBean implements java.io.Serializable {
 
     private String id;
     private String parentid;
+    private String parentname;
     private String type;
     private String ownerName;
     private int userNum;
@@ -28,12 +29,16 @@ public class OrgDetailInfoBean implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getParentid() {
-        return parentid;
+    public String getParentid() {return parentid;}
+
+    public void setParentid(String parentid) {this.parentid = parentid;}
+
+    public String getParentname() {
+        return parentname;
     }
 
-    public void setParentid(String parentid) {
-        this.parentid = parentid;
+    public void setParentname(String parentname) {
+        this.parentname = parentname;
     }
 
     public String getType() {

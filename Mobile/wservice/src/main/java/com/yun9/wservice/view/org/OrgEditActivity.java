@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
@@ -67,6 +68,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @BeanInject
     private ResourceFactory resourceFactory;
 
+    @BeanInject
+    private SessionManager sessionManager;
+
     private OrgDetailInfoBean bean;
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
@@ -101,7 +105,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
         initWeight();
 
-        parentorgname.setText(command.getParentorgname());
+        parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
         //检查是否进入编辑状态
         if (AssertValue.isNotNull(command) && command.isEdit()){
 
@@ -111,6 +115,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         {
             neworg.setEnabled(true);
             titleBarLayout.getTitleRightTv().setText("保存");
+            titleBarLayout.getTitleTv().setText("自定义部门");
+            titleBarLayout.getTitleRight().setOnClickListener(addOrgClickListener);
             jupiterEdituserIco.setVisibility(View.GONE);
             jupiterEditorgIco.setVisibility(View.GONE);
         }
@@ -243,6 +249,18 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         }
     };
 
+    private View.OnClickListener addOrgClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String orgname=neworg.getText().toString();
+            if(AssertValue.isNotNullAndNotEmpty(orgname))
+               addOrg(orgname);
+               // Toast.makeText(OrgEditActivity.this, "添加组织", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(OrgEditActivity.this, "请输入组织名称", Toast.LENGTH_SHORT).show();
+        }
+    };
+
     private void bulieInfo()
     {
         Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
@@ -251,10 +269,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 bean = (OrgDetailInfoBean) response.getPayload();
-                if(bean!=null) {
-                    neworg.setText(bean.getName());
+                if(bean!=null)
                     builder(bean);
-                }
             }
 
             @Override
@@ -272,6 +288,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private void builder(OrgDetailInfoBean bean)
     {
+        neworg.setText(bean.getName());
+        titleBarLayout.getTitleTv().setText(bean.getName());
         if(AssertValue.isNotNullAndNotEmpty(bean.getUsers()))
         {
             for (User user:bean.getUsers())
@@ -310,5 +328,31 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 orgadapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private void addOrg(String orgname)
+    {
+        Resource resource = resourceFactory.create("AddOrg");
+        resource.param("instid", sessionManager.getInst().getId());
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("name", orgname);
+        resource.param("type", command.getParentorgtype());
+        resource.param("parentid", command.getParentorgid() == null ? "0" : command.getParentorgid());
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 }

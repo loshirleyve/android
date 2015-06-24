@@ -44,6 +44,15 @@
         <type>yun9</type>
     </repository>
 
+    <!--添加组织-->
+    <repository>
+        <name>AddOrg</name>
+        <action>com.yun9.sys.inst.serivce.AddOrgByUsersService</action>
+        <output>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 
 
 </repositorys>

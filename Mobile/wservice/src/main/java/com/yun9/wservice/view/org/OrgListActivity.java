@@ -202,7 +202,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
         }
 
         if (!AssertValue.isNotNull(this.orgListAdapter)) {
-            this.orgListAdapter = new OrgListAdapter(this, this.orgs);
+            this.orgListAdapter = new OrgListAdapter(this, this.orgs,command.getDimType());
             this.orgListView.setAdapter(orgListAdapter);
         } else {
             this.orgListAdapter.notifyDataSetChanged();

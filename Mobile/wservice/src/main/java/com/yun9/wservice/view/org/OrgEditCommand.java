@@ -12,6 +12,8 @@ public class OrgEditCommand extends JupiterCommand {
 
     public static final int REQUEST_CODE = 1005;
 
+    private String dimType;
+
     private boolean edit;
 
     private String orgid;
@@ -20,7 +22,21 @@ public class OrgEditCommand extends JupiterCommand {
 
     private String userid;
 
+    private String parentorgid;
+
     private String parentorgname;
+
+    private String parentorgtype;
+
+    public String getDimType() {
+        return dimType;
+    }
+
+    public OrgEditCommand setDimType(String dimType) {
+        this.dimType = dimType;
+        return this;
+    }
+
 
     public boolean isEdit() {
         return edit;
@@ -56,6 +72,16 @@ public class OrgEditCommand extends JupiterCommand {
         this.userid = userid;
     }
 
+
+    public String getParentorgid() {
+        return parentorgid;
+    }
+
+    public OrgEditCommand setParentorgid(String parentorgid) {
+        this.parentorgid = parentorgid;
+        return this;
+    }
+
     public String getParentorgname() {
         return parentorgname;
     }
@@ -65,4 +91,12 @@ public class OrgEditCommand extends JupiterCommand {
         return this;
     }
 
+    public String getParentorgtype() {
+        return parentorgtype;
+    }
+
+    public OrgEditCommand setParentorgtype(String parentorgtype) {
+        this.parentorgtype = parentorgtype;
+        return this;
+    }
 }

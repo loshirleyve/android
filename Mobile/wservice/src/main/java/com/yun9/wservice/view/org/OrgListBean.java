@@ -113,6 +113,7 @@ public class OrgListBean implements java.io.Serializable {
         this.parentid = parentid;
     }
 
+
     public long getUpdatedate() {
         return updatedate;
     }
