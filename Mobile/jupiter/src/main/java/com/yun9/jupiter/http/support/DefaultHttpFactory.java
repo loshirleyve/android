@@ -269,8 +269,8 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 response.setCode(jsonObj.getString("code"));
                 response.setData(jsonObj.getString("data"));
                 response.setResponseCache(new DefaultResponseCache(jsonObj.getString("cache")));
-                // logger.d("Response json:" + json);
-                // logger.d("Data json:" + response.getData().toString());
+                logger.d("Response json:" + json);
+                //logger.d("Data json:" + response.getData().toString());
             } else {
                 if (AssertValue.isNotNull(error)) {
                     response.setCause(error.getMessage());
@@ -324,13 +324,15 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                     && AssertValue.isNotNullAndNotEmpty(output.getClassname())) {
                 Class<?> outputClass = Class.forName(output.getClassname());
 
-                if ("list".equals(output.getType())) {
-                    Object payload = JsonUtil.jsonToBeanList(
-                            response.getData(), outputClass);
-                    response.setPayload(payload);
-                } else {
+                if (AssertValue.isNotNullAndNotEmpty(response.getData()) && response.getData().startsWith("{")) {
                     Object payload = JsonUtil.jsonToBean(response.getData(),
                             outputClass);
+                    response.setPayload(payload);
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(response.getData()) && response.getData().startsWith("[") && "list".equals(output.getType())) {
+                    Object payload = JsonUtil.jsonToBeanList(
+                            response.getData(), outputClass);
                     response.setPayload(payload);
                 }
 

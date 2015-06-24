@@ -1,19 +1,14 @@
 package com.yun9.wservice.model;
 
 /**
- * Created by xia on 2015/5/25.
+ * Created by Leon on 15/6/24.
  */
-public class ProductCategory implements java.io.Serializable {
-
+public class ServiceCity implements java.io.Serializable {
     private String id;
-    private String isglobal;
-    private String categoryname;
     private String province;
-    private String district;
     private String city;
-    private String state;
-    private int sort;
-
+    private int isdefault;
+    private int sortno;
     private String createby;
     private String updateby;
     private long createdate;
@@ -21,29 +16,12 @@ public class ProductCategory implements java.io.Serializable {
     private int disabled;
     private String remark;
 
-
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getIsglobal() {
-        return isglobal;
-    }
-
-    public void setIsglobal(String isglobal) {
-        this.isglobal = isglobal;
-    }
-
-    public String getCategoryname() {
-        return categoryname;
-    }
-
-    public void setCategoryname(String categoryname) {
-        this.categoryname = categoryname;
     }
 
     public String getProvince() {
@@ -54,14 +32,6 @@ public class ProductCategory implements java.io.Serializable {
         this.province = province;
     }
 
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
     public String getCity() {
         return city;
     }
@@ -70,20 +40,20 @@ public class ProductCategory implements java.io.Serializable {
         this.city = city;
     }
 
-    public String getState() {
-        return state;
+    public int getIsdefault() {
+        return isdefault;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setIsdefault(int isdefault) {
+        this.isdefault = isdefault;
     }
 
-    public int getSort() {
-        return sort;
+    public int getSortno() {
+        return sortno;
     }
 
-    public void setSort(int sort) {
-        this.sort = sort;
+    public void setSortno(int sortno) {
+        this.sortno = sortno;
     }
 
     public String getCreateby() {

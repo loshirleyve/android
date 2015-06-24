@@ -11,14 +11,27 @@
         <type>yun9</type>
     </repository>
 
-    <!--获取控制编码-->
+    <!-- 获取服务分类根据城市 -->
     <repository>
-        <name>QueryCtrlCode</name>
-        <action>com.yun9.sys.md.service.QueryMdCtrlcodeService</action>
+        <name>QueryCategorysBylocation</name>
+        <action>com.yun9.ws.biz.service.QueryCategorysBylocationService</action>
         <output>
-            <classname>com.yun9.wservice.model.CtrlCode</classname>
+            <classname>com.yun9.wservice.model.ProductCategory</classname>
             <type>list</type>
         </output>
         <type>yun9</type>
     </repository>
+
+    <!-- 查询产品信息 -->
+    <repository>
+        <name>QueryProducts</name>
+        <action>com.yun9.ws.biz.service.QueryProductsByCategroyIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Product</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+
 </repositorys>

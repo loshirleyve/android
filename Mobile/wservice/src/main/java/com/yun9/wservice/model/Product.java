@@ -3,15 +3,20 @@ package com.yun9.wservice.model;
 /**
  * Created by xia on 2015/5/25.
  */
-public class Product {
+public class Product implements java.io.Serializable {
     private String id;
-    private String inputdesc;
-    private String productid;
-    private String transfertype;
-    private String inputtype;
-    private String attachname;
-    private String attachkey;
-    private String productImg;
+    private String sn;
+    private String name;
+    private double saleprice;
+    private int sort;
+    private String instid;
+    private String state;
+    private String introduce;
+    private String type;
+    private String imageid;
+    private int daynum;
+    private String backgorundimgid;
+    private boolean istop;
 
     public String getId() {
         return id;
@@ -21,59 +26,99 @@ public class Product {
         this.id = id;
     }
 
-    public String getInputdesc() {
-        return inputdesc;
+    public String getName() {
+        return name;
     }
 
-    public void setInputdesc(String inputdesc) {
-        this.inputdesc = inputdesc;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProductid() {
-        return productid;
+    public String getSn() {
+        return sn;
     }
 
-    public void setProductid(String productid) {
-        this.productid = productid;
+    public void setSn(String sn) {
+        this.sn = sn;
     }
 
-    public String getTransfertype() {
-        return transfertype;
+    public double getSaleprice() {
+        return saleprice;
     }
 
-    public void setTransfertype(String transfertype) {
-        this.transfertype = transfertype;
+    public void setSaleprice(double saleprice) {
+        this.saleprice = saleprice;
     }
 
-    public String getInputtype() {
-        return inputtype;
+    public int getSort() {
+        return sort;
     }
 
-    public void setInputtype(String inputtype) {
-        this.inputtype = inputtype;
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 
-    public String getAttachname() {
-        return attachname;
+    public String getInstid() {
+        return instid;
     }
 
-    public void setAttachname(String attachname) {
-        this.attachname = attachname;
+    public void setInstid(String instid) {
+        this.instid = instid;
     }
 
-    public String getAttachkey() {
-        return attachkey;
+    public String getState() {
+        return state;
     }
 
-    public void setAttachkey(String attachkey) {
-        this.attachkey = attachkey;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getProductImg() {
-        return productImg;
+    public String getIntroduce() {
+        return introduce;
     }
 
-    public void setProductImg(String productImg) {
-        this.productImg = productImg;
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getImageid() {
+        return imageid;
+    }
+
+    public void setImageid(String imageid) {
+        this.imageid = imageid;
+    }
+
+    public int getDaynum() {
+        return daynum;
+    }
+
+    public void setDaynum(int daynum) {
+        this.daynum = daynum;
+    }
+
+    public String getBackgorundimgid() {
+        return backgorundimgid;
+    }
+
+    public void setBackgorundimgid(String backgorundimgid) {
+        this.backgorundimgid = backgorundimgid;
+    }
+
+    public boolean istop() {
+        return istop;
+    }
+
+    public void setIstop(boolean istop) {
+        this.istop = istop;
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 获取支持的服务城市 -->
+    <repository>
+        <name>QueryCities</name>
+        <action>com.yun9.ws.biz.service.QueryCitiesService</action>
+        <output>
+            <classname>com.yun9.wservice.model.ServiceCity</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+</repositorys>

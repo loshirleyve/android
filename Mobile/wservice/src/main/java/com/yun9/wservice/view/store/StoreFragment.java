@@ -1,24 +1,32 @@
 package com.yun9.wservice.view.store;
 
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.viewpagerindicator.CirclePageIndicator;
+import com.yun9.jupiter.cache.AppCache;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.view.JupiterFragment;
+import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
 import com.yun9.wservice.model.ProductCategory;
-import com.yun9.wservice.model.SampleUser;
-import com.yun9.wservice.view.login.LoginMainActivity;
+import com.yun9.wservice.model.ServiceCity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,34 +36,43 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
  * Created by xia on 2015/5/27.
  */
 public class StoreFragment extends JupiterFragment {
 
+    public static final String CURR_CITY = "curr_city";
 
     @ViewInject(id = R.id.store_title)
     private JupiterTitleBarLayout titleBar;
 
+    @ViewInject(id = R.id.rotate_header_list_view_frame)
+    private PtrClassicFrameLayout mPtrFrame;
 
-    private ListView productListView;
-    private ProductCategoryLayout productCategoryLayout;
-    private ProductListAdapter productListAdapter;
+    @ViewInject(id = R.id.category_segmented)
+    private SegmentedGroup segmentedGroup;
 
-    private ProductImgAdapter productImgAdapter;
-    private List<ProductScrollItemView> productScrollItemViews;
+    @ViewInject(id = R.id.product_lv)
+    private ListView productLV;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
+    private List<ServiceCity> serviceCities = new ArrayList<>();
+
+    private ServiceCity defaultServiceCity;
+
+    private ServiceCity currServiceCity;
+
+    private ProductCategory currProductCategory;
+
     private ViewPager viewPager;
     private View pageView;
     private CirclePageIndicator circlePageIndicator;
 
-    private LinkedList<Product> products;
-    private List<ProductCategory> productCategoryList;
-    private TextView pcTV;
-
-    private ProductCategory currProductCategory;
-
-    private PtrClassicFrameLayout mPtrFrame;
+    private LinkedList<Product> products = new LinkedList<>();
 
     public static StoreFragment newInstance(Bundle args) {
         StoreFragment fragment = new StoreFragment();
@@ -70,220 +87,241 @@ public class StoreFragment extends JupiterFragment {
 
     @Override
     protected void initViews(View view) {
-        this.titleBar.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
+        pageView = LayoutInflater.from(mContext).inflate(R.layout.widget_store_product_pager, null);
+        viewPager = (ViewPager) pageView.findViewById(R.id.productsImgScroll);
+        circlePageIndicator = (CirclePageIndicator) pageView.findViewById(R.id.indicator);
+
+        mPtrFrame.setLastUpdateTimeRelateObject(this);
+        mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
-            public void onClick(View v) {
-                if(Logged()){
-                    Intent gotoLogin = new Intent(mContext, LoginMainActivity.class);
-                    startActivity(gotoLogin);
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                if (AssertValue.isNotNullAndNotEmpty(products)) {
+                    refreshProduct(currProductCategory, products.get(0).getId(), null);
+                } else {
+                    refreshProduct(currProductCategory, null, null);
                 }
             }
         });
 
-        productCategoryLayout = (ProductCategoryLayout) view.findViewById(R.id.category_ll);
-        productListView = (ListView) view.findViewById(R.id.product_list_ptr);
-        mPtrFrame = (PtrClassicFrameLayout) view.findViewById(R.id.rotate_header_list_view_frame);
+        productLV.setAdapter(productListViewAdapter);
 
-        pageView = LayoutInflater.from(mContext).inflate(R.layout.widget_store_product_pager,null);
-        viewPager = (ViewPager) pageView.findViewById(R.id.productsImgScroll);
-        circlePageIndicator = (CirclePageIndicator)pageView.findViewById(R.id.indicator);
+        //读取缓存的当前城市
+        currServiceCity = AppCache.getInstance().get(CURR_CITY, ServiceCity.class);
 
-        mPtrFrame.setLastUpdateTimeRelateObject(this);
-        mPtrFrame.setPtrHandler(new PtrHandler() {
+        this.refresh();
+    }
+
+    private void addCategory(ProductCategory productCategory) {
+        RadioButton radioButton = (RadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_button_item, null);
+        radioButton.setText(productCategory.getCategoryname());
+        radioButton.setTag(productCategory);
+        radioButton.setOnClickListener(onCategoryClickListener);
+        segmentedGroup.addView(radioButton);
+        segmentedGroup.updateBackground();
+    }
+
+    private void cleanCategory() {
+        segmentedGroup.removeAllViews();
+    }
+
+    private void refresh() {
+        this.refreshCity();
+    }
+
+    private void refreshCity() {
+        final Resource resource = resourceFactory.create("QueryCities");
+        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, mContext.getResources().getString(R.string.app_wating), true);
+
+        resource.invok(new AsyncHttpResponseCallback() {
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshProduct();
+            public void onSuccess(Response response) {
+                List<ServiceCity> tempServiceCities = (List<ServiceCity>) response.getPayload();
+                serviceCities.clear();
+                if (AssertValue.isNotNullAndNotEmpty(tempServiceCities)) {
+                    //检查当前缓存的城市是否在支持城市范围内
+                    boolean supportCity = false;
+
+                    for (ServiceCity serviceCity : tempServiceCities) {
+                        if (serviceCity.getIsdefault() == 1)
+                            defaultServiceCity = serviceCity;
+                        serviceCities.add(serviceCity);
+                        if (AssertValue.isNotNull(currServiceCity) && serviceCity.getId().equals(currServiceCity.getId())) {
+                            supportCity = true;
+                        }
+                    }
+
+                    //如果当前城市为空，且指定了默认城市则检索分类
+                    if (AssertValue.isNotNull(defaultServiceCity) && !AssertValue.isNotNull(currServiceCity)) {
+                        switchLocation(defaultServiceCity);
+                    }
+
+                    if (supportCity && AssertValue.isNotNull(currServiceCity)) {
+                        switchLocation(currServiceCity);
+                    }
+
+                }
             }
 
             @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            public void onFailure(Response response) {
+                Toast.makeText(getActivity(), response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void refreshProduct(ProductCategory productCategory, String lastupid, String lastdownid) {
+        if (!AssertValue.isNotNull(productCategory)) {
+            mPtrFrame.refreshComplete();
+            return;
+        }
+
+        final Resource resource = resourceFactory.create("QueryProducts");
+        if (AssertValue.isNotNullAndNotEmpty(lastupid)) {
+            resource.pullUp(lastupid);
+        }
+
+        if (AssertValue.isNotNullAndNotEmpty(lastdownid) && !AssertValue.isNotNullAndNotEmpty(lastupid)) {
+            resource.pullDown(lastdownid);
+        }
+
+        resource.param("categoryid", productCategory.getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                List<Product> tempProducts = (List<Product>) response.getPayload();
+
+                if (AssertValue.isNotNullAndNotEmpty(tempProducts) && Resource.PULL_TYPE.UP.equals(resource.getPullType())) {
+                    for (int i = tempProducts.size(); i > 0; i--) {
+                        products.addFirst(tempProducts.get(i - 1));
+                    }
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(tempProducts) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
+                    for (Product product : tempProducts) {
+                        products.addLast(product);
+                    }
+                }
+
+                if (!AssertValue.isNotNullAndNotEmpty(tempProducts) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
+//                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+//                    fileLV.setHasMoreItems(false);
+                }
+
+                productListViewAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(getActivity(), response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                mPtrFrame.refreshComplete();
+            }
+        });
+    }
+
+
+    private void switchLocation(ServiceCity serviceCity) {
+        if (!AssertValue.isNotNull(serviceCity))
+            return;
+
+        currServiceCity = serviceCity;
+        AppCache.getInstance().put(CURR_CITY, currServiceCity);
+
+        final ProgressDialog progressDialog = ProgressDialog.show(getActivity(), null, mContext.getResources().getString(R.string.app_wating), true);
+
+        //设置界面当前城市
+        titleBar.getTitleLeftTv().setText(currServiceCity.getCity());
+
+        Resource resource = resourceFactory.create("QueryCategorysBylocation");
+        resource.param("province", serviceCity.getProvince());
+        resource.param("city", serviceCity.getCity());
+
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                List<ProductCategory> productCategories = (List<ProductCategory>) response.getPayload();
+                cleanCategory();
+                if (AssertValue.isNotNullAndNotEmpty(productCategories)) {
+                    for (ProductCategory productCategory : productCategories) {
+                        addCategory(productCategory);
+                    }
+
+                    //触发第一个分类点击
+                    if (segmentedGroup.getChildCount() > 0) {
+                        segmentedGroup.getChildAt(0).performClick();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(getActivity(), response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                progressDialog.dismiss();
             }
         });
 
-        // the following are default settings
-//        mPtrFrame.setResistance(1.7f);
-//        mPtrFrame.setRatioOfHeaderHeightToRefresh(1.2f);
-//        mPtrFrame.setDurationToClose(200);
-//        mPtrFrame.setDurationToCloseHeader(1000);
-//        // default is false
-//        mPtrFrame.setPullToRefresh(false);
-//        // default is true
-//        mPtrFrame.setKeepHeaderWhenRefresh(true);
-
-        refreshProductCategory();
-    }
-
-    private void refreshProduct() {
-        //TODO 执行服务器刷新
-        if (AssertValue.isNotNull(currProductCategory)) {
-            new GetDataTask().execute();
-        }
-    }
-
-    private void completeRefreshProduct() {
-        if (!AssertValue.isNotNull(products)) {
-            products = new LinkedList<>();
-        }
-
-        LinkedList<Product> topProducts = new LinkedList<>();
-
-        for (int i = 0; i < 3; i++) {
-            Product product = new Product();
-            product.setProductid("" + i);
-            product.setProductImg(currProductCategory.getCategoryname() + ";产品图片" + i);
-            products.addFirst(product);
-            topProducts.addLast(product);
-
-        }
-
-        this.builderViewPages(topProducts);
-
-        if (!AssertValue.isNotNull(productImgAdapter)) {
-            productImgAdapter = new ProductImgAdapter(mContext, productScrollItemViews);
-            //viewPager.setLayoutParams(new ListView.LayoutParams(ListView.LayoutParams.MATCH_PARENT, 200));
-            viewPager.setAdapter(productImgAdapter);
-            circlePageIndicator.setViewPager(viewPager);
-        } else {
-            productImgAdapter.notifyDataSetChanged();
-        }
-
-        if (!AssertValue.isNotNull(productListAdapter)) {
-            productListView.addHeaderView(pageView, null, false);
-
-            productListAdapter = new ProductListAdapter(this.getActivity(), products);
-            productListView.setAdapter(productListAdapter);
-
-        } else {
-            productListAdapter.notifyDataSetChanged();
-        }
-
-
-        mPtrFrame.refreshComplete();
-
-    }
-
-    private void builderViewPages(LinkedList<Product> topProducts) {
-        if (!AssertValue.isNotNull(productScrollItemViews)) {
-            this.productScrollItemViews = new ArrayList<>();
-        }
-
-        if (AssertValue.isNotNull(topProducts)) {
-            for (Product product : topProducts) {
-                ProductScrollItemView view = new ProductScrollItemView(mContext);
-
-                view.buildWithData(product);
-                view.setTag(product);
-                this.productScrollItemViews.add(view);
-            }
-        }
-    }
-
-    private void refreshProductCategory() {
-        List<ProductCategory> productCategories = new ArrayList<>();
-
-        ProductCategory productCategory1 = new ProductCategory("精选");
-        ProductCategory productCategory2 = new ProductCategory("财务");
-        ProductCategory productCategory3 = new ProductCategory("行政");
-        ProductCategory productCategory4 = new ProductCategory("理财");
-
-        productCategories.add(productCategory1);
-        productCategories.add(productCategory2);
-        productCategories.add(productCategory3);
-        productCategories.add(productCategory4);
-
-        this.onCategoryComplete(productCategories);
-
-    }
-
-    private void onCategoryComplete(List<ProductCategory> productCategories) {
-        if (AssertValue.isNotNullAndNotEmpty(productCategories)) {
-            this.productCategoryList = productCategories;
-            productCategoryLayout.setOnClickListener(onCategoryClickListener);
-            productCategoryLayout.buildWidthData(productCategoryList);
-        }
-    }
-
-    private void cleanProduct() {
-        if (AssertValue.isNotNullAndNotEmpty(products)) {
-            products.clear();
-        }
-
-        if (AssertValue.isNotNullAndNotEmpty(productScrollItemViews)) {
-            productScrollItemViews.clear();
-            if (AssertValue.isNotNull(productImgAdapter)) {
-                productImgAdapter.notifyDataSetChanged();
-            }
-        }
-
-    }
-
-    private class GetDataTask extends AsyncTask<Void, Void, String[]> {
-
-        @Override
-        protected String[] doInBackground(Void... params) {
-            // Simulates a background job.
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-            return new String[1];
-        }
-
-        @Override
-        protected void onPostExecute(String[] result) {
-            completeRefreshProduct();
-            super.onPostExecute(result);
-        }
     }
 
     private View.OnClickListener onCategoryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            currProductCategory = (ProductCategory) v.getTag();
+            ProductCategory productCategory = (ProductCategory) v.getTag();
 
-            List<TextView> textViewList;
-            textViewList = productCategoryLayout.getTextViews();
-            for (int i = 0; i < textViewList.size(); i++){
-                if(textViewList.get(i).getTag() != currProductCategory){
-                    textViewList.get(i).setBackgroundResource(R.drawable.productcategory_background);
-                }else {
-                    textViewList.get(i).setBackgroundResource(R.color.title_color);
-                }
-            }
-
-            if (AssertValue.isNotNull(currProductCategory)) {
-                cleanProduct();
-                mPtrFrame.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPtrFrame.autoRefresh();
-                    }
-                }, 100);
+            if (AssertValue.isNotNull(productCategory)) {
+                products.clear();
+                productListViewAdapter.notifyDataSetChanged();
+                currProductCategory = productCategory;
+                mPtrFrame.autoRefresh();
             }
         }
     };
 
-    //
-    //
-    //
-    public boolean Logged(){
-
-        SampleUser sampleUser = new SampleUser();
-        String no = sampleUser.getNo().toString();
-        String name = sampleUser.getName().toString();
-        String id = sampleUser.getId().toString();
-
-        if(no.equals("") || name.equals("") || id.equals("")){
-            return false;
-        }else{
-            return true;
+    private JupiterAdapter productListViewAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return products.size();
         }
-    }
-    //
-    //
-    //
 
+        @Override
+        public Object getItem(int position) {
+            return products.get(position);
+        }
 
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ProductItemLayout productItemLayout = null;
+            Product product = products.get(position);
+
+            if (AssertValue.isNotNull(convertView)) {
+                productItemLayout = (ProductItemLayout) convertView;
+            } else {
+                productItemLayout = new ProductItemLayout(getActivity());
+            }
+
+            productItemLayout.getTitleTV().setText(product.getName());
+            productItemLayout.getSutitleTV().setText(product.getIntroduce());
+            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
+            productItemLayout.getHotnoticeTV().setText("每月100元");
+
+            return productItemLayout;
+        }
+    };
 }
 

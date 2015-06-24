@@ -30,11 +30,6 @@ public class ProductScrollItemView extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(Product product){
-        textView1.setText(product.getProductImg());
-        textView2.setText(product.getProductImg());
-        textView3.setText(product.getProductImg());
-    }
 
     @Override
     protected int getContextView() {
