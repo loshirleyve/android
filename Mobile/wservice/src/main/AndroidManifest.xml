@@ -327,7 +327,13 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
 
         <activity
             android:name=".view.payment.PaymentChoiceWaysActivity"
-            android:label="@string/recharge"
+            android:label="@string/payment_ways"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.payment.PaymentOrderActivity"
+            android:label="@string/payment_now"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
