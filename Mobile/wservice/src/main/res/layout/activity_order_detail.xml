@@ -24,25 +24,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <com.yun9.wservice.view.order.OrderDetailBaseWidget
+                android:id="@+id/order_detail_base_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/devide_line"/>
             <com.yun9.wservice.view.order.OrderDetailProcessWidget
+                android:id="@+id/order_detail_process_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </com.yun9.wservice.view.order.OrderDetailProcessWidget>
             <com.yun9.wservice.view.order.OrderDetailPayinfoWidget
+                android:id="@+id/order_detail_payinfo_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <com.yun9.wservice.view.order.OrderDetailAttachWidget
+                android:id="@+id/order_detail_attach_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <com.yun9.wservice.view.order.OrderDetailAdvisorWidget
+                android:id="@+id/order_detail_advisor_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <com.yun9.wservice.view.order.OrderDetailProviderWidget
+                android:id="@+id/order_detail_provider_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
+                android:id="@+id/order_detail_work_order_list_widget"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>

@@ -14,11 +14,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/upload_icon"/>
+                <ImageView
+                    android:id="@+id/circle_iv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/upload_icon"/>
             <TextView
+                android:id="@+id/state_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -26,6 +28,7 @@
                 android:textColor="@color/devide_line"
                 android:text="购买中"/>
             <TextView
+                android:id="@+id/state_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="9dp"

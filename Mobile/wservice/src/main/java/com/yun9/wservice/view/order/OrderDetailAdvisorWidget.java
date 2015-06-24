@@ -9,8 +9,6 @@ import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by huangbinglong on 15/6/16.
  */
@@ -19,6 +17,8 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
     private ImageView userHeadIV;
     private TextView userNameTV;
     private TextView contactUsIV;
+
+    private Order order;
 
     public OrderDetailAdvisorWidget(Context context) {
         super(context);
@@ -33,7 +33,7 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
     }
 
     public void buildView(Order order) {
-
+        this.order = order;
     }
 
     @Override
@@ -46,5 +46,10 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
         userHeadIV  = (ImageView) this.findViewById(R.id.user_head_iv);
         userNameTV = (TextView) this.findViewById(R.id.user_name_tv);
         contactUsIV = (TextView) this.findViewById(R.id.contact_us_iv);
+        buildView();
+    }
+
+    private void buildView() {
+
     }
 }
