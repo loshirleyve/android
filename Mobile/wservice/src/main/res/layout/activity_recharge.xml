@@ -27,6 +27,29 @@
                     app:rowStyleTitleShowMainImage="false"
                     app:rowStyleTitleText="@string/payment_ways"
                     app:rowStyleTitleShowHotText="true"/>
+                <LinearLayout
+                    android:id="@+id/choosed_recharge_type_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FEFCEB"
+                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/recharge_way_tip_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/red"
+                    android:text="将使用 支付宝 方式付款"/>
+                    <TextView
+                        android:id="@+id/recharge_way_desc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:text="您将用支付宝完成本次充值，本次充值在10分钟以内会实时到账，您可以进行核实。"/>
+                </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
