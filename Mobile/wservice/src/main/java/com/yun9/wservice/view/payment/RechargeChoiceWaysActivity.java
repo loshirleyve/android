@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -23,9 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 选择充值方式界面
  * Created by huangbinglong on 15/6/23.
  */
-public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
+public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -36,16 +36,16 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.confirm_ll)
     private LinearLayout confirmLL;
 
-    private PaymentChoiceWaysCommand command;
+    private RechargeChoiceWaysCommand command;
 
     private List<RechargeType> rechargeTypes;
 
     private RechargeType selectedType;
 
-    public static void start(Activity activity,PaymentChoiceWaysCommand command) {
-        Intent intent = new Intent(activity,PaymentChoiceWaysActivity.class);
+    public static void start(Activity activity,RechargeChoiceWaysCommand command) {
+        Intent intent = new Intent(activity,RechargeChoiceWaysActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(PaymentChoiceWaysCommand.PARAM_COMMAND, command);
+        bundle.putSerializable(RechargeChoiceWaysCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -53,23 +53,23 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        command = (PaymentChoiceWaysCommand) getIntent()
+        command = (RechargeChoiceWaysCommand) getIntent()
                                                 .getSerializableExtra(
-                                                        PaymentChoiceWaysCommand.PARAM_COMMAND);
+                                                        RechargeChoiceWaysCommand.PARAM_COMMAND);
         buildView();
         fakeData();
     }
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_payment_choice_way;
+        return R.layout.activity_recharge_choice_way;
     }
 
     private void buildView() {
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentChoiceWaysActivity.this.finish();
+                RechargeChoiceWaysActivity.this.finish();
             }
         });
 
@@ -131,7 +131,7 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
         public View getView(final int position, View convertView, ViewGroup parent) {
             JupiterRowStyleSutitleLayout sutitleLayout;
             if (convertView == null) {
-                sutitleLayout = new JupiterRowStyleSutitleLayout(PaymentChoiceWaysActivity.this);
+                sutitleLayout = new JupiterRowStyleSutitleLayout(RechargeChoiceWaysActivity.this);
                 sutitleLayout.setSelectMode(true);
                 sutitleLayout.getArrowRightIV().setVisibility(View.GONE);
                 sutitleLayout.getTitleTV().setText(rechargeTypes.get(position).getRechargename());

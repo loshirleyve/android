@@ -16,9 +16,10 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.RechargeType;
 
 /**
+ * 充值界面
  * Created by huangbinglong on 15/6/23.
  */
-public class PaymentRechargeActivity extends JupiterFragmentActivity{
+public class RechargeActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -41,12 +42,12 @@ public class PaymentRechargeActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.recharge_way_desc_tv)
     private TextView rechargeTypeDescTV;
 
-    private PaymentChoiceWaysCommand command;
+    private RechargeChoiceWaysCommand command;
 
     private RechargeType rechargeType;
 
     public static void start(Context context) {
-        Intent intent = new Intent(context,PaymentRechargeActivity.class);
+        Intent intent = new Intent(context,RechargeActivity.class);
         context.startActivity(intent);
     }
 
@@ -58,7 +59,7 @@ public class PaymentRechargeActivity extends JupiterFragmentActivity{
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_payment_recharge;
+        return R.layout.activity_recharge;
     }
 
     private void buildView() {
@@ -66,7 +67,7 @@ public class PaymentRechargeActivity extends JupiterFragmentActivity{
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentRechargeActivity.this.finish();
+                RechargeActivity.this.finish();
             }
         });
         titleLayout.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -75,9 +76,9 @@ public class PaymentRechargeActivity extends JupiterFragmentActivity{
         titleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                command = new PaymentChoiceWaysCommand();
+                command = new RechargeChoiceWaysCommand();
                 command.setSelectedType(rechargeType);
-                PaymentChoiceWaysActivity.start(PaymentRechargeActivity.this,command);
+                RechargeChoiceWaysActivity.start(RechargeActivity.this, command);
             }
         });
     }

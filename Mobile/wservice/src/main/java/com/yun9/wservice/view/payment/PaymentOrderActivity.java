@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 立即支付订单界面
  * Created by huangbinglong on 15/6/24.
  */
 public class PaymentOrderActivity extends JupiterFragmentActivity{
