@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -137,6 +138,35 @@ public class MsgCardWidget extends JupiterRelativeLayout {
                 fr.buildWithData(msgCard.getAttachments());
             }
         }
+
+        //content
+        if(msgCard.getContent() != null){
+            contentTV.setText(msgCard.getContent());
+        }
+
+        //location
+        if(msgCard.getLocationlabel() != null){
+            locationTV.setText(msgCard.getLocationlabel());
+        }
+
+        //createDate
+        if(msgCard.getCreatedate() != null){
+            timeTV.setText(msgCard.getCreatedate().toString());
+        }
+
+        //Praisecount
+            praiseNumTV.setText(String.valueOf(msgCard.getPraisecount()));
+
+        //Sharecount
+         fwNumTV.setText(String.valueOf(msgCard.getSharecount()));
+
+        //comment
+        commentNumTV.setText(String.valueOf(msgCard.getCommentcount()));
+
+       /* //lastComment
+        lastCommentContentTV.setText(msgCard.getLastComment());*/
+
+
     }
 
     public TextView getContentTV() {

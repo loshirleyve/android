@@ -12,7 +12,7 @@
         <name>QueryMsgsGroup</name>
         <action>com.yun9.ws.biz.service.QueryMsgsGroupService</action>
         <output>
-            <classname>com.yun9.wservice.model.MsgSession</classname>
+            <classname>com.yun9.wservice.model.MsgsGroup</classname>
             <type>list</type>
         </output>
         <type>yun9</type>
