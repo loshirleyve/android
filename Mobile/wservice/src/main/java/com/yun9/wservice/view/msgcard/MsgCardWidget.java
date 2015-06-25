@@ -163,8 +163,8 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         //comment
         commentNumTV.setText(String.valueOf(msgCard.getCommentcount()));
 
-       /* //lastComment
-        lastCommentContentTV.setText(msgCard.getLastComment());*/
+        //lastComment
+        lastCommentContentTV.setText(msgCard.getComment());
 
 
     }
