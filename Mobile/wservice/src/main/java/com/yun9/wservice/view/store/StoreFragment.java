@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -157,6 +159,9 @@ public class StoreFragment extends JupiterFragment {
         initPopWSelectCity();
 
         this.refresh();
+
+        //自动滚动
+        autoScrollHandler.sendEmptyMessageDelayed(1,5000);
     }
 
     private void initPopWSelectCity() {
@@ -586,7 +591,7 @@ public class StoreFragment extends JupiterFragment {
 
             CacheInst cacheInst = InstCache.getInstance().getInst(product.getInstid());
 
-            if (AssertValue.isNotNull(cacheInst)){
+            if (AssertValue.isNotNull(cacheInst)) {
                 productScrollItemView.getInstTV().setText(cacheInst.getInstname());
             }
 
@@ -601,6 +606,26 @@ public class StoreFragment extends JupiterFragment {
             return view == object;
         }
 
+    };
+
+    private Handler autoScrollHandler = new Handler() {
+        private static final int MSG_CHANGE_PRODUCT = 1;
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            if (msg.what == MSG_CHANGE_PRODUCT) {
+                int i = viewPager.getCurrentItem() + 1;
+                if (i >= viewPager.getAdapter().getCount()){
+                    i = 0;
+                }
+                viewPager.setCurrentItem(i,true);
+
+            }
+
+            autoScrollHandler.sendEmptyMessageDelayed(MSG_CHANGE_PRODUCT,5000);
+        }
     };
 }
 
