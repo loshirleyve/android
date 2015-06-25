@@ -88,7 +88,7 @@ public class JupiterTextIco extends JupiterEditableView{
 
     private void buildTitle(String title) {
         // 设置图片描述文字
-        if (AssertValue.isNotNullAndNotEmpty(title)) {
+        if (title != null) {
             itemName.setVisibility(VISIBLE);
             itemName.setText(title);
         } else {

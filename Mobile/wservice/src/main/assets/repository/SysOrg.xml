@@ -54,5 +54,14 @@
         <type>yun9</type>
     </repository>
 
+    <!--删除组织用户-->
+    <repository>
+        <name>RemoveOrgCardByUserId</name>
+        <action>com.yun9.sys.inst.serivce.RemoveOrgCardByUserIdService</action>
+        <output>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 
 </repositorys>
