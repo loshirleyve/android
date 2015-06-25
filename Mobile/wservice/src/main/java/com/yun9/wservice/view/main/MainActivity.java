@@ -152,9 +152,6 @@ public class MainActivity extends JupiterFragmentActivity {
                 funcFragmentHandler.switchFragment();
                 setButton(v);
             }
-
-            funcFragmentHandler.switchFragment();
-            setButton(v);
         }
     }
 
@@ -179,8 +176,6 @@ public class MainActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (AssertValue.isNotNull(loginCommand) && requestCode == loginCommand.getRequestCode() && resultCode == LoginCommand.RESULT_CODE_OK) {
-            Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
-
             //设置为必须刷新
             setRefresh(true);
 

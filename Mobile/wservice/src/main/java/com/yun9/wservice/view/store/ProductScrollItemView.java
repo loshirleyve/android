@@ -14,9 +14,9 @@ import java.util.List;
  * Created by xia on 2015/6/2.
  */
 public class ProductScrollItemView extends JupiterRelativeLayout{
-    private TextView textView1;
-    private TextView textView2;
-    private TextView textView3;
+    private TextView instTV;
+    private TextView productTV;
+    private TextView productDescTV;
 
     public ProductScrollItemView(Context context) {
         super(context);
@@ -39,8 +39,20 @@ public class ProductScrollItemView extends JupiterRelativeLayout{
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
 
-        textView1 = (TextView)this.findViewById(R.id.productImgItem1);
-        textView2 = (TextView)this.findViewById(R.id.productImgItem2);
-        textView3 = (TextView)this.findViewById(R.id.productImgItem3);
+        instTV = (TextView)this.findViewById(R.id.inst_tv);
+        productTV = (TextView)this.findViewById(R.id.product_tv);
+        productDescTV = (TextView)this.findViewById(R.id.product_desc_tv);
+    }
+
+    public TextView getInstTV() {
+        return instTV;
+    }
+
+    public TextView getProductTV() {
+        return productTV;
+    }
+
+    public TextView getProductDescTV() {
+        return productDescTV;
     }
 }

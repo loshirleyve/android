@@ -19,6 +19,7 @@ import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
@@ -232,6 +233,7 @@ public class DynamicSessionFragment extends JupiterFragment {
             jupiterRowStyleSutitleLayout.setTag(msgsGroup);
             jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
             jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
+            jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
 
             //获取用户信息
             CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());

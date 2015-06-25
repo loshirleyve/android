@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.viewpagerindicator.CirclePageIndicator;
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.cache.AppCache;
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.location.LocationBean;
@@ -28,6 +30,7 @@ import com.yun9.jupiter.location.OnGetPoiInfoListener;
 import com.yun9.jupiter.location.OnLocationListener;
 import com.yun9.jupiter.location.PoiInfoBean;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -100,6 +103,8 @@ public class StoreFragment extends JupiterFragment {
 
     private LinkedList<Product> products = new LinkedList<>();
 
+    private LinkedList<Product> topProducts = new LinkedList<>();
+
     public static StoreFragment newInstance(Bundle args) {
         StoreFragment fragment = new StoreFragment();
         fragment.setArguments(args);
@@ -116,6 +121,10 @@ public class StoreFragment extends JupiterFragment {
         pageView = LayoutInflater.from(mContext).inflate(R.layout.widget_store_product_pager, null);
         viewPager = (ViewPager) pageView.findViewById(R.id.productsImgScroll);
         circlePageIndicator = (CirclePageIndicator) pageView.findViewById(R.id.indicator);
+        viewPager.setAdapter(topProductViewPageAdapter);
+        circlePageIndicator.setViewPager(viewPager);
+        //将pageView加入到list header
+        productLV.addHeaderView(pageView);
 
         titleBar.getTitleLeft().setOnClickListener(onLocationClickListener);
 
@@ -196,6 +205,15 @@ public class StoreFragment extends JupiterFragment {
         locationFactory.start();
     }
 
+    private void reset() {
+        products.clear();
+        topProducts.clear();
+        topProductViewPageAdapter.notifyDataSetChanged();
+        productListViewAdapter.notifyDataSetChanged();
+        circlePageIndicator.notifyDataSetChanged();
+
+    }
+
     private void cleanCategory() {
         segmentedGroup.removeAllViews();
     }
@@ -270,6 +288,7 @@ public class StoreFragment extends JupiterFragment {
         }
 
         resource.param("categoryid", productCategory.getId());
+        resource.header("limitrow", "20");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -277,13 +296,20 @@ public class StoreFragment extends JupiterFragment {
 
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts) && Resource.PULL_TYPE.UP.equals(resource.getPullType())) {
                     for (int i = tempProducts.size(); i > 0; i--) {
-                        products.addFirst(tempProducts.get(i - 1));
+                        Product tempProduct = tempProducts.get(i - 1);
+                        products.addFirst(tempProduct);
+                        if (tempProduct.istop()) {
+                            topProducts.addFirst(tempProduct);
+                        }
                     }
                 }
 
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
                     for (Product product : tempProducts) {
                         products.addLast(product);
+                        if (product.istop()) {
+                            topProducts.addLast(product);
+                        }
                     }
                 }
 
@@ -293,6 +319,8 @@ public class StoreFragment extends JupiterFragment {
                 }
 
                 productListViewAdapter.notifyDataSetChanged();
+                topProductViewPageAdapter.notifyDataSetChanged();
+                circlePageIndicator.notifyDataSetChanged();
             }
 
             @Override
@@ -311,6 +339,8 @@ public class StoreFragment extends JupiterFragment {
     private void switchLocation(ServiceCity serviceCity) {
         if (!AssertValue.isNotNull(serviceCity))
             return;
+
+        reset();
 
         currServiceCity = serviceCity;
         AppCache.getInstance().put(CURR_CITY, currServiceCity);
@@ -375,8 +405,7 @@ public class StoreFragment extends JupiterFragment {
             ProductCategory productCategory = (ProductCategory) v.getTag();
 
             if (AssertValue.isNotNull(productCategory)) {
-                products.clear();
-                productListViewAdapter.notifyDataSetChanged();
+                reset();
                 currProductCategory = productCategory;
                 mPtrFrame.postDelayed(new Runnable() {
                     @Override
@@ -533,6 +562,45 @@ public class StoreFragment extends JupiterFragment {
 
             return selectCityItemLayout;
         }
+    };
+
+    private PagerAdapter topProductViewPageAdapter = new PagerAdapter() {
+        @Override
+        public int getCount() {
+            return topProducts.size();
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ViewPager viewPager = (ViewPager) container;
+            viewPager.removeView((View) object);
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Product product = topProducts.get(position);
+            ProductScrollItemView productScrollItemView = new ProductScrollItemView(mContext);
+            productScrollItemView.setTag(product);
+            productScrollItemView.getProductTV().setText(product.getName());
+            productScrollItemView.getProductDescTV().setText(product.getIntroduce());
+
+            CacheInst cacheInst = InstCache.getInstance().getInst(product.getInstid());
+
+            if (AssertValue.isNotNull(cacheInst)){
+                productScrollItemView.getInstTV().setText(cacheInst.getInstname());
+            }
+
+
+            container.addView(productScrollItemView);
+            return productScrollItemView;
+
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
     };
 }
 
