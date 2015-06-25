@@ -99,7 +99,7 @@ public class Payinfo implements Serializable{
         this.paymodeCategorys = paymodeCategorys;
     }
 
-    public static class PaymodeCategory {
+    public static class PaymodeCategory implements Serializable {
         public String id;
         public String name;
         public int sort;
@@ -156,7 +156,7 @@ public class Payinfo implements Serializable{
         }
     }
 
-    public static class PaymodeInfo {
+    public static class PaymodeInfo implements Serializable {
         public String paymodeId;
         public String paymodeNo;
         public String paymodeName;

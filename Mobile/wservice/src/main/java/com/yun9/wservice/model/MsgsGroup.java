@@ -3,7 +3,7 @@ package com.yun9.wservice.model;
 /**
  * Created by Leon on 15/4/24.
  */
-public class MsgSession {
+public class MsgsGroup {
 
     private int unreadnum;
     private String fromuserid;

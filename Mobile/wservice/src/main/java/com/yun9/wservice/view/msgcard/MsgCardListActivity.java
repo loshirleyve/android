@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -24,12 +23,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
-import com.yun9.wservice.model.MsgCardAttachment;
-import com.yun9.wservice.model.MsgCardComment;
-import com.yun9.wservice.model.MsgCardMain;
-import com.yun9.wservice.model.MsgSession;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -114,7 +108,8 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             MsgCard msgCard = (MsgCard) view.getTag();
 
-            logger.d("消息卡片点击！" + msgCard.getMain().getFrom());
+            //logger.d("消息卡片点击！" + msgCard.getMain().getFrom());
+            logger.d("消息卡片点击！-----------------------");
 
             Bundle bundle = new Bundle();
             bundle.putSerializable(MsgCardDetailActivity.ARG_MSG_CARD, msgCard);
@@ -168,17 +163,17 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     private JupiterAdapter msgCardListAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            return 0;
+            return msgCards.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return msgCards.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return 0;
+            return position;
         }
 
         @Override
@@ -217,7 +212,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 msgCardWidget = (MsgCardWidget) convertView;
             }
 
-            msgCardWidget.setTag(msgCard);
             msgCardWidget.buildWithData(msgCard);
             msgCardWidget.setTag(msgCard);
 

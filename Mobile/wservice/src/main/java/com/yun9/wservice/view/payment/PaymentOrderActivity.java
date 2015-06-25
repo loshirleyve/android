@@ -60,6 +60,8 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
     private PaymentOrderCommand command;
 
+    private PaymentChoiceWaysCommand choiceWaysCommand;
+
     private Payinfo payinfo;
 
     public static void start(Context context,PaymentOrderCommand command) {
@@ -81,6 +83,34 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     @Override
     protected int getContentView() {
         return R.layout.activity_payment_order;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (choiceWaysCommand != null
+                && choiceWaysCommand.getRequestCode() == requestCode
+                && resultCode == JupiterCommand.RESULT_CODE_OK){
+            Payinfo.PaymodeInfo paymodeInfo = (Payinfo.PaymodeInfo) data
+                                        .getSerializableExtra(
+                                                PaymentChoiceWaysCommand.RETURN_PARAM);
+            resetUserSelectAmount(paymodeInfo);
+        }
+    }
+
+    private void resetUserSelectAmount(Payinfo.PaymodeInfo paymodeInfo) {
+        double userAmount = 0;
+        if (paymodeInfo != null) {
+            userAmount = paymodeInfo.getUseAmount();
+        }
+        for (Payinfo.PaymodeInfo info : choiceWaysCommand.getCategory().getPaymodeInfos()) {
+            if (info.getPaymodeId().equals(paymodeInfo.getPaymodeId())){
+                info.setUseAmount(userAmount);
+            } else {
+                info.setUseAmount(0);
+            }
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void buildView() {
@@ -109,6 +139,17 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         Payinfo.PaymodeCategory c3 = new Payinfo.PaymodeCategory();
         c3.setName("会员卡");
 
+        List<Payinfo.PaymodeInfo> infos = new ArrayList<>();
+        Payinfo.PaymodeInfo i1 = new Payinfo.PaymodeInfo();
+        i1.setPaymodeId("1");
+        Payinfo.PaymodeInfo i2 = new Payinfo.PaymodeInfo();
+        i2.setPaymodeId("2");
+        Payinfo.PaymodeInfo i3 = new Payinfo.PaymodeInfo();
+        i3.setPaymodeId("3");
+        infos.add(i1);
+        infos.add(i2);
+        infos.add(i3);
+        c1.setPaymodeInfos(infos);
         categoryList.add(c1);
         categoryList.add(c2);
         categoryList.add(c3);
@@ -139,7 +180,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             JupiterRowStyleTitleLayout titleLayout;
-            Payinfo.PaymodeCategory category = payinfo.getPaymodeCategorys().get(position);
+            final Payinfo.PaymodeCategory category = payinfo.getPaymodeCategorys().get(position);
             if (convertView == null) {
                 titleLayout = new JupiterRowStyleTitleLayout(PaymentOrderActivity.this);
                 titleLayout.getHotNitoceTV()
@@ -150,6 +191,14 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 titleLayout.getMainIV().setVisibility(View.GONE);
                 titleLayout.getTitleTV()
                         .setText(category.getName());
+                titleLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        choiceWaysCommand = new PaymentChoiceWaysCommand();
+                        choiceWaysCommand.setCategory(category);
+                        PaymentChoiceWaysActivity.start(PaymentOrderActivity.this,choiceWaysCommand);
+                    }
+                });
                 convertView = titleLayout;
             } else {
                 titleLayout = (JupiterRowStyleTitleLayout) convertView;
