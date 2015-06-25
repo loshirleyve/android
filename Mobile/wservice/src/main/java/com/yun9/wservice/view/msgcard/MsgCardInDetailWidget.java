@@ -43,7 +43,7 @@ public class MsgCardInDetailWidget extends JupiterRelativeLayout {
 
     public void buildWithData(MsgCard msgCard) {
         msgCardWidget.buildWithData(msgCard);
-        MsgCardDetailSegmentedItemAdapter segmentedItemAdapter = new MsgCardDetailSegmentedItemAdapter(this.getContext());
+        MsgCardDetailSegmentedItemAdapter segmentedItemAdapter = new MsgCardDetailSegmentedItemAdapter(this.getContext(), msgCard);
         MsgCardDetailViewPagerAdapter viewPagerAdapter = new MsgCardDetailViewPagerAdapter(this.getContext(),msgCard);
         this.segmentedGroup.setAdapter(segmentedItemAdapter);
         this.segmentedGroup.setTabItemAdapter(viewPagerAdapter);

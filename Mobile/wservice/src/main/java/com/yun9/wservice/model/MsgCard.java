@@ -43,7 +43,7 @@ public class MsgCard implements java.io.Serializable {
     private int commentcount;
     private boolean ismypraise;
 
- /*   private String lastComment;*/
+    private String comment;
 
 	private List<String> praiseusername;
 	private SampleUser formuser;
@@ -237,15 +237,15 @@ public class MsgCard implements java.io.Serializable {
         this.ismypraise = ismypraise;
     }
 
-/*      public String getLastComment() {
-        return lastComment;
+    public String getComment() {
+        return comment;
     }
 
-    public void setLastComment(String lastComment) {
-        this.lastComment = lastComment;
-    }*/
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
-	public int getCommentcount() {
+    public int getCommentcount() {
 		return commentcount;
 	}
 
