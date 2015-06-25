@@ -155,4 +155,7 @@
     <string name="new_dynamic_send_notcontent">你还没有输入要分享的内容。</string>
     <string name="new_dynamic_send_success">动态发送成功！</string>
     <string name="new_dynamic_send_error">动态发送时出现错误！%1$s</string>
+
+    <string name="store_change_location_dialog_title">城市改变</string>
+    <string name="store_change_location_dialog_content">系统定位到你在%1$s,需要切换到%2$s吗?</string>
 </resources>

@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -108,6 +109,9 @@ public class DynamicSessionFragment extends JupiterFragment {
             @Override
             public void onClick(View v) {
                 int maxHeight = dynamicSessionList.getHeight();
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 0.4f;
+                getActivity().getWindow().setAttributes(lp);
                 scenePopW.setHeight(maxHeight);
                 scenePopW.showAsDropDown(titleBar);
             }
@@ -192,7 +196,9 @@ public class DynamicSessionFragment extends JupiterFragment {
     private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 1f;
+            getActivity().getWindow().setAttributes(lp);
         }
     };
 

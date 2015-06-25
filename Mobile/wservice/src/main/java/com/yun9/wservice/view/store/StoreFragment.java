@@ -1,23 +1,38 @@
 package com.yun9.wservice.view.store;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.Service;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.viewpagerindicator.CirclePageIndicator;
+import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.location.LocationBean;
+import com.yun9.jupiter.location.LocationFactory;
+import com.yun9.jupiter.location.OnGetPoiInfoListener;
+import com.yun9.jupiter.location.OnLocationListener;
+import com.yun9.jupiter.location.PoiInfoBean;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -27,6 +42,8 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
 import com.yun9.wservice.model.ProductCategory;
 import com.yun9.wservice.model.ServiceCity;
+import com.yun9.wservice.view.login.LoginCommand;
+import com.yun9.wservice.view.login.LoginMainActivity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -60,6 +77,15 @@ public class StoreFragment extends JupiterFragment {
     @BeanInject
     private ResourceFactory resourceFactory;
 
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private SelectCityLayout selectCityLayout;
+
+    private PopupWindow selectCityPopupW;
+
+    private boolean switchAlertDialogShowing = false;
+
     private List<ServiceCity> serviceCities = new ArrayList<>();
 
     private ServiceCity defaultServiceCity;
@@ -91,6 +117,16 @@ public class StoreFragment extends JupiterFragment {
         viewPager = (ViewPager) pageView.findViewById(R.id.productsImgScroll);
         circlePageIndicator = (CirclePageIndicator) pageView.findViewById(R.id.indicator);
 
+        titleBar.getTitleLeft().setOnClickListener(onLocationClickListener);
+
+        //检查是否已经登录了
+        if (sessionManager.isLogin()) {
+            titleBar.getTitleRight().setVisibility(View.GONE);
+        } else {
+            titleBar.getTitleRight().setVisibility(View.VISIBLE);
+            titleBar.getTitleRight().setOnClickListener(onLoginClickListener);
+        }
+
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -108,7 +144,25 @@ public class StoreFragment extends JupiterFragment {
         //读取缓存的当前城市
         currServiceCity = AppCache.getInstance().get(CURR_CITY, ServiceCity.class);
 
+        //初始化城市选择窗口
+        initPopWSelectCity();
+
         this.refresh();
+    }
+
+    private void initPopWSelectCity() {
+        selectCityLayout = new SelectCityLayout(mContext);
+        selectCityLayout.getCityGV().setAdapter(selectCityGVadapter);
+        selectCityPopupW = new PopupWindow(selectCityLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        selectCityPopupW.setOnDismissListener(onDismissListener);
+        selectCityPopupW.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        selectCityPopupW.setOutsideTouchable(true);
+        selectCityPopupW.setFocusable(true);
+        int maxHeight = PublicHelp.getDeviceHeightPixels(getActivity());
+        selectCityPopupW.setHeight(maxHeight / 2);
+        selectCityPopupW.setAnimationStyle(R.style.top2bottom_bottom2top);
     }
 
     private void addCategory(ProductCategory productCategory) {
@@ -118,6 +172,28 @@ public class StoreFragment extends JupiterFragment {
         radioButton.setOnClickListener(onCategoryClickListener);
         segmentedGroup.addView(radioButton);
         segmentedGroup.updateBackground();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
+        locationFactory.stop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
+        locationFactory.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
+        locationFactory.setOnLocationListener(onLocationListener);
+        locationFactory.start();
     }
 
     private void cleanCategory() {
@@ -158,6 +234,10 @@ public class StoreFragment extends JupiterFragment {
                     if (supportCity && AssertValue.isNotNull(currServiceCity)) {
                         switchLocation(currServiceCity);
                     }
+
+                    //激活地理位置请求
+                    LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
+                    locationFactory.requestLocation();
 
                 }
             }
@@ -274,6 +354,21 @@ public class StoreFragment extends JupiterFragment {
 
     }
 
+    private ServiceCity findCity(String province, String city) {
+        ServiceCity serviceCity = null;
+
+        if (AssertValue.isNotNullAndNotEmpty(province) && AssertValue.isNotNullAndNotEmpty(city) && AssertValue.isNotNullAndNotEmpty(serviceCities)) {
+
+            for (ServiceCity tempSC : serviceCities) {
+                if (tempSC.getCity().equals(city) && tempSC.getProvince().equals(province)) {
+                    serviceCity = tempSC;
+                    break;
+                }
+            }
+        }
+        return serviceCity;
+    }
+
     private View.OnClickListener onCategoryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -283,8 +378,87 @@ public class StoreFragment extends JupiterFragment {
                 products.clear();
                 productListViewAdapter.notifyDataSetChanged();
                 currProductCategory = productCategory;
-                mPtrFrame.autoRefresh();
+                mPtrFrame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPtrFrame.autoRefresh();
+                    }
+                }, 100);
+
             }
+        }
+    };
+
+    private View.OnClickListener onLocationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //设置弹出选择城市界面数据
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 0.4f;
+            getActivity().getWindow().setAttributes(lp);
+            selectCityGVadapter.notifyDataSetChanged();
+            selectCityPopupW.showAsDropDown(titleBar);
+        }
+    };
+
+    private View.OnClickListener onLoginClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            LoginMainActivity.start(getActivity(), new LoginCommand());
+        }
+    };
+
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 1f;
+            getActivity().getWindow().setAttributes(lp);
+        }
+    };
+
+    private OnLocationListener onLocationListener = new OnLocationListener() {
+        @Override
+        public void onReceiveLocation(LocationBean locationBean) {
+            //检查是否被支持的城市
+            final ServiceCity serviceCity = findCity(locationBean.getProvince(), locationBean.getCity());
+            final String key = "com.yun9.wservice.store.switchcity.notice";
+            boolean noticeSwitchCity = AppCache.getInstance().getAsBoolean(key);
+            //当前定位城市是被支持的
+            if (AssertValue.isNotNull(serviceCity) && !noticeSwitchCity && !switchAlertDialogShowing) {
+                //当前城市还没有确定或者当前城市与定位城市不一致
+                if (!AssertValue.isNotNull(currServiceCity) || (AssertValue.isNotNull(currServiceCity) && !currServiceCity.getId().equals(serviceCity.getId()))) {
+                    CharSequence content = getResources().getString(R.string.store_change_location_dialog_content, serviceCity.getCity(), serviceCity.getCity());
+                    switchAlertDialogShowing = true;
+                    new AlertDialog.Builder(getActivity()).setTitle(R.string.store_change_location_dialog_title).setMessage(content).setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switchLocation(serviceCity);
+                            switchAlertDialogShowing = false;
+                        }
+                    }).setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            switchAlertDialogShowing = false;
+                            //用户点击取消后，7天内不再提示
+                            AppCache.getInstance().put(key, true, 60 * 60 * 24 * 7);
+                        }
+                    }).show();
+                }
+            }
+
+        }
+    };
+
+    private View.OnClickListener onSelectCityClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ServiceCity serviceCity = (ServiceCity) v.getTag();
+            if (AssertValue.isNotNull(serviceCity)) {
+                switchLocation(serviceCity);
+            }
+            selectCityPopupW.dismiss();
         }
     };
 
@@ -318,9 +492,46 @@ public class StoreFragment extends JupiterFragment {
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
             ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
+            //TODO 待服务调整后修改
             productItemLayout.getHotnoticeTV().setText("每月100元");
 
             return productItemLayout;
+        }
+    };
+
+    private JupiterAdapter selectCityGVadapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return serviceCities.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return serviceCities.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            SelectCityItemLayout selectCityItemLayout = null;
+            ServiceCity serviceCity = serviceCities.get(position);
+
+            if (AssertValue.isNotNull(convertView)) {
+                selectCityItemLayout = (SelectCityItemLayout) convertView;
+            } else {
+                selectCityItemLayout = new SelectCityItemLayout(mContext);
+            }
+
+            selectCityItemLayout.setTag(serviceCity);
+            selectCityItemLayout.setCityText(serviceCity.getProvince(), serviceCity.getCity());
+            selectCityItemLayout.getItemLL().setOnClickListener(onSelectCityClickListener);
+            selectCityItemLayout.getItemLL().setTag(serviceCity);
+
+            return selectCityItemLayout;
         }
     };
 }
