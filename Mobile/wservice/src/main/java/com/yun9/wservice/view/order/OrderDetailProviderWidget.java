@@ -26,7 +26,7 @@ public class OrderDetailProviderWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildView(Order order) {
+    public void buildWitdhData(Order order) {
 
     }
 

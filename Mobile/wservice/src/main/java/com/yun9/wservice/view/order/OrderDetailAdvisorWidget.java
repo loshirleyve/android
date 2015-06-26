@@ -32,7 +32,7 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildView(Order order) {
+    public void buildWitdhData(Order order) {
         this.order = order;
     }
 

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
+
+import java.util.List;
 
 /**
  * Created by huangbinglong on 15/6/17.
@@ -19,6 +22,10 @@ public class OrderProductBaseListWidget extends JupiterRelativeLayout{
     private ListView productLV;
     private TextView orderSnTV;
     private TextView orderStateTV;
+
+    private JupiterAdapter adapter;
+
+    private List<Order.OrderProduct> products;
 
     public OrderProductBaseListWidget(Context context) {
         super(context);
@@ -32,8 +39,13 @@ public class OrderProductBaseListWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData() {
-
+    public void buildWithData(Order order) {
+        orderSnTV.setText(order.getOrdersn());
+        orderStateTV.setText(order.getStatename());
+        this.products = order.getProducts();
+        if (adapter != null){
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -50,10 +62,13 @@ public class OrderProductBaseListWidget extends JupiterRelativeLayout{
     }
 
     private void buildView() {
-        JupiterAdapter adapter = new JupiterAdapter() {
+        adapter = new JupiterAdapter() {
             @Override
             public int getCount() {
-                return 2;
+                if (products != null){
+                    return products.size();
+                }
+                return 0;
             }
 
             @Override
@@ -76,6 +91,7 @@ public class OrderProductBaseListWidget extends JupiterRelativeLayout{
                 } else {
                     productBaseWidget = (OrderProductBaseWidget) convertView;
                 }
+                productBaseWidget.buildWithData(products.get(position));;
                 return convertView;
             }
         };

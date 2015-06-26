@@ -136,7 +136,7 @@ public class Order implements Serializable{
         this.products = products;
     }
 
-    public static class OrderLog{
+    public static class OrderLog implements Serializable{
         private String orderstate;
         private Long handledate;
         private String orderstatecode;
@@ -166,7 +166,7 @@ public class Order implements Serializable{
         }
     }
 
-    public static class WorkOrder {
+    public static class WorkOrder implements Serializable{
         private String orderworkid;
         private String orderworkno;
         private String orderworkname;
@@ -214,7 +214,7 @@ public class Order implements Serializable{
         }
     }
 
-    public static class OrderProduct {
+    public static class OrderProduct implements Serializable {
         private Double goodsamount;
         private String instid;
         private String productimgid;

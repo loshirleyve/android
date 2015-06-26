@@ -6,8 +6,17 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
+import com.yun9.wservice.model.State;
+import com.yun9.wservice.model.WorkOrderComment;
 
 import org.w3c.dom.Text;
 
@@ -22,6 +31,10 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
     private TextView commentWorkOrderTV;
     private TextView checkoutWorkOrderCommentTV;
 
+    private String orderId;
+
+    private Order.WorkOrder workOrder;
+
     public OrderDetailWorkOrderWidget(Context context) {
         super(context);
     }
@@ -34,8 +47,20 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData() {
-
+    public void buildWithData(String orderId,Order.WorkOrder workOrder) {
+        this.orderId = orderId;
+        this.workOrder = workOrder;
+        workOrderNameTV.setText(workOrder.getOrderworkname());
+        workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
+        workOrderStateTV.setText(workOrder.getOrderworkstatecode());
+        // 没有完成不能评论
+        if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
+            checkoutComment();
+//            commentWorkOrderTV.setVisibility(GONE);
+//            checkoutWorkOrderCommentTV.setVisibility(GONE);
+        } else {
+            checkoutComment();
+        }
     }
 
     @Override
@@ -57,14 +82,44 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         commentWorkOrderTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderCommentActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),"");
+                OrderCommentActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
+                                                            orderId,workOrder);
             }
         });
         checkoutWorkOrderCommentTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
-                                                                                "","");
+                        orderId, workOrder);
+            }
+        });
+    }
+
+    private void checkoutComment() {
+        ResourceFactory resourceFactory = JupiterApplication.getBeanManager()
+                                                                .get(ResourceFactory.class);
+        Resource resource = resourceFactory.create("QueryWorkCommentsByWorkOrderIdService");
+        resource.param("workorderid", workOrder.getOrderworkid());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                WorkOrderComment comment = (WorkOrderComment) response.getPayload();
+                if (comment != null
+                        && AssertValue.isNotNullAndNotEmpty(comment.getId())) {
+                    checkoutWorkOrderCommentTV.setVisibility(VISIBLE);
+                } else {
+                    commentWorkOrderTV.setVisibility(VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                commentWorkOrderTV.setVisibility(GONE);
+                checkoutWorkOrderCommentTV.setVisibility(GONE);
+            }
+
+            @Override
+            public void onFinally(Response response) {
             }
         });
     }

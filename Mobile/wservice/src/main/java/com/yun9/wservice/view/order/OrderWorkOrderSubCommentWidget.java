@@ -4,8 +4,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.DateFormatUtil;
+import com.yun9.jupiter.util.StringPool;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.WorkOrderComment;
 
 /**
  * Created by huangbinglong on 15/6/18.
@@ -26,6 +29,12 @@ public class OrderWorkOrderSubCommentWidget extends JupiterRelativeLayout{
 
     public OrderWorkOrderSubCommentWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+    }
+
+    public void buildWithData(WorkOrderComment.SubComment subComment) {
+        subCommentTimeTV.setText(DateFormatUtil.format(subComment.getCreatedate(),
+                StringPool.DATE_FORMAT_DATE));
+        subCommentTV.setText(subComment.getCommenttext());
     }
 
     @Override
