@@ -31,6 +31,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
 import com.yun9.wservice.model.ProductPhase;
 import com.yun9.wservice.model.ProductProfile;
+import com.yun9.wservice.widget.ShowCommentWidget;
 
 /**
  * Created by Leon on 15/6/26.
@@ -77,6 +78,9 @@ public class ProductActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.detail_page_layout)
     private JupiterRowStyleSutitleLayout detailPageLayout;
+
+    @ViewInject(id = R.id.show_comment_widget)
+    private ShowCommentWidget showCommentWidget;
 
     @BeanInject
     private ResourceFactory resourceFactory;

@@ -1,5 +1,7 @@
 package com.yun9.wservice.view.main;
 
+import com.yun9.jupiter.view.JupiterFragment;
+
 /**
  * Created by Leon on 15/6/9.
  */
@@ -19,4 +21,6 @@ public interface FuncFragmentHandler {
     public void setRefresh(boolean refresh);
 
     public void switchFragment();
+
+    public JupiterFragment getFragment();
 }

@@ -346,6 +346,12 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                     ArrayList<FileBean> onSelectFiles = new ArrayList<>();
                     ArrayList<FileBean> onSelectImages = new ArrayList<>();
 
+                    if (AssertValue.isNotNullAndNotEmpty(onCameraImages)){
+                        for(FileBean fileBean:onCameraImages){
+                            onSelectImages.add(fileBean);
+                        }
+                    }
+
                     if (AssertValue.isNotNullAndNotEmpty(onSelectLocalFiles)) {
                         for (FileBean fileBean : onSelectLocalFiles) {
                             onSelectFiles.add(fileBean);

@@ -38,6 +38,7 @@ import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -82,7 +83,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private JupiterGridView imageGV;
 
     @ViewInject(id = R.id.file_lv)
-    private ListView fileLV;
+    private JupiterListView fileLV;
 
     @ViewInject(id = R.id.share_to_gv)
     private JupiterGridView shareToGV;
@@ -604,7 +605,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            setResult(NewDynamicCommand.RESULT_CODE_CANCEL);
+            finish();
         }
     };
 

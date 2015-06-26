@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.dynamic;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -69,6 +70,8 @@ public class DynamicSessionFragment extends JupiterFragment {
 
     private ScenePopListLayout scenePopListLayout;
 
+    private NewDynamicCommand newDynamicCommand;
+
     /**
      * 使用工厂方法创建一个新的动态实例，
      * 这个动态的使用必须使用此方法创建实例
@@ -121,7 +124,10 @@ public class DynamicSessionFragment extends JupiterFragment {
         this.titleBar.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewDynamicActivity.start(getActivity(), new NewDynamicCommand());
+                if (!AssertValue.isNotNull(newDynamicCommand)) {
+                    newDynamicCommand = new NewDynamicCommand();
+                }
+                NewDynamicActivity.start(getActivity(), newDynamicCommand);
             }
         });
 
@@ -155,7 +161,7 @@ public class DynamicSessionFragment extends JupiterFragment {
         int maxHeight = PublicHelp.getDeviceHeightPixels(getActivity());
         int scWidht = PublicHelp.getDeviceWidthPixels(getActivity());
         scenePopW.setHeight(maxHeight);
-        scenePopW.setWidth((scWidht/3)*2);
+        scenePopW.setWidth((scWidht / 3) * 2);
         scenePopW.setAnimationStyle(R.style.secen_popwindow);
     }
 
@@ -246,4 +252,19 @@ public class DynamicSessionFragment extends JupiterFragment {
             return jupiterRowStyleSutitleLayout;
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (AssertValue.isNotNull(newDynamicCommand) && newDynamicCommand.getRequestCode() == requestCode && resultCode == NewDynamicCommand.RESULT_CODE_OK) {
+            mPtrClassicFrameLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mPtrClassicFrameLayout.autoRefresh();
+                }
+            }, 100);
+        }
+
+    }
 }
