@@ -8,10 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
@@ -36,6 +42,11 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.order_recharge)
     private OrderRechargeWidget orderRechargeWidget;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+    @BeanInject
+    private SessionManager sessionManager;
 
     private OrderBuyManagerInfo buyManagerInfo;
 
@@ -76,25 +87,26 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     }
 
     private void reLoadData() {
-        buyManagerInfo = fakeData();
-        orderRechargeWidget.buildWithData(buyManagerInfo.getBalance());
-        orderAdapter.notifyDataSetChanged();
-        rechargeAdapter.notifyDataSetChanged();
-    }
+        Resource resource = resourceFactory.create("QueryBuyManagerInfoByUserIdService");
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                buyManagerInfo = (OrderBuyManagerInfo) response.getPayload();
+                orderRechargeWidget.buildWithData(buyManagerInfo.getBalance());
+            }
 
-    private OrderBuyManagerInfo fakeData() {
-        OrderBuyManagerInfo info = new OrderBuyManagerInfo();
-        info.setBalance(998);
-        List<OrderBuyManagerInfo.OrderGroup> orderGroups = new ArrayList<>();
-        orderGroups.add(new OrderBuyManagerInfo.OrderGroup(1, null, "全部"));
-        orderGroups.add(new OrderBuyManagerInfo.OrderGroup(2, "buy", "购买中"));
-        orderGroups.add(new OrderBuyManagerInfo.OrderGroup(3, "inservice", "服务中"));
-        orderGroups.add(new OrderBuyManagerInfo.OrderGroup(4, "complete", "已完成"));
-        info.setOrderGroups(orderGroups);
-        List<OrderBuyManagerInfo.RechargeGroup> rechargeGroups = new ArrayList<>();
-        rechargeGroups.add(new OrderBuyManagerInfo.RechargeGroup(1, null, "全部"));
-        info.setRecharegeGroups(rechargeGroups);
-        return info;
+            @Override
+            public void onFailure(Response response) {
+                buyManagerInfo = null;
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                orderAdapter.notifyDataSetChanged();
+                rechargeAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     /**
@@ -198,7 +210,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
             } else {
                 row = (JupiterRowStyleTitleLayout) convertView;
             }
-            row.getHotNitoceTV().setText(orderGroup.getNum() + "");
+            row.getHotNitoceTV().setText(orderGroup.getNums() + "");
             row.getTitleTV().setText(orderGroup.getStatename());
             return convertView;
         }
