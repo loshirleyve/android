@@ -33,5 +33,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询产品信息通过产品id -->
+    <repository>
+        <name>QueryProductInfoById</name>
+        <action>com.yun9.ws.biz.service.QueryProductInfoByIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Product</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 
 </repositorys>

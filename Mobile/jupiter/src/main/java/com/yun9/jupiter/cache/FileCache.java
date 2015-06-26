@@ -24,7 +24,11 @@ public class FileCache extends AbsCache {
     }
 
     public CacheFile getFile(String fileid) {
-        return this.get(fileid, CacheFile.class);
+        if (AssertValue.isNotNullAndNotEmpty(fileid)) {
+            return this.get(fileid, CacheFile.class);
+        }else{
+            return null;
+        }
     }
 
     public void putFile(String fileid, CacheFile cacheFile) {
