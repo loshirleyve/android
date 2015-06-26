@@ -25,12 +25,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    row:rowStyleSutitleShowSutitleText="false"
+                    row:rowStyleSutitleShowTimeText="false"
+                    row:rowStyleSutitleTitleText="@string/app_photo" />
+
+                <com.yun9.jupiter.view.JupiterGridView
+                    android:id="@+id/camera_gv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="3"
+                    android:scrollbars="none"></com.yun9.jupiter.view.JupiterGridView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"

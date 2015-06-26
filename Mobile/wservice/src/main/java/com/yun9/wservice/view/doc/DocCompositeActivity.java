@@ -26,6 +26,8 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.camera.CameraActivity;
+import com.yun9.wservice.view.camera.CameraCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     private YunFileCommand yunFileCommand;
 
     private YunImageCommand yunImageCommand;
+
+    private CameraCommand cameraCommand;
 
     @ViewInject(id = R.id.buttonbar)
     private LinearLayout buttonbarLL;
@@ -72,6 +76,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.image_online)
     private JupiterRowStyleSutitleLayout yunImageBtn;
 
+    @ViewInject(id = R.id.camera)
+    private JupiterRowStyleSutitleLayout photoBtn;
+
     @ViewInject(id = R.id.image_local_gv)
     private JupiterGridView localImagesGV;
 
@@ -84,6 +91,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.file_online_lv)
     private JupiterListView yunFileLV;
 
+    @ViewInject(id = R.id.camera_gv)
+    private JupiterGridView cameraGV;
+
     @BeanInject
     private SessionManager sessionManager;
 
@@ -94,6 +104,8 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
     private List<FileBean> onSelectYunFiles = new ArrayList<>();
 
     private List<FileBean> onSelectYunImages = new ArrayList<>();
+
+    private List<FileBean> onCameraImages = new ArrayList<>();
 
     private boolean mEdit;
 
@@ -143,6 +155,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         localFileBtn.setOnClickListener(onLocalFileClickListener);
         yunFileBtn.setOnClickListener(onYunFileClickListener);
         yunImageBtn.setOnClickListener(onYunImageClickListener);
+        photoBtn.setOnClickListener(onCameraClickListener);
 
         this.titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
         this.titleBarLayout.getTitleRight().setOnClickListener(onEditClickListener);
@@ -161,6 +174,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
 
         yunFileLV.setAdapter(yunFileListViewAdapter);
         yunFileLV.setOnItemClickListener(onYunFileListViewItemClickListener);
+
+        cameraGV.setAdapter(cameraImageSelectsGVAdapter);
+        cameraGV.setOnItemClickListener(onCameraImageGridViewItemClickListener);
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectFiles())) {
             for (FileBean fileBean : command.getOnSelectFiles()) {
@@ -314,6 +330,13 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         }
     };
 
+    private AdapterView.OnItemClickListener onCameraImageGridViewItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            ImageBrowerActivity.start(DocCompositeActivity.this, new ImageBrowerCommand().setFileBeans(onCameraImages).setPosition(position));
+        }
+    };
+
     private View.OnClickListener onCompleteClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -366,6 +389,16 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         }
     };
 
+    private View.OnClickListener onCameraClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!AssertValue.isNotNull(cameraCommand)) {
+                cameraCommand = new CameraCommand();
+            }
+            CameraActivity.start(DocCompositeActivity.this, cameraCommand);
+        }
+    };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -388,6 +421,14 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK) {
             onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
             yunImageSelectsGVAdapter.notifyDataSetChanged();
+        }
+
+        if (AssertValue.isNotNull(cameraCommand) && requestCode == cameraCommand.getRequestCode() && resultCode == CameraCommand.RESULT_CODE_OK) {
+            FileBean fileBean = (FileBean) data.getSerializableExtra(CameraCommand.PARAM_IMAGE);
+            if (AssertValue.isNotNull(fileBean)) {
+                onCameraImages.add(fileBean);
+                cameraImageSelectsGVAdapter.notifyDataSetChanged();
+            }
         }
 
     }
@@ -588,4 +629,55 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
             return albumImageGridItem;
         }
     };
+
+    private JupiterAdapter cameraImageSelectsGVAdapter = new JupiterAdapter() {
+
+        @Override
+        public int getCount() {
+            if (AssertValue.isNotNullAndNotEmpty(onCameraImages)) {
+                return onCameraImages.size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return onCameraImages.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            AlbumImageGridItem albumImageGridItem = null;
+            FileBean fileBean = onCameraImages.get(position);
+
+            if (AssertValue.isNotNull(convertView)) {
+                albumImageGridItem = (AlbumImageGridItem) convertView;
+            } else {
+                albumImageGridItem = new AlbumImageGridItem(DocCompositeActivity.this);
+            }
+
+            ImageLoaderUtil.getInstance(getApplicationContext()).displayImage(fileBean.getThumbnailPath(), albumImageGridItem.getImageView());
+            albumImageGridItem.setTag(fileBean);
+            albumImageGridItem.getDeleteBadgeView().setTag(fileBean);
+            albumImageGridItem.getDeleteBadgeView().show();
+            albumImageGridItem.getDeleteBadgeView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FileBean deleteFileBean = (FileBean) v.getTag();
+                    onCameraImages.remove(deleteFileBean);
+                    cameraImageSelectsGVAdapter.notifyDataSetChanged();
+                }
+            });
+
+
+            return albumImageGridItem;
+        }
+    };
+
 }

@@ -349,6 +349,11 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <!-- 拍照 -->
+        <activity
+            android:name=".view.camera.CameraActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
     </application>
 
 </manifest>
