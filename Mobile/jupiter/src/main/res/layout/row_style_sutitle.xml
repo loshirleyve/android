@@ -88,7 +88,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/title_color"
                 android:text="@string/jupiter_ne_version"
                 android:textColor="@color/whites"
                 android:layout_marginRight="5dp"
