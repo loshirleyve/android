@@ -5,9 +5,14 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.DateFormatUtil;
+import com.yun9.jupiter.util.DateUtil;
+import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.StringPool;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
+import com.yun9.wservice.model.OrderBaseInfo;
 
 /**
  * Created by huangbinglong on 15/6/15.
@@ -33,8 +38,13 @@ public class OrderItemWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void builWithData(Order order) {
-
+    public void builWithData(OrderBaseInfo order) {
+        productNameTV.setText(order.getProductname());
+        ImageLoaderUtil.getInstance(this.getContext()).displayImage(order.getProductimage(), productImgeIV);
+        productPriceTV.setText(order.getGoodsamount() + "元");
+        orderSnTV.setText(order.getOrdersn());
+        orderStateTV.setText(order.getStatename());
+        orderTimeTV.setText(DateFormatUtil.format(order.getCreatedate(),"yyyy年MM月dd日"));
     }
 
     @Override

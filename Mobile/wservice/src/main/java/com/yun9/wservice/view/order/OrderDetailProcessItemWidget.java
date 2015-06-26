@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -36,7 +37,12 @@ public class OrderDetailProcessItemWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order.OrderLog log) {
-
+        stateNameTV.setText(log.getOrderstatecode());
+        if (log.getHandledate() != null){
+            stateTimeTV.setText(DateUtil.timeAgo(log.getHandledate()));
+        } else {
+            stateTimeTV.setText("");
+        }
     }
 
     @Override

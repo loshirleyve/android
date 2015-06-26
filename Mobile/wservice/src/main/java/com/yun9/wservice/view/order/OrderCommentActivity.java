@@ -5,13 +5,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
+
+import java.io.Serializable;
 
 /**
  * Created by huangbinglong on 15/6/17.
@@ -33,13 +43,26 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.comment_et)
     private EditText editText;
 
+    @ViewInject(id=R.id.star_bar)
+    private RatingBar starBar;
+
     @ViewInject(id=R.id.order_provider_widget)
     private OrderProviderWidget orderProviderWidget;
 
-    public static void start(Activity activity,String orderId) {
+    @BeanInject
+    private ResourceFactory resourceFactory;
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private String orderId;
+
+    private Order.WorkOrder workOrder;
+
+    public static void start(Activity activity,String orderId,Order.WorkOrder workOrder) {
         Intent intent = new Intent(activity,OrderCommentActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("orderid",orderId);
+        bundle.putSerializable("workorder", (Serializable) workOrder);
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }
@@ -47,7 +70,10 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.orderId = getIntent().getStringExtra("orderid");
+        this.workOrder = (Order.WorkOrder) getIntent().getSerializableExtra("workorder");
         buildView();
+        loadData();
     }
 
     @Override
@@ -68,6 +94,39 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
                 submittingComment();
             }
         });
+        // 设置工单信息
+        workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
+        workOrderNameTV.setText(workOrder.getOrderworkname());
+    }
+
+    private void loadData() {
+        Resource resource = resourceFactory.create("QueryOrderInfoService");
+        resource.param("orderid", orderId);
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Order order = (Order) response.getPayload();
+                if (order != null
+                        && AssertValue.isNotNullAndNotEmpty(order.getOrderid())){
+                    buildWithOrder(order);
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
+    }
+
+    private void buildWithOrder(Order order) {
+        productBaseListWidget.buildWithData(order);
+        orderProviderWidget.buildWithData(order);
     }
 
     private void submittingComment() {
@@ -76,7 +135,29 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             showToast("请填写评论内容！");
             return;
         }
-        // 调用服务提交投诉
-        this.finish();
+        // 调用服务提交评论
+        Resource resource = resourceFactory.create("AddWorkOrderCommentService");
+        resource.param("workorderid",workOrder.getOrderworkid());
+        resource.param("senderid",sessionManager.getUser().getId());
+        resource.param("commenttype","comment");
+        resource.param("commenttext",content);
+        resource.param("score",starBar.getRating());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                showToast("评论成功！");
+                OrderCommentActivity.this.finish();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 }

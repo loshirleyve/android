@@ -10,12 +10,18 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
+
+import java.io.Serializable;
 
 /**
  * Created by huangbinglong on 15/6/17.
@@ -46,11 +52,20 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.order_provider_widget)
     private OrderProviderWidget orderProviderWidget;
 
-    public static void start(Activity activity,String orderId,String workOrderId) {
+    @BeanInject
+    private ResourceFactory resourceFactory;
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private String orderId;
+
+    private Order.WorkOrder workOrder;
+
+    public static void start(Activity activity,String orderId,Order.WorkOrder workOrder) {
         Intent intent = new Intent(activity,OrderCommentDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("orderid",orderId);
-        bundle.putSerializable("workorderid",workOrderId);
+        bundle.putSerializable("workorder", (Serializable) workOrder);
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }
@@ -58,6 +73,8 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.orderId = getIntent().getStringExtra("orderid");
+        this.workOrder = (Order.WorkOrder) getIntent().getSerializableExtra("workorder");
         buildView();
     }
 
