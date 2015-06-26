@@ -3,6 +3,7 @@ package com.yun9.jupiter.cache;
 import com.yun9.jupiter.model.CacheFile;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.util.AssertValue;
 
 /**
  * Created by huangbinglong on 15/6/9.
@@ -23,7 +24,11 @@ public class UserCache extends AbsCache {
     }
 
     public CacheUser getUser(String userid) {
-        return this.get(userid, CacheUser.class);
+        if (AssertValue.isNotNullAndNotEmpty(userid)) {
+            return this.get(userid, CacheUser.class);
+        }else{
+            return null;
+        }
     }
 
     public void putUser(String userid, CacheUser cacheUser) {

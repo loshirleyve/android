@@ -61,6 +61,10 @@ public class MainActivity extends JupiterFragmentActivity {
 
     private String currType;
 
+    private LoginCommand loginCommand;
+
+    private SelectInstCommand selectInstCommand;
+
     private List<FuncFragmentHandler> funcFragmentHandlerList;
 
     public static void start(Context context, Bundle bundle) {
@@ -139,15 +143,15 @@ public class MainActivity extends JupiterFragmentActivity {
 
         if (AssertValue.isNotNull(funcFragmentHandler)) {
             if (funcFragmentHandler.needLogin() && !sessionManager.isLogin()) {
+                if (!AssertValue.isNotNull(loginCommand)){
+                    loginCommand = new LoginCommand();
+                }
                 //还没有登陆系统，需要先登陆
-                LoginMainActivity.start(MainActivity.this, new LoginCommand());
+                LoginMainActivity.start(MainActivity.this, loginCommand);
             } else {
                 funcFragmentHandler.switchFragment();
                 setButton(v);
             }
-
-            funcFragmentHandler.switchFragment();
-            setButton(v);
         }
     }
 
@@ -171,9 +175,7 @@ public class MainActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK) {
-            Toast.makeText(this, "登录成功！", Toast.LENGTH_SHORT).show();
-
+        if (AssertValue.isNotNull(loginCommand) && requestCode == loginCommand.getRequestCode() && resultCode == LoginCommand.RESULT_CODE_OK) {
             //设置为必须刷新
             setRefresh(true);
 

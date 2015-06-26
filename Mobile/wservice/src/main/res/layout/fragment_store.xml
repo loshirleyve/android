@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         tb:titleLeftIcoSrc="@drawable/landmark"
         tb:titleLeftIcoVisibility="true"
-        tb:titleLeftText="深圳市"
+        tb:titleLeftText=""
         tb:titleLeftTextVisibility="true"
         tb:titleRightText="@string/login"
         tb:titleRightTextVisibility="true"

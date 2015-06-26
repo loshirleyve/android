@@ -129,6 +129,12 @@ public class UserFragment extends JupiterFragment {
         }, 100);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+
+    }
 
     private void refresh() {
         if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())) {

@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -18,6 +19,7 @@ import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
@@ -108,6 +110,9 @@ public class DynamicSessionFragment extends JupiterFragment {
             @Override
             public void onClick(View v) {
                 int maxHeight = dynamicSessionList.getHeight();
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 0.4f;
+                getActivity().getWindow().setAttributes(lp);
                 scenePopW.setHeight(maxHeight);
                 scenePopW.showAsDropDown(titleBar);
             }
@@ -192,7 +197,9 @@ public class DynamicSessionFragment extends JupiterFragment {
     private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 1f;
+            getActivity().getWindow().setAttributes(lp);
         }
     };
 
@@ -226,6 +233,7 @@ public class DynamicSessionFragment extends JupiterFragment {
             jupiterRowStyleSutitleLayout.setTag(msgsGroup);
             jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
             jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
+            jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
 
             //获取用户信息
             CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());

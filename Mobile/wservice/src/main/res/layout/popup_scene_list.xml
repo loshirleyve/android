@@ -5,66 +5,70 @@
     android:layout_height="match_parent"
     android:background="@color/whites">
 
-    <LinearLayout
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/groupbackground"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="我的分类"
-            android:textSize="16dp" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@color/whites"
+            android:background="@color/groupbackground"
             android:orientation="vertical">
 
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                ext:rowStyleSutitleShowArrow="false"
-                ext:rowStyleSutitleShowMainImage="false"
-                ext:rowStyleSutitleShowSutitleText="false"
-                ext:rowStyleSutitleShowTimeText="false"
-                ext:rowStyleSutitleTitleText="我的已办"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="我的分类"
+                android:textSize="16dp" />
 
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                ext:rowStyleSutitleShowArrow="false"
-                ext:rowStyleSutitleShowMainImage="false"
-                ext:rowStyleSutitleShowSutitleText="false"
-                ext:rowStyleSutitleShowTimeText="false"
-                ext:rowStyleSutitleTitleText="我的待办"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:orientation="vertical">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    ext:rowStyleSutitleShowArrow="false"
+                    ext:rowStyleSutitleShowMainImage="false"
+                    ext:rowStyleSutitleShowSutitleText="false"
+                    ext:rowStyleSutitleShowTimeText="false"
+                    ext:rowStyleSutitleTitleText="我的已办"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    ext:rowStyleSutitleShowArrow="false"
+                    ext:rowStyleSutitleShowMainImage="false"
+                    ext:rowStyleSutitleShowSutitleText="false"
+                    ext:rowStyleSutitleShowTimeText="false"
+                    ext:rowStyleSutitleTitleText="我的待办"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="热门话题"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:orientation="vertical">
+
+                <ListView
+                    android:id="@+id/hot_top_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></ListView>
+            </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="热门话题"
-            android:textSize="16dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@color/whites"
-            android:orientation="vertical">
-
-            <ListView
-                android:id="@+id/hot_top_lv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </ListView>
-        </LinearLayout>
-    </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 
 
 </RelativeLayout>
