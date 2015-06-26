@@ -51,4 +51,11 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 用户投诉服务 -->
+    <repository>
+        <name>AddComplainService</name>
+        <action>com.yun9.ws.biz.service.AddComplainService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

@@ -6,4 +6,13 @@
         <attr name="showToolbar" format="boolean" />
         <attr name="showLastComment" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ShowCommentWidget">
+        <attr name="isIndicator" format="boolean"></attr>
+        <attr name="headTitle" format="string"></attr>
+        <attr name="time" format="string"></attr>
+        <attr name="content" format="string"></attr>
+        <attr name="rating" format="float"></attr>
+        <attr name="numsOfStar" format="integer"></attr>
+    </declare-styleable>
 </resources>

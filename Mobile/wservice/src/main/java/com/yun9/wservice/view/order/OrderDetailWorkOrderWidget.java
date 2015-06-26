@@ -55,10 +55,12 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderStateTV.setText(workOrder.getOrderworkstatecode());
         // 没有完成不能评论
         if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
-            commentWorkOrderTV.setVisibility(GONE);
-            checkoutWorkOrderCommentTV.setVisibility(GONE);
+            checkoutComment();
+//            commentWorkOrderTV.setVisibility(GONE);
+//            checkoutWorkOrderCommentTV.setVisibility(GONE);
+        } else {
+            checkoutComment();
         }
-        checkoutComment();
     }
 
     @Override
@@ -88,7 +90,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
             @Override
             public void onClick(View v) {
                 OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
-                        orderId,workOrder);
+                        orderId, workOrder);
             }
         });
     }
@@ -97,16 +99,16 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager()
                                                                 .get(ResourceFactory.class);
         Resource resource = resourceFactory.create("QueryWorkCommentsByWorkOrderIdService");
-        resource.param("workorderid",workOrder.getOrderworkid());
+        resource.param("workorderid", workOrder.getOrderworkid());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 WorkOrderComment comment = (WorkOrderComment) response.getPayload();
                 if (comment != null
-                        && AssertValue.isNotNullAndNotEmpty(comment.getId())){
-                    commentWorkOrderTV.setVisibility(GONE);
+                        && AssertValue.isNotNullAndNotEmpty(comment.getId())) {
+                    checkoutWorkOrderCommentTV.setVisibility(VISIBLE);
                 } else {
-                    checkoutWorkOrderCommentTV.setVisibility(GONE);
+                    commentWorkOrderTV.setVisibility(VISIBLE);
                 }
             }
 

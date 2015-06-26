@@ -40,6 +40,8 @@ public class OrderProductBaseListWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order order) {
+        orderSnTV.setText(order.getOrdersn());
+        orderStateTV.setText(order.getStatename());
         this.products = order.getProducts();
         if (adapter != null){
             adapter.notifyDataSetChanged();

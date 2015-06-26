@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -42,7 +44,15 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order order) {
-        phone = order.getProvideinstid();
+        buildWithData(order.getProvideinstid());
+    }
+
+    public void buildWithData(String instId) {
+        CacheInst inst = InstCache.getInstance().getInst(instId);
+        if (inst != null){
+            instNameTV.setText(inst.getInstname());
+            instPhoneTV.setText("电话 "+ inst.getTel());// 电话号码
+        }
     }
 
     @Override

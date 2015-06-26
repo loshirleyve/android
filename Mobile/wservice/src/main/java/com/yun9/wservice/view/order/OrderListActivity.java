@@ -129,7 +129,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFailure(Response response) {
-
+                showToast(response.getCause());
             }
 
             @Override
