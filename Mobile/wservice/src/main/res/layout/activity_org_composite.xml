@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         android:background="@color/whites">
 
         <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"

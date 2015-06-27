@@ -27,6 +27,8 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrgCompositeInfoBean;
+import com.yun9.wservice.view.dynamic.NewDynamicActivity;
+import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,9 +121,10 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         } else if (OrgCompositeCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
             completeButton.setVisibility(View.VISIBLE);
             sendMsgCardButton.setVisibility(View.GONE);
-            completeButton.setOnClickListener(onClickCompletionListener);
         }
 
+        completeButton.setOnClickListener(onClickCompletionListener);
+        sendMsgCardButton.setOnClickListener(onClickCompletionListener);
         //处理返回事件
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -350,9 +353,17 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                 }
             }
 
-            intent.putExtra(OrgCompositeCommand.PARAM_ORG, onSelectOrgs);
-            setResult(OrgCompositeCommand.RESULT_CODE_OK, intent);
-            finish();
+            if (AssertValue.isNotNull(command) && OrgCompositeCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
+                intent.putExtra(OrgCompositeCommand.PARAM_ORG, onSelectOrgs);
+                setResult(OrgCompositeCommand.RESULT_CODE_OK, intent);
+                finish();
+            }
+
+            if (AssertValue.isNotNull(command) && OrgCompositeCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
+                NewDynamicActivity.start(OrgCompositeActivity.this, new NewDynamicCommand().setSelectOrgs(onSelectOrgs).setSelectUsers(selectUsers));
+                finish();
+            }
+
         }
     };
 
