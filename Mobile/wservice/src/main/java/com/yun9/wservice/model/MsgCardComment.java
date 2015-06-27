@@ -15,7 +15,8 @@ public class MsgCardComment implements Serializable {
 		public static final String NORMAL = "normal";
 		public static final String DICE = "dice";
 	}
-	
+
+    private String inform;
 	private String id;
 	private String msgcardid;	// 消息卡片ID
 	private String from;	// 来自谁的评论
@@ -35,8 +36,16 @@ public class MsgCardComment implements Serializable {
 	private Long createdate;
 	// 更新时间
 	private Long updatedate;
-	
-	public String getId() {
+
+    public String getInform() {
+        return inform;
+    }
+
+    public void setInform(String inform) {
+        this.inform = inform;
+    }
+
+    public String getId() {
 		return id;
 	}
 	public void setId(String id) {

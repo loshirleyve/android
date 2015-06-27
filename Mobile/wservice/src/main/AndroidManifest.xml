@@ -343,6 +343,18 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+
+        <activity
+            android:name=".view.myself.UserInfoActivity"
+            android:label="@string/user_info"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        <activity
+            android:name=".view.myself.UserSignatureActivity"
+            android:label="@string/user_signature"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
     </application>
 
 </manifest>
