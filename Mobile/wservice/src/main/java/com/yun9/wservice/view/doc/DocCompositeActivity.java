@@ -28,6 +28,8 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.camera.CameraActivity;
 import com.yun9.wservice.view.camera.CameraCommand;
+import com.yun9.wservice.view.dynamic.NewDynamicActivity;
+import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -342,40 +344,40 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             if (AssertValue.isNotNull(command)) {
 
+                ArrayList<FileBean> onSelectFiles = new ArrayList<>();
+                ArrayList<FileBean> onSelectImages = new ArrayList<>();
+
+                if (AssertValue.isNotNullAndNotEmpty(onCameraImages)) {
+                    for (FileBean fileBean : onCameraImages) {
+                        onSelectImages.add(fileBean);
+                    }
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(onSelectLocalFiles)) {
+                    for (FileBean fileBean : onSelectLocalFiles) {
+                        onSelectFiles.add(fileBean);
+                    }
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(onSelectYunFiles)) {
+                    for (FileBean fileBean : onSelectYunFiles) {
+                        onSelectFiles.add(fileBean);
+                    }
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(onSelectLocalImages)) {
+                    for (FileBean fileBean : onSelectLocalImages) {
+                        onSelectImages.add(fileBean);
+                    }
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
+                    for (FileBean fileBean : onSelectYunImages) {
+                        onSelectImages.add(fileBean);
+                    }
+                }
+
                 if (DocCompositeCommand.COMPLETE_TYPE_CALLBACK.equals(command.getCompleteType())) {
-                    ArrayList<FileBean> onSelectFiles = new ArrayList<>();
-                    ArrayList<FileBean> onSelectImages = new ArrayList<>();
-
-                    if (AssertValue.isNotNullAndNotEmpty(onCameraImages)){
-                        for(FileBean fileBean:onCameraImages){
-                            onSelectImages.add(fileBean);
-                        }
-                    }
-
-                    if (AssertValue.isNotNullAndNotEmpty(onSelectLocalFiles)) {
-                        for (FileBean fileBean : onSelectLocalFiles) {
-                            onSelectFiles.add(fileBean);
-                        }
-                    }
-
-                    if (AssertValue.isNotNullAndNotEmpty(onSelectYunFiles)) {
-                        for (FileBean fileBean : onSelectYunFiles) {
-                            onSelectFiles.add(fileBean);
-                        }
-                    }
-
-                    if (AssertValue.isNotNullAndNotEmpty(onSelectLocalImages)) {
-                        for (FileBean fileBean : onSelectLocalImages) {
-                            onSelectImages.add(fileBean);
-                        }
-                    }
-
-                    if (AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
-                        for (FileBean fileBean : onSelectYunImages) {
-                            onSelectImages.add(fileBean);
-                        }
-                    }
-
                     Intent intent = new Intent();
                     intent.putExtra(DocCompositeCommand.PARAM_FILE, onSelectFiles);
                     intent.putExtra(DocCompositeCommand.PARAM_IMAGE, onSelectImages);
@@ -385,7 +387,7 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                 }
 
                 if (DocCompositeCommand.COMPLETE_TYPE_SENDMSGCARD.equals(command.getCompleteType())) {
-                    //TODO 调用发送动态
+                    NewDynamicActivity.start(DocCompositeActivity.this, new NewDynamicCommand().setOnSelectFiles(onSelectFiles).setOnSelectImages(onSelectImages));
                     finish();
                 }
             } else {

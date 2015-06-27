@@ -175,6 +175,10 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         if (!AssertValue.isNotNullAndNotEmpty(instid)) {
             instid = sessionManager.getInst().getId();
         }
+
+        //载入参数代入的发送对象
+        this.loadCommandSelectInfo();
+
         this.selectImageRL.setOnClickListener(onSelectImageClickListener);
         this.selectUserRL.setOnClickListener(onSelectUserClickListener);
 //        this.selectOrgRL.setOnClickListener(onSelectOrgClickListener);
@@ -192,8 +196,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         this.imageGV.setAdapter(imageGridViewAdapter);
         this.fileLV.setAdapter(fileListViewAdapter);
 
-        //载入参数代入的发送对象
-        this.loadCommandSelectInfo();
 
         //初始化分享范围
         this.builderShareInfo();
@@ -231,6 +233,14 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     }
 
     private void loadCommandSelectInfo() {
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectImages())) {
+            this.onSelectImages = command.getOnSelectImages();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectFiles())) {
+            this.onSelectFiles = command.getOnSelectFiles();
+        }
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectUsers())) {
             for (User user : command.getSelectUsers()) {

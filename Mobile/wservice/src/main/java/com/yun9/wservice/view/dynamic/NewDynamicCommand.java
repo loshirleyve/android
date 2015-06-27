@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.dynamic;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
@@ -17,13 +18,17 @@ public class NewDynamicCommand extends JupiterCommand {
 
     private List<User> selectUsers;
 
-    public List<Org> getSelectOrgs() {
-        return selectOrgs;
-    }
+    private List<FileBean> onSelectFiles;
+
+    private List<FileBean> onSelectImages;
 
     private String userid;
 
     private String instid;
+
+    public List<Org> getSelectOrgs() {
+        return selectOrgs;
+    }
 
     public NewDynamicCommand setSelectOrgs(List<Org> selectOrgs) {
         this.selectOrgs = selectOrgs;
@@ -39,17 +44,17 @@ public class NewDynamicCommand extends JupiterCommand {
         return this;
     }
 
-    public NewDynamicCommand putUser(User user){
+    public NewDynamicCommand putUser(User user) {
 
-        if (!AssertValue.isNotNull(this.selectUsers)){
+        if (!AssertValue.isNotNull(this.selectUsers)) {
             this.selectUsers = new ArrayList<>();
         }
         this.selectUsers.add(user);
         return this;
     }
 
-    public NewDynamicCommand putOrg(Org org){
-        if (!AssertValue.isNotNull(selectOrgs)){
+    public NewDynamicCommand putOrg(Org org) {
+        if (!AssertValue.isNotNull(selectOrgs)) {
             this.selectOrgs = new ArrayList<>();
         }
 
@@ -72,6 +77,24 @@ public class NewDynamicCommand extends JupiterCommand {
 
     public NewDynamicCommand setUserid(String userid) {
         this.userid = userid;
+        return this;
+    }
+
+    public List<FileBean> getOnSelectImages() {
+        return onSelectImages;
+    }
+
+    public NewDynamicCommand setOnSelectImages(List<FileBean> onSelectImages) {
+        this.onSelectImages = onSelectImages;
+        return this;
+    }
+
+    public List<FileBean> getOnSelectFiles() {
+        return onSelectFiles;
+    }
+
+    public NewDynamicCommand setOnSelectFiles(List<FileBean> onSelectFiles) {
+        this.onSelectFiles = onSelectFiles;
         return this;
     }
 }
