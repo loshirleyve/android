@@ -50,6 +50,7 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
     public void buildWithData(String instId) {
         CacheInst inst = InstCache.getInstance().getInst(instId);
         if (inst != null){
+            this.phone = inst.getTel();
             instNameTV.setText(inst.getInstname());
             instPhoneTV.setText("电话 "+ inst.getTel());// 电话号码
         }
