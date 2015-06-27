@@ -15,37 +15,52 @@ public class UserInfoCommand extends JupiterCommand {
 
     private String userid;
 
+    private String signature;
+
     private List<FileBean> onSelectImages;
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public UserInfoCommand setSignature(String signature) {
+        this.signature = signature;
+        return this;
+    }
 
     public boolean isEdit() {
         return edit;
     }
 
-    public void setEdit(boolean edit) {
+    public UserInfoCommand setEdit(boolean edit) {
         this.edit = edit;
+        return this;
     }
 
     public String getInstid() {
         return instid;
     }
 
-    public void setInstid(String instid) {
+    public UserInfoCommand setInstid(String instid) {
         this.instid = instid;
+        return this;
     }
 
     public String getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public UserInfoCommand setUserid(String userid) {
         this.userid = userid;
+        return this;
     }
 
     public List<FileBean> getOnSelectImages() {
         return onSelectImages;
     }
 
-    public void setOnSelectImages(List<FileBean> onSelectImages) {
+    public UserInfoCommand setOnSelectImages(List<FileBean> onSelectImages) {
         this.onSelectImages = onSelectImages;
+        return this;
     }
 }

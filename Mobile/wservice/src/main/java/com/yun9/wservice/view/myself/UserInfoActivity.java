@@ -34,8 +34,8 @@ import java.util.List;
  */
 public class UserInfoActivity extends JupiterFragmentActivity {
 
+    private UserInfoCommand userInfoCommand;
     private int maxSelectNum = 1;
-    private UserInfoCommand command;
     private List<FileBean> onSelectYunImages = new ArrayList<>();
     private boolean mEdit;
 
@@ -57,7 +57,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     public static void start(Activity activity, UserInfoCommand command){
         Intent intent = new Intent(activity, UserInfoActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(UserInfoCommand.PARAM_COMMAND, command);
+        bundle.putSerializable("command", command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -71,7 +71,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         //获取参数
-        command = (UserInfoCommand)this.getIntent().getSerializableExtra("command");
+        userInfoCommand = (UserInfoCommand)this.getIntent().getSerializableExtra("command");
         userInfoWidget.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -79,7 +79,10 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             }
         }, 100);
         jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(BackClickListener);
-        
+
+/*        Intent intent = getIntent();
+        userInfoCommand = (UserInfoCommand) intent.getSerializableExtra("command");*/
+
     }
 
     private void refresh(){
@@ -97,16 +100,20 @@ public class UserInfoActivity extends JupiterFragmentActivity {
 
                     if(AssertValue.isNotNull(user)){
                         userInfoWidget.getUserHeadTV().setText(user.getName());
-                        ImageLoaderUtil.getInstance(mContext).displayImage(user.getHeaderURL(), userInfoWidget.getUserHeadIV());
+                        ImageLoaderUtil.getInstance(mContext).displayImage(user.getHeaderfileid(), userInfoWidget.getUserHeadIV());
                         userInfoWidget.getUserName().getHotNitoceTV().setText(user.getName());
                         userInfoWidget.getUserName().getHotNitoceTV().setVisibility(View.VISIBLE);
+                        userInfoWidget.getUserName().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
                         /**
                          * 下面两栏的数据是暂时演示用的
                          */
-                        userInfoWidget.getAgency().getHotNitoceTV().setText(user.getNo());
+                        userInfoWidget.getAgency().getHotNitoceTV().setText(user.getName());
                         userInfoWidget.getAgency().getHotNitoceTV().setVisibility(View.VISIBLE);
-                        userInfoWidget.getDepartment().getHotNitoceTV().setText(user.getId());
+                        userInfoWidget.getAgency().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
+
+                        userInfoWidget.getDepartment().getHotNitoceTV().setText(user.getNo());
                         userInfoWidget.getDepartment().getHotNitoceTV().setVisibility(View.VISIBLE);
+                        userInfoWidget.getDepartment().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
 
                         userInfoWidget.getSignature().getSutitleTv().setText(user.getSignature());
                         userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
@@ -133,12 +140,13 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                         userInfoWidget.getSignature().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                if(!AssertValue.isNotNull(userSignatureCommand)){
+                                if (!AssertValue.isNotNull(userSignatureCommand)) {
                                     userSignatureCommand = new UserSignatureCommand().setUserid(sessionManager.getUser().getId()).setInstid(sessionManager.getInst().getId()).setSignature(user.getSignature());
                                 }
                                 UserSignatureActivity.start(UserInfoActivity.this, userSignatureCommand);
                             }
                         });
+
                     }
                 }
 
@@ -170,10 +178,65 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         if(AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK){
             onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
             ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV());
+            updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
         }
 
-        if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
+        //userInfoWidget.getSignature().getSutitleTv().setText(userInfoCommand.getSignature());
+
+       /* if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
             userInfoWidget.getSignature().getSutitleTv().setText(((UserSignatureCommand)data.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND)).getSignature());
+        }*/
+
+        if(resultCode == UserSignatureCommand.RESULT_CODE_OK){
+            String signature = (String) data.getSerializableExtra("userSignature");
+            userInfoWidget.getSignature().getSutitleTv().setText(signature);
+            upadteSignature(signature);
         }
+    }
+
+    private void updateUserByHeaderfileid(String userHeaderId){
+        Resource resource = resourceFactory.create("UpdateUserByHeaderfileid");
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("instid", sessionManager.getInst().getId());
+        resource.param("headerfileid", userHeaderId);
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFailure(Response response) {
+
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
+    }
+    private void upadteSignature(String signature){
+        Resource resource  = resourceFactory.create("UpdateUserBySignature");
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("instid", sessionManager.getInst().getId());
+        resource.param("signature", signature);
+
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFailure(Response response) {
+
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 }
