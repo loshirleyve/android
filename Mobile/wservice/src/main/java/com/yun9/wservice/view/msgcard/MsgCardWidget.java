@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -151,7 +152,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         //createDate
         if(msgCard.getCreatedate() != null){
-            timeTV.setText(msgCard.getCreatedate().toString());
+            timeTV.setText(DateUtil.timeAgo(msgCard.getCreatedate()));
         }
 
         //Praisecount
@@ -162,9 +163,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         //comment
         commentNumTV.setText(String.valueOf(msgCard.getCommentcount()));
-
+/*
         //lastComment
-        lastCommentContentTV.setText(msgCard.getComment());
+        lastCommentContentTV.setText(msgCard.getComment().);*/
 
 
     }

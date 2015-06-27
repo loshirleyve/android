@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -56,6 +57,9 @@ public class UserFragment extends JupiterFragment {
 
     @ViewInject(id = R.id.about2)
     private JupiterRowStyleTitleLayout client;
+
+    @ViewInject(id = R.id.arrow_right)
+    private ImageView arrowIV;
 
     private final static Logger logger = Logger.getLogger(UserFragment.class);
 
@@ -117,6 +121,15 @@ public class UserFragment extends JupiterFragment {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(mContext, ClientActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        arrowIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(mContext, UserInfoActivity.class);
                 startActivity(intent);
             }
         });

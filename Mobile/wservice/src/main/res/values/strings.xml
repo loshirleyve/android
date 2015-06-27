@@ -167,4 +167,11 @@
     <string name="product_detail_phases">服务阶段</string>
     <string name="product_detail_comment">服务评价</string>
     <string name="product_detail_instname">由%1$s提供</string>
+
+    <string name="user_photograph">头像</string>
+    <string name="user_info">用户信息</string>
+    <string name="user_infoo">个人信息</string>
+    <string name="user_name">名字</string>
+    <string name="agency">机构</string>
+    <string name="department">部门</string>
 </resources>

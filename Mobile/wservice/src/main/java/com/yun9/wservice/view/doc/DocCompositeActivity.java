@@ -270,7 +270,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
 
             if (!AssertValue.isNotNull(localFileCommand)) {
-                localFileCommand = new LocalFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(LocalFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
+                localFileCommand = new LocalFileCommand().setMaxSelectNum(maxSelectNum)
+                        .setEdit(mEdit).setCompleteType(LocalFileCommand.COMPLETE_TYPE_CALLBACK)
+                        .setUserid(mUserid).setInstid(mInstid);
             }
             localFileCommand.setSelectFiles(onSelectLocalFiles);
             LocalFileActivity.start(DocCompositeActivity.this, localFileCommand);

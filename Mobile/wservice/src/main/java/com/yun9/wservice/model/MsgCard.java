@@ -2,7 +2,11 @@ package com.yun9.wservice.model;
 
 import android.view.View;
 
+import com.yun9.jupiter.util.AssertValue;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MsgCard implements java.io.Serializable {
@@ -43,7 +47,9 @@ public class MsgCard implements java.io.Serializable {
     private int commentcount;
     private boolean ismypraise;
 
-    private String comment;
+/*
+    private Map<String, String> comment;
+*/
 
 	private List<String> praiseusername;
 	private SampleUser formuser;
@@ -237,13 +243,13 @@ public class MsgCard implements java.io.Serializable {
         this.ismypraise = ismypraise;
     }
 
-    public String getComment() {
+/*    public Map<String, String> getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(Map<String, String> comment) {
         this.comment = comment;
-    }
+    }*/
 
     public int getCommentcount() {
 		return commentcount;
