@@ -2,55 +2,55 @@ package com.yun9.wservice.model;
 
 public class MsgCardAttachment implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String id;
+    private String id;
 
-	private String msgcardid;
+    private String msgcardid;
 
-	private String fileid;
+    private String fileid;
 
-	private String desc;
+    private String filetype;
 
-	public MsgCardAttachment() {
-	}
+    public MsgCardAttachment() {
+    }
 
-	public MsgCardAttachment(String id, String msgcardid, String fileid, String desc) {
-		this.id = id;
-		this.msgcardid = msgcardid;
-		this.fileid = fileid;
-		this.desc = desc;
-	}
+    public MsgCardAttachment(String id, String msgcardid, String fileid, String filetype) {
+        this.id = id;
+        this.msgcardid = msgcardid;
+        this.fileid = fileid;
+        this.filetype = filetype;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public String getFiletype() {
+        return filetype;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public void setFiletype(String filetype) {
+        this.filetype = filetype;
+    }
 
-	public String getMsgcardid() {
-		return msgcardid;
-	}
+    public String getMsgcardid() {
+        return msgcardid;
+    }
 
-	public void setMsgcardid(String msgcardid) {
-		this.msgcardid = msgcardid;
-	}
+    public void setMsgcardid(String msgcardid) {
+        this.msgcardid = msgcardid;
+    }
 
-	public String getFileid() {
-		return fileid;
-	}
+    public String getFileid() {
+        return fileid;
+    }
 
-	public void setFileid(String fileid) {
-		this.fileid = fileid;
-	}
+    public void setFileid(String fileid) {
+        this.fileid = fileid;
+    }
 }

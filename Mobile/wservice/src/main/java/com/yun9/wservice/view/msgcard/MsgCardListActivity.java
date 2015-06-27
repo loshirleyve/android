@@ -123,12 +123,12 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     }
 
     private void refresh() {
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())){
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())) {
             Resource resource = resourceFactory.create("QueryMsgCardByScene");
-            resource.param("instid",sessionManager.getInst().getId());
-            resource.param("userid",command.getUserid());
-            resource.param("fromuserid",command.getFromuserid());
-            resource.param("sence",command.getType());
+            resource.param("instid", sessionManager.getInst().getId());
+            resource.param("userid", command.getUserid());
+            resource.param("fromuserid", command.getFromuserid());
+            resource.param("sence", command.getType());
 
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
@@ -136,7 +136,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                     List<MsgCard> tempMsgCards = (List<MsgCard>) response.getPayload();
                     msgCards.clear();
 
-                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards)){
+                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards)) {
                         for (int i = tempMsgCards.size(); i > 0; i--) {
                             MsgCard msgCard = tempMsgCards.get(i - 1);
                             msgCards.addFirst(msgCard);
@@ -148,7 +148,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-                    Toast.makeText(mContext,response.getCause(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -208,13 +208,14 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                         logger.d("动作！");
                     }
                 });
-            }else{
+            } else {
                 msgCardWidget = (MsgCardWidget) convertView;
             }
 
             msgCardWidget.buildWithData(msgCard);
             msgCardWidget.setTag(msgCard);
 
-            return msgCardWidget;        }
+            return msgCardWidget;
+        }
     };
 }

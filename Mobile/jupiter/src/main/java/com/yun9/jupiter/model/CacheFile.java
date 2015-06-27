@@ -8,7 +8,7 @@ public class CacheFile implements java.io.Serializable {
     private String name;
     private String url;
     private String thumbnailUrl;
-    private String filesize;
+    private long filesize;
 
     public String getId() {
         return id;
@@ -42,11 +42,11 @@ public class CacheFile implements java.io.Serializable {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public String getFilesize() {
+    public long getFilesize() {
         return filesize;
     }
 
-    public void setFilesize(String filesize) {
+    public void setFilesize(long filesize) {
         this.filesize = filesize;
     }
 }

@@ -1,4 +1,4 @@
-package com.yun9.wservice.view.doc;
+package com.yun9.wservice.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

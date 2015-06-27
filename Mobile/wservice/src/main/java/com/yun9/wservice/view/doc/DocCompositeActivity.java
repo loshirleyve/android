@@ -30,6 +30,8 @@ import com.yun9.wservice.view.camera.CameraActivity;
 import com.yun9.wservice.view.camera.CameraCommand;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.dynamic.NewDynamicCommand;
+import com.yun9.wservice.widget.AlbumImageGridItem;
+import com.yun9.wservice.widget.FileItemWidget;
 
 import java.util.ArrayList;
 import java.util.List;
