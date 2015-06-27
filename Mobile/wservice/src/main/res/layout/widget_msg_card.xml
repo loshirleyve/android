@@ -43,8 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:scrollbars="none">
-        </com.yun9.jupiter.widget.JupiterListView>
+            android:scrollbars="none"></com.yun9.jupiter.widget.JupiterListView>
 
 
         <RelativeLayout
@@ -74,7 +73,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/msg_card_location"
-                    android:textColor="@color/devide_line"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -90,7 +88,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="@string/msg_card_time"
-                    android:textColor="@color/devide_line"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -177,14 +174,14 @@
             android:id="@+id/msg_card_lastcomment_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:paddingBottom="5dp">
 
             <TextView
                 android:id="@+id/msg_card_lastcomment_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/msg_card_lastcomment"
-                android:textColor="@color/devide_line" />
+                android:text="@string/msg_card_lastcomment" />
 
             <TextView
                 android:id="@+id/msg_card_lastcomment_user_tv"
@@ -192,7 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="@string/msg_card_lastcomment_user"
-                android:textColor="@color/devide_line" />
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/msg_card_lastcomment_content_tv"
@@ -202,7 +199,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/msg_card_lastcomment_context"
-                android:textColor="@color/devide_line" />
+                android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
