@@ -6,21 +6,20 @@ public class MsgCardAttachment implements java.io.Serializable {
 
     private String id;
 
-    private String msgcardid;
+    private String name;
 
-    private String fileid;
+    private String msgCardId;
 
-    private String filetype;
+    private String fileId;
 
-    public MsgCardAttachment() {
-    }
+    private String fileType;
 
-    public MsgCardAttachment(String id, String msgcardid, String fileid, String filetype) {
-        this.id = id;
-        this.msgcardid = msgcardid;
-        this.fileid = fileid;
-        this.filetype = filetype;
-    }
+    private String desc;
+
+    private String createby;
+
+    private long createdate;
+
 
     public String getId() {
         return id;
@@ -30,27 +29,59 @@ public class MsgCardAttachment implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getFiletype() {
-        return filetype;
+    public String getName() {
+        return name;
     }
 
-    public void setFiletype(String filetype) {
-        this.filetype = filetype;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMsgcardid() {
-        return msgcardid;
+    public String getMsgCardId() {
+        return msgCardId;
     }
 
-    public void setMsgcardid(String msgcardid) {
-        this.msgcardid = msgcardid;
+    public void setMsgCardId(String msgCardId) {
+        this.msgCardId = msgCardId;
     }
 
-    public String getFileid() {
-        return fileid;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setFileid(String fileid) {
-        this.fileid = fileid;
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(String createby) {
+        this.createby = createby;
+    }
+
+    public long getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(long createdate) {
+        this.createdate = createdate;
     }
 }

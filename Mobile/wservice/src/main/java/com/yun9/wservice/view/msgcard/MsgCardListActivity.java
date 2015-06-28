@@ -107,13 +107,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             MsgCard msgCard = (MsgCard) view.getTag();
-
-            //logger.d("消息卡片点击！" + msgCard.getMain().getFrom());
-            logger.d("消息卡片点击！-----------------------");
-
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(MsgCardDetailActivity.ARG_MSG_CARD, msgCard);
-            MsgCardDetailActivity.start(MsgCardListActivity.this, bundle);
+            MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()));
         }
     };
 

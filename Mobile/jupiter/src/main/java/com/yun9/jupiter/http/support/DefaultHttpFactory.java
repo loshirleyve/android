@@ -320,7 +320,6 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         }
 
         if (AssertValue.isNotNullAndNotEmpty(response.getData()) && AssertValue.isNotNull(output)) {
-            Gson gson = new Gson();
 
             if (AssertValue.isNotNull(output)
                     && AssertValue.isNotNullAndNotEmpty(output.getClassname())) {
@@ -339,6 +338,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 }
 
             } else {
+                Gson gson = new Gson();
                 Map<?, ?> payload = gson
                         .fromJson(response.getData(), Map.class);
                 response.setPayload(payload);

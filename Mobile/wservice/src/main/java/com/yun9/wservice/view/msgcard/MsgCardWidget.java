@@ -174,29 +174,29 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         docAttachments.clear();
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getAttachments())) {
             for (MsgCardAttachment msgCardAttachment : msgCard.getAttachments()) {
-                if (FileBean.FILE_TYPE_IMAGE.equals(msgCardAttachment.getFiletype())) {
+                if (FileBean.FILE_TYPE_IMAGE.equals(msgCardAttachment.getFileType())) {
                     FileBean fileBean = new FileBean();
-                    fileBean.setFilePath(msgCardAttachment.getFileid());
-                    fileBean.setThumbnailPath(msgCardAttachment.getFileid());
-                    fileBean.setAbsolutePath(msgCardAttachment.getFileid());
+                    fileBean.setFilePath(msgCardAttachment.getFileId());
+                    fileBean.setThumbnailPath(msgCardAttachment.getFileId());
+                    fileBean.setAbsolutePath(msgCardAttachment.getFileId());
                     fileBean.setStorageType(FileBean.FILE_STORAGE_TYPE_YUN);
                     fileBean.setType(FileBean.FILE_TYPE_IMAGE);
                     fileBean.setId(msgCardAttachment.getId());
                     imageAttachments.add(fileBean);
                 }
 
-                if (FileBean.FILE_TYPE_DOC.equals(msgCardAttachment.getFiletype())) {
+                if (FileBean.FILE_TYPE_DOC.equals(msgCardAttachment.getFileType())) {
                     FileBean fileBean = new FileBean();
-                    CacheFile cacheFile = FileCache.getInstance().getFile(msgCardAttachment.getFileid());
+                    CacheFile cacheFile = FileCache.getInstance().getFile(msgCardAttachment.getFileId());
 
                     if (AssertValue.isNotNull(cacheFile)){
                         fileBean.setName(cacheFile.getName());
                         fileBean.setSize(FileUtil.getFileSize(cacheFile.getFilesize()));
                     }
 
-                    fileBean.setFilePath(msgCardAttachment.getFileid());
-                    fileBean.setThumbnailPath(msgCardAttachment.getFileid());
-                    fileBean.setAbsolutePath(msgCardAttachment.getFileid());
+                    fileBean.setFilePath(msgCardAttachment.getFileId());
+                    fileBean.setThumbnailPath(msgCardAttachment.getFileId());
+                    fileBean.setAbsolutePath(msgCardAttachment.getFileId());
                     fileBean.setStorageType(FileBean.FILE_STORAGE_TYPE_YUN);
                     fileBean.setType(FileBean.FILE_TYPE_DOC);
                     fileBean.setId(msgCardAttachment.getId());

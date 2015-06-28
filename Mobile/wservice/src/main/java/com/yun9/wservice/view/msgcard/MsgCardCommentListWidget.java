@@ -47,7 +47,7 @@ public class MsgCardCommentListWidget extends JupiterRelativeLayout{
     public void buildWithData(MsgCard msgCard) {
         this.msgCard = msgCard;
         commentsLayout.removeAllViews();
-        List<MsgCardComment> comments = msgCard.getCommentlist();
+        List<MsgCardComment> comments = msgCard.getComments();
         if (comments != null) {
             for (MsgCardComment comment : comments) {
                 MsgCardCommentItemWidget itemWidget = new MsgCardCommentItemWidget(getContext());
