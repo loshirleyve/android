@@ -3,6 +3,7 @@ package com.yun9.wservice.view.myself;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +24,9 @@ import com.yun9.wservice.R;
  * Created by li on 2015/6/25.
  */
 public class UserSignatureActivity extends JupiterFragmentActivity{
+
+    private UserSignatureCommand userSignatureCommand;
+    private UserInfoCommand userInfoCommand;
     @ViewInject(id = R.id.signature_title)
     private JupiterTitleBarLayout jupiterTitleBarLayout;
 
@@ -38,7 +42,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     public static void start(Activity activity, UserSignatureCommand command){
         Intent intent = new Intent(activity, UserSignatureActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(UserSignatureCommand.PARAM_COMMAND, command);
+        bundle.putSerializable("command", command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -55,18 +59,22 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
 
         Intent intent = getIntent();
         if(intent != null) {
-            UserSignatureCommand userSignatureCommand = (UserSignatureCommand)intent.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
+            userSignatureCommand = (UserSignatureCommand)intent.getSerializableExtra("command");
             signatureContent.setText(userSignatureCommand.getSignature());
         }
     }
 
     private void upadteSignature(){
-        if(AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())){
-            Resource resource = resourceFactory.create("UpdateUserBySignature");
-            resource.param("userid", sessionManager.getUser().getId());
-            resource.param("instid", sessionManager.getInst().getId());
-            resource.param("signature", signatureContent.getText());
+        if(!AssertValue.isNotNull(userInfoCommand)){
+            userInfoCommand = new UserInfoCommand().setUserid(sessionManager.getUser().getId())
+                    .setInstid(sessionManager.getInst().getId())
+                    .setSignature(signatureContent.getText().toString());
         }
+        Intent intent = new Intent();
+        intent.putExtra("userSignature", signatureContent.getText().toString());
+        setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
+        //UserInfoActivity.start(UserSignatureActivity.this, userInfoCommand);
+
     }
 
     private View.OnClickListener BackOnclickListener = new View.OnClickListener() {
