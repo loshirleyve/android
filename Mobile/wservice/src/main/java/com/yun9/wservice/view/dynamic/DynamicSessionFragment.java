@@ -104,7 +104,13 @@ public class DynamicSessionFragment extends JupiterFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MsgsGroup msgsGroup = (MsgsGroup) view.getTag();
                 if (AssertValue.isNotNull(msgsGroup)) {
-                    MsgCardListActivity.start(getActivity(), new MsgCardListCommand().setType(MsgCardListCommand.TYPE_USER_GIVEME).setFromuserid(msgsGroup.getFromuserid()).setUserid(msgsGroup.getTouserid()));
+                    MsgCardListCommand msgCardListCommand = new MsgCardListCommand().setType(MsgCardListCommand.TYPE_USER_GIVEME).setFromuserid(msgsGroup.getFromuserid()).setUserid(msgsGroup.getTouserid());
+                    //获取用户信息
+                    CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
+                    if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getName())) {
+                        msgCardListCommand.setTitle(cacheUser.getName());
+                    }
+                    MsgCardListActivity.start(getActivity(), msgCardListCommand);
                 }
             }
         });

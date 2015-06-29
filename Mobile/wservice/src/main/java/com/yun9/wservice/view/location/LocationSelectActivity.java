@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
-import com.viewpagerindicator.TabPageIndicator;
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.location.LocationBean;
@@ -19,12 +17,10 @@ import com.yun9.jupiter.location.OnLocationListener;
 import com.yun9.jupiter.location.PoiInfoBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.widget.JupiterSegmentedGroup;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.login.LoginCommand;
-import com.yun9.wservice.view.org.OrgCompositeCommand;
 
 import java.util.ArrayList;
 import java.util.List;

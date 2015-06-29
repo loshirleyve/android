@@ -1,38 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ext="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/groupbackground">
-    
+
     <com.yun9.jupiter.widget.JupiterTitleBarLayout
-        xmlns:tb="http://schemas.android.com/apk/res-auto"
+
         android:id="@+id/msg_card_detail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tb:titleText="@string/activity_msg_card_detail_title"
-        tb:titleLeftIcoVisibility="true"
-        tb:titleLeftTextVisibility="true"/>
+        ext:titleLeftIcoVisibility="true"
+        ext:titleLeftTextVisibility="true"
+        ext:titleText="@string/activity_msg_card_detail_title" />
 
-    <com.yun9.jupiter.widget.JupiterScrollView
-        android:id="@+id/ll_msg_card_detail"
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/msg_card_detail_toolbar"
         android:layout_below="@+id/msg_card_detail_title">
 
-        <com.yun9.wservice.view.msgcard.MsgCardInDetailWidget
-            android:id="@+id/msg_card_detail"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.yun9.wservice.view.msgcard.MsgCardInDetailWidget>
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.yun9.wservice.view.msgcard.widget.MsgCardWidget
+                android:id="@+id/msg_card_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                ext:showLastComment="false"
+                ext:showToolbar="false" />
 
-    </com.yun9.jupiter.widget.JupiterScrollView>
+            <com.yun9.jupiter.widget.JupiterSegmentedGroup
+                android:id="@+id/segmented_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.yun9.jupiter.widget.JupiterSegmentedItem
+                    android:id="@+id/common_item"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    ext:segmented_item_descText="0"
+                    ext:segmented_item_ico="@drawable/com111"
+                    ext:segmented_item_ico_selected="@drawable/com222"
+                    ext:segmented_item_text_color="@color/drak"
+                    ext:segmented_item_text_color_selected="@color/black"
+                    ext:segmented_item_titleText="@string/msg_card_comment"></com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+
+                <com.yun9.jupiter.widget.JupiterSegmentedItem
+                    android:id="@+id/share_item"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    ext:segmented_item_descText="0"
+                    ext:segmented_item_ico="@drawable/fw1"
+                    ext:segmented_item_ico_selected="@drawable/fw2"
+                    ext:segmented_item_text_color="@color/drak"
+                    ext:segmented_item_text_color_selected="@color/black"
+                    ext:segmented_item_titleText="@string/msg_card_share"></com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+                <com.yun9.jupiter.widget.JupiterSegmentedItem
+                    android:id="@+id/praise_item"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    ext:segmented_item_descText="0"
+                    ext:segmented_item_ico="@drawable/star1"
+                    ext:segmented_item_ico_selected="@drawable/star2"
+                    ext:segmented_item_text_color="@color/drak"
+                    ext:segmented_item_text_color_selected="@color/black"
+                    ext:segmented_item_titleText="@string/msg_card_praise"></com.yun9.jupiter.widget.JupiterSegmentedItem>
+
+            </com.yun9.jupiter.widget.JupiterSegmentedGroup>
+
+            <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+
     <com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget
         android:id="@+id/msg_card_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true">
-
-    </com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget>
+        android:layout_alignParentBottom="true"></com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget>
 
 </RelativeLayout>

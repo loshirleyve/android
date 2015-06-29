@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -27,187 +28,98 @@ import java.util.List;
 /**
  * Created by Leon on 15/4/30.
  */
-public class JupiterSegmentedGroup extends JupiterRelativeLayout {
+public class JupiterSegmentedGroup extends LinearLayout {
 
-    // tab容器
-    private LinearLayout tabContainer;
-    // ViewPager
-    private ViewPager viewPager;
+    private Context mContext;
 
-    private JupiterSegmentedGroupAdapter adapter;
+    private List<JupiterSegmentedItem> items = new ArrayList<>();
 
     private JupiterSegmentedItem currItem;
 
-    private List<JupiterSegmentedItem> items;
-
-    private OnClickListener onClickListener;
-
-    private JupiterPagerAdapter viewPagerAdapter;
-
-    // 内置的基本tab点击事件监听器
-    private OnClickListener basicOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            JupiterSegmentedGroup.this.onItemClick(v);
-        }
-    };
-
-    private static final Logger logger = Logger.getLogger(JupiterSegmentedGroup.class);
+    private OnItemClickListener onItemClickListener;
 
     public JupiterSegmentedGroup(Context context) {
         super(context);
+        this.init(context, null, -1);
     }
 
     public JupiterSegmentedGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.init(context, attrs, -1);
     }
 
-    @Override
-    protected int getContextView() {
-        return R.layout.segmented_group;
+    public JupiterSegmentedGroup(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.init(context, attrs, defStyleAttr);
     }
 
-    @Override
-    protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        items = new ArrayList<>();
-        this.tabContainer = (LinearLayout) this.findViewById(R.id.segmented_tab);
-        this.viewPager = (ViewPager) this.findViewById(R.id.viewpager);
-        bindViewPagerListener();
-    }
-
-    private void bindViewPagerListener() {
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                JupiterSegmentedGroup.this.selectItem(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    public void setAdapter(JupiterSegmentedGroupAdapter adapter) {
-        this.adapter = adapter;
-        this.builderView();
-
-
-    }
-
-    public void setTabItemAdapter(JupiterPagerAdapter pagerAdapter) {
-        if (viewPager != null) {
-            this.viewPagerAdapter = pagerAdapter;
-            viewPager.setAdapter(pagerAdapter);
-        }
-        // 当设置有ViewPager的Adapter时才初始化选择第一页
-        if (items.size() > 0) {
-            this.selectItem(0);
-        }
-    }
-
-    private void builderView() {
-        if (adapter == null)
-            return;
-
-        for (int i = 0; i < adapter.getCount(); i++) {
-            this.createItem(adapter.getTabInfo(i));
-        }
-    }
-
-    private void createItem(JupiterSegmentedItemModel model) {
-
-        ViewGroup itemWrapper = (ViewGroup) LayoutInflater.from(this.getContext()).inflate(R.layout.segmented_item_wrapper, null);
-        JupiterSegmentedItem item = (JupiterSegmentedItem) itemWrapper.findViewById(R.id.segmented_item);
-        item.getTitleTextTV().setText(model.getTitle());
-        item.setIcoImage(model.getIcoImage());
-        item.setIcoImageSelected(model.getIcoImageSelected());
-        item.setOnClickListener(this.basicOnClickListener);
-        if (model.getDesc() > 99) {
-            item.getDescTextTV().setText("99+");
-        } else {
-            item.getDescTextTV().setText("" + model.getDesc());
-        }
-        itemWrapper.removeView(item);
-        this.tabContainer.addView(item);
-        items.add(item);
+    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+        this.mContext = context;
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        int count = this.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            View view = this.getChildAt(i);
+            if (view instanceof JupiterSegmentedItem) {
+                items.add((JupiterSegmentedItem) view);
+                ((JupiterSegmentedItem)view).setPostion(i);
+                view.setOnClickListener(onClickListener);
+            }
+        }
     }
 
-    public void setOnTabClickListener(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+    public void addItem(JupiterSegmentedItem item) {
+        if (AssertValue.isNotNull(item)) {
+            items.add(item);
+            this.addView(item);
+        }
     }
 
-    /**
-     * 无论是点击tab还是滑动Viewpager都会经这儿方法
-     * @param position
-     */
-    public void selectItem(int position) {
-        this.updateState(position);
-    }
+    private OnClickListener onClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v instanceof JupiterSegmentedItem && v != currItem) {
+                selectItem((JupiterSegmentedItem) v);
 
-    public void onItemClick(View view) {
-        if (view != null && view instanceof JupiterSegmentedItem) {
-            JupiterSegmentedItem tempItemView = (JupiterSegmentedItem) view;
-            logger.d("分段选择Item被点击");
-
-            //更新界面状态
-            int positon = 0;
-            for (int i = 0; i < items.size(); i++) {
-                JupiterSegmentedItem item = items.get(i);
-                if (view == item) {
-                    positon = i;
-                    break;
+                if (AssertValue.isNotNull(onItemClickListener)) {
+                    onItemClickListener.onItemClick((JupiterSegmentedItem) v,((JupiterSegmentedItem) v).getPostion());
                 }
             }
-            this.selectItem(positon);
-            //执行事件监听
-            if (this.onClickListener != null) {
-                this.onClickListener.onClick(view);
-            }
+        }
+    };
 
+
+    public void selectItem(JupiterSegmentedItem view) {
+        if (AssertValue.isNotNull(view)) {
+            //将所有对象设置为未点击
+            if (this.items != null) {
+                for (JupiterSegmentedItem item : this.items) {
+                    item.setClicked(false);
+                }
+            }
+            this.currItem = view;
+            //将当前项目设置为已经点击
+            view.setClicked(true);
         }
     }
 
-    private void updateState(JupiterSegmentedItem view) {
-        //将所有对象设置为未点击
-        if (this.items != null) {
-            for (JupiterSegmentedItem item : this.items) {
-                item.setClicked(false);
-            }
+    public void selectItem(int postion) {
+        if (postion < items.size()) {
+            selectItem(items.get(postion));
         }
-
-
-        this.currItem = view;
-        //将当前项目设置为已经点击
-        view.setClicked(true);
     }
 
-    private void updateState(int viewPosition) {
-        if (viewPosition > this.items.size() - 1 || viewPosition < 0) {
-            return;
-        }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
-        for (JupiterSegmentedItem item : this.items) {
-            item.setClicked(false);
-        }
-
-        JupiterSegmentedItem tempView = this.items.get(viewPosition);
-        this.viewPager.setCurrentItem(viewPosition, true);
-
-        this.currItem = tempView;
-        //将当前项目设置为已经点击
-        tempView.setClicked(true);
+    public interface OnItemClickListener {
+        void onItemClick(JupiterSegmentedItem view, int position);
     }
 
 }
