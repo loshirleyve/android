@@ -41,6 +41,9 @@ import com.yun9.wservice.view.other.SettingActivity;
  */
 public class UserFragment extends JupiterFragment {
 
+    private UserInfoCommand userInfoCommand;
+    private UserSignatureCommand userSignatureCommand;
+
     private UserHeadWidget userHeadWidget;
 
     @BeanInject
@@ -115,7 +118,6 @@ public class UserFragment extends JupiterFragment {
                 SelectInstActivity.start(getActivity(), new SelectInstCommand().setUser(sessionManager.getUser()));
             }
         });
-
         client.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,13 +126,22 @@ public class UserFragment extends JupiterFragment {
                 startActivity(intent);
             }
         });
-
-        arrowIV.setOnClickListener(new View.OnClickListener() {
+      /*  client.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, UserInfoActivity.class);
-                startActivity(intent);
+                ClientActivity.start(getActivity());
+            }
+        });*/
+
+        userHeadWidget.getHeaderLL().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!AssertValue.isNotNull(userInfoCommand)){
+                    userInfoCommand = new UserInfoCommand();
+                }
+                userInfoCommand.setUserid(sessionManager.getUser().getId());
+                userInfoCommand.setInstid(sessionManager.getInst().getId());
+                UserInfoActivity.start(getActivity(), userInfoCommand);
             }
         });
 
@@ -146,7 +157,9 @@ public class UserFragment extends JupiterFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
+        if(AssertValue.isNotNull(userInfoCommand) && requestCode == userInfoCommand.getRequestCode() && resultCode == userInfoCommand.RESULT_CODE_OK){
+            refresh();
+        }
     }
 
     private void refresh() {

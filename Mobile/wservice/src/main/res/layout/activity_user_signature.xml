@@ -9,6 +9,7 @@
         tb:titleLeftIcoSrc="@drawable/arrow_left"
         tb:titleLeftIcoVisibility="true"/>
     <EditText
+        android:gravity="left"
         android:padding="10dp"
         android:id="@+id/signature_content"
         android:background="@color/whites"

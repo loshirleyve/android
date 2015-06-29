@@ -14,6 +14,8 @@ import com.yun9.wservice.R;
  */
 public class UserHeadWidget extends JupiterRelativeLayout  {
 
+    private LinearLayout headerLL;
+
     private LinearLayout orgLL;
 
     private LinearLayout docLL;
@@ -49,6 +51,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+        headerLL = (LinearLayout)this.findViewById(R.id.user_head);
         this.orgLL = (LinearLayout) this.findViewById(R.id.org);
         this.docLL = (LinearLayout) this.findViewById(R.id.sendUserFile);
         this.userBuyer = (LinearLayout) this.findViewById(R.id.getUserBuyer);
@@ -60,6 +63,13 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
         this.userHeaderIV = (ImageView) this.findViewById(R.id.user_head_iv);
     }
 
+    public LinearLayout getHeaderLL() {
+        return headerLL;
+    }
+
+    public void setHeaderLL(LinearLayout headerLL) {
+        this.headerLL = headerLL;
+    }
 
     public LinearLayout getOrgLL() {
         return orgLL;

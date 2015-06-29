@@ -9,7 +9,6 @@ import java.util.List;
  * Created by li on 2015/6/26.
  */
 public class UserInfoCommand extends JupiterCommand {
-    private boolean edit;
 
     private String instid;
 
@@ -28,14 +27,6 @@ public class UserInfoCommand extends JupiterCommand {
         return this;
     }
 
-    public boolean isEdit() {
-        return edit;
-    }
-
-    public UserInfoCommand setEdit(boolean edit) {
-        this.edit = edit;
-        return this;
-    }
 
     public String getInstid() {
         return instid;
