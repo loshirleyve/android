@@ -95,6 +95,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     }
 
+    //初始化控件，判断是否存在orgid有的话就查询出org的信息，没有就是新增组织的页面
     public void initView()
     {
         command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
@@ -137,6 +138,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
 
 
+    //界面的+图片可以添加用户和组织的控件
     private void setupEditIco() {
         JupiterTextIco useritem = new JupiterTextIcoWithoutCorner(getApplicationContext());
         useritem.setTitle(" ");
@@ -168,7 +170,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         jupiterEditorgIco.setAdapter(orgadapter);
     }
 
-
+    //获取组织的详细信息
     private void getOrgDetails()
     {
         Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
@@ -193,7 +195,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
     }
 
-
+    //把查询的组织信息，构建到用户和组织控件显示
     private void builder(OrgDetailInfoBean bean)
     {
         neworg.setText(bean.getName());
@@ -232,7 +234,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             }
         }
     }
-
+    //添加组织的方法
     private void addOrg(String orgname)
     {
         Resource resource = resourceFactory.create("AddOrg");
@@ -258,7 +260,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             }
         });
     }
-
+    //删除用户的一项的方法
     private void deleteUserItem(JupiterEditableView item) {
         String userid=(String)item.getTag();
         Resource resource = resourceFactory.create("RemoveOrgCardByUserId");
@@ -285,7 +287,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         useradapter.notifyDataSetChanged();
 
     }
-
+    //添加组织的事件
     private View.OnClickListener addOrgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
