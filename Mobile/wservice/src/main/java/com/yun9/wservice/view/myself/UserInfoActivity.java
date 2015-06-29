@@ -34,13 +34,14 @@ import java.util.List;
  */
 public class UserInfoActivity extends JupiterFragmentActivity {
 
+
     private UserInfoCommand userInfoCommand;
+    private UserSignatureCommand userSignatureCommand;
     private int maxSelectNum = 1;
     private List<FileBean> onSelectYunImages = new ArrayList<>();
     private boolean mEdit;
 
     private YunImageCommand yunImageCommand;
-    private UserSignatureCommand userSignatureCommand;
 
     @ViewInject(id = R.id.user_info_title)
     private JupiterTitleBarLayout jupiterTitleBarLayout;
@@ -80,6 +81,30 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }, 100);
         jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(BackClickListener);
 
+        userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!AssertValue.isNotNull(yunImageCommand)) {
+                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit)
+                            .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
+                            .setUserid(sessionManager.getUser().getId())
+                            .setInstid(sessionManager.getInst().getId());
+                }
+                yunImageCommand.setSelectImages(onSelectYunImages);
+                YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
+            }
+        });
+
+        userInfoWidget.getSignature().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 userSignatureCommand = new UserSignatureCommand().setUserid(sessionManager.getUser().getId())
+                        .setInstid(sessionManager.getInst().getId())
+                        .setSignature(sessionManager.getUser().getSignature());
+                UserSignatureActivity.start(UserInfoActivity.this, userSignatureCommand);
+            }
+        });
+
     }
 
     private void refresh(){
@@ -87,7 +112,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             Resource resource = resourceFactory.create("QueryUserInfoByIdService");
             resource.param("userid", sessionManager.getUser().getId());
             resource.param("instid", sessionManager.getInst().getId());
-
+            resource.param("signature", sessionManager.getUser().getSignature());
             final ProgressDialog refreshDialog = ProgressDialog.show(this, null, "正在处理，请稍后...", true);
 
             resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
@@ -109,29 +134,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                         userInfoWidget.getDepartment().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
 
                         userInfoWidget.getSignature().getSutitleTv().setText(user.getSignature());
-                        userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (!AssertValue.isNotNull(yunImageCommand)) {
-                                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit)
-                                            .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
-                                            .setUserid(sessionManager.getUser().getId())
-                                            .setInstid(sessionManager.getInst().getId());
-                                }
-                                yunImageCommand.setSelectImages(onSelectYunImages);
-                                YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
-                            }
-                        });
-
-                        userInfoWidget.getSignature().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (!AssertValue.isNotNull(userSignatureCommand)) {
-                                    userSignatureCommand = new UserSignatureCommand().setUserid(sessionManager.getUser().getId()).setInstid(sessionManager.getInst().getId()).setSignature(user.getSignature());
-                                }
-                                UserSignatureActivity.start(UserInfoActivity.this, userSignatureCommand);
-                            }
-                        });
 
                     }
                 }
@@ -165,13 +167,25 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
             ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV());
             updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
+
+
+            Intent intent = new Intent();
+            intent.putExtra("command", onSelectYunImages.get(0).getId());
+            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
         }
 
-        else if(resultCode == UserSignatureCommand.RESULT_CODE_OK){
+        else if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
             String signature = (String) data.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
             userInfoWidget.getSignature().getSutitleTv().setText(signature);
             upadteSignature(signature);
-        }
+            User user = sessionManager.getUser();
+            user.setSignature(signature);
+            sessionManager.setUser(user);
+
+            Intent intent = new Intent();
+            intent.putExtra("command", signature);
+            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
+         }
     }
 
     private void updateUserByHeaderfileid(String userHeaderId){

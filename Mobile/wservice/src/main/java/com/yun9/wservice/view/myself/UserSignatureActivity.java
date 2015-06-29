@@ -3,6 +3,8 @@ package com.yun9.wservice.view.myself;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Selection;
+import android.text.Spannable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -42,7 +44,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     public static void start(Activity activity, UserSignatureCommand command){
         Intent intent = new Intent(activity, UserSignatureActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("command", command);
+        bundle.putSerializable(UserSignatureCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -59,8 +61,14 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
 
         Intent intent = getIntent();
         if(intent != null) {
-            userSignatureCommand = (UserSignatureCommand)intent.getSerializableExtra("command");
+            userSignatureCommand = (UserSignatureCommand)intent.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
             signatureContent.setText(userSignatureCommand.getSignature());
+            CharSequence text = signatureContent.getText();
+            //Debug.asserts(text instanceof Spannable);
+            if (text instanceof Spannable) {
+                Spannable spanText = (Spannable)text;
+                Selection.setSelection(spanText, text.length());
+            }
         }
     }
 
@@ -69,12 +77,16 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
             userInfoCommand = new UserInfoCommand().setUserid(sessionManager.getUser().getId())
                     .setInstid(sessionManager.getInst().getId())
                     .setSignature(signatureContent.getText().toString());
-        }
-        Intent intent = new Intent();
-        intent.putExtra(UserSignatureCommand.PARAM_COMMAND, signatureContent.getText().toString());
-        setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
-        //UserInfoActivity.start(UserSignatureActivity.this, userInfoCommand);
 
+
+        }
+            userInfoCommand = new UserInfoCommand().setUserid(sessionManager.getUser().getId())
+                    .setInstid(sessionManager.getInst().getId())
+                    .setSignature(signatureContent.getText().toString());
+
+        Intent intent = new Intent();
+        intent.putExtra("command", signatureContent.getText().toString());
+        setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
     }
 
     private View.OnClickListener BackOnclickListener = new View.OnClickListener() {

@@ -98,7 +98,7 @@ public class DefaultSessionManager implements SessionManager, Bean,
         AppCache.getInstance().put(SessionManager.LOGIN_STATE, login);
     }
 
-    private void setUser(User user) {
+    public void setUser(User user) {
         AppCache.getInstance().put(SessionManager.USER_INFO, user);
     }
 
