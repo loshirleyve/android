@@ -91,8 +91,13 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
+        initView();
 
+    }
+
+    public void initView()
+    {
+        command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
         jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText("成员列表");
         jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText("下级部门");
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
@@ -104,9 +109,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
 
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-
-        initView();
-
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
         //检查是否进入编辑状态
         if (AssertValue.isNotNull(command) && command.isEdit()){
@@ -123,15 +125,11 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             jupiterEditorgIco.setVisibility(View.GONE);
         }
         else {
-            bulieInfo();
+            getOrgDetails();
             neworg.setEnabled(false);
             titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
             orgtips.setText("[向左滑动可编辑]");
         }
-    }
-
-    public void initView()
-    {
         useritemList = new ArrayList<>();
         orgitemList = new ArrayList<>();
         setupEditIco();
@@ -171,50 +169,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     }
 
 
-
-    private void deleteUserItem(JupiterEditableView item) {
-        String userid=(String)item.getTag();
-        RemoveOrgCardByUserId(userid,command.getOrgid());
-        useritemList.remove(item);
-        useradapter.notifyDataSetChanged();
-
-    }
-
-
-
-    private void setEdit(boolean edit){
-        this.edit = edit;
-    }
-
-
-
-    private View.OnClickListener onCompleteClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
-
-    private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            finish();
-        }
-    };
-
-    private View.OnClickListener addOrgClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            String orgname=neworg.getText().toString();
-            if(AssertValue.isNotNullAndNotEmpty(orgname))
-               addOrg(orgname);
-               // Toast.makeText(OrgEditActivity.this, "添加组织", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(OrgEditActivity.this, "请输入组织名称", Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    private void bulieInfo()
+    private void getOrgDetails()
     {
         Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
         resource.param("orgid", command.getOrgid());
@@ -304,13 +259,12 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
     }
 
-
-    private void RemoveOrgCardByUserId(String userid,String orgid)
-    {
+    private void deleteUserItem(JupiterEditableView item) {
+        String userid=(String)item.getTag();
         Resource resource = resourceFactory.create("RemoveOrgCardByUserId");
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("resourceid", userid);
-        resource.param("orgid", orgid);
+        resource.param("orgid", command.getOrgid());
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -327,7 +281,39 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             }
         });
+        useritemList.remove(item);
+        useradapter.notifyDataSetChanged();
+
+    }
+
+    private View.OnClickListener addOrgClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String orgname=neworg.getText().toString();
+            if(AssertValue.isNotNullAndNotEmpty(orgname))
+                addOrg(orgname);
+            else
+                Toast.makeText(OrgEditActivity.this, "请输入组织名称", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private void setEdit(boolean edit){
+        this.edit = edit;
     }
 
 
+
+    private View.OnClickListener onCompleteClickListener = new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
+    };
 }
