@@ -8,9 +8,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -24,7 +24,6 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterSegmentedGroup;
 import com.yun9.jupiter.widget.JupiterSegmentedItem;
@@ -35,10 +34,15 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
+import com.yun9.wservice.model.MsgCardProcessAction;
 import com.yun9.wservice.model.MsgCardShare;
+import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailCommentWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailPraiseWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailShareWidget;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelPageWidget;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelWidget;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarTabWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 
 import java.util.ArrayList;
@@ -84,7 +88,15 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.praise_item)
     private JupiterSegmentedItem praiseItem;
 
+    @ViewInject(id = R.id.msg_card_detail_bottom_toolbar)
+    private MsgCardDetailToolbarTabWidget toolbarTabWidget;
+
+    @ViewInject(id = R.id.msg_card_detail_bottom_toolbar_panel)
+    private MsgCardDetailToolbarPanelWidget toolbarPanelWidget;
+
     private List<View> segmentListViews;
+
+    List<MsgCardPanelActionItem> panelActionItems;
 
     private MsgCardDetailCommentWidget commentView;
     private MsgCardDetailPraiseWidget praiseView;
@@ -155,6 +167,11 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             }
         });
 
+        toolbarTabWidget.getActionLayout().setOnClickListener(onActionClickListener);
+        toolbarTabWidget.getCommentLayout().setOnClickListener(onCommentClickListener);
+        toolbarTabWidget.getForwardLayout().setOnClickListener(onForwardClickListener);
+        toolbarTabWidget.getPraiseLayout().setOnClickListener(onPraiseClickListener);
+
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId()) && AssertValue.isNotNullAndNotEmpty(currUserid)) {
             Handler handler = new Handler() {
                 @Override
@@ -177,6 +194,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
+                    //TODO 由于还没有返回流程数据，暂时使用假数据
+                    fakeDataProcessAction(mMsgCard);
                     builderView(mMsgCard);
                 }
             }
@@ -228,6 +247,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         segmentListViews.add(shareView);
         segmentListViews.add(praiseView);
         viewPager.setAdapter(viewPagerAdapter);
+        builderPanelPage(msgCard);
 
     }
 
@@ -278,9 +298,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         return itemWidget;
     }
 
-    public PagerAdapter viewPagerAdapter = new PagerAdapter() {
-
-
+    private PagerAdapter viewPagerAdapter = new PagerAdapter() {
         @Override
         public int getCount() {
             return segmentListViews.size();
@@ -304,4 +322,61 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     };
 
+    private void builderPanelPage(MsgCard msgCard) {
+        List<MsgCardDetailToolbarPanelPageWidget> msgCardDetailToolbarPanelPageWidgets = new ArrayList<>();
+        panelActionItems = new ArrayList<>();
+
+        //默认添加掷筛子功能
+        panelActionItems.add(new MsgCardPanelActionItem(getResources().getString(R.string.msg_card_sieve), R.drawable.turns, MsgCardPanelActionItem.ActionType.TYPE_TURNS));
+
+        if (AssertValue.isNotNullAndNotEmpty(msgCard.getProcess())) {
+            for (MsgCardProcessAction msgCardProcessAction : msgCard.getProcess()) {
+                panelActionItems.add(new MsgCardPanelActionItem(msgCardProcessAction));
+            }
+        }
+        MsgCardDetailToolbarPanelPageWidget page = new MsgCardDetailToolbarPanelPageWidget(mContext);
+        page.buildView(panelActionItems);
+        msgCardDetailToolbarPanelPageWidgets.add(page);
+        toolbarPanelWidget.builder(msgCardDetailToolbarPanelPageWidgets);
+    }
+
+    private View.OnClickListener onActionClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (toolbarPanelWidget.getVisibility() == View.VISIBLE) {
+                toolbarPanelWidget.setVisibility(View.GONE);
+            } else {
+                toolbarPanelWidget.setVisibility(View.VISIBLE);
+            }
+        }
+    };
+
+    private View.OnClickListener onCommentClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private View.OnClickListener onForwardClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private View.OnClickListener onPraiseClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
+
+    private void fakeDataProcessAction(MsgCard msgCard) {
+        msgCard.setProcess(new ArrayList<MsgCardProcessAction>());
+        msgCard.getProcess().add(new MsgCardProcessAction("保存表单", "save"));
+        msgCard.getProcess().add(new MsgCardProcessAction("同意", "agreed"));
+        msgCard.getProcess().add(new MsgCardProcessAction("驳回", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销", "rejected"));
+    }
 }

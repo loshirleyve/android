@@ -16,14 +16,15 @@
 
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/msg_card_detail_toolbar"
-        android:layout_below="@+id/msg_card_detail_title">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/msg_card_detail_title"
+        android:layout_above="@+id/bottom_toolbar_ll">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.yun9.wservice.view.msgcard.widget.MsgCardWidget
                 android:id="@+id/msg_card_info"
                 android:layout_width="match_parent"
@@ -84,10 +85,28 @@
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 
-    <com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget
-        android:id="@+id/msg_card_detail_toolbar"
+    <LinearLayout
+        android:id="@+id/bottom_toolbar_ll"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"></com.yun9.wservice.view.msgcard.MsgCardDetailToolbarWidget>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarTabWidget
+            android:id="@+id/msg_card_detail_bottom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarTabWidget>
+
+        <com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelWidget
+            android:id="@+id/msg_card_detail_bottom_toolbar_panel"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:visibility="gone">
+        </com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelWidget>
+    </LinearLayout>
+
+
+
 
 </RelativeLayout>

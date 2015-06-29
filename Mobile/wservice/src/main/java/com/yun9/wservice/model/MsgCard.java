@@ -56,6 +56,7 @@ public class MsgCard implements java.io.Serializable {
     private List<MsgCardActor> actors;
     private List<MsgCardPraise> praises;
     private List<MsgCardShare> shares;
+    private List<MsgCardProcessAction> process;
     //praises
     //shares
 
@@ -318,5 +319,13 @@ public class MsgCard implements java.io.Serializable {
 
     public void setShares(List<MsgCardShare> shares) {
         this.shares = shares;
+    }
+
+    public List<MsgCardProcessAction> getProcess() {
+        return process;
+    }
+
+    public void setProcess(List<MsgCardProcessAction> process) {
+        this.process = process;
     }
 }

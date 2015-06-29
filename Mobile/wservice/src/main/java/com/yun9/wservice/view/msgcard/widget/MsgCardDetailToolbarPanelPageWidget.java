@@ -1,4 +1,4 @@
-package com.yun9.wservice.view.msgcard;
+package com.yun9.wservice.view.msgcard.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,18 +7,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.msgcard.model.MsgCardDetailToolbarActionItem;
+import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
 
 import java.util.List;
 
 /**
  * Created by huangbinglong on 15/5/19.
  */
-public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
+public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
 
     /**
      * 每行最多个数
@@ -37,17 +36,17 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
     public static final int MAX_LINE_NUMS = 2;
 
     // 界面引用对象,动作容器GridView
-    GridView actionGridView;
+    private GridView actionGridView;
 
-    public MsgCardDetailToolbarPanelsPageWidget(Context context) {
+    public MsgCardDetailToolbarPanelPageWidget(Context context) {
         super(context);
     }
 
-    public MsgCardDetailToolbarPanelsPageWidget(Context context, AttributeSet attrs) {
+    public MsgCardDetailToolbarPanelPageWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MsgCardDetailToolbarPanelsPageWidget(Context context, AttributeSet attrs, int defStyle) {
+    public MsgCardDetailToolbarPanelPageWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -55,18 +54,10 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
      * 刚创建的对象里面不包含任何item的，需要外部通过这个方法
      * 传递items实体列表进来，对象通过实体数据穿件界面item
      * 每个item的模板为：widget_msg_card_detail_toolbar_panels_page_item.xml
+     *
      * @param items 实体数据列表
      */
-    public void buildView(final List<MsgCardDetailToolbarActionItem> items) {
-        // 设置动作监听
-        actionGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (items.get(position).getOnClickListener() != null) {
-                    items.get(position).getOnClickListener().onClick(view);
-                }
-            }
-        });
+    public void buildView(final List<MsgCardPanelActionItem> items) {
         // 设置GridViewAdapter
         actionGridView.setAdapter(new BaseAdapter() {
             @Override
@@ -86,7 +77,7 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                MsgCardDetailToolbarPanelsPageItemWidget itemWidget = new MsgCardDetailToolbarPanelsPageItemWidget(getContext());
+                MsgCardDetailToolbarPanelPageItemWidget itemWidget = new MsgCardDetailToolbarPanelPageItemWidget(getContext());
                 itemWidget.buildWithData(items.get(position));
                 return itemWidget;
             }
@@ -103,4 +94,7 @@ public class MsgCardDetailToolbarPanelsPageWidget extends JupiterRelativeLayout{
         actionGridView = (GridView) this.findViewById(R.id.grid);
     }
 
+    public GridView getActionGridView() {
+        return actionGridView;
+    }
 }
