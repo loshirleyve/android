@@ -36,6 +36,8 @@ public class JupiterSegmentedItem extends JupiterRelativeLayout {
 
     private int icoImageSelected;
 
+    private int postion = 0;
+
 
     public JupiterSegmentedItem(Context context) {
         super(context);
@@ -156,5 +158,13 @@ public class JupiterSegmentedItem extends JupiterRelativeLayout {
 
     public void setIcoImageSelected(int icoImageSelected) {
         this.icoImageSelected = icoImageSelected;
+    }
+
+    public int getPostion() {
+        return postion;
+    }
+
+    public void setPostion(int postion) {
+        this.postion = postion;
     }
 }

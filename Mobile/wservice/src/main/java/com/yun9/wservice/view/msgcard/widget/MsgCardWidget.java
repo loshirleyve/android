@@ -1,4 +1,4 @@
-package com.yun9.wservice.view.msgcard;
+package com.yun9.wservice.view.msgcard.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -44,6 +44,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     private RelativeLayout fwRL;
     private RelativeLayout commentRL;
     private RelativeLayout actionRL;
+    private RelativeLayout mainRl;
 
     private TextView praiseNumTV;
     private TextView fwNumTV;
@@ -83,6 +84,8 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+
+        mainRl = (RelativeLayout) findViewById(R.id.msg_card_rl);
 
         contentTV = (TextView) this.findViewById(R.id.msg_card_content_tv);
         locationTV = (TextView) this.findViewById(R.id.msg_card_location_tv);
@@ -233,10 +236,10 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         //comment
         commentNumTV.setText(String.valueOf(msgCard.getCommentcount()));
-/*
-        //lastComment
-        lastCommentContentTV.setText(msgCard.getComment().);*/
 
+        if (AssertValue.isNotNull(msgCard.getLastComment())){
+            lastCommentContentTV.setText(msgCard.getLastComment().getContent());
+        }
 
     }
 
@@ -364,5 +367,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
     public JupiterGridView getImageGV() {
         return imageGV;
+    }
+
+    public RelativeLayout getMainRl() {
+        return mainRl;
     }
 }

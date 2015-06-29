@@ -3,65 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:id="@+id/msg_card_detail_comments_ll"
+        android:id="@+id/items_ll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/msg_card_detail_comments_item_ll"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:background="@color/whites"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_marginLeft="5dp"
-                android:id="@+id/user_head"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/user_head"/>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="13dp"
-                        android:text="用户A"/>
-                    <TextView
-                        android:id="@+id/msg_card_time_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:gravity="right"
-                        android:textSize="13dp"
-                        android:textColor="@color/devide_line"
-                        android:text="1小时以前" />
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/comment_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="点赞！"
-                    android:layout_marginRight="10dp"
-                    android:textSize="14dp"/>
-            </LinearLayout>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/devide_line"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
     </LinearLayout>
+
 
 </RelativeLayout>

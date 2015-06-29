@@ -4,27 +4,42 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.view.JupiterPagerAdapter;
+import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterSegmentedGroup;
-import com.yun9.jupiter.widget.JupiterSegmentedGroupAdapter;
-import com.yun9.jupiter.widget.JupiterSegmentedItemModel;
+import com.yun9.jupiter.widget.JupiterSegmentedItem;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.model.MsgCardComment;
+import com.yun9.wservice.model.MsgCardPraise;
+import com.yun9.wservice.model.MsgCardShare;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailCommentWidget;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailPraiseWidget;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailShareWidget;
+import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +69,26 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.msg_card_info)
     private MsgCardWidget msgCardWidget;
 
-    @ViewInject(id = R.id.msg_card_detail_tab)
+    @ViewInject(id = R.id.segmented_group)
     private JupiterSegmentedGroup segmentedGroup;
 
-    private List<JupiterSegmentedItemModel> segmentedItemModels;
+    @ViewInject(id = R.id.viewpager)
+    private ViewPager viewPager;
+
+    @ViewInject(id = R.id.common_item)
+    private JupiterSegmentedItem commonItem;
+
+    @ViewInject(id = R.id.share_item)
+    private JupiterSegmentedItem shareItem;
+
+    @ViewInject(id = R.id.praise_item)
+    private JupiterSegmentedItem praiseItem;
 
     private List<View> segmentListViews;
 
-    private MsgCardCommentListWidget commentView;
+    private MsgCardDetailCommentWidget commentView;
+    private MsgCardDetailPraiseWidget praiseView;
+    private MsgCardDetailShareWidget shareView;
 
     public static void start(Context context, MsgCardDetailCommand command) {
         Intent intent = new Intent(context, MsgCardDetailActivity.class);
@@ -81,16 +108,63 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         command = (MsgCardDetailCommand) getIntent().getSerializableExtra(MsgCardDetailCommand.PARAM_COMMAND);
 
         currUserid = sessionManager.getUser().getId();
         currInstid = sessionManager.getInst().getId();
 
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId()) && AssertValue.isNotNullAndNotEmpty(currUserid)) {
-            refresh(command.getMsgCardId(), currUserid);
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
+            titleBar.getTitleTv().setText(command.getTitle());
         }
 
+        titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
+
+        commentView = new MsgCardDetailCommentWidget(mContext);
+        praiseView = new MsgCardDetailPraiseWidget(mContext);
+        shareView = new MsgCardDetailShareWidget(mContext);
+
+        segmentedGroup.setOnItemClickListener(new JupiterSegmentedGroup.OnItemClickListener() {
+            @Override
+            public void onItemClick(JupiterSegmentedItem view, int position) {
+                viewPager.setCurrentItem(position);
+            }
+        });
+
+        segmentedGroup.selectItem(0);
+
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                segmentedGroup.selectItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId()) && AssertValue.isNotNullAndNotEmpty(currUserid)) {
+            Handler handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    refresh(command.getMsgCardId(), currUserid);
+                }
+            };
+            handler.sendEmptyMessageDelayed(0, 500);
+        }
     }
 
     private void refresh(final String msgCardId, String userid) {
@@ -122,60 +196,89 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private void builderView(MsgCard msgCard) {
         msgCardWidget.buildWithData(msgCard);
-        this.builderSegmentGroup(msgCard);
-        this.builderCommentView(msgCard);
-    }
+
+        commonItem.getDescTextTV().setText(msgCard.getCommentcount() + "");
+        shareItem.getDescTextTV().setText(msgCard.getSharecount() + "");
+        praiseItem.getDescTextTV().setText(msgCard.getPraisecount() + "");
 
 
-    private void builderSegmentGroup(MsgCard msgCard) {
-        this.segmentedItemModels = new ArrayList<>();
-        JupiterSegmentedItemModel model =
-                new JupiterSegmentedItemModel(R.string.msg_card_comment, R.drawable.com111, R.drawable.com222);
+        commentView.getCommonLl().removeAllViews();
+        shareView.getShareLl().removeAllViews();
+        praiseView.getPraiseLl().removeAllViews();
 
-        model.setDesc(msgCard.getCommentcount());
-        this.segmentedItemModels.add(model);
-        model =
-                new JupiterSegmentedItemModel(R.string.msg_card_praise, R.drawable.star1, R.drawable.star2);
-        model.setDesc(msgCard.getPraisecount());
-        this.segmentedItemModels.add(model);
-        model =
-                new JupiterSegmentedItemModel(R.string.msg_card_share, R.drawable.fw1, R.drawable.fw2);
-        model.setDesc(msgCard.getSharecount());
-        this.segmentedItemModels.add(model);
+        if (AssertValue.isNotNullAndNotEmpty(msgCard.getComments())) {
+            for (MsgCardComment msgCardComment : msgCard.getComments()) {
+                commentView.getCommonLl().addView(this.createCommonItem(msgCardComment));
+            }
+        }
 
-        segmentedGroup.setAdapter(msgCardDetailSegmentedItemAdapter);
-    }
+        if (AssertValue.isNotNullAndNotEmpty(msgCard.getPraises())) {
+            for (MsgCardPraise msgCardPraise : msgCard.getPraises()) {
+                praiseView.getPraiseLl().addView(this.createPraiseItem(msgCardPraise));
+            }
+        }
 
-    private void builderCommentView(MsgCard msgCard) {
-        commentView = new MsgCardCommentListWidget(mContext);
-        commentView.buildWithData(msgCard);
-
-        View praiseView = LayoutInflater.from(mContext).inflate(R.layout.widget_msg_card_in_detail_praise, null);
-        View shareView = LayoutInflater.from(mContext).inflate(R.layout.widget_msg_card_in_detail_share, null);
-
+        if (AssertValue.isNotNullAndNotEmpty(msgCard.getShares())) {
+            for (MsgCardShare msgCardShare : msgCard.getShares()) {
+                shareView.getShareLl().addView(this.createShareItem(msgCardShare));
+            }
+        }
         segmentListViews = new ArrayList<>();
-
         segmentListViews.add(commentView);
-        segmentListViews.add(praiseView);
         segmentListViews.add(shareView);
+        segmentListViews.add(praiseView);
+        viewPager.setAdapter(viewPagerAdapter);
 
-
-        segmentedGroup.setTabItemAdapter(msgCardDetailViewPagerAdapter);
     }
 
-    private JupiterSegmentedGroupAdapter msgCardDetailSegmentedItemAdapter = new JupiterSegmentedGroupAdapter() {
-        @Override
-        public int getCount() {
-            return segmentedItemModels.size();
+    private JupiterRowStyleSutitleLayout createCommonItem(MsgCardComment msgCardComment) {
+        JupiterRowStyleSutitleLayout itemWidget = new JupiterRowStyleSutitleLayout(mContext);
+        CacheUser cacheUser = UserCache.getInstance().getUser(msgCardComment.getFrom());
+        if (AssertValue.isNotNull(cacheUser)) {
+            itemWidget.getTitleTV().setText(cacheUser.getName());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV());
         }
 
-        @Override
-        public JupiterSegmentedItemModel getTabInfo(int position) {
-            return segmentedItemModels.get(position);
-        }
-    };
+        itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
+        itemWidget.getSutitleTv().setText(msgCardComment.getContent());
+        itemWidget.setShowArrow(false);
+        return itemWidget;
+    }
 
-    public JupiterPagerAdapter msgCardDetailViewPagerAdapter = new JupiterPagerAdapter() {
+    private JupiterRowStyleSutitleLayout createPraiseItem(MsgCardPraise msgCardPraise) {
+        JupiterRowStyleSutitleLayout itemWidget = new JupiterRowStyleSutitleLayout(mContext);
+
+        CacheUser cacheUser = UserCache.getInstance().getUser(msgCardPraise.getUserid());
+
+        if (AssertValue.isNotNull(cacheUser)) {
+            itemWidget.getTitleTV().setText(cacheUser.getName());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV());
+        }
+        itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardPraise.getCreatedate()));
+        itemWidget.setShowArrow(false);
+        itemWidget.setShowSutitleText(false);
+        return itemWidget;
+    }
+
+    private JupiterRowStyleSutitleLayout createShareItem(MsgCardShare msgCardShare) {
+        JupiterRowStyleSutitleLayout itemWidget = new JupiterRowStyleSutitleLayout(mContext);
+
+        CacheUser cacheUser = UserCache.getInstance().getUser(msgCardShare.getFromuserid());
+        CacheUser cacheToUser = UserCache.getInstance().getUser(msgCardShare.getTouserid());
+        if (AssertValue.isNotNull(cacheUser)) {
+            itemWidget.getTitleTV().setText(cacheUser.getName());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV());
+        }
+        itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardShare.getCreatedate()));
+        if (AssertValue.isNotNull(cacheToUser) && AssertValue.isNotNullAndNotEmpty(cacheToUser.getName())) {
+            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to, cacheToUser.getName()));
+        }
+        itemWidget.setShowArrow(false);
+
+        return itemWidget;
+    }
+
+    public PagerAdapter viewPagerAdapter = new PagerAdapter() {
 
 
         @Override
@@ -185,7 +288,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return view == object;//官方提示这样写
+            return view == ((View) object);
         }
 
         @Override
@@ -195,8 +298,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {  //这个方法用来实例化页卡
-            container.addView(segmentListViews.get(position));//添加页卡
-            return segmentListViews.get(position);
+            View view = segmentListViews.get(position);
+            container.addView(view);//添加页卡
+            return view;
         }
     };
 

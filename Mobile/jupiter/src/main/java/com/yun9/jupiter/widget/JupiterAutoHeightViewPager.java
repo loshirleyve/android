@@ -17,12 +17,12 @@ import com.yun9.jupiter.util.PublicHelp;
  */
 public class JupiterAutoHeightViewPager extends ViewPager {
 
-    // TODO 额外工具条的高度，如果ViewPager下面有其他元素，Viewpager内容会被挡到
-    private int extraHeight = 70;// 下面toolbar的高度
-
-    private int height;
-
-    private int measureHeight;
+//    // TODO 额外工具条的高度，如果ViewPager下面有其他元素，Viewpager内容会被挡到
+//    private int extraHeight = 70;// 下面toolbar的高度
+//
+//    private int height;
+//
+//    private int measureHeight;
 
     public JupiterAutoHeightViewPager(Context context) {
         super(context);
@@ -73,20 +73,20 @@ public class JupiterAutoHeightViewPager extends ViewPager {
 
 
 
-    private int getWindowsHeight() {
-        WindowManager wm = (WindowManager) getContext()
-                .getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        int screenHeight = dm.heightPixels;
-        return screenHeight;
-    }
-
-    public int getExtraHeight() {
-        return PublicHelp.dip2px(getContext(), extraHeight);
-    }
-
-    public void setExtraHeight(int extraHeight) {
-        this.extraHeight = extraHeight;
-    }
+//    private int getWindowsHeight() {
+//        WindowManager wm = (WindowManager) getContext()
+//                .getSystemService(Context.WINDOW_SERVICE);
+//        DisplayMetrics dm = new DisplayMetrics();
+//        wm.getDefaultDisplay().getMetrics(dm);
+//        int screenHeight = dm.heightPixels;
+//        return screenHeight;
+//    }
+//
+//    public int getExtraHeight() {
+//        return PublicHelp.dip2px(getContext(), extraHeight);
+//    }
+//
+//    public void setExtraHeight(int extraHeight) {
+//        this.extraHeight = extraHeight;
+//    }
 }

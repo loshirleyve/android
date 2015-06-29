@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -23,6 +26,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -77,6 +81,10 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 MsgCardListActivity.this.finish();
             }
         });
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())){
+            titleBar.getTitleTv().setText(command.getTitle());
+        }
 
         msgCardList.setAdapter(msgCardListAdapter);
         msgCardList.setOnItemClickListener(msgCardOnItemClickListener);
@@ -202,6 +210,11 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                         logger.d("动作！");
                     }
                 });
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(20, 20, 20, 20);
+                msgCardWidget.getMainRl().setLayoutParams(params);
+
             } else {
                 msgCardWidget = (MsgCardWidget) convertView;
             }

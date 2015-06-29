@@ -64,6 +64,7 @@
     <string name="msg_card_fw">转发</string>
     <string name="msg_card_praise">点赞</string>
     <string name="msg_card_share">分享</string>
+    <string name="msg_card_fw_to">转发给了@$1%s</string>
 
 
     <string name="activity_msg_card_list_title">消息卡片列表</string>

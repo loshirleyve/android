@@ -54,6 +54,8 @@ public class MsgCard implements java.io.Serializable {
     private List<MsgCardAction> actions;
     private List<MsgCardComment> comments;
     private List<MsgCardActor> actors;
+    private List<MsgCardPraise> praises;
+    private List<MsgCardShare> shares;
     //praises
     //shares
 
@@ -299,5 +301,22 @@ public class MsgCard implements java.io.Serializable {
 
     public void setComments(List<MsgCardComment> comments) {
         this.comments = comments;
+    }
+
+
+    public List<MsgCardPraise> getPraises() {
+        return praises;
+    }
+
+    public void setPraises(List<MsgCardPraise> praises) {
+        this.praises = praises;
+    }
+
+    public List<MsgCardShare> getShares() {
+        return shares;
+    }
+
+    public void setShares(List<MsgCardShare> shares) {
+        this.shares = shares;
     }
 }
