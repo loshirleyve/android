@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
@@ -49,6 +50,8 @@ import com.yun9.wservice.model.ProductCategory;
 import com.yun9.wservice.model.ServiceCity;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
+import com.yun9.wservice.view.product.ProductActivity;
+import com.yun9.wservice.view.product.ProductCommand;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -151,6 +154,7 @@ public class StoreFragment extends JupiterFragment {
         });
 
         productLV.setAdapter(productListViewAdapter);
+        productLV.setOnItemClickListener(onProductItemClickListener);
 
         //读取缓存的当前城市
         currServiceCity = AppCache.getInstance().get(CURR_CITY, ServiceCity.class);
@@ -161,7 +165,7 @@ public class StoreFragment extends JupiterFragment {
         this.refresh();
 
         //自动滚动
-        autoScrollHandler.sendEmptyMessageDelayed(1,5000);
+        autoScrollHandler.sendEmptyMessageDelayed(1, 5000);
     }
 
     private void initPopWSelectCity() {
@@ -496,6 +500,17 @@ public class StoreFragment extends JupiterFragment {
         }
     };
 
+    private AdapterView.OnItemClickListener onProductItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Product product = (Product) view.getTag();
+
+            if (AssertValue.isNotNull(product)) {
+                ProductActivity.start(getActivity(), new ProductCommand().setProductid(product.getId()));
+            }
+        }
+    };
+
     private JupiterAdapter productListViewAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
@@ -528,6 +543,7 @@ public class StoreFragment extends JupiterFragment {
             ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
             //TODO 待服务调整后修改
             productItemLayout.getHotnoticeTV().setText("每月100元");
+            productItemLayout.setTag(product);
 
             return productItemLayout;
         }
@@ -617,14 +633,14 @@ public class StoreFragment extends JupiterFragment {
 
             if (msg.what == MSG_CHANGE_PRODUCT) {
                 int i = viewPager.getCurrentItem() + 1;
-                if (i >= viewPager.getAdapter().getCount()){
+                if (i >= viewPager.getAdapter().getCount()) {
                     i = 0;
                 }
-                viewPager.setCurrentItem(i,true);
+                viewPager.setCurrentItem(i, true);
 
             }
 
-            autoScrollHandler.sendEmptyMessageDelayed(MSG_CHANGE_PRODUCT,5000);
+            autoScrollHandler.sendEmptyMessageDelayed(MSG_CHANGE_PRODUCT, 5000);
         }
     };
 }

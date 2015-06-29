@@ -59,6 +59,7 @@ public class FileBean implements java.io.Serializable {
     private String storageType = FILE_STORAGE_TYPE_LOCAL;
     private int icoResource = R.drawable.small_ico_unkwon;
     private boolean selected = false;
+    private boolean camera;
     private String state = FILE_STATE_NONE;
 
     private List<FileBean> childs;
@@ -73,9 +74,9 @@ public class FileBean implements java.io.Serializable {
     }
 
     public FileBean(File file) {
-        filePath = file.getPath();
+        filePath = "file://" +file.getPath();
         absolutePath = file.getAbsolutePath();
-        thumbnailPath = file.getPath();
+        thumbnailPath = "file://" + file.getPath();
         name = FileUtil.getFileNameNoEx(file);
         extensionName = FileUtil.getExtensionName(file);
         dateAdded = DateUtil.getDateStr(file.lastModified());
@@ -294,5 +295,13 @@ public class FileBean implements java.io.Serializable {
 
         childs.add(fileBean);
 
+    }
+
+    public boolean isCamera() {
+        return camera;
+    }
+
+    public void setCamera(boolean camera) {
+        this.camera = camera;
     }
 }

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ext="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/groupbackground">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ext:titleCenterIcoVisibility="false"
+        ext:titleLeftIcoVisibility="true"
+        ext:titleText="@string/product_detail"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whites"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/product_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/mapp6" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/product_iv"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/inst_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="由深圳市时代共赢服务有限公司提供" />
+
+                    <TextView
+                        android:id="@+id/product_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="缴交社保/补交社保"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/product_desc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="创建新企业注册必须要到国家工商管理部门及税务进行登记备案，领取工商执照等" />
+
+                    <TextView
+                        android:id="@+id/product_tips_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="自购买日起，3日内开始提供服务" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/line_divider" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:id="@+id/product_price_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="3200元/每年"
+                            android:textColor="@color/title_color"
+                            android:textSize="18dp" />
+
+                        <Button
+                            android:id="@+id/buy_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:text="立即购买" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                    android:id="@+id/select_category_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ext:rowStyleSutitleShowMainImage="false"
+                    ext:rowStyleSutitleShowTimeText="false"
+                    ext:rowStyleSutitleText="深圳市南山区"
+                    ext:rowStyleSutitleTitleText="已选分类:">
+
+
+                </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_detail_content"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line_divider" />
+
+                <ListView
+                    android:id="@+id/product_detail_content_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"></ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_detail_phases"
+                    android:textSize="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line_divider" />
+
+                <ListView
+                    android:id="@+id/product_detail_phases_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"></ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_detail_comment"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/comment_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="(89)"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line_divider" />
+
+                <com.yun9.wservice.widget.ShowCommentWidget
+                    android:id="@+id/show_comment_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    ext:isIndicator="true"
+                    ext:numsOfStar="5" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/line_divider" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="查看更多评价" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                    android:id="@+id/detail_page_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ext:rowStyleSutitleShowMainImage="false"
+                    ext:rowStyleSutitleShowSutitleText="false"
+                    ext:rowStyleSutitleShowTimeText="false"
+                    ext:rowStyleSutitleTitleText="查看服务详情"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+</RelativeLayout>

@@ -38,6 +38,7 @@ import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -82,7 +83,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private JupiterGridView imageGV;
 
     @ViewInject(id = R.id.file_lv)
-    private ListView fileLV;
+    private JupiterListView fileLV;
 
     @ViewInject(id = R.id.share_to_gv)
     private JupiterGridView shareToGV;
@@ -174,6 +175,10 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         if (!AssertValue.isNotNullAndNotEmpty(instid)) {
             instid = sessionManager.getInst().getId();
         }
+
+        //载入参数代入的发送对象
+        this.loadCommandSelectInfo();
+
         this.selectImageRL.setOnClickListener(onSelectImageClickListener);
         this.selectUserRL.setOnClickListener(onSelectUserClickListener);
 //        this.selectOrgRL.setOnClickListener(onSelectOrgClickListener);
@@ -191,8 +196,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         this.imageGV.setAdapter(imageGridViewAdapter);
         this.fileLV.setAdapter(fileListViewAdapter);
 
-        //载入参数代入的发送对象
-        this.loadCommandSelectInfo();
 
         //初始化分享范围
         this.builderShareInfo();
@@ -230,6 +233,14 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     }
 
     private void loadCommandSelectInfo() {
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectImages())) {
+            this.onSelectImages = command.getOnSelectImages();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOnSelectFiles())) {
+            this.onSelectFiles = command.getOnSelectFiles();
+        }
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectUsers())) {
             for (User user : command.getSelectUsers()) {
@@ -604,7 +615,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            setResult(NewDynamicCommand.RESULT_CODE_CANCEL);
+            finish();
         }
     };
 

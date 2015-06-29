@@ -3,6 +3,7 @@ package com.yun9.wservice.view.main.support;
 import android.support.v4.app.FragmentManager;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.view.main.FuncFragmentHandler;
 import com.yun9.wservice.view.microapp.MicroAppFragment;
 import com.yun9.wservice.view.myself.UserFragment;
@@ -37,5 +38,10 @@ public class UserFuncFragmentHandler extends AbstractFuncFragmentHandler {
             userFragment = UserFragment.newInstance(null);
         }
         this.pushFragment(userFragment);
+    }
+
+    @Override
+    public JupiterFragment getFragment() {
+        return userFragment;
     }
 }

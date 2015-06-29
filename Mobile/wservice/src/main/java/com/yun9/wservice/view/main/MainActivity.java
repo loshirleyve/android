@@ -143,7 +143,7 @@ public class MainActivity extends JupiterFragmentActivity {
 
         if (AssertValue.isNotNull(funcFragmentHandler)) {
             if (funcFragmentHandler.needLogin() && !sessionManager.isLogin()) {
-                if (!AssertValue.isNotNull(loginCommand)){
+                if (!AssertValue.isNotNull(loginCommand)) {
                     loginCommand = new LoginCommand();
                 }
                 //还没有登陆系统，需要先登陆
@@ -174,6 +174,14 @@ public class MainActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (AssertValue.isNotNullAndNotEmpty(funcFragmentHandlerList)) {
+            for (FuncFragmentHandler funcFragmentHandler : funcFragmentHandlerList) {
+                if (AssertValue.isNotNull(funcFragmentHandler.getFragment())) {
+                    funcFragmentHandler.getFragment().onActivityResult(requestCode, resultCode, data);
+                }
+            }
+        }
 
         if (AssertValue.isNotNull(loginCommand) && requestCode == loginCommand.getRequestCode() && resultCode == LoginCommand.RESULT_CODE_OK) {
             //设置为必须刷新

@@ -11,7 +11,7 @@ public class OrderBuyManagerInfo implements Serializable{
     /**
      * 余额
      */
-    private long balance;
+    private double balance;
 
     /**
      * 订单分类列表
@@ -23,11 +23,11 @@ public class OrderBuyManagerInfo implements Serializable{
      */
     private List<RechargeGroup> recharegeGroups;
 
-    public long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -52,25 +52,25 @@ public class OrderBuyManagerInfo implements Serializable{
      */
     public static class OrderGroup implements Serializable {
 
-        private long num;
+        private long nums;
         private String state;
         private String statename;
 
         public OrderGroup() {
         }
 
-        public OrderGroup(long num, String state, String statename) {
-            this.num = num;
+        public OrderGroup(long nums, String state, String statename) {
+            this.nums = nums;
             this.state = state;
             this.statename = statename;
         }
 
-        public long getNum() {
-            return num;
+        public long getNums() {
+            return nums;
         }
 
-        public void setNum(long num) {
-            this.num = num;
+        public void setNums(long nums) {
+            this.nums = nums;
         }
 
         public String getState() {

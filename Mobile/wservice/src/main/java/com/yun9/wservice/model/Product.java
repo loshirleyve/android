@@ -1,5 +1,7 @@
 package com.yun9.wservice.model;
 
+import java.util.List;
+
 /**
  * Created by xia on 2015/5/25.
  */
@@ -17,6 +19,12 @@ public class Product implements java.io.Serializable {
     private int daynum;
     private String backgorundimgid;
     private boolean istop;
+
+    private List<ProductPhase> phases;
+
+    private List<ProductProfile> profiles;
+
+    private List<ProductReqirement> reqirements;
 
     public String getId() {
         return id;
@@ -120,5 +128,29 @@ public class Product implements java.io.Serializable {
 
     public void setIstop(boolean istop) {
         this.istop = istop;
+    }
+
+    public List<ProductPhase> getPhases() {
+        return phases;
+    }
+
+    public void setPhases(List<ProductPhase> phases) {
+        this.phases = phases;
+    }
+
+    public List<ProductProfile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<ProductProfile> profiles) {
+        this.profiles = profiles;
+    }
+
+    public List<ProductReqirement> getReqirements() {
+        return reqirements;
+    }
+
+    public void setReqirements(List<ProductReqirement> reqirements) {
+        this.reqirements = reqirements;
     }
 }

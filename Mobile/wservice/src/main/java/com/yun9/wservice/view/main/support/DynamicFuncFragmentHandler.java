@@ -3,6 +3,7 @@ package com.yun9.wservice.view.main.support;
 import android.support.v4.app.FragmentManager;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.wservice.view.dynamic.DynamicSessionFragment;
 import com.yun9.wservice.view.main.FuncFragmentHandler;
 
@@ -40,5 +41,10 @@ public class DynamicFuncFragmentHandler extends AbstractFuncFragmentHandler {
 
 
         this.pushFragment(dynamicSessionFragment);
+    }
+
+    @Override
+    public JupiterFragment getFragment() {
+        return dynamicSessionFragment;
     }
 }

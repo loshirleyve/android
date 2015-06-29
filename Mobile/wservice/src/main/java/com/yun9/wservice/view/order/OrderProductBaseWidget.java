@@ -5,8 +5,10 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
 
 /**
  * Created by huangbinglong on 15/6/17.
@@ -29,8 +31,10 @@ public class OrderProductBaseWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData() {
-
+    public void buildWithData(Order.OrderProduct product) {
+        ImageLoaderUtil.getInstance(this.getContext()).displayImage(product.getProductimgid(),productImageIV);
+        productNameTV.setText(product.getProductname());
+        productPriceTV.setText(product.getGoodsamount()+"元");
     }
 
     @Override

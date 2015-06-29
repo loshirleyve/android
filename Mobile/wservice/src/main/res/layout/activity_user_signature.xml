@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/signature_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tb:titleText="@string/user_signature"
+        tb:titleLeftIcoSrc="@drawable/arrow_left"
+        tb:titleLeftIcoVisibility="true"/>
+    <EditText
+        android:padding="10dp"
+        android:id="@+id/signature_content"
+        android:background="@color/whites"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/signature_title"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+</RelativeLayout>

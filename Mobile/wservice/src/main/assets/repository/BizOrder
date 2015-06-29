@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 购买管理服务 -->
+    <repository>
+        <name>QueryBuyManagerInfoByUserIdService</name>
+        <action>com.yun9.ws.biz.service.QueryBuyManagerInfoByUserIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrderBuyManagerInfo</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 获取订单列表基于订单状态 -->
+    <repository>
+        <name>QueryOrdersService</name>
+        <action>com.yun9.ws.biz.service.QueryOrdersService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrderBaseInfo</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 获取订单详情服务基于订单ID -->
+    <repository>
+        <name>QueryOrderInfoService</name>
+        <action>com.yun9.ws.biz.service.QueryOrderInfoService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Order</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 获取评论基于工单ID -->
+    <repository>
+        <name>QueryWorkCommentsByWorkOrderIdService</name>
+        <action>com.yun9.ws.biz.service.QueryWorkCommentsByWorkOrderIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.WorkOrderComment</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 添加工单评论服务 -->
+    <repository>
+        <name>AddWorkOrderCommentService</name>
+        <action>com.yun9.ws.biz.service.AddWorkOrderCommentService</action>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 用户投诉服务 -->
+    <repository>
+        <name>AddComplainService</name>
+        <action>com.yun9.ws.biz.service.AddComplainService</action>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 获取支付信息基于单据信息 -->
+    <repository>
+        <name>QueryPayinfoService</name>
+        <action>com.yun9.ws.biz.service.QueryPayinfoService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Payinfo</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+</repositorys>

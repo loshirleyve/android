@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.InstCache;
+import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Order;
 
 /**
  * Created by huangbinglong on 15/6/16.
@@ -19,6 +23,8 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
     private TextView instNameTV;
     private TextView instPhoneTV;
     private LinearLayout contactUsLL;
+
+    private String phone;
 
     public OrderProviderWidget(Context context) {
         super(context);
@@ -37,8 +43,17 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
         return R.layout.widget_order_provider;
     }
 
-    public void buildWithData() {
+    public void buildWithData(Order order) {
+        buildWithData(order.getProvideinstid());
+    }
 
+    public void buildWithData(String instId) {
+        CacheInst inst = InstCache.getInstance().getInst(instId);
+        if (inst != null){
+            this.phone = inst.getTel();
+            instNameTV.setText(inst.getInstname());
+            instPhoneTV.setText("电话 "+ inst.getTel());// 电话号码
+        }
     }
 
     @Override
@@ -53,7 +68,7 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
         contactUsLL.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String number = "10010";
+                String number = phone;
                 //用intent启动拨打电话
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
                 OrderProviderWidget.this.getContext().startActivity(intent);

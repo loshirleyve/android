@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,8 @@ import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.camera.CameraActivity;
+import com.yun9.wservice.view.camera.CameraCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +59,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private LocalImageGridViewAdapter localImageGridViewAdapter;
 
     private LocalImageCommand command;
+
+    private CameraCommand cameraCommand;
 
     private boolean edit;
 
@@ -169,6 +175,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private void showAllImage() {
         if (AssertValue.isNotNullAndNotEmpty(albums)) {
             currImages.clear();
+            currImages.add(createCamera());
+
             for (FileBean fileBean : albums) {
                 //检查是否带入的参数选择状态
                 if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSelectImages())) {
@@ -185,6 +193,15 @@ public class LocalImageActivity extends JupiterFragmentActivity {
                 localImageGridViewAdapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private FileBean createCamera() {
+        FileBean fileBean = new FileBean();
+        fileBean.setCamera(true);
+        fileBean.setFilePath("drawable://" + R.drawable.mapp);
+        fileBean.setThumbnailPath("drawable://" + R.drawable.mapp);
+
+        return fileBean;
     }
 
     private LocalImageLoadAsyncTask.OnImageLoadCallback onImageLoadCallback = new LocalImageLoadAsyncTask.OnImageLoadCallback() {
@@ -279,30 +296,36 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private AdapterView.OnItemClickListener onGridViewItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (edit) {
-                FileBean fileBean = (FileBean) view.getTag();
-
-                if (!fileBean.isSelected() && AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0) {
-                    int selectNum = getSelectNum();
-                    if (selectNum >= command.getMaxSelectNum()) {
-                        CharSequence charSequence = getResources().getString(R.string.doc_select_num_max, command.getMaxSelectNum());
-                        Toast.makeText(getApplicationContext(), charSequence, Toast.LENGTH_SHORT).show();
-                        return;
+            FileBean fileBean = (FileBean) view.getTag();
+            if (!fileBean.isCamera()) {
+                if (edit) {
+                    if (!fileBean.isSelected() && AssertValue.isNotNull(command) && command.getMaxSelectNum() > 0) {
+                        int selectNum = getSelectNum();
+                        if (selectNum >= command.getMaxSelectNum()) {
+                            CharSequence charSequence = getResources().getString(R.string.doc_select_num_max, command.getMaxSelectNum());
+                            Toast.makeText(getApplicationContext(), charSequence, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                     }
-                }
 
 
-                if (AssertValue.isNotNull(fileBean)) {
-                    fileBean.setSelected(!fileBean.isSelected());
-                    AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) view;
-                    if (fileBean.isSelected()) {
-                        albumImageGridItem.getSelectBadgeView().show();
-                    } else {
-                        albumImageGridItem.getSelectBadgeView().hide();
+                    if (AssertValue.isNotNull(fileBean)) {
+                        fileBean.setSelected(!fileBean.isSelected());
+                        AlbumImageGridItem albumImageGridItem = (AlbumImageGridItem) view;
+                        if (fileBean.isSelected()) {
+                            albumImageGridItem.getSelectBadgeView().show();
+                        } else {
+                            albumImageGridItem.getSelectBadgeView().hide();
+                        }
                     }
+                } else {
+                    ImageBrowerActivity.start(LocalImageActivity.this, new ImageBrowerCommand().setFileBeans(currImages).setPosition(position));
                 }
             } else {
-                ImageBrowerActivity.start(LocalImageActivity.this, new ImageBrowerCommand().setFileBeans(currImages).setPosition(position));
+                if (!AssertValue.isNotNull(cameraCommand)) {
+                    cameraCommand = new CameraCommand();
+                }
+                CameraActivity.start(LocalImageActivity.this, cameraCommand);
             }
         }
     };
@@ -341,6 +364,25 @@ public class LocalImageActivity extends JupiterFragmentActivity {
             } else {
                 setResult(LocalImageCommand.RESULT_CODE_ERROR);
                 finish();
+            }
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (AssertValue.isNotNull(cameraCommand) && cameraCommand.getRequestCode() == requestCode && resultCode == CameraCommand.RESULT_CODE_OK) {
+            postLoadImage.sendEmptyMessageDelayed(1, 500);
+        }
+
+    }
+
+    private Handler postLoadImage = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                loadImage();
             }
         }
     };

@@ -11,12 +11,20 @@ import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
 
+import java.util.List;
+
 /**
  * Created by huangbinglong on 15/6/16.
  */
 public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
 
     private ListView workOrdeLV;
+
+    private JupiterAdapter adapter;
+
+    private Order order;
+
+    private List<Order.WorkOrder> workOrders;
 
     public OrderDetailWorkOrderListWidget(Context context) {
         super(context);
@@ -31,7 +39,11 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
     }
 
     public void buildWithData(Order order) {
-
+        this.order = order;
+        workOrders = order.getWorkorders();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -46,10 +58,13 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
     }
 
     private void buildView() {
-        JupiterAdapter adapter = new JupiterAdapter() {
+        adapter = new JupiterAdapter() {
             @Override
             public int getCount() {
-                return 2;
+                if (workOrders != null){
+                    return workOrders.size();
+                }
+                return 0;
             }
 
             @Override
@@ -71,6 +86,7 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
                 } else {
                     workOrderWidget = (OrderDetailWorkOrderWidget) convertView;
                 }
+                workOrderWidget.buildWithData(order.getOrderid(),workOrders.get(position));
                 return convertView;
             }
         };
