@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -23,6 +24,8 @@ public class PaymentChoiceWayWidget extends JupiterRelativeLayout{
     private LinearLayout paymodeDetailLl;
 
     private EditText editText;
+
+    private TextView paymodeDetailTv;
 
     private Payinfo.PaymodeInfo paymodeInfo;
 
@@ -43,6 +46,13 @@ public class PaymentChoiceWayWidget extends JupiterRelativeLayout{
         if (paymodeInfo == null){
             sutitleLayout.getMainIV().setVisibility(GONE);
             paymodeDetailLl.setVisibility(GONE);
+        } else {
+            sutitleLayout.getTitleTV().setText(paymodeInfo.getPaymodeName());
+            sutitleLayout.getSutitleTv().setText(paymodeInfo.getDescr());
+            paymodeDetailTv.setText(paymodeInfo.getPaymodeTips());
+            if (paymodeInfo.getUseAmount() > 0){
+                editText.setText(paymodeInfo.getUseAmount()+"");
+            }
         }
     }
 
@@ -76,6 +86,7 @@ public class PaymentChoiceWayWidget extends JupiterRelativeLayout{
         sutitleLayout = (JupiterRowStyleSutitleLayout) this.findViewById(R.id.title_layout);
         paymodeDetailLl = (LinearLayout) this.findViewById(R.id.paymode_detail);
         editText = (EditText) this.findViewById(R.id.user_amout_et);
+        paymodeDetailTv = (TextView) this.findViewById(R.id.paymode_detail_tv);
         sutitleLayout.setSelectMode(true);
     }
 

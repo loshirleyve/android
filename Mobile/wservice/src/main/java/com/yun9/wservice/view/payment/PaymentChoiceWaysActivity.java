@@ -126,6 +126,7 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
                     wayWidget.showDetail();
                 }
                 wayWidget.setTag(infos.get(position));
+                wayWidget.buildWithData(infos.get(position));
                 convertView = wayWidget;
             } else {
                 wayWidget = (PaymentChoiceWayWidget) convertView;

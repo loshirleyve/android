@@ -58,4 +58,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 获取支付信息基于单据信息 -->
+    <repository>
+        <name>QueryPayinfoService</name>
+        <action>com.yun9.ws.biz.service.QueryPayinfoService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Payinfo</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

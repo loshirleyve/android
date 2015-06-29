@@ -19,8 +19,7 @@
             <ImageView
                 android:id="@+id/product_image_iv"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/upload_icon"/>
+                android:layout_height="50dp"/>
             <RelativeLayout
                 android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"

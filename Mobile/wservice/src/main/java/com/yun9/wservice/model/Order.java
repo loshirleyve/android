@@ -20,6 +20,7 @@ public class Order implements Serializable{
     private String statename;
     private String orderid;
     private String adviseruserid;
+    private Double accountbalance;
     private List<WorkOrder> workorders;
     private List<OrderLog> orderlogs;
     private List<OrderProduct> products;
@@ -134,6 +135,14 @@ public class Order implements Serializable{
 
     public void setProducts(List<OrderProduct> products) {
         this.products = products;
+    }
+
+    public Double getAccountbalance() {
+        return accountbalance;
+    }
+
+    public void setAccountbalance(Double accountbalance) {
+        this.accountbalance = accountbalance;
     }
 
     public static class OrderLog implements Serializable{

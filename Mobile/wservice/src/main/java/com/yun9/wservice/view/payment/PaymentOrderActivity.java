@@ -10,17 +10,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Payinfo;
 import com.yun9.wservice.view.order.OrderRechargeWidget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 立即支付订单界面
@@ -58,11 +66,22 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.confirm_ll)
     private LinearLayout confirmLl;
 
+    @ViewInject(id=R.id.confirm_tv)
+    private TextView confirmTv;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
+    @BeanInject
+    private SessionManager sessionManager;
+
     private PaymentOrderCommand command;
 
     private PaymentChoiceWaysCommand choiceWaysCommand;
 
     private Payinfo payinfo;
+
+    private Map<String,Payinfo.PaymodeInfo> categoryChoicePaymodeMap;
 
     public static void start(Context context,PaymentOrderCommand command) {
         Intent intent =  new Intent(context,PaymentOrderActivity.class);
@@ -76,8 +95,9 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (PaymentOrderCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
+        categoryChoicePaymodeMap = new HashMap<>();
         buildView();
-        fakeData();
+        loadData();
     }
 
     @Override
@@ -94,27 +114,20 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             Payinfo.PaymodeInfo paymodeInfo = (Payinfo.PaymodeInfo) data
                                         .getSerializableExtra(
                                                 PaymentChoiceWaysCommand.RETURN_PARAM);
-            resetUserSelectAmount(paymodeInfo);
+            categoryChoicePaymodeMap.put(choiceWaysCommand.getCategory().getId(),paymodeInfo);
+            loadData();
         }
-    }
-
-    private void resetUserSelectAmount(Payinfo.PaymodeInfo paymodeInfo) {
-        double userAmount = 0;
-        if (paymodeInfo != null) {
-            userAmount = paymodeInfo.getUseAmount();
-        }
-        for (Payinfo.PaymodeInfo info : choiceWaysCommand.getCategory().getPaymodeInfos()) {
-            if (info.getPaymodeId().equals(paymodeInfo.getPaymodeId())){
-                info.setUseAmount(userAmount);
-            } else {
-                info.setUseAmount(0);
-            }
-        }
-        adapter.notifyDataSetChanged();
     }
 
     private void buildView() {
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentOrderActivity.this.finish();
+            }
+        });
+
+        confirmLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PaymentOrderActivity.this.finish();
@@ -129,32 +142,48 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         adapter.notifyDataSetChanged();
     }
 
-    public void fakeData() {
-        Payinfo data = new Payinfo();
-        List<Payinfo.PaymodeCategory> categoryList = new ArrayList<>();
-        Payinfo.PaymodeCategory c1 = new Payinfo.PaymodeCategory();
-        c1.setName("余额付款");
-        Payinfo.PaymodeCategory c2 = new Payinfo.PaymodeCategory();
-        c2.setName("其他支付方式");
-        Payinfo.PaymodeCategory c3 = new Payinfo.PaymodeCategory();
-        c3.setName("会员卡");
+    private void loadData() {
+        Resource resource = resourceFactory.create("QueryPayinfoService");
+        resource.param("source",command.getSource());
+        resource.param("instId",sessionManager.getInst().getId());
+        resource.param("sourceValue",command.getSourceValue());
+        resource.param("userId",sessionManager.getUser().getId());
+        resource.param("paymodeInfos",categoryChoicePaymodeMap.values());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                payinfo = (Payinfo) response.getPayload();
+                rebuild();
+            }
 
-        List<Payinfo.PaymodeInfo> infos = new ArrayList<>();
-        Payinfo.PaymodeInfo i1 = new Payinfo.PaymodeInfo();
-        i1.setPaymodeId("1");
-        Payinfo.PaymodeInfo i2 = new Payinfo.PaymodeInfo();
-        i2.setPaymodeId("2");
-        Payinfo.PaymodeInfo i3 = new Payinfo.PaymodeInfo();
-        i3.setPaymodeId("3");
-        infos.add(i1);
-        infos.add(i2);
-        infos.add(i3);
-        c1.setPaymodeInfos(infos);
-        categoryList.add(c1);
-        categoryList.add(c2);
-        categoryList.add(c3);
-        data.setPaymodeCategorys(categoryList);
-        this.buildWithData(data);
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
+    }
+
+    private void rebuild() {
+        titleTv.setText(payinfo.getTitle());
+        subTitleTv.setText(payinfo.getSubtitle());
+        rechargeWidget.buildWithData(payinfo.getBalance());
+        paymentMoneyTv.setText(payinfo.getPayableAmount()+"元");
+        totalMoneyTv.setText(payinfo.getFactpayAmount()+"元");
+        remainMoneyTv.setText(payinfo.getSurplusAmount()+"元");
+
+        if (payinfo.getSurplusAmount() != 0){
+            confirmTv.setTextColor(getResources().getColor(R.color.devide_line));
+            confirmLl.setClickable(false);
+        } else {
+            confirmTv.setTextColor(getResources().getColor(R.color.title_color));
+            confirmLl.setClickable(true);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
