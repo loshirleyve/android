@@ -64,7 +64,7 @@ public class LoginActivity extends JupiterFragmentActivity {
         bundle.putSerializable("command", command);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent, LoginCommand.REQUEST_CODE);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override

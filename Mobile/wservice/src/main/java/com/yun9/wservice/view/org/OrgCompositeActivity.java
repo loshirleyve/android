@@ -76,6 +76,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
     private boolean edit;
 
+    private boolean onlyUsers;
 
     public static void start(Activity activity, OrgCompositeCommand command) {
         Intent intent = new Intent(activity, OrgCompositeActivity.class);
@@ -234,6 +235,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         //检查是否进入编辑模式
         if (AssertValue.isNotNull(command)) {
             this.edit(command.isEdit());
+            this.onlyUsers(command.isOnlyUsers());
         }
     }
 
@@ -482,6 +484,20 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         this.setSutitle();
     }
 
+
+    private void onlyUsers(boolean onlyUsers) {
+        this.onlyUsers = onlyUsers;
+        if (this.onlyUsers) {
+            orgCompositeTopWidget.getOrgGroupLL().setVisibility(View.GONE);
+            orgCompositeTopWidget.getOrgHrLL().setVisibility(View.GONE);
+            orgCompositeTopWidget.getMyselfLL().setVisibility(View.GONE);
+        } else {
+            orgCompositeTopWidget.getOrgGroupLL().setVisibility(View.VISIBLE);
+            orgCompositeTopWidget.getOrgHrLL().setVisibility(View.VISIBLE);
+            orgCompositeTopWidget.getMyselfLL().setVisibility(View.VISIBLE);
+        }
+
+    }
     private void selectMode(boolean mode) {
         if (AssertValue.isNotNull(this.orgCompositeListAdapter)) {
             this.orgCompositeListAdapter.setSelectMode(mode);

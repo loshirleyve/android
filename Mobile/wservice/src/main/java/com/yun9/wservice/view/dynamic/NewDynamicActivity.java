@@ -537,7 +537,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                     }
                 }
             }
-            OrgCompositeActivity.start(NewDynamicActivity.this, orgCompositeCommand);
+            OrgCompositeActivity.start(NewDynamicActivity.this, orgCompositeCommand.setOnlyUsers(true));
         }
     };
 

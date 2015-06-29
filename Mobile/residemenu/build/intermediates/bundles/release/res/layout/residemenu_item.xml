@@ -22,4 +22,8 @@
             android:layout_marginLeft="10dp"
             android:id="@+id/tv_title"/>
 
+<<<<<<< HEAD
 </LinearLayout><!-- From: file:/Volumes/DATA/Users/rxy/git-android/Mobile/residemenu/res/layout/residemenu_item.xml -->
+=======
+</LinearLayout><!-- From: file:/C:/project/git-android/Mobile/residemenu/res/layout/residemenu_item.xml -->
+>>>>>>> master

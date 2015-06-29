@@ -14,7 +14,7 @@ import com.yun9.jupiter.view.injected.ViewInjectedUtil;
  */
 public abstract class JupiterRelativeLayout extends RelativeLayout{
 
-    private Context mContext;
+    protected Context mContext;
 
     public JupiterRelativeLayout(Context context) {
         super(context);

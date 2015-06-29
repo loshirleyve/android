@@ -442,4 +442,54 @@ public class DateUtil {
         return DateFormatUtil.format(getDate(date, 0),
                 StringPool.DATE_FORMAT_DATETIME);
     }
+
+    public static String getDateStr(long date,String formate) {
+        return DateFormatUtil.format(getDate(date, 0),
+                StringPool.DATE_FORMAT_DATETIME);
+    }
+
+    /**
+     * 将时间转为多久多久以前
+     * 如：一小时前
+     * @param date
+     * @return
+     */
+    public static String timeAgo(Date date) {
+        return timeAgo(date.getTime());
+    }
+
+    /**
+     * 小于一分钟：刚刚
+     * 小于一小时：N分钟前
+     * 小于一天：N小时前
+     * 小于一周：N天前
+     * 其他：具体时间，yyyy-MM-dd
+     * @param dateMillis
+     * @return
+     */
+    public static String timeAgo(long dateMillis) {
+        long minute = 60 * 1000;
+        long hour = 60 * minute;
+        long day = 24 * hour;
+        long week = 7 * day;
+        long offset = new Date().getTime() - dateMillis;
+        String ago = null;
+        if (offset < minute){
+            ago = "刚刚";
+        } else if (offset < hour) {
+            int t = (int) (offset/minute);
+            ago = t + "分钟前";
+        } else if (offset < day) {
+            int t = (int) (offset/hour);
+            ago = t + "小时前";
+        } else if (offset < week) {
+            int t = (int) (offset/day);
+            ago = t + "天前";
+        } else {
+            ago = DateFormatUtil.format(dateMillis,StringPool.DATE_FORMAT_DATE);
+        }
+
+
+        return ago;
+    }
 }

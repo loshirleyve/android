@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/groupbackground"
+    android:orientation="vertical">
+
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleLeftIcoVisibility="true"
+        tb:titleRightTextVisibility="false">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"
+        android:text="@string/target_org" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whites">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="20dp"
+            android:text="@string/add_org_to" />
+
+        <TextView
+            android:id="@+id/orgname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="20dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"
+        android:text="@string/add_org_user" />
+
+    <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/add_use_org_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:clickable="true"
+        row:rowStyleTitleShowMainImage="true"
+        row:rowStyleTitleText="@string/add_use_org_to"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+    <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/add_use_phonebook_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        row:rowStyleTitleShowMainImage="true"
+        row:rowStyleTitleText="@string/add_use_phonebook_to"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+
+</LinearLayout>

@@ -33,6 +33,8 @@ public class OrgCompositeCommand extends JupiterCommand {
 
     private boolean edit;
 
+    private boolean onlyUsers;
+
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
 
     public boolean isEdit() {
@@ -41,6 +43,16 @@ public class OrgCompositeCommand extends JupiterCommand {
 
     public OrgCompositeCommand setEdit(boolean edit) {
         this.edit = edit;
+        return this;
+    }
+
+    public boolean isOnlyUsers() {
+        return onlyUsers;
+    }
+
+    public OrgCompositeCommand setOnlyUsers(boolean onlyUsers) {
+        this.onlyUsers = onlyUsers;
+
         return this;
     }
 
@@ -88,8 +100,8 @@ public class OrgCompositeCommand extends JupiterCommand {
         return this;
     }
 
-    public OrgCompositeCommand putSelectUser(String userid){
-        if (!AssertValue.isNotNull(selectUsers)){
+    public OrgCompositeCommand putSelectUser(String userid) {
+        if (!AssertValue.isNotNull(selectUsers)) {
             selectUsers = new ArrayList<>();
         }
 
@@ -98,8 +110,8 @@ public class OrgCompositeCommand extends JupiterCommand {
         return this;
     }
 
-    public OrgCompositeCommand putSelectOrgs(String orgid){
-        if(!AssertValue.isNotNull(selectOrgs)){
+    public OrgCompositeCommand putSelectOrgs(String orgid) {
+        if (!AssertValue.isNotNull(selectOrgs)) {
             selectOrgs = new ArrayList<>();
         }
         selectOrgs.add(orgid);

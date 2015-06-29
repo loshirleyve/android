@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <!-- From: file:/Volumes/DATA/Users/rxy/git-android/Mobile/residemenu/res/values/strings.xml -->
+=======
+    <!-- From: file:/C:/project/git-android/Mobile/residemenu/res/values/strings.xml -->
+>>>>>>> master
     <eat-comment/>
     <string name="app_name">ResideMenu</string>
 </resources>

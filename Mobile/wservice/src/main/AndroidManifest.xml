@@ -194,6 +194,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.org.OrgChooseAddUserActivity"
+            android:label="@string/org_add_newuser"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
 
         <activity
             android:name=".view.doc.DocCompositeActivity"
@@ -336,6 +342,13 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:label="@string/payment_now"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.payment.PaymentChoiceWaysActivity"
+            android:label="@string/payment_ways"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
 
     </application>
 

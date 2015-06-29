@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -34,11 +35,17 @@ public class LoginMainActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.virtual_account)
     private TextView virtualAccount;
 
+    private LoginCommand loginMainCommand;
+
     private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             logger.d("登录按钮被点击！");
-            LoginActivity.start(LoginMainActivity.this, command.setDemo(false));
+
+            if (!AssertValue.isNotNull(loginMainCommand)) {
+                loginMainCommand = new LoginCommand();
+            }
+            LoginActivity.start(LoginMainActivity.this, loginMainCommand.setDemo(false));
         }
     };
 
@@ -54,17 +61,20 @@ public class LoginMainActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             logger.d("模拟账户按钮被点击！");
-            LoginActivity.start(LoginMainActivity.this, command.setDemo(true));
+            if (!AssertValue.isNotNull(loginMainCommand)) {
+                loginMainCommand = new LoginCommand();
+            }
+            LoginActivity.start(LoginMainActivity.this, loginMainCommand.setDemo(true));
         }
     };
 
     public static void start(Activity activity, LoginCommand command) {
         Intent intent = new Intent(activity, LoginMainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("command", command);
+        bundle.putSerializable(LoginCommand.PARAM_COMMAND, command);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent, LoginCommand.REQUEST_CODE);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
 
@@ -72,7 +82,7 @@ public class LoginMainActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        command = (LoginCommand) this.getIntent().getSerializableExtra("command");
+        command = (LoginCommand) this.getIntent().getSerializableExtra(LoginCommand.PARAM_COMMAND);
 
         this.loginButton.setOnClickListener(loginOnClickListener);
         this.freeReg.setOnClickListener(freeOnClickListener);
@@ -91,12 +101,9 @@ public class LoginMainActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_OK) {
+        if (AssertValue.isNotNull(loginMainCommand) && loginMainCommand.getRequestCode() == requestCode && resultCode == LoginCommand.RESULT_CODE_OK) {
             setResult(LoginCommand.RESULT_CODE_OK);
             finish();
-
-        } else if (requestCode == LoginCommand.REQUEST_CODE && resultCode == LoginCommand.RESULT_CODE_CANCEL) {
-
         }
     }
 

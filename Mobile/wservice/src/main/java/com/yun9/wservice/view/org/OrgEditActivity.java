@@ -105,7 +105,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
 
-        initWeight();
+        initView();
 
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
         //检查是否进入编辑状态
@@ -130,7 +130,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         }
     }
 
-    public void initWeight()
+    public void initView()
     {
         useritemList = new ArrayList<>();
         orgitemList = new ArrayList<>();
@@ -146,7 +146,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         useritem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewUserOne("drawable://" + com.yun9.jupiter.R.drawable.upload_icon);
+                OrgChooseAddUserActivity.start(OrgEditActivity.this, new OrgChooseAddUserCommand().setOrgid(bean.getId()).setOrgname(bean.getName()));
             }
         });
         useritemList.add(useritem);
@@ -161,7 +161,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         orgitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewOrgOne("drawable://" + com.yun9.jupiter.R.drawable.upload_icon);
+                OrgEditActivity.start(OrgEditActivity.this, new OrgEditCommand().setEdit(false).setParentorgname(bean.getName()).setParentorgid(bean.getId()).setParentorgtype(bean.getType()));
             }
         });
         orgitemList.add(orgitem);
@@ -171,53 +171,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     }
 
 
-    private void addNewUserOne(String id) {
-        final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
-        useritem.setTitle(null);
-        useritem.setImage(id);
-        useritem.hideCorner();
-        useritem.setTag(id);
-        useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
-
-        useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteUserItem(useritem);
-            }
-        });
-        useritem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        useritemList.add(useritem);
-        useradapter.notifyDataSetChanged();
-    }
-
-
-    private void addNewOrgOne(String id) {
-
-        final JupiterTextIcoWithoutCorner orgitem = new JupiterTextIcoWithoutCorner(getApplicationContext());
-        orgitem.setTitle(null);
-        orgitem.setImage(id);
-        orgitem.hideCorner();
-        orgitem.setTag(id);
-
-        orgitem.getBadgeView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        orgitem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        orgitemList.add(orgitem);
-        orgadapter.notifyDataSetChanged();
-    }
 
     private void deleteUserItem(JupiterEditableView item) {
         String userid=(String)item.getTag();

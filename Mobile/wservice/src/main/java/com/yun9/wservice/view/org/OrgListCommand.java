@@ -58,6 +58,7 @@ public class OrgListCommand extends JupiterCommand {
         return this;
     }
 
+
     public boolean isNewAction() {
         return newAction;
     }

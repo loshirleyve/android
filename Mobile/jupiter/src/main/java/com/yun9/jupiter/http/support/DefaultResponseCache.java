@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.yun9.jupiter.http.ResponseCache;
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
@@ -18,7 +19,9 @@ public class DefaultResponseCache implements ResponseCache {
 
     private Map<String, CacheFile> cacheFiles = new HashMap<>();
 
-    private Map<String,CacheUser> cacheUsers = new HashMap<>();
+    private Map<String, CacheUser> cacheUsers = new HashMap<>();
+
+    private Map<String, CacheInst> cacheInsts = new HashMap<>();
 
     public DefaultResponseCache(String cacheJson) {
         JsonObject jsonObject = JsonUtil.fromString(cacheJson);
@@ -32,6 +35,10 @@ public class DefaultResponseCache implements ResponseCache {
 
                 if (ResponseCache.CACHE_TYPE_USER.equals(cacheType) && AssertValue.isNotNull(entry) && AssertValue.isNotNull(entry.getValue()) && AssertValue.isNotNull(entry.getValue().getAsJsonObject())) {
                     parseCacheUser(entry.getValue().getAsJsonObject());
+                }
+
+                if (ResponseCache.CACHE_TYPE_INST.equals(cacheType) && AssertValue.isNotNull(entry) && AssertValue.isNotNull(entry.getValue()) && AssertValue.isNotNull(entry.getValue().getAsJsonObject())) {
+                    parseCacheInst(entry.getValue().getAsJsonObject());
                 }
             }
         }
@@ -52,7 +59,17 @@ public class DefaultResponseCache implements ResponseCache {
             if (AssertValue.isNotNull(itemEntry) && AssertValue.isNotNull(itemEntry.getValue()) && AssertValue.isNotNull(itemEntry.getValue().getAsJsonObject())) {
                 String id = itemEntry.getKey();
                 CacheUser cacheUser = JsonUtil.jsonElementToBean(itemEntry.getValue(), CacheUser.class);
-                cacheUsers.put(id,cacheUser);
+                cacheUsers.put(id, cacheUser);
+            }
+        }
+    }
+
+    private void parseCacheInst(JsonObject jsonObject) {
+        for (Map.Entry<String, JsonElement> itemEntry : jsonObject.getAsJsonObject().entrySet()) {
+            if (AssertValue.isNotNull(itemEntry) && AssertValue.isNotNull(itemEntry.getValue()) && AssertValue.isNotNull(itemEntry.getValue().getAsJsonObject())) {
+                String id = itemEntry.getKey();
+                CacheInst cacheInst = JsonUtil.jsonElementToBean(itemEntry.getValue(), CacheInst.class);
+                cacheInsts.put(id, cacheInst);
             }
         }
     }
@@ -63,5 +80,9 @@ public class DefaultResponseCache implements ResponseCache {
 
     public Map<String, CacheUser> getCacheUsers() {
         return cacheUsers;
+    }
+
+    public Map<String, CacheInst> getCacheInsts() {
+        return cacheInsts;
     }
 }

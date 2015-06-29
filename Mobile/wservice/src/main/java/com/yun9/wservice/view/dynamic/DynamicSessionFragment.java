@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -18,6 +19,7 @@ import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
@@ -28,7 +30,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.MsgSession;
+import com.yun9.wservice.model.MsgsGroup;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
 import com.yun9.wservice.view.msgcard.MsgCardListCommand;
 
@@ -61,7 +63,7 @@ public class DynamicSessionFragment extends JupiterFragment {
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
-    private LinkedList<MsgSession> msgSessions = new LinkedList<>();
+    private LinkedList<MsgsGroup> msgsGroups = new LinkedList<>();
 
     private PopupWindow scenePopW;
 
@@ -97,9 +99,9 @@ public class DynamicSessionFragment extends JupiterFragment {
         this.dynamicSessionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MsgSession msgSession = (MsgSession) view.getTag();
-                if (AssertValue.isNotNull(msgSession)) {
-                    MsgCardListActivity.start(getActivity(), new MsgCardListCommand().setType(MsgCardListCommand.TYPE_USER_GIVEME).setFromuserid(msgSession.getFromuserid()).setUserid(msgSession.getTouserid()));
+                MsgsGroup msgsGroup = (MsgsGroup) view.getTag();
+                if (AssertValue.isNotNull(msgsGroup)) {
+                    MsgCardListActivity.start(getActivity(), new MsgCardListCommand().setType(MsgCardListCommand.TYPE_USER_GIVEME).setFromuserid(msgsGroup.getFromuserid()).setUserid(msgsGroup.getTouserid()));
                 }
             }
         });
@@ -108,6 +110,9 @@ public class DynamicSessionFragment extends JupiterFragment {
             @Override
             public void onClick(View v) {
                 int maxHeight = dynamicSessionList.getHeight();
+                WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+                lp.alpha = 0.4f;
+                getActivity().getWindow().setAttributes(lp);
                 scenePopW.setHeight(maxHeight);
                 scenePopW.showAsDropDown(titleBar);
             }
@@ -165,12 +170,12 @@ public class DynamicSessionFragment extends JupiterFragment {
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
-                    List<MsgSession> tempMsgSessions = (List<MsgSession>) response.getPayload();
-                    msgSessions.clear();
-                    if (AssertValue.isNotNullAndNotEmpty(tempMsgSessions)) {
-                        for (int i = tempMsgSessions.size(); i > 0; i--) {
-                            MsgSession msgSession = tempMsgSessions.get(i - 1);
-                            msgSessions.addFirst(msgSession);
+                    List<MsgsGroup> tempMsgsGroups = (List<MsgsGroup>) response.getPayload();
+                    msgsGroups.clear();
+                    if (AssertValue.isNotNullAndNotEmpty(tempMsgsGroups)) {
+                        for (int i = tempMsgsGroups.size(); i > 0; i--) {
+                            MsgsGroup msgsGroup = tempMsgsGroups.get(i - 1);
+                            msgsGroups.addFirst(msgsGroup);
                         }
                     }
                     dynamicSessionAdapter.notifyDataSetChanged();
@@ -192,19 +197,21 @@ public class DynamicSessionFragment extends JupiterFragment {
     private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-
+            WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+            lp.alpha = 1f;
+            getActivity().getWindow().setAttributes(lp);
         }
     };
 
     private JupiterAdapter dynamicSessionAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            return msgSessions.size();
+            return msgsGroups.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return msgSessions.get(position);
+            return msgsGroups.get(position);
         }
 
         @Override
@@ -214,7 +221,7 @@ public class DynamicSessionFragment extends JupiterFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            MsgSession msgSession = msgSessions.get(position);
+            MsgsGroup msgsGroup = msgsGroups.get(position);
             JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = null;
 
             if (convertView == null) {
@@ -223,12 +230,13 @@ public class DynamicSessionFragment extends JupiterFragment {
                 jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
             }
 
-            jupiterRowStyleSutitleLayout.setTag(msgSession);
-            jupiterRowStyleSutitleLayout.getTitleTV().setText(msgSession.getFromuserid());
-            jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgSession.getLastcontent());
+            jupiterRowStyleSutitleLayout.setTag(msgsGroup);
+            jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
+            jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
+            jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
 
             //获取用户信息
-            CacheUser cacheUser = UserCache.getInstance().getUser(msgSession.getFromuserid());
+            CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
 
             if (AssertValue.isNotNull(cacheUser)) {
                 ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());

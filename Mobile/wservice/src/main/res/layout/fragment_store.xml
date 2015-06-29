@@ -6,83 +6,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.yun9.jupiter.widget.JupiterTitleBarLayout
-        xmlns:tb="http://schemas.android.com/apk/res-auto"
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/store_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tb:titleLeftIcoSrc="@drawable/landmark"
         tb:titleLeftIcoVisibility="true"
-        tb:titleLeftText="@string/app_name"
+        tb:titleLeftText=""
         tb:titleLeftTextVisibility="true"
         tb:titleRightText="@string/login"
         tb:titleRightTextVisibility="true"
         tb:titleText="@string/app_store" />
 
-    <com.yun9.wservice.view.store.ProductCategoryLayout
-        android:id="@+id/category_ll"
+    <RelativeLayout
+        android:id="@+id/category_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/store_title"
-        android:layout_marginTop="0.5dp">
-    </com.yun9.wservice.view.store.ProductCategoryLayout>
+        android:layout_below="@+id/store_title"
+        android:background="@color/title_color"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
-    <!--    <com.yun9.jupiter.widget.JupiterAutoHeightViewPager
-            android:id="@+id/productsImgScroll"
+        <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/category_segmented"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_below="@+id/category_ll"/>
-
-        <com.viewpagerindicator.CirclePageIndicator
-            android:id="@+id/indicator"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/category_ll"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="150dp"
-            />-->
-    <LinearLayout
+            android:layout_toRightOf="@+id/locationinfo"
+            android:gravity="center"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="1dp"
+            segmentedgroup:checked_text_color="@color/black"
+            segmentedgroup:corner_radius="10dp"
+            segmentedgroup:tint_color="@color/whites"></info.hoang8f.android.segmented.SegmentedGroup>
+    </RelativeLayout>
+
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rotate_header_list_view_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/category_ll"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/category_rl"
+        android:background="@color/groupbackground"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
 
-
-
-        <in.srain.cube.views.ptr.PtrClassicFrameLayout
-            xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/rotate_header_list_view_frame"
+        <ListView
+            android:id="@+id/product_lv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/category_ll"
-            android:background="@color/groupbackground"
-            cube_ptr:ptr_duration_to_close="200"
-            cube_ptr:ptr_duration_to_close_header="1000"
-            cube_ptr:ptr_keep_header_when_refresh="true"
-            cube_ptr:ptr_pull_to_fresh="false"
-            cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-            cube_ptr:ptr_resistance="1.7">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ListView
-                    android:id="@+id/product_list_ptr"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:choiceMode="singleChoice"
-                    android:divider="@null"
-                    android:fadingEdge="none"
-                    android:listSelector="@android:color/transparent"
-                    android:scrollbarStyle="outsideOverlay">
-
-                </ListView>
-
-            </LinearLayout>
-
-        </in.srain.cube.views.ptr.PtrClassicFrameLayout>
-    </LinearLayout>
+            android:layout_height="match_parent"></ListView>
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </RelativeLayout>

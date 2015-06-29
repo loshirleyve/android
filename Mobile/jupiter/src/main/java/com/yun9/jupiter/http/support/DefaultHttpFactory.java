@@ -28,6 +28,7 @@ import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
 import com.yun9.jupiter.cache.FileCache;
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.conf.PropertiesManager;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -39,6 +40,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.http.ResponseOriginal;
 import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.SysFileBean;
@@ -269,8 +271,8 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 response.setCode(jsonObj.getString("code"));
                 response.setData(jsonObj.getString("data"));
                 response.setResponseCache(new DefaultResponseCache(jsonObj.getString("cache")));
-                // logger.d("Response json:" + json);
-                // logger.d("Data json:" + response.getData().toString());
+                logger.d("Response json:" + json);
+                //logger.d("Data json:" + response.getData().toString());
             } else {
                 if (AssertValue.isNotNull(error)) {
                     response.setCause(error.getMessage());
@@ -324,13 +326,15 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                     && AssertValue.isNotNullAndNotEmpty(output.getClassname())) {
                 Class<?> outputClass = Class.forName(output.getClassname());
 
-                if ("list".equals(output.getType())) {
-                    Object payload = JsonUtil.jsonToBeanList(
-                            response.getData(), outputClass);
-                    response.setPayload(payload);
-                } else {
+                if (AssertValue.isNotNullAndNotEmpty(response.getData()) && response.getData().startsWith("{")) {
                     Object payload = JsonUtil.jsonToBean(response.getData(),
                             outputClass);
+                    response.setPayload(payload);
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(response.getData()) && response.getData().startsWith("[") && "list".equals(output.getType())) {
+                    Object payload = JsonUtil.jsonToBeanList(
+                            response.getData(), outputClass);
                     response.setPayload(payload);
                 }
 
@@ -354,6 +358,12 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheUsers())) {
             for (Map.Entry<String, CacheUser> entry : response.getResponseCache().getCacheUsers().entrySet()) {
                 UserCache.getInstance().putUser(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheInsts())) {
+            for (Map.Entry<String, CacheInst> entry : response.getResponseCache().getCacheInsts().entrySet()) {
+                InstCache.getInstance().putInst(entry.getKey(), entry.getValue());
             }
         }
     }

@@ -16,7 +16,7 @@ public class DefaultRequestParams implements RequestParams {
 
 	private Map<String, Object> header;
 
-	private Map<String, Object> data;
+	private Map<String, Object> data = new HashMap<>();
 
 	public Map<String, Object> getHeader() {
 		return header;
