@@ -5,6 +5,9 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.model.CacheUser;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -34,6 +37,11 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
 
     public void buildWitdhData(Order order) {
         this.order = order;
+        CacheUser user = UserCache.getInstance().getUser(order.getAdviseruserid());
+        if (user != null){
+            ImageLoaderUtil.getInstance(this.mContext).displayImage(user.getHead(),userHeadIV);
+            userNameTV.setText(user.getName());
+        }
     }
 
     @Override

@@ -55,9 +55,8 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderStateTV.setText(workOrder.getOrderworkstatecode());
         // 没有完成不能评论
         if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
-            checkoutComment();
-//            commentWorkOrderTV.setVisibility(GONE);
-//            checkoutWorkOrderCommentTV.setVisibility(GONE);
+            commentWorkOrderTV.setVisibility(GONE);
+            checkoutWorkOrderCommentTV.setVisibility(GONE);
         } else {
             checkoutComment();
         }

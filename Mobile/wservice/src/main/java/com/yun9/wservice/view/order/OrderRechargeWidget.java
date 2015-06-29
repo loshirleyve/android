@@ -32,7 +32,7 @@ public class OrderRechargeWidget extends JupiterRelativeLayout{
     }
 
 
-    public void buildWithData(long balance) {
+    public void buildWithData(double balance) {
         accountTV.setText(balance + "元");
     }
 

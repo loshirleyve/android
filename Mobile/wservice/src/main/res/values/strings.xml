@@ -134,6 +134,7 @@
     <string name="remain_money_tip">剩余金额:&#160; </string>
     <string name="confirm_pay">确定支付</string>
     <string name="payment_money">支付金额:&#160; </string>
+    <string name="already_pay">已付款</string>
 
 
     <string name="location_select">选择位置</string>

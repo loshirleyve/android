@@ -27,7 +27,7 @@ public class OrderDetailProviderWidget extends JupiterRelativeLayout{
     }
 
     public void buildWitdhData(Order order) {
-
+        providerWidget.buildWithData(order);
     }
 
     @Override

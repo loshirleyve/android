@@ -11,7 +11,7 @@ public class OrderBuyManagerInfo implements Serializable{
     /**
      * 余额
      */
-    private long balance;
+    private double balance;
 
     /**
      * 订单分类列表
@@ -23,11 +23,11 @@ public class OrderBuyManagerInfo implements Serializable{
      */
     private List<RechargeGroup> recharegeGroups;
 
-    public long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

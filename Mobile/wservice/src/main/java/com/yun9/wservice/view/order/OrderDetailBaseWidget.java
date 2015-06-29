@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -32,7 +33,11 @@ public class OrderDetailBaseWidget extends JupiterRelativeLayout{
     }
 
     public void builWithData(Order order) {
-
+        Order.OrderProduct product = order.getProducts().get(0);
+        productNameTV.setText(product.getProductname());
+        orderSnTV.setText(order.getOrdersn());
+        productPriceTV.setText(product.getGoodsamount() + "元");
+        ImageLoaderUtil.getInstance(this.mContext).displayImage(product.getProductimgid(),productImgeIV);
     }
 
     @Override
