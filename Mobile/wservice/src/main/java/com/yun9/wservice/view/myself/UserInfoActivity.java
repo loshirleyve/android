@@ -80,9 +80,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }, 100);
         jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(BackClickListener);
 
-/*        Intent intent = getIntent();
-        userInfoCommand = (UserInfoCommand) intent.getSerializableExtra("command");*/
-
     }
 
     private void refresh(){
@@ -99,19 +96,15 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                     final User user = (User)response.getPayload();
 
                     if(AssertValue.isNotNull(user)){
-                        userInfoWidget.getUserHeadTV().setText(user.getName());
                         ImageLoaderUtil.getInstance(mContext).displayImage(user.getHeaderfileid(), userInfoWidget.getUserHeadIV());
                         userInfoWidget.getUserName().getHotNitoceTV().setText(user.getName());
                         userInfoWidget.getUserName().getHotNitoceTV().setVisibility(View.VISIBLE);
                         userInfoWidget.getUserName().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
-                        /**
-                         * 下面两栏的数据是暂时演示用的
-                         */
-                        userInfoWidget.getAgency().getHotNitoceTV().setText(user.getName());
+                        userInfoWidget.getAgency().getHotNitoceTV().setText(sessionManager.getInst().getName());
                         userInfoWidget.getAgency().getHotNitoceTV().setVisibility(View.VISIBLE);
                         userInfoWidget.getAgency().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
 
-                        userInfoWidget.getDepartment().getHotNitoceTV().setText(user.getNo());
+                        userInfoWidget.getDepartment().getHotNitoceTV().setText(user.getOrgNames());
                         userInfoWidget.getDepartment().getHotNitoceTV().setVisibility(View.VISIBLE);
                         userInfoWidget.getDepartment().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
 
@@ -129,13 +122,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                                 YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
                             }
                         });
-
-/*                        userInfoWidget.getAgency().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                SelectInstActivity.start(UserInfoActivity.this, new SelectInstCommand().setUser(sessionManager.getUser()));
-                            }
-                        });*/
 
                         userInfoWidget.getSignature().setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -181,14 +167,8 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
         }
 
-        //userInfoWidget.getSignature().getSutitleTv().setText(userInfoCommand.getSignature());
-
-       /* if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
-            userInfoWidget.getSignature().getSutitleTv().setText(((UserSignatureCommand)data.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND)).getSignature());
-        }*/
-
-        if(resultCode == UserSignatureCommand.RESULT_CODE_OK){
-            String signature = (String) data.getSerializableExtra("userSignature");
+        else if(resultCode == UserSignatureCommand.RESULT_CODE_OK){
+            String signature = (String) data.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
             userInfoWidget.getSignature().getSutitleTv().setText(signature);
             upadteSignature(signature);
         }

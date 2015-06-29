@@ -71,7 +71,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
                     .setSignature(signatureContent.getText().toString());
         }
         Intent intent = new Intent();
-        intent.putExtra("userSignature", signatureContent.getText().toString());
+        intent.putExtra(UserSignatureCommand.PARAM_COMMAND, signatureContent.getText().toString());
         setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
         //UserInfoActivity.start(UserSignatureActivity.this, userInfoCommand);
 
