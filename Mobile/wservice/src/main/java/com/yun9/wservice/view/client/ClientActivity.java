@@ -78,8 +78,12 @@ public class ClientActivity extends JupiterFragmentActivity {
     private SessionManager sessionManager;
     private Context context;
 
-    public static void start(Activity activity){
+    public static void start(Activity activity,ClientCommand command) {
         Intent intent = new Intent(activity, ClientActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("command",command);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent,command.getRequestCode());
     }
 
     @Override

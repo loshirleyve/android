@@ -99,7 +99,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View v) {
                  userSignatureCommand = new UserSignatureCommand().setUserid(sessionManager.getUser().getId())
-                        .setInstid(sessionManager.getInst().getId())
                         .setSignature(sessionManager.getUser().getSignature());
                 UserSignatureActivity.start(UserInfoActivity.this, userSignatureCommand);
             }
