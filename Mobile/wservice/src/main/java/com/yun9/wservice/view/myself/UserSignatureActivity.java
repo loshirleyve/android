@@ -25,12 +25,12 @@ import com.yun9.wservice.R;
 /**
  * Created by li on 2015/6/25.
  */
-public class UserSignatureActivity extends JupiterFragmentActivity {
+public class UserSignatureActivity extends JupiterFragmentActivity{
 
-    private UserSignatureCommand command;
-
+    private UserSignatureCommand userSignatureCommand;
+    private UserInfoCommand userInfoCommand;
     @ViewInject(id = R.id.signature_title)
-    private JupiterTitleBarLayout jupiterTitleBarLayout;
+    private JupiterTitleBarLayout TitleBarLayout;
 
     @ViewInject(id = R.id.signature_content)
     private EditText signatureContent;
@@ -41,14 +41,13 @@ public class UserSignatureActivity extends JupiterFragmentActivity {
     @BeanInject
     private ResourceFactory resourceFactory;
 
-    public static void start(Activity activity, UserSignatureCommand command) {
+    public static void start(Activity activity, UserSignatureCommand command){
         Intent intent = new Intent(activity, UserSignatureActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(UserSignatureCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
-
     @Override
     protected int getContentView() {
         return R.layout.activity_user_signature;
@@ -58,28 +57,30 @@ public class UserSignatureActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        jupiterTitleBarLayout.getTitleLeft().setOnClickListener(onBackOnclickListener);
-        jupiterTitleBarLayout.getTitleRight().setOnClickListener(onOkClickListener);
+        TitleBarLayout.getTitleLeft().setOnClickListener(onBackOnclickListener);
+        TitleBarLayout.getTitleRight().setOnClickListener(onSureOnclickListener);
 
         Intent intent = getIntent();
-        if (intent != null) {
-            command = (UserSignatureCommand) intent.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
-
-            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getSignature())) {
-                signatureContent.setText(command.getSignature());
-                CharSequence text = signatureContent.getText();
-                //Debug.asserts(text instanceof Spannable);
-                if (text instanceof Spannable) {
-                    Spannable spanText = (Spannable) text;
-                    Selection.setSelection(spanText, text.length());
-                }
+        if(intent != null) {
+            userSignatureCommand = (UserSignatureCommand)intent.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
+            signatureContent.setText(userSignatureCommand.getSignature());
+            CharSequence text = signatureContent.getText();
+            //Debug.asserts(text instanceof Spannable);
+            if (text instanceof Spannable) {
+                Spannable spanText = (Spannable)text;
+                Selection.setSelection(spanText, text.length());
             }
         }
     }
 
-    private void upadteSignature() {
+    private void upadteSignature(){
+        if(!AssertValue.isNotNull(userInfoCommand)){
+            userInfoCommand = new UserInfoCommand().setUserid(sessionManager.getUser().getId())
+                    .setInstid(sessionManager.getInst().getId());
+        }
+
         Intent intent = new Intent();
-        intent.putExtra(UserSignatureCommand.PARAM_SIGNATURE, signatureContent.getText().toString());
+        intent.putExtra("command", signatureContent.getText().toString());
         setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
     }
 
@@ -88,14 +89,14 @@ public class UserSignatureActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             finish();
         }
-
     };
-
-    private View.OnClickListener onOkClickListener = new View.OnClickListener() {
+    private View.OnClickListener onSureOnclickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             upadteSignature();
             finish();
         }
     };
+
+
 }
