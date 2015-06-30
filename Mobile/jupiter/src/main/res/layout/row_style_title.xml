@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/jupiter_ne_version"
-                android:textColor="@color/whites"
+                android:textColor="@color/black"
                 android:visibility="gone" />
 
             <ImageView

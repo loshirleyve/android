@@ -86,6 +86,7 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
                         command.setSourceValue(order.getOrderid());
+                        command.setInstId(order.getProvideinstid());
                         PaymentOrderActivity.start(OrderDetailPayinfoWidget.this.getContext(), command);
                     }
                 }

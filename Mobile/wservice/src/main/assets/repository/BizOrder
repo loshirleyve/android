@@ -69,4 +69,33 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 支付登记服务 -->
+    <repository>
+        <name>UpdateCollectByPayService</name>
+        <action>com.yun9.ws.biz.service.UpdateCollectByPayService</action>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 预览订单服务 -->
+    <repository>
+        <name>QueryOrderViewService</name>
+        <action>com.yun9.ws.biz.service.QueryOrderViewService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrderCartInfo</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 新增订单服务 -->
+    <repository>
+        <name>AddOrderByProductIdsService</name>
+        <action>com.yun9.ws.biz.service.AddOrderByProductIdsService</action>
+        <output>
+            <classname>com.yun9.wservice.model.SimpleIdReturn</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

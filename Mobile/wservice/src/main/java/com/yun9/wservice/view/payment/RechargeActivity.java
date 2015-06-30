@@ -8,11 +8,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.RechargeNo;
 import com.yun9.wservice.model.RechargeType;
 
 /**
@@ -41,6 +49,12 @@ public class RechargeActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.recharge_way_desc_tv)
     private TextView rechargeTypeDescTV;
+
+    @BeanInject
+    private SessionManager sessionManager;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
 
     private RechargeChoiceWaysCommand command;
 
@@ -81,6 +95,13 @@ public class RechargeActivity extends JupiterFragmentActivity{
                 RechargeChoiceWaysActivity.start(RechargeActivity.this, command);
             }
         });
+
+        rechargeLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmRecharge();
+            }
+        });
     }
 
     @Override
@@ -94,6 +115,25 @@ public class RechargeActivity extends JupiterFragmentActivity{
                 hideDesc();
             }
         }
+    }
+
+    private void confirmRecharge() {
+        String content = editText.getText().toString();
+        if (!AssertValue.isNotNullAndNotEmpty(content)){
+            showToast("请输入充值金额。");
+            return;
+        }
+        if (rechargeType == null){
+            showToast("请选择充值方式。");
+            return;
+        }
+
+        if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getRechargeno())){
+
+        } else if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getRechargeno())) {
+
+        }
+
     }
 
     private void showDesc(RechargeType type) {

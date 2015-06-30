@@ -81,6 +81,8 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
     private Payinfo payinfo;
 
+    private Map<String,PayItem> choicePayItemMap;
+
     private Map<String,Payinfo.PaymodeInfo> categoryChoicePaymodeMap;
 
     public static void start(Context context,PaymentOrderCommand command) {
@@ -96,6 +98,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         super.onCreate(savedInstanceState);
         command = (PaymentOrderCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
         categoryChoicePaymodeMap = new HashMap<>();
+        choicePayItemMap = new HashMap<>();
         buildView();
         loadData();
     }
@@ -113,7 +116,29 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 && resultCode == JupiterCommand.RESULT_CODE_OK){
             Payinfo.PaymodeInfo paymodeInfo = (Payinfo.PaymodeInfo) data
                                         .getSerializableExtra(
-                                                PaymentChoiceWaysCommand.RETURN_PARAM);
+                                                PaymentChoiceWaysCommand.RETURN_PARAM_PAYMODE);
+            // 如果选择的值不大于0
+            if (!(paymodeInfo.getUseAmount() > 0.0)){
+                choicePayItemMap.remove(choiceWaysCommand.getCategory().getId());
+                categoryChoicePaymodeMap.remove(choiceWaysCommand.getCategory().getId());
+                loadData();
+                return;
+            }
+            PayItem payItem = new PayItem();
+            payItem.setPayModeId(paymodeInfo.getPaymodeId());
+            payItem.setAmount(paymodeInfo.getUseAmount() + "");
+            // 设置默认选择的BizFinaceAccount
+            if (paymodeInfo.getBizFinanceAccounts() != null
+                    && paymodeInfo.getBizFinanceAccounts().size() > 0){
+                payItem.setAccountid(paymodeInfo.getBizFinanceAccounts().get(0).getId());
+            }
+            // 设置实际用户选择的优惠券
+            boolean hasTicket = data.getBooleanExtra(PaymentChoiceWaysCommand.RETURN_PARAM_HAS_TICKET,false);
+            if (hasTicket){
+                int index = data.getIntExtra(PaymentChoiceWaysCommand.RETURN_PARAM_SELECTED_TICKET_INDEX,0);
+                payItem.setAccountid(paymodeInfo.getBizFinanceAccounts().get(index).getId());
+            }
+            choicePayItemMap.put(choiceWaysCommand.getCategory().getId(),payItem);
             categoryChoicePaymodeMap.put(choiceWaysCommand.getCategory().getId(),paymodeInfo);
             loadData();
         }
@@ -130,10 +155,38 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         confirmLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PaymentOrderActivity.this.finish();
+                submit();
             }
         });
         listView.setAdapter(adapter);
+    }
+
+    private void submit() {
+        Resource resource = resourceFactory.create("UpdateCollectByPayService");
+        resource.param("amount",payinfo.getPayableAmount());
+        resource.param("instId",command.getInstId());
+        resource.param("payInstId",sessionManager.getInst().getId());
+        resource.param("source",command.getSource());
+        resource.param("sourceValue",command.getSourceValue());
+        resource.param("userid",sessionManager.getUser().getId());
+        resource.param("payItems",choicePayItemMap.values());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                showToast(R.string.pay_success_be_wait);
+                PaymentOrderActivity.this.finish();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 
     private void buildWithData(Payinfo payinfo) {
@@ -144,11 +197,11 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
     private void loadData() {
         Resource resource = resourceFactory.create("QueryPayinfoService");
-        resource.param("source",command.getSource());
-        resource.param("instId",sessionManager.getInst().getId());
-        resource.param("sourceValue",command.getSourceValue());
-        resource.param("userId",sessionManager.getUser().getId());
-        resource.param("paymodeInfos",categoryChoicePaymodeMap.values());
+        resource.param("source", command.getSource());
+        resource.param("instId", sessionManager.getInst().getId());
+        resource.param("sourceValue", command.getSourceValue());
+        resource.param("userId", sessionManager.getUser().getId());
+        resource.param("paymodeInfos", categoryChoicePaymodeMap.values());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -253,4 +306,35 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         }
 
     };
+
+    private class PayItem{
+
+        private String payModeId;
+        private String amount;
+        private String accountid;
+
+        public String getPayModeId() {
+            return payModeId;
+        }
+
+        public void setPayModeId(String payModeId) {
+            this.payModeId = payModeId;
+        }
+
+        public String getAmount() {
+            return amount;
+        }
+
+        public void setAmount(String amount) {
+            this.amount = amount;
+        }
+
+        public String getAccountid() {
+            return accountid;
+        }
+
+        public void setAccountid(String accountid) {
+            this.accountid = accountid;
+        }
+    }
 }
