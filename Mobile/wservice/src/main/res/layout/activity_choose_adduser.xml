@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_margin="20dp"
+            android:layout_margin="25dp"
             android:text="@string/add_org_to" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_margin="20dp" />
+            android:layout_margin="25dp" />
 
     </RelativeLayout>
 

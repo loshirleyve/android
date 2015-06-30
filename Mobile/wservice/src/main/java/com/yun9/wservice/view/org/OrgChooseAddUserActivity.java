@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrgDetailInfoBean;
+import com.yun9.wservice.view.dynamic.OrgAndUserBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +73,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        command = (OrgChooseAddUserCommand) this.getIntent().getSerializableExtra("command");
         initView();
 
     }
@@ -78,11 +81,21 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
 
     public void initView()
     {
-        command = (OrgChooseAddUserCommand) this.getIntent().getSerializableExtra("command");
+        orgname.setText(command.getOrgname());
         titleBarLayout.getTitleTv().setText("添加新成员");
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-        orgname.setText(command.getOrgname());
+        adduseorg.setOnClickListener(onAddUserOrgClickListener);
+        addusephonebook.setOnClickListener(null);
     }
+
+    private View.OnClickListener onAddUserOrgClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true).setOnlyUsers(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK);
+            OrgCompositeActivity.start(OrgChooseAddUserActivity.this, orgCompositeCommand);
+        }
+    };
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
