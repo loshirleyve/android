@@ -26,6 +26,8 @@ import java.util.List;
  */
 public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
 
+    public static final int NO_SELECT = -1;
+
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
@@ -85,7 +87,9 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
         if (selectedPaymode != null) {
             PaymentChoiceWayWidget widget = (PaymentChoiceWayWidget) listView.getChildAt(selectedPosition);
             selectedPaymode.setUseAmount(widget.getUserAmount());
-            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM, (Serializable) selectedPaymode);
+            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_HAS_TICKET, widget.hasTicket());
+            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_SELECTED_TICKET_INDEX, widget.getSelectedOptionIndex());
+            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_PAYMODE, (Serializable) selectedPaymode);
         }
         setResult(JupiterCommand.RESULT_CODE_OK, getIntent());
         this.finish();

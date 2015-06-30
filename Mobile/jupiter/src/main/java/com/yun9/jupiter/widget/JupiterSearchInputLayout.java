@@ -1,12 +1,16 @@
 package com.yun9.jupiter.widget;
 
 import android.content.Context;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.yun9.jupiter.R;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by Leon on 15/6/16.
@@ -48,12 +52,24 @@ public class JupiterSearchInputLayout extends JupiterRelativeLayout {
             public void onClick(View v) {
                 showLL.setVisibility(GONE);
                 editLL.setVisibility(VISIBLE);
-
-                searchET.setFocusableInTouchMode(true);
                 searchET.requestFocus();
             }
         });
 
+        searchET.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    InputMethodManager imm = (InputMethodManager) JupiterSearchInputLayout.this
+                            .getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(searchET, InputMethodManager.SHOW_IMPLICIT);
+                } else {
+                    showLL.setVisibility(VISIBLE);
+                    editLL.setVisibility(GONE);
+                    hideInputMethodManager();
+                }
+            }
+        });
 
     }
 
@@ -67,5 +83,13 @@ public class JupiterSearchInputLayout extends JupiterRelativeLayout {
 
     public EditText getSearchET() {
         return searchET;
+    }
+
+    /**
+     * 隐藏键盘
+     */
+    private void hideInputMethodManager() {
+        InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchET.getWindowToken(), 0);
     }
 }

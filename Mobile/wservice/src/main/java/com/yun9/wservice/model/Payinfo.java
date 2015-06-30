@@ -157,13 +157,14 @@ public class Payinfo implements Serializable{
     }
 
     public static class PaymodeInfo implements Serializable {
-        public String paymodeId;
-        public String paymodeNo;
-        public String paymodeName;
-        public String paymodeImgid;
-        public String paymodeTips;
-        public String descr;
-        public double useAmount;
+        private String paymodeId;
+        private String paymodeNo;
+        private String paymodeName;
+        private String paymodeImgid;
+        private String paymodeTips;
+        private String descr;
+        private double useAmount;
+        private List<BizFinanceAccount> bizFinanceAccounts;
 
         public String getPaymodeId() {
             return paymodeId;
@@ -219,6 +220,136 @@ public class Payinfo implements Serializable{
 
         public void setUseAmount(double useAmount) {
             this.useAmount = useAmount;
+        }
+
+        public List<BizFinanceAccount> getBizFinanceAccounts() {
+            return bizFinanceAccounts;
+        }
+
+        public void setBizFinanceAccounts(List<BizFinanceAccount> bizFinanceAccounts) {
+            this.bizFinanceAccounts = bizFinanceAccounts;
+        }
+    }
+
+    public static class BizFinanceAccount implements Serializable{
+        public static final String TYPE_BALANCE = "balance";
+        public static final String TYPE_TICKET = "ticket";
+        private String createby;
+        private String updateby;
+        private Long createdate;
+        private Long updatedate;
+        private int disabled;
+        private String remark;
+        private String id;
+        private String cardno;
+        private String type;
+        private String owner;
+        private String ticketid;
+        private double amount;
+        private Long expirydate;
+
+        public String getCreateby() {
+            return createby;
+        }
+
+        public void setCreateby(String createby) {
+            this.createby = createby;
+        }
+
+        public String getUpdateby() {
+            return updateby;
+        }
+
+        public void setUpdateby(String updateby) {
+            this.updateby = updateby;
+        }
+
+        public Long getCreatedate() {
+            return createdate;
+        }
+
+        public void setCreatedate(Long createdate) {
+            this.createdate = createdate;
+        }
+
+        public Long getUpdatedate() {
+            return updatedate;
+        }
+
+        public void setUpdatedate(Long updatedate) {
+            this.updatedate = updatedate;
+        }
+
+        public int getDisabled() {
+            return disabled;
+        }
+
+        public void setDisabled(int disabled) {
+            this.disabled = disabled;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getCardno() {
+            return cardno;
+        }
+
+        public void setCardno(String cardno) {
+            this.cardno = cardno;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getOwner() {
+            return owner;
+        }
+
+        public void setOwner(String owner) {
+            this.owner = owner;
+        }
+
+        public String getTicketid() {
+            return ticketid;
+        }
+
+        public void setTicketid(String ticketid) {
+            this.ticketid = ticketid;
+        }
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public void setAmount(double amount) {
+            this.amount = amount;
+        }
+
+        public Long getExpirydate() {
+            return expirydate;
+        }
+
+        public void setExpirydate(Long expirydate) {
+            this.expirydate = expirydate;
         }
     }
 }

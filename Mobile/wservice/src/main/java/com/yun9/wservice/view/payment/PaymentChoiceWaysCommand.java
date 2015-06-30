@@ -10,7 +10,9 @@ import java.util.List;
  */
 public class PaymentChoiceWaysCommand extends JupiterCommand{
 
-    public static final String RETURN_PARAM = "category";
+    public static final String RETURN_PARAM_PAYMODE = "paymode";
+    public static final String RETURN_PARAM_HAS_TICKET = "has_ticket";
+    public static final String RETURN_PARAM_SELECTED_TICKET_INDEX = "selected_ticket_index";
 
     private Payinfo.PaymodeCategory category;
 

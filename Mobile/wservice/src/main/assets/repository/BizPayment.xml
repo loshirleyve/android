@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!-- 新增订单服务 -->
+    <repository>
+        <name>QueryRechargeTypeService</name>
+        <action>com.yun9.ws.biz.service.QueryRechargeTypeService</action>
+        <output>
+            <classname>com.yun9.wservice.model.RechargeType</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+</repositorys>

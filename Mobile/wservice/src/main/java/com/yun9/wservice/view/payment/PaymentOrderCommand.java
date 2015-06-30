@@ -13,6 +13,16 @@ public class PaymentOrderCommand extends JupiterCommand{
 
     private String sourceValue;
 
+    private String instId;
+
+    public String getInstId() {
+        return instId;
+    }
+
+    public void setInstId(String instId) {
+        this.instId = instId;
+    }
+
     public String getSource() {
         return source;
     }

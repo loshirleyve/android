@@ -9,10 +9,16 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.RechargeType;
@@ -36,6 +42,12 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.confirm_ll)
     private LinearLayout confirmLL;
 
+    @BeanInject
+    private SessionManager sessionManager;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
     private RechargeChoiceWaysCommand command;
 
     private List<RechargeType> rechargeTypes;
@@ -57,7 +69,7 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
                                                 .getSerializableExtra(
                                                         RechargeChoiceWaysCommand.PARAM_COMMAND);
         buildView();
-        fakeData();
+        loadData();
     }
 
     @Override
@@ -93,19 +105,25 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
         return;
     }
 
-    private void fakeData() {
-        rechargeTypes = new ArrayList<>();
-        RechargeType type1 = new RechargeType();
-        type1.setRechargename("支付宝");
-        type1.setRechargeno("alipay");
-        type1.setWarmthwarning("您将用支付宝完成本次充值，本次充值在10分钟以内会实时到账，您可以进行核实。");
-        RechargeType type2 = new RechargeType();
-        type2.setRechargename("微信支付");
-        type2.setRechargeno("weixin");
-        type2.setWarmthwarning("您将用微信支付完成本次充值，本次充值在10分钟以内会实时到账，您可以进行核实。");
-        rechargeTypes.add(type1);
-        rechargeTypes.add(type2);
-        adapter.notifyDataSetChanged();
+    private void loadData() {
+        Resource resource = resourceFactory.create("QueryRechargeTypeService");
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                rechargeTypes = (List<RechargeType>) response.getPayload();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                rechargeTypes = null;
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
