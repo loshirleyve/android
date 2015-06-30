@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -39,7 +40,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     private UserSignatureCommand userSignatureCommand;
     private int maxSelectNum = 1;
     private List<FileBean> onSelectYunImages = new ArrayList<>();
-    private boolean mEdit;
 
     private YunImageCommand yunImageCommand;
 
@@ -85,7 +85,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View v) {
                 if (!AssertValue.isNotNull(yunImageCommand)) {
-                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit)
+                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
                             .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
                             .setUserid(sessionManager.getUser().getId())
                             .setInstid(sessionManager.getInst().getId());
@@ -173,7 +173,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             setResult(UserInfoCommand.RESULT_CODE_OK, intent);
         }
 
-        else if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
+        if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
             String signature = (String) data.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
             userInfoWidget.getSignature().getSutitleTv().setText(signature);
             upadteSignature(signature);
@@ -192,20 +192,22 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("headerfileid", userHeaderId);
+        final ProgressDialog refreshDialog = ProgressDialog.show(this, null, getString(R.string.app_wating), true);
+
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-
+                Toast.makeText(mContext, getString(R.string.app_update_success), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Response response) {
-
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinally(Response response) {
-
+                refreshDialog.dismiss();
             }
         });
     }
@@ -213,22 +215,22 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         Resource resource  = resourceFactory.create("UpdateUserBySignature");
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("instid", sessionManager.getInst().getId());
-        resource.param("signature", signature);
+        final ProgressDialog refreshDialog = ProgressDialog.show(this, null, getString(R.string.app_wating), true);
 
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-
+                Toast.makeText(mContext, getString(R.string.app_update_success), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Response response) {
-
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinally(Response response) {
-
+                refreshDialog.dismiss();
             }
         });
     }

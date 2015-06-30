@@ -30,7 +30,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     private UserSignatureCommand userSignatureCommand;
     private UserInfoCommand userInfoCommand;
     @ViewInject(id = R.id.signature_title)
-    private JupiterTitleBarLayout jupiterTitleBarLayout;
+    private JupiterTitleBarLayout TitleBarLayout;
 
     @ViewInject(id = R.id.signature_content)
     private EditText signatureContent;
@@ -57,7 +57,8 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        jupiterTitleBarLayout.getTitleLeft().setOnClickListener(BackOnclickListener);
+        TitleBarLayout.getTitleLeft().setOnClickListener(onBackOnclickListener);
+        TitleBarLayout.getTitleRight().setOnClickListener(onSureOnclickListener);
 
         Intent intent = getIntent();
         if(intent != null) {
@@ -83,12 +84,19 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
         setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
     }
 
-    private View.OnClickListener BackOnclickListener = new View.OnClickListener() {
+    private View.OnClickListener onBackOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
+    };
+    private View.OnClickListener onSureOnclickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             upadteSignature();
             finish();
         }
-
     };
+
+
 }

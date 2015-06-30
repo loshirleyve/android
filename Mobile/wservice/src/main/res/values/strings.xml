@@ -29,7 +29,7 @@
     <string name="app_share_scope">分享范围</string>
     <string name="app_no_more_data">没有更多的数据了</string>
     <string name="app_photo">拍照</string>
-
+    <string name="app_update_success">更新成功</string>
 
     <string name="user_buyer">购买管理</string>
     <string name="user_file">文件</string>
