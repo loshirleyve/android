@@ -14,19 +14,8 @@ public class UserInfoCommand extends JupiterCommand {
 
     private String userid;
 
-    private String signature;
 
     private List<FileBean> onSelectImages;
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public UserInfoCommand setSignature(String signature) {
-        this.signature = signature;
-        return this;
-    }
-
 
     public String getInstid() {
         return instid;

@@ -25,6 +25,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.client.ClientActivity;
+import com.yun9.wservice.view.client.ClientCommand;
 import com.yun9.wservice.view.order.OrderManagerActivity;
 import com.yun9.wservice.view.other.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
@@ -41,6 +42,7 @@ import com.yun9.wservice.view.other.SettingActivity;
  */
 public class UserFragment extends JupiterFragment {
 
+    private ClientCommand clientCommand;
     private UserInfoCommand userInfoCommand;
     private UserSignatureCommand userSignatureCommand;
 
@@ -118,20 +120,17 @@ public class UserFragment extends JupiterFragment {
                 SelectInstActivity.start(getActivity(), new SelectInstCommand().setUser(sessionManager.getUser()));
             }
         });
+       
         client.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, ClientActivity.class);
-                startActivity(intent);
+                if(!AssertValue.isNotNull(clientCommand)) {
+                    clientCommand = new ClientCommand();
+                }
+                clientCommand.setId(sessionManager.getUser().getId());
+                ClientActivity.start(getActivity(), clientCommand);
             }
         });
-      /*  client.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ClientActivity.start(getActivity());
-            }
-        });*/
 
         userHeadWidget.getHeaderLL().setOnClickListener(new View.OnClickListener() {
             @Override

@@ -75,14 +75,8 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     private void upadteSignature(){
         if(!AssertValue.isNotNull(userInfoCommand)){
             userInfoCommand = new UserInfoCommand().setUserid(sessionManager.getUser().getId())
-                    .setInstid(sessionManager.getInst().getId())
-                    .setSignature(signatureContent.getText().toString());
-
-
+                    .setInstid(sessionManager.getInst().getId());
         }
-            userInfoCommand = new UserInfoCommand().setUserid(sessionManager.getUser().getId())
-                    .setInstid(sessionManager.getInst().getId())
-                    .setSignature(signatureContent.getText().toString());
 
         Intent intent = new Intent();
         intent.putExtra("command", signatureContent.getText().toString());
