@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -34,17 +35,18 @@ import java.util.List;
  */
 public class UserInfoActivity extends JupiterFragmentActivity {
 
-
-    private UserInfoCommand userInfoCommand;
+    private UserInfoCommand command;
     private UserSignatureCommand userSignatureCommand;
     private int maxSelectNum = 1;
-    private List<FileBean> onSelectYunImages = new ArrayList<>();
-    private boolean mEdit;
+
+    private String userid;
+
+    private String instid;
 
     private YunImageCommand yunImageCommand;
 
     @ViewInject(id = R.id.user_info_title)
-    private JupiterTitleBarLayout jupiterTitleBarLayout;
+    private JupiterTitleBarLayout titleBarLayout;
 
     @ViewInject(id = R.id.userInfo)
     private UserInfoWidget userInfoWidget;
@@ -55,13 +57,14 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     @BeanInject
     private ResourceFactory resourceFactory;
 
-    public static void start(Activity activity, UserInfoCommand command){
+    public static void start(Activity activity, UserInfoCommand command) {
         Intent intent = new Intent(activity, UserInfoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
+
     @Override
     protected int getContentView() {
         return R.layout.activity_user_info;
@@ -72,25 +75,28 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         //获取参数
-        userInfoCommand = (UserInfoCommand)this.getIntent().getSerializableExtra("command");
-        userInfoWidget.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refresh();
-            }
-        }, 100);
-        jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(BackClickListener);
+        command = (UserInfoCommand) this.getIntent().getSerializableExtra("command");
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
+            instid = command.getInstid();
+        } else {
+            instid = sessionManager.getInst().getId();
+        }
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
+            userid = command.getUserid();
+        } else {
+            userid = sessionManager.getUser().getId();
+        }
+
+        titleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
 
         userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!AssertValue.isNotNull(yunImageCommand)) {
-                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit)
-                            .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
-                            .setUserid(sessionManager.getUser().getId())
-                            .setInstid(sessionManager.getInst().getId());
-                }
-                yunImageCommand.setSelectImages(onSelectYunImages);
+                yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
+                        .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
+                        .setUserid(userid)
+                        .setInstid(instid);
                 YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
             }
         });
@@ -98,28 +104,36 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         userInfoWidget.getSignature().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 userSignatureCommand = new UserSignatureCommand().setUserid(sessionManager.getUser().getId())
+                //TODO 此处不带入用户签名，通过用户id检索
+                userSignatureCommand = new UserSignatureCommand().setUserid(userid)
                         .setSignature(sessionManager.getUser().getSignature());
                 UserSignatureActivity.start(UserInfoActivity.this, userSignatureCommand);
             }
         });
 
+        userInfoWidget.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+            }
+        }, 100);
+
     }
 
-    private void refresh(){
-        if(AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())){
+    private void refresh() {
+        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())) {
             Resource resource = resourceFactory.create("QueryUserInfoByIdService");
-            resource.param("userid", sessionManager.getUser().getId());
-            resource.param("instid", sessionManager.getInst().getId());
-            resource.param("signature", sessionManager.getUser().getSignature());
-            final ProgressDialog refreshDialog = ProgressDialog.show(this, null, "正在处理，请稍后...", true);
+            resource.param("userid", userid);
+            resource.param("instid", instid);
+
+            final ProgressDialog refreshDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
 
             resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
-                    final User user = (User)response.getPayload();
+                    User user = (User) response.getPayload();
 
-                    if(AssertValue.isNotNull(user)){
+                    if (AssertValue.isNotNull(user)) {
                         ImageLoaderUtil.getInstance(mContext).displayImage(user.getHeaderfileid(), userInfoWidget.getUserHeadIV());
                         userInfoWidget.getUserName().getHotNitoceTV().setText(user.getName());
                         userInfoWidget.getUserName().getHotNitoceTV().setVisibility(View.VISIBLE);
@@ -139,7 +153,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -151,7 +165,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
 
     }
 
-    private View.OnClickListener BackClickListener = new View.OnClickListener() {
+    private View.OnClickListener onBackClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             finish();
@@ -162,55 +176,56 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK){
-            onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
-            ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV());
-            updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
+        if (AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK) {
+            List<FileBean> onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
 
+            if (AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
+                ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV());
+                updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
+            }
 
-            Intent intent = new Intent();
-            intent.putExtra("command", onSelectYunImages.get(0).getId());
-            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
         }
 
-        else if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
-            String signature = (String) data.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
+        if (AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK) {
+            String signature = (String) data.getSerializableExtra(UserSignatureCommand.PARAM_SIGNATURE);
             userInfoWidget.getSignature().getSutitleTv().setText(signature);
             upadteSignature(signature);
+
+            //更新本地缓存用户信息
             User user = sessionManager.getUser();
             user.setSignature(signature);
             sessionManager.setUser(user);
-
-            Intent intent = new Intent();
-            intent.putExtra("command", signature);
-            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
-         }
+        }
     }
 
-    private void updateUserByHeaderfileid(String userHeaderId){
+    private void updateUserByHeaderfileid(String userHeaderId) {
         Resource resource = resourceFactory.create("UpdateUserByHeaderfileid");
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("headerfileid", userHeaderId);
+
+        final ProgressDialog registerDialog = ProgressDialog.show(UserInfoActivity.this, null, getResources().getString(R.string.app_wating), true);
+
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-
+                Toast.makeText(mContext, R.string.app_update_success, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Response response) {
-
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
-    private void upadteSignature(String signature){
-        Resource resource  = resourceFactory.create("UpdateUserBySignature");
+
+    private void upadteSignature(String signature) {
+        Resource resource = resourceFactory.create("UpdateUserBySignature");
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("signature", signature);
