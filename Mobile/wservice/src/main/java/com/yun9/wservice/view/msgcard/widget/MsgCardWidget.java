@@ -43,7 +43,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     private RelativeLayout praiseRL;
     private RelativeLayout fwRL;
     private RelativeLayout commentRL;
-    private RelativeLayout actionRL;
+    //private RelativeLayout actionRL;
     private RelativeLayout mainRl;
 
     private TextView praiseNumTV;
@@ -104,7 +104,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         commentRL = (RelativeLayout) this.findViewById(R.id.comm_rl);
         commentNumTV = (TextView) this.findViewById(R.id.comm_num_tv);
 
-        actionRL = (RelativeLayout) this.findViewById(R.id.action_rl);
+        //actionRL = (RelativeLayout) this.findViewById(R.id.action_rl);
 
         lastCommentContentTV = (TextView) this.findViewById(R.id.msg_card_lastcomment_content_tv);
 
@@ -173,11 +173,14 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         if (!AssertValue.isNotNull(msgCard))
             return;
+
         imageAttachments.clear();
         docAttachments.clear();
+
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getAttachments())) {
             for (MsgCardAttachment msgCardAttachment : msgCard.getAttachments()) {
-                if (FileBean.FILE_TYPE_IMAGE.equals(msgCardAttachment.getFileType())) {
+
+                if (FileBean.FILE_TYPE_IMAGE.equals(msgCardAttachment.getFileType()) && imageAttachments.size() <= 6) {
                     FileBean fileBean = new FileBean();
                     fileBean.setFilePath(msgCardAttachment.getFileId());
                     fileBean.setThumbnailPath(msgCardAttachment.getFileId());
@@ -188,11 +191,11 @@ public class MsgCardWidget extends JupiterRelativeLayout {
                     imageAttachments.add(fileBean);
                 }
 
-                if (FileBean.FILE_TYPE_DOC.equals(msgCardAttachment.getFileType())) {
+                if (FileBean.FILE_TYPE_DOC.equals(msgCardAttachment.getFileType()) && docAttachments.size() <= 6) {
                     FileBean fileBean = new FileBean();
                     CacheFile cacheFile = FileCache.getInstance().getFile(msgCardAttachment.getFileId());
 
-                    if (AssertValue.isNotNull(cacheFile)){
+                    if (AssertValue.isNotNull(cacheFile)) {
                         fileBean.setName(cacheFile.getName());
                         fileBean.setSize(FileUtil.getFileSize(cacheFile.getFilesize()));
                     }
@@ -237,7 +240,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         //comment
         commentNumTV.setText(String.valueOf(msgCard.getCommentcount()));
 
-        if (AssertValue.isNotNull(msgCard.getLastComment())){
+        if (AssertValue.isNotNull(msgCard.getLastComment())) {
             lastCommentContentTV.setText(msgCard.getLastComment().getContent());
         }
 
@@ -337,9 +340,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         return commentRL;
     }
 
-    public RelativeLayout getActionRL() {
-        return actionRL;
-    }
+//    public RelativeLayout getActionRL() {
+//        return actionRL;
+//    }
 
     public TextView getPraiseNumTV() {
         return praiseNumTV;

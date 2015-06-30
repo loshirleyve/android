@@ -82,7 +82,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             }
         });
 
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())){
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
             titleBar.getTitleTv().setText(command.getTitle());
         }
 
@@ -186,28 +186,31 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
             if (convertView == null) {
                 msgCardWidget = new MsgCardWidget(mContext);
+
+                msgCardWidget.getPraiseRL().setTag(msgCard);
                 msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         logger.d("点赞！");
                     }
                 });
+
+                msgCardWidget.getFwRL().setTag(msgCard);
                 msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         logger.d("转发！");
                     }
                 });
+
+                msgCardWidget.getCommentRL().setTag(msgCard);
                 msgCardWidget.getCommentRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        logger.d("评论！");
-                    }
-                });
-                msgCardWidget.getActionRL().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logger.d("动作！");
+                        MsgCard msgCard = (MsgCard) v.getTag();
+                        if (AssertValue.isNotNull(msgCard)) {
+                            MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()).setScrollComment(true));
+                        }
                     }
                 });
 

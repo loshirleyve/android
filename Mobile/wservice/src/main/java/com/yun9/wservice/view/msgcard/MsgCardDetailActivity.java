@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -67,6 +68,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private String currInstid;
 
+    @ViewInject(id = R.id.scrollView)
+    private ScrollView scrollView;
+
     @ViewInject(id = R.id.msg_card_detail_title)
     private JupiterTitleBarLayout titleBar;
 
@@ -96,7 +100,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private List<View> segmentListViews;
 
-    List<MsgCardPanelActionItem> panelActionItems;
 
     private MsgCardDetailCommentWidget commentView;
     private MsgCardDetailPraiseWidget praiseView;
@@ -194,9 +197,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
-                    //TODO 由于还没有返回流程数据，暂时使用假数据
-                    fakeDataProcessAction(mMsgCard);
-                    builderView(mMsgCard);
+                    refreshComplete();
                 }
             }
 
@@ -210,6 +211,18 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 progressDialog.dismiss();
             }
         });
+    }
+
+    private void refreshComplete() {
+        //TODO 由于还没有返回流程数据，暂时使用假数据
+        fakeDataProcessAction(mMsgCard);
+        builderView(mMsgCard);
+
+        if (AssertValue.isNotNull(command) && command.isScrollComment()) {
+            scrollToComment();
+            //只是滚动一次
+            command.setScrollComment(false);
+        }
     }
 
 
@@ -298,6 +311,19 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         return itemWidget;
     }
 
+    private void scrollToComment() {
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 0) {
+                    scrollView.scrollTo(0, segmentedGroup.getTop());
+                }
+            }
+        };
+        handler.sendEmptyMessageDelayed(0, 500);
+    }
+
     private PagerAdapter viewPagerAdapter = new PagerAdapter() {
         @Override
         public int getCount() {
@@ -323,8 +349,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     };
 
     private void builderPanelPage(MsgCard msgCard) {
+        List<MsgCardPanelActionItem> panelActionItems = new ArrayList<>();
         List<MsgCardDetailToolbarPanelPageWidget> msgCardDetailToolbarPanelPageWidgets = new ArrayList<>();
-        panelActionItems = new ArrayList<>();
 
         //默认添加掷筛子功能
         panelActionItems.add(new MsgCardPanelActionItem(getResources().getString(R.string.msg_card_sieve), R.drawable.turns, MsgCardPanelActionItem.ActionType.TYPE_TURNS));
@@ -334,9 +360,26 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 panelActionItems.add(new MsgCardPanelActionItem(msgCardProcessAction));
             }
         }
-        MsgCardDetailToolbarPanelPageWidget page = new MsgCardDetailToolbarPanelPageWidget(mContext);
-        page.buildView(panelActionItems);
-        msgCardDetailToolbarPanelPageWidgets.add(page);
+
+        //将对象分成8个一页
+        if (AssertValue.isNotNullAndNotEmpty(panelActionItems)) {
+            int pageNum = panelActionItems.size() / 8 + 1;
+
+            for (int i = 0; i < pageNum; i++) {
+                MsgCardDetailToolbarPanelPageWidget page = new MsgCardDetailToolbarPanelPageWidget(mContext);
+                List<MsgCardPanelActionItem> tempActionItems = new ArrayList<>();
+
+                int beginIndex = i * 8;
+                int endIndex = beginIndex + 8;
+                for (int j = beginIndex; j < endIndex; j++) {
+                    if (j < panelActionItems.size()) {
+                        tempActionItems.add(panelActionItems.get(j));
+                    }
+                }
+                page.buildView(tempActionItems);
+                msgCardDetailToolbarPanelPageWidgets.add(page);
+            }
+        }
         toolbarPanelWidget.builder(msgCardDetailToolbarPanelPageWidgets);
     }
 
@@ -354,7 +397,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCommentClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            scrollView.scrollTo(0, segmentedGroup.getTop());
         }
     };
 
@@ -377,6 +420,16 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         msgCard.getProcess().add(new MsgCardProcessAction("保存表单", "save"));
         msgCard.getProcess().add(new MsgCardProcessAction("同意", "agreed"));
         msgCard.getProcess().add(new MsgCardProcessAction("驳回", "rejected"));
-        msgCard.getProcess().add(new MsgCardProcessAction("撤销", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销1", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销2", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销3", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销4", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销5", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销6", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销7", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销8", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销9", "rejected"));
+        msgCard.getProcess().add(new MsgCardProcessAction("撤销10", "rejected"));
+
     }
 }

@@ -5,10 +5,12 @@ import com.yun9.jupiter.command.JupiterCommand;
 /**
  * Created by Leon on 15/6/28.
  */
-public class MsgCardDetailCommand extends JupiterCommand{
+public class MsgCardDetailCommand extends JupiterCommand {
     private String msgCardId;
 
     private String title;
+
+    private boolean scrollComment;
 
     public String getMsgCardId() {
         return msgCardId;
@@ -25,6 +27,15 @@ public class MsgCardDetailCommand extends JupiterCommand{
 
     public MsgCardDetailCommand setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public boolean isScrollComment() {
+        return scrollComment;
+    }
+
+    public MsgCardDetailCommand setScrollComment(boolean scrollComment) {
+        this.scrollComment = scrollComment;
         return this;
     }
 }
