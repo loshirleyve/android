@@ -114,7 +114,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
 
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
         //检查是否进入编辑状态
         if (AssertValue.isNotNull(command) && command.isEdit()) {
@@ -178,7 +177,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         orgitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrgEditActivity.start(OrgEditActivity.this, new OrgEditCommand().setEdit(false).setParentorgname(bean.getName()).setParentorgid(bean.getId()).setParentorgtype(bean.getType()));
+                OrgEditActivity.start(OrgEditActivity.this, new OrgEditCommand().setEdit(false).setParentorgname(bean.getName()).setParentorgid(bean.getId()).setDimType(bean.getType()));
             }
         });
         orgitemList.add(orgitem);
@@ -219,8 +218,12 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     {
         neworg.setText(bean.getName());
         titleBarLayout.getTitleTv().setText(bean.getName());
+        String sutitle ="";
         if(AssertValue.isNotNullAndNotEmpty(bean.getUsers()))
         {
+            sutitle = "成员" +bean.getUsers().size()+" 管理员:"+bean.getOwnerName();
+            titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
+            this.titleBarLayout.getTitleSutitleTv().setText(sutitle);
             for (User user:bean.getUsers())
             {
                 final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
@@ -261,15 +264,15 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("name", orgname);
-        resource.param("type", command.getParentorgtype());
+        resource.param("type", command.getDimType());
         resource.param("parentid", command.getParentorgid() == null ? "0" : command.getParentorgid());
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Org org=(Org)response.getPayload();
-                command=new OrgEditCommand().setOrgid(org.getId());
+                Org org = (Org) response.getPayload();
+                command = new OrgEditCommand().setOrgid(org.getId());
                 initView();
-                Toast.makeText(OrgEditActivity.this,  "添加组织成功！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, "添加组织/小组成功！", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -318,7 +321,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             if(AssertValue.isNotNullAndNotEmpty(orgname)) {
                 addOrg(orgname);
             } else
-                Toast.makeText(OrgEditActivity.this, "请输入组织名称", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, "请输入组织/小组名称", Toast.LENGTH_SHORT).show();
         }
     };
 

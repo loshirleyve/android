@@ -26,7 +26,6 @@ public class OrgEditCommand extends JupiterCommand {
 
     private String parentorgname;
 
-    private String parentorgtype;
 
     public String getDimType() {
         return dimType;
@@ -91,12 +90,4 @@ public class OrgEditCommand extends JupiterCommand {
         return this;
     }
 
-    public String getParentorgtype() {
-        return parentorgtype;
-    }
-
-    public OrgEditCommand setParentorgtype(String parentorgtype) {
-        this.parentorgtype = parentorgtype;
-        return this;
-    }
 }

@@ -79,7 +79,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
     private List<OrgCompositeUserListBean> orgCompositeUserListBeans;
 
-    private List<OrgCompositeUserListBean> textatchoOrgCompositeUsers=new ArrayList<OrgCompositeUserListBean>();
+    private List<OrgCompositeUserListBean> textatchoOrgCompositeUsers;
 
     private Map<String, ArrayList<Org>> onSelectOrgMaps = new HashMap<>();
 
@@ -171,6 +171,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
         if (!AssertValue.isNotNull(orgCompositeUserListBeans)) {
             orgCompositeUserListBeans = new ArrayList<>();
+            textatchoOrgCompositeUsers = new ArrayList<>();
         }
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid()) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {

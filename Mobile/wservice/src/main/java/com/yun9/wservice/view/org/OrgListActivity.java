@@ -199,9 +199,10 @@ public class OrgListActivity extends JupiterFragmentActivity {
             orgs = new ArrayList<>();
             textwatchorgs=new ArrayList<>();
         }
-        else
-        orgs.clear();
-        textwatchorgs.clear();
+        else {
+            orgs.clear();
+            textwatchorgs.clear();
+        }
 
         if (AssertValue.isNotNullAndNotEmpty(tempOrgs)) {
             for (OrgListBean tempOrg : tempOrgs) {
@@ -309,7 +310,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
     private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(edit));
+            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(edit).setDimType(command.getDimType()));
         }
     };
 }
