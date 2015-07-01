@@ -31,6 +31,8 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrgDetailInfoBean;
 import com.yun9.wservice.view.dynamic.OrgAndUserBean;
 
+import junit.framework.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,16 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.orgname)
     private TextView orgname;
 
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private  List<User> users=new ArrayList<User>();
+
     private OrgChooseAddUserCommand command;
+
 
 
 
@@ -84,18 +95,67 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         orgname.setText(command.getOrgname());
         titleBarLayout.getTitleTv().setText("添加新成员");
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-        adduseorg.setOnClickListener(onAddUserOrgClickListener);
+        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+        titleBarLayout.getTitleRightTv().setText("保存");
+        titleBarLayout.getTitleRight().setOnClickListener(onAddUserOrgClickListener);
+        adduseorg.setOnClickListener(onChooseAddUserOrgClickListener);
         addusephonebook.setOnClickListener(null);
+    }
+
+    private View.OnClickListener onChooseAddUserOrgClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true).setOnlyUsers(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK);
+            if(AssertValue.isNotNullAndNotEmpty(users))
+            {
+                orgCompositeCommand.setSelectUsers(getSelectUserIds(users));
+            }
+            OrgCompositeActivity.start(OrgChooseAddUserActivity.this, orgCompositeCommand);
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        users.clear();
+        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
+            this.users=users;
+        }
     }
 
     private View.OnClickListener onAddUserOrgClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (AssertValue.isNotNullAndNotEmpty(users))
+            {
+                Resource resource = resourceFactory.create("AddOrgCard");
+                resource.param("orgid", command.getOrgid());
+                resource.param("userid",sessionManager.getUser().getId());
+                resource.param("addUserIdList",getSelectUserIds(users));
+                resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                    @Override
+                    public void onSuccess(Response response) {
+                        Toast.makeText(OrgChooseAddUserActivity.this, "添加用户用户成功！", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    @Override
+                    public void onFailure(Response response) {
+                        Toast.makeText(OrgChooseAddUserActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                    }
 
-            OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true).setOnlyUsers(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK);
-            OrgCompositeActivity.start(OrgChooseAddUserActivity.this, orgCompositeCommand);
+                    @Override
+                    public void onFinally(Response response) {
+
+                    }
+                });
+            }
+            else
+                Toast.makeText(OrgChooseAddUserActivity.this, "请选择用户！", Toast.LENGTH_SHORT).show();
         }
     };
+
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
@@ -103,4 +163,17 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
             finish();
         }
     };
+
+    public List<String> getSelectUserIds(List<User> users)
+    {
+        List<String> userids=new ArrayList<String>();
+        if(AssertValue.isNotNullAndNotEmpty(users))
+        {
+            for (User user:users)
+            {
+                userids.add(user.getId());
+            }
+        }
+        return userids;
+    }
 }

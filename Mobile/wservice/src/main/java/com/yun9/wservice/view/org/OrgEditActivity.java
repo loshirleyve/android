@@ -46,7 +46,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     private BasicJupiterEditAdapter useradapter;
     private BasicJupiterEditAdapter orgadapter;
 
-    private List<JupiterEditableView> useritemList;
+    private List<JupiterEditableView>  useritemList;
     private List<JupiterEditableView> orgitemList;
 
     @ViewInject(id=R.id.parentorgname)
@@ -91,14 +91,11 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initView();
-
+        command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
     }
 
     //初始化控件，判断是否存在orgid有的话就查询出org的信息，没有就是新增组织的页面
-    public void initView()
-    {
-        command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
+    public void initView() {
         jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText("成员列表");
         jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText("下级部门");
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
@@ -110,9 +107,14 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
 
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
         //检查是否进入编辑状态
-        if (AssertValue.isNotNull(command) && command.isEdit()){
+        if (AssertValue.isNotNull(command) && command.isEdit()) {
+            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+            titleBarLayout.getTitleRightTv().setText("编辑");
+        } else
+        {
 
         }
         //如果没有orgid则进入新增状态
@@ -126,22 +128,29 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             jupiterEditorgIco.setVisibility(View.GONE);
         }
         else {
-            getOrgDetails();
+            jupiterEdituserIco.setVisibility(View.VISIBLE);
+            jupiterEditorgIco.setVisibility(View.VISIBLE);
             neworg.setEnabled(false);
+            getOrgDetails();
             titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
             orgtips.setText("[向左滑动可编辑]");
         }
-        useritemList = new ArrayList<>();
-        orgitemList = new ArrayList<>();
+        useritemList=new ArrayList<JupiterEditableView>();
+        orgitemList =new ArrayList<JupiterEditableView>();
         setupEditIco();
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 加载数据，绘制界面
+        initView();
+    }
 
     //界面的+图片可以添加用户和组织的控件
     private void setupEditIco() {
         JupiterTextIco useritem = new JupiterTextIcoWithoutCorner(getApplicationContext());
-        useritem.setTitle(" ");
+        useritem.setTitle("添加新成员");
         useritem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
         useritem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +165,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
 
         JupiterTextIco orgitem=new JupiterTextIcoWithoutCorner(getApplicationContext());
-        orgitem.setTitle(" ");
+        orgitem.setTitle("添加新部门");
         orgitem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
         orgitem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,26 +182,28 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     //获取组织的详细信息
     private void getOrgDetails()
     {
-        Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
-        resource.param("orgid", command.getOrgid());
-        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                bean = (OrgDetailInfoBean) response.getPayload();
-                if(bean!=null)
-                    builder(bean);
-            }
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
+            Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
+            resource.param("orgid", command.getOrgid());
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    bean = (OrgDetailInfoBean) response.getPayload();
+                    if (bean != null)
+                        builder(bean);
+                }
 
-            @Override
-            public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
-            }
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onFinally(Response response) {
+                @Override
+                public void onFinally(Response response) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     //把查询的组织信息，构建到用户和组织控件显示
@@ -216,6 +227,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                         deleteUserItem(useritem);
                     }
                 });
+                useritem.edit(false);
                 useritemList.add(useritem);
                 useradapter.notifyDataSetChanged();
             }
@@ -246,7 +258,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                Org org=(Org)response.getPayload();
+                command=new OrgEditCommand().setOrgid(org.getId());
+                initView();
+                Toast.makeText(OrgEditActivity.this,  "添加组织成功！", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -292,9 +307,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             String orgname=neworg.getText().toString();
-            if(AssertValue.isNotNullAndNotEmpty(orgname))
+            if(AssertValue.isNotNullAndNotEmpty(orgname)) {
                 addOrg(orgname);
-            else
+            } else
                 Toast.makeText(OrgEditActivity.this, "请输入组织名称", Toast.LENGTH_SHORT).show();
         }
     };

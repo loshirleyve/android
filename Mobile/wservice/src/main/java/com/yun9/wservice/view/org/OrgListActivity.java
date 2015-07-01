@@ -84,11 +84,13 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
         //初始化界面
         this.initViews();
+    }
 
-        //刷新数据
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 加载数据，绘制界面
         this.refresh();
-
-
     }
 
     private void initViews() {
@@ -184,6 +186,8 @@ public class OrgListActivity extends JupiterFragmentActivity {
         if (!AssertValue.isNotNull(orgs)) {
             orgs = new ArrayList<>();
         }
+        else
+            orgs.clear();
 
         if (AssertValue.isNotNullAndNotEmpty(tempOrgs)) {
             for (OrgListBean tempOrg : tempOrgs) {

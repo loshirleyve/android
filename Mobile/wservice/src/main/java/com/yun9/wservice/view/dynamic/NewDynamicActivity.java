@@ -459,7 +459,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+
+   if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
             cleanOrgAndUser(OrgAndUserBean.TYPE_USER);
@@ -479,7 +480,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
             builderShareInfo();
         }
-
         if (requestCode == locationSelectCommand.getRequestCode() && resultCode == LocationSelectCommand.RESULT_CODE_OK) {
             lastPoiInfoBean = (PoiInfoBean) data.getSerializableExtra(LocationSelectCommand.PARAM_POIINFO);
             if (AssertValue.isNotNull(lastPoiInfoBean) && AssertValue.isNotNullAndNotEmpty(lastPoiInfoBean.getName())) {
