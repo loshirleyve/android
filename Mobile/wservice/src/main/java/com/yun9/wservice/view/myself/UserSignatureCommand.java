@@ -12,17 +12,11 @@ public class UserSignatureCommand extends JupiterCommand {
     private String instid;
     public static final String PARAM_SIGNATURE_COMMAND = "signature";
 
-<<<<<<< HEAD
     public static final String PARAM_SIGNATURE = "signature";
 
 
-    public String getSignature() {
-        return signature;
-=======
-
     public String getInstid() {
         return instid;
->>>>>>> dev-shirley
     }
 
     public UserSignatureCommand setInstid(String instid) {
