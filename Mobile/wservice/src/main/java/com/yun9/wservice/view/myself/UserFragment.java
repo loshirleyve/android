@@ -169,7 +169,6 @@ public class UserFragment extends JupiterFragment {
 
             final ProgressDialog registerDialog = ProgressDialog.show(getActivity(), null, getResources().getString(R.string.app_wating), true);
 
-
             resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {

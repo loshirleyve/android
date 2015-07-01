@@ -9,14 +9,10 @@ import java.util.List;
  * Created by li on 2015/6/26.
  */
 public class UserInfoCommand extends JupiterCommand {
-
+    public static final String PARAM_USER_INFO_COMMAND = "userinfocommand";
     private String instid;
-
     private String userid;
-
-
     private List<FileBean> onSelectImages;
-
     public String getInstid() {
         return instid;
     }

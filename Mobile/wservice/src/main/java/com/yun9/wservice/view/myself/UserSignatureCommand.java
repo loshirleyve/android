@@ -9,17 +9,24 @@ import com.yun9.jupiter.model.User;
 public class UserSignatureCommand extends JupiterCommand {
 
     private String userid;
-    private String signature;
+    private String instid;
+    public static final String PARAM_SIGNATURE_COMMAND = "signature";
 
+<<<<<<< HEAD
     public static final String PARAM_SIGNATURE = "signature";
 
 
     public String getSignature() {
         return signature;
+=======
+
+    public String getInstid() {
+        return instid;
+>>>>>>> dev-shirley
     }
 
-    public UserSignatureCommand setSignature(String signature) {
-        this.signature = signature;
+    public UserSignatureCommand setInstid(String instid) {
+        this.instid = instid;
         return this;
     }
 
