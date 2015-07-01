@@ -23,6 +23,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.task.UploadFileAsyncTask;
 import com.yun9.wservice.view.camera.CameraActivity;
 import com.yun9.wservice.view.camera.CameraCommand;
 import com.yun9.wservice.view.doc.LocalImageActivity;
@@ -33,6 +34,7 @@ import com.yun9.wservice.view.doc.YunImageCommand;
 import com.yun9.wservice.view.inst.SelectInstActivity;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +82,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         //获取参数
         command = (UserInfoCommand)this.getIntent().getSerializableExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND);
 
-        if(!AssertValue.isNotNull(command.getUserid())){
+        if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getUserid())){
             userid = sessionManager.getUser().getId();
         }
         else {
@@ -88,7 +90,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             sessionManager.getUser().setId(userid);
         }
 
-        if(!AssertValue.isNotNull(command.getInstid())){
+        if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())){
             instid = sessionManager.getInst().getId();
         }
         else {
@@ -137,7 +139,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                         userInfoWidget.getDepartment().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
                         userInfoWidget.getSignature().getSutitleTv().setText(user.getSignature());
                     }
-                    Toast.makeText(mContext, getString(R.string.app_update_success), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -188,6 +189,106 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, signature);
             setResult(UserInfoCommand.RESULT_CODE_OK, intent);
          }
+
+        if(AssertValue.isNotNull(localImageCommand) && requestCode == localImageCommand.getRequestCode() && resultCode == LocalImageCommand.RESULT_CODE_OK){
+            List<FileBean> images = new ArrayList<>();
+            //images.get(0).setLevel(FileBean.FILE_LEVEL_SYSTEM);
+            images = (List<FileBean>) data.getSerializableExtra(LocalImageCommand.PARAM_IMAGE);
+            if(AssertValue.isNotNull(images)){
+                for(FileBean currentImg : images){
+                    currentImg.setUserid(userid);
+                    currentImg.setInstid(instid);
+                    images.add(currentImg);
+                }
+            }
+
+            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(UserInfoActivity.this, images);
+            uploadFileAsyncTask.setCompImage(true);
+            uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
+                @Override
+                public void onPostExecute(List<FileBean> images) {
+                    boolean upload = true;
+                    if (AssertValue.isNotNull(images)) {
+                        for (FileBean currentImg : images) {
+                            if (currentImg.FILE_STORAGE_TYPE_LOCAL.equals(currentImg.getStorageType())) {
+                                upload = false;
+                            }
+                        }
+                    }
+
+                    if (!upload) {
+                        Toast.makeText(mContext, R.string.new_image_upload_error, Toast.LENGTH_SHORT).show();
+                    } else {
+                        FileBean currentImg = images.get(0);
+                        if (AssertValue.isNotNull(currentImg)) {
+                            ImageLoaderUtil.getInstance(mContext).displayImage(currentImg.getId(), userInfoWidget.getUserHeadIV());
+                            updateUserByHeaderfileid(currentImg.getId());
+
+                            Intent intent = new Intent();
+                            intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, currentImg.getId());
+                            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
+                        }
+                    }
+                }
+            });
+            uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
+                @Override
+                public void onProgressUpdate(FileBean values) {
+                    //异步刷新界面
+                    //mHandler.sendEmptyMessage(1);
+
+                }
+            });
+            uploadFileAsyncTask.execute();
+        }
+
+        if(AssertValue.isNotNull(cameraCommand) && requestCode == cameraCommand.getRequestCode() && resultCode == CameraCommand.RESULT_CODE_OK){
+            List<FileBean> cameraImages = new ArrayList<>();
+            FileBean cameraImage = (FileBean) data.getSerializableExtra(CameraCommand.PARAM_IMAGE);
+            //cameraImage.setLevel(FileBean.FILE_LEVEL_SYSTEM);
+            if(AssertValue.isNotNull(cameraImage)){
+                cameraImage.setUserid(userid);
+                cameraImage.setInstid(instid);
+                cameraImages.add(cameraImage);
+            }
+            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(UserInfoActivity.this, cameraImages);
+            uploadFileAsyncTask.setCompImage(true);
+            uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
+                @Override
+                public void onPostExecute(List<FileBean> cameraImages) {
+                    boolean upload = true;
+                    if (AssertValue.isNotNull(cameraImages)) {
+                        for (FileBean cameraImage : cameraImages) {
+                            if (cameraImage.FILE_STORAGE_TYPE_LOCAL.equals(cameraImage.getStorageType())) {
+                                upload = false;
+                            }
+                        }
+                    }
+
+                    if (!upload) {
+                        Toast.makeText(mContext, getString(R.string.new_image_upload_error), Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (AssertValue.isNotNull(cameraImages.get(0))) {
+                            ImageLoaderUtil.getInstance(mContext).displayImage(cameraImages.get(0).getId(), userInfoWidget.getUserHeadIV());
+                            updateUserByHeaderfileid(cameraImages.get(0).getId());
+
+                            Intent intent = new Intent();
+                            intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, cameraImages.get(0).getId());
+                            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
+                        }
+                    }
+                }
+            });
+
+            uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
+                @Override
+                public void onProgressUpdate(FileBean values) {
+                    //异步刷新界面
+                    //mHandler.sendEmptyMessage(1);
+                }
+            });
+            uploadFileAsyncTask.execute();
+        }
     }
 
     private void updateUserByHeaderfileid(String userHeaderId){

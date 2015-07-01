@@ -42,6 +42,7 @@
     <string name="switch_acc">切换机构</string>
     <string name="scan_frame">扫一扫</string>
     <string name="activity_dynamice_category">分类</string>
+    <string name="new_image_upload_error">上传图片出现错误，请重新尝试！</string>
 
     <string name="setting_account">账号</string>
     <string name="setting_change_password">修改密码</string>
