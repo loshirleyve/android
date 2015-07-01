@@ -46,7 +46,12 @@
             android:layout_height="match_parent"
             android:layout_margin="1dp"
             android:background="@color/transparent"
+            android:enabled="true"
+            android:editable="true"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
             android:singleLine="true"
+            android:imeOptions="actionDone"
             android:textSize="18sp" />
 
     </LinearLayout>

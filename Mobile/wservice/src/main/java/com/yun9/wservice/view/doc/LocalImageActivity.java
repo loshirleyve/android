@@ -1,17 +1,12 @@
 package com.yun9.wservice.view.doc;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +28,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.camera.CameraActivity;
 import com.yun9.wservice.view.camera.CameraCommand;
+import com.yun9.wservice.widget.AlbumImageGridItem;
 
 import java.util.ArrayList;
 import java.util.List;

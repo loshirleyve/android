@@ -8,6 +8,7 @@ import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.wservice.widget.AlbumImageGridItem;
 
 import java.util.List;
 

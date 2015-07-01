@@ -10,12 +10,13 @@ import java.util.Map;
 
 
 public class MsgCard implements java.io.Serializable {
-	
-	public static final String PARAMS_MSG_CARD = "msgCard";
-	
-	public static class Source {
-		public static final String USER="none";
-	}
+
+    public static final String PARAMS_MSG_CARD = "msgCard";
+
+    public static class Source {
+        public static final String USER = "none";
+    }
+
     private String id;
     // 创建人
     private String createby;
@@ -41,23 +42,23 @@ public class MsgCard implements java.io.Serializable {
     private String locationy;
     private String locationlabel;
     private String locationscale;
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private int praisecount;
     private int sharecount;
     private int commentcount;
-    private boolean ismypraise;
+    private boolean mypraise;
 
-/*
-    private Map<String, String> comment;
-*/
+    private MsgCardComment lastComment;
 
-	private List<String> praiseusername;
-	private SampleUser formuser;
-	private List<MsgCardAttachment> attachments;
-	private List<MsgCardAction> actions;
-	private List<MsgCardComment> commentlist;
-    private List<String> actors;
-	private MsgCardRelationship relationship;
+    private List<MsgCardAttachment> attachments;
+    private List<MsgCardAction> actions;
+    private List<MsgCardComment> comments;
+    private List<MsgCardActor> actors;
+    private List<MsgCardPraise> praises;
+    private List<MsgCardShare> shares;
+    private List<MsgCardProcessAction> process;
+    //praises
+    //shares
 
     public String getId() {
         return id;
@@ -227,100 +228,104 @@ public class MsgCard implements java.io.Serializable {
         this.locationscale = locationscale;
     }
 
-    public List<String> getActors() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getPraisecount() {
+        return praisecount;
+    }
+
+    public void setPraisecount(int praisecount) {
+        this.praisecount = praisecount;
+    }
+
+    public int getSharecount() {
+        return sharecount;
+    }
+
+    public void setSharecount(int sharecount) {
+        this.sharecount = sharecount;
+    }
+
+    public int getCommentcount() {
+        return commentcount;
+    }
+
+    public void setCommentcount(int commentcount) {
+        this.commentcount = commentcount;
+    }
+
+    public boolean isMypraise() {
+        return mypraise;
+    }
+
+    public void setMypraise(boolean mypraise) {
+        this.mypraise = mypraise;
+    }
+
+    public MsgCardComment getLastComment() {
+        return lastComment;
+    }
+
+    public void setLastComment(MsgCardComment lastComment) {
+        this.lastComment = lastComment;
+    }
+
+    public List<MsgCardAttachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<MsgCardAttachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<MsgCardAction> getActions() {
+        return actions;
+    }
+
+    public void setActions(List<MsgCardAction> actions) {
+        this.actions = actions;
+    }
+
+    public List<MsgCardActor> getActors() {
         return actors;
     }
 
-    public void setActors(List<String> actors) {
+    public void setActors(List<MsgCardActor> actors) {
         this.actors = actors;
     }
 
-    public boolean isIsmypraise() {
-        return ismypraise;
+    public List<MsgCardComment> getComments() {
+        return comments;
     }
 
-    public void setIsmypraise(boolean ismypraise) {
-        this.ismypraise = ismypraise;
+    public void setComments(List<MsgCardComment> comments) {
+        this.comments = comments;
     }
 
-/*    public Map<String, String> getComment() {
-        return comment;
+
+    public List<MsgCardPraise> getPraises() {
+        return praises;
     }
 
-    public void setComment(Map<String, String> comment) {
-        this.comment = comment;
-    }*/
+    public void setPraises(List<MsgCardPraise> praises) {
+        this.praises = praises;
+    }
 
-    public int getCommentcount() {
-		return commentcount;
-	}
+    public List<MsgCardShare> getShares() {
+        return shares;
+    }
 
-	public void setCommentcount(int commentcount) {
-		this.commentcount = commentcount;
-	}
+    public void setShares(List<MsgCardShare> shares) {
+        this.shares = shares;
+    }
 
-	public int getSharecount() {
-		return sharecount;
-	}
+    public List<MsgCardProcessAction> getProcess() {
+        return process;
+    }
 
-	public void setSharecount(int sharecount) {
-		this.sharecount = sharecount;
-	}
-
-	public int getPraisecount() {
-		return praisecount;
-	}
-
-	public void setPraisecount(int praisecount) {
-		this.praisecount = praisecount;
-	}
-
-	public SampleUser getFormuser() {
-		return formuser;
-	}
-
-	public void setFormuser(SampleUser formuser) {
-		this.formuser = formuser;
-	}
-
-	public List<MsgCardAttachment> getAttachments() {
-		return attachments;
-	}
-
-	public void setAttachments(List<MsgCardAttachment> attachments) {
-		this.attachments = attachments;
-	}
-
-	public List<MsgCardAction> getActions() {
-		return actions;
-	}
-
-	public void setActions(List<MsgCardAction> actions) {
-		this.actions = actions;
-	}
-
-	public MsgCardRelationship getRelationship() {
-		return relationship;
-	}
-
-	public void setRelationship(MsgCardRelationship relationship) {
-		this.relationship = relationship;
-	}
-
-	public List<String> getPraiseusername() {
-		return praiseusername;
-	}
-
-	public void setPraiseusername(List<String> praiseusername) {
-		this.praiseusername = praiseusername;
-	}
-
-	public List<MsgCardComment> getCommentlist() {
-		return commentlist;
-	}
-
-	public void setCommentlist(List<MsgCardComment> commentlist) {
-		this.commentlist = commentlist;
-	}
-
+    public void setProcess(List<MsgCardProcessAction> process) {
+        this.process = process;
+    }
 }

@@ -15,6 +15,8 @@ public class MsgCardListCommand extends JupiterCommand {
     private String userid;
     private String fromuserid;
 
+    private String title;
+
     public String getType() {
         return type;
     }
@@ -39,6 +41,15 @@ public class MsgCardListCommand extends JupiterCommand {
 
     public MsgCardListCommand setFromuserid(String fromuserid) {
         this.fromuserid = fromuserid;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public MsgCardListCommand setTitle(String title) {
+        this.title = title;
         return this;
     }
 }

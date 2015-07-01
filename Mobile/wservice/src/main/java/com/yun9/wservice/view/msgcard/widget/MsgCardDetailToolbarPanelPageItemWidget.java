@@ -1,4 +1,4 @@
-package com.yun9.wservice.view.msgcard;
+package com.yun9.wservice.view.msgcard.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,34 +7,31 @@ import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.msgcard.model.MsgCardDetailToolbarActionItem;
+import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
 
 /**
  * Created by huangbinglong on 15/5/20.
  */
-public class MsgCardDetailToolbarPanelsPageItemWidget extends JupiterRelativeLayout {
+public class MsgCardDetailToolbarPanelPageItemWidget extends JupiterRelativeLayout {
 
     private ImageView imageView;
     private TextView textView;
 
-    public MsgCardDetailToolbarPanelsPageItemWidget(Context context) {
+    public MsgCardDetailToolbarPanelPageItemWidget(Context context) {
         super(context);
     }
 
-    public MsgCardDetailToolbarPanelsPageItemWidget(Context context, AttributeSet attrs) {
+    public MsgCardDetailToolbarPanelPageItemWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MsgCardDetailToolbarPanelsPageItemWidget(Context context, AttributeSet attrs, int defStyle) {
+    public MsgCardDetailToolbarPanelPageItemWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(MsgCardDetailToolbarActionItem item) {
+    public void buildWithData(MsgCardPanelActionItem item) {
         imageView.setImageResource(item.getPic());
         textView.setText(item.getTitle());
-        if (item.getOnClickListener() != null) {
-            this.setOnClickListener(item.getOnClickListener());
-        }
     }
 
 

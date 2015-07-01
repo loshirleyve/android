@@ -7,14 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.yun9.jupiter.cache.InstCache;
+import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.cache.UserDataCache;
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheInst;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.cache.ClientProxyCache;
+import com.yun9.wservice.model.Client;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderCartInfo;
 
@@ -35,23 +45,25 @@ public class OrderCartActivity extends JupiterFragmentActivity{
     @BeanInject
     private SessionManager sessionManager;
 
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
     private OrderCartCommand command;
 
     private List<OrderCartInfo> orderList;
 
-    private boolean isProxy;
-
     public static void start(Activity activity,OrderCartCommand command) {
         Intent intent = new Intent(activity, OrderCartActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("command",command);
+        bundle.putSerializable(OrderCartCommand.PARAM_COMMAND,command);
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent,command.getRequestCode());
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        command = (OrderCartCommand) getIntent().getSerializableExtra(OrderCartCommand.PARAM_COMMAND);
         buildView();
         reload();
     }
@@ -70,12 +82,46 @@ public class OrderCartActivity extends JupiterFragmentActivity{
                 OrderCartActivity.this.finish();
             }
         });
+        if (ClientProxyCache.getInstance().isProxy()){
+            CacheInst inst = InstCache.getInstance().getInst(ClientProxyCache.getInstance().getProxy().getInstId());
+            if (inst != null){
+                titleBarLayout.getTitleSutitleTv().setText("正在为"+inst.getInstname()+"代理购买");
+            }
+        } else {
+            titleBarLayout.getTitleSutitleTv().setVisibility(View.GONE);
+        }
     }
 
     private void reload() {
-        orderList = new ArrayList<>();
-        orderList.add(new OrderCartInfo());
-        orderList.add(new OrderCartInfo());
+        Resource resource = resourceFactory.create("QueryOrderViewService");
+        resource.param("productids",command.getProductIds());
+        resource.param("userid", sessionManager.getUser().getId());
+
+        // 接口有问题，临时带上这两个
+        resource.param("proxyman","");
+        resource.param("proxyinstid","");
+
+        if (ClientProxyCache.getInstance().isProxy()) {
+            resource.param("proxyman",sessionManager.getUser().getId());
+            resource.param("userid",ClientProxyCache.getInstance().getProxy().getUserId());
+            resource.param("proxyinstid",ClientProxyCache.getInstance().getProxy().getInstId());
+        }
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                orderList = (List<OrderCartInfo>) response.getPayload();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                orderList = null;
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {

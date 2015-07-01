@@ -123,6 +123,7 @@ public class CameraActivity extends Activity {
                 upDataCamera(imageUrl, this);
 
                 FileBean fileBean = new FileBean(new File(imageUrl));
+                fileBean.setType(FileBean.FILE_TYPE_IMAGE);
                 Intent intent = new Intent();
                 intent.putExtra(CameraCommand.PARAM_IMAGE, fileBean);
                 setResult(CameraCommand.RESULT_CODE_OK, intent);

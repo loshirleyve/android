@@ -9,11 +9,17 @@
         android:layout_height="wrap_content"
         app:rowStyleSutitleShowTimeText="false"
         app:rowStyleSutitleShowArrow="false"/>
+    <com.yun9.jupiter.widget.JupiterListView
+        android:id="@+id/paymode_options_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_layout">
+    </com.yun9.jupiter.widget.JupiterListView>
     <LinearLayout
         android:id="@+id/paymode_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_layout"
+        android:layout_below="@id/paymode_options_lv"
         android:background="#FEFCEB"
         android:orientation="vertical"
         android:padding="10dp">

@@ -29,7 +29,7 @@
     <string name="app_share_scope">分享范围</string>
     <string name="app_no_more_data">没有更多的数据了</string>
     <string name="app_photo">拍照</string>
-
+    <string name="app_update_success">更新成功</string>
 
     <string name="user_buyer">购买管理</string>
     <string name="user_file">文件</string>
@@ -64,6 +64,8 @@
     <string name="msg_card_fw">转发</string>
     <string name="msg_card_praise">点赞</string>
     <string name="msg_card_share">分享</string>
+    <string name="msg_card_fw_to">转发给了@$1%s</string>
+    <string name="msg_card_sieve">掷筛子</string>
 
 
     <string name="activity_msg_card_list_title">消息卡片列表</string>
@@ -136,6 +138,7 @@
     <string name="confirm_pay">确定支付</string>
     <string name="payment_money">支付金额:&#160; </string>
     <string name="already_pay">已付款</string>
+    <string name="pay_success_be_wait">付款成功！请等待确认。</string>
 
 
     <string name="location_select">选择位置</string>

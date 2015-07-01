@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -23,6 +26,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -78,6 +82,10 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             }
         });
 
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
+            titleBar.getTitleTv().setText(command.getTitle());
+        }
+
         msgCardList.setAdapter(msgCardListAdapter);
         msgCardList.setOnItemClickListener(msgCardOnItemClickListener);
 
@@ -107,13 +115,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             MsgCard msgCard = (MsgCard) view.getTag();
-
-            //logger.d("消息卡片点击！" + msgCard.getMain().getFrom());
-            logger.d("消息卡片点击！-----------------------");
-
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(MsgCardDetailActivity.ARG_MSG_CARD, msgCard);
-            MsgCardDetailActivity.start(MsgCardListActivity.this, bundle);
+            MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()));
         }
     };
 
@@ -123,12 +125,12 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     }
 
     private void refresh() {
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())){
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())) {
             Resource resource = resourceFactory.create("QueryMsgCardByScene");
-            resource.param("instid",sessionManager.getInst().getId());
-            resource.param("userid",command.getUserid());
-            resource.param("fromuserid",command.getFromuserid());
-            resource.param("sence",command.getType());
+            resource.param("instid", sessionManager.getInst().getId());
+            resource.param("userid", command.getUserid());
+            resource.param("fromuserid", command.getFromuserid());
+            resource.param("sence", command.getType());
 
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
@@ -136,7 +138,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                     List<MsgCard> tempMsgCards = (List<MsgCard>) response.getPayload();
                     msgCards.clear();
 
-                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards)){
+                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards)) {
                         for (int i = tempMsgCards.size(); i > 0; i--) {
                             MsgCard msgCard = tempMsgCards.get(i - 1);
                             msgCards.addFirst(msgCard);
@@ -148,7 +150,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-                    Toast.makeText(mContext,response.getCause(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -184,37 +186,46 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
             if (convertView == null) {
                 msgCardWidget = new MsgCardWidget(mContext);
+
+                msgCardWidget.getPraiseRL().setTag(msgCard);
                 msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         logger.d("点赞！");
                     }
                 });
+
+                msgCardWidget.getFwRL().setTag(msgCard);
                 msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         logger.d("转发！");
                     }
                 });
+
+                msgCardWidget.getCommentRL().setTag(msgCard);
                 msgCardWidget.getCommentRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        logger.d("评论！");
+                        MsgCard msgCard = (MsgCard) v.getTag();
+                        if (AssertValue.isNotNull(msgCard)) {
+                            MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()).setScrollComment(true));
+                        }
                     }
                 });
-                msgCardWidget.getActionRL().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logger.d("动作！");
-                    }
-                });
-            }else{
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(20, 20, 20, 20);
+                msgCardWidget.getMainRl().setLayoutParams(params);
+
+            } else {
                 msgCardWidget = (MsgCardWidget) convertView;
             }
 
             msgCardWidget.buildWithData(msgCard);
             msgCardWidget.setTag(msgCard);
 
-            return msgCardWidget;        }
+            return msgCardWidget;
+        }
     };
 }

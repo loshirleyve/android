@@ -33,6 +33,8 @@ public interface SessionManager {
 
     public void regOnLogoutListener(OnLogoutListener onLogoutListener);
 
+    public void setUser(User user);
+
     public void regOnChangeInstListener(OnChangeInstListener onChangeInstListener);
 
     public interface OnLoginListener {

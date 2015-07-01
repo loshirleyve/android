@@ -2,55 +2,86 @@ package com.yun9.wservice.model;
 
 public class MsgCardAttachment implements java.io.Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String id;
+    private String id;
 
-	private String msgcardid;
+    private String name;
 
-	private String fileid;
+    private String msgCardId;
 
-	private String desc;
+    private String fileId;
 
-	public MsgCardAttachment() {
-	}
+    private String fileType;
 
-	public MsgCardAttachment(String id, String msgcardid, String fileid, String desc) {
-		this.id = id;
-		this.msgcardid = msgcardid;
-		this.fileid = fileid;
-		this.desc = desc;
-	}
+    private String desc;
 
-	public String getId() {
-		return id;
-	}
+    private String createby;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    private long createdate;
 
-	public String getDesc() {
-		return desc;
-	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getMsgcardid() {
-		return msgcardid;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setMsgcardid(String msgcardid) {
-		this.msgcardid = msgcardid;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getFileid() {
-		return fileid;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setFileid(String fileid) {
-		this.fileid = fileid;
-	}
+    public String getMsgCardId() {
+        return msgCardId;
+    }
+
+    public void setMsgCardId(String msgCardId) {
+        this.msgCardId = msgCardId;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(String createby) {
+        this.createby = createby;
+    }
+
+    public long getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(long createdate) {
+        this.createdate = createdate;
+    }
 }

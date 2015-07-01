@@ -25,6 +25,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.client.ClientActivity;
+import com.yun9.wservice.view.client.ClientCommand;
 import com.yun9.wservice.view.order.OrderManagerActivity;
 import com.yun9.wservice.view.other.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
@@ -40,6 +41,10 @@ import com.yun9.wservice.view.other.SettingActivity;
  *
  */
 public class UserFragment extends JupiterFragment {
+
+    private ClientCommand clientCommand;
+    private UserInfoCommand userInfoCommand;
+    private UserSignatureCommand userSignatureCommand;
 
     private UserHeadWidget userHeadWidget;
 
@@ -115,22 +120,27 @@ public class UserFragment extends JupiterFragment {
                 SelectInstActivity.start(getActivity(), new SelectInstCommand().setUser(sessionManager.getUser()));
             }
         });
-
+       
         client.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, ClientActivity.class);
-                startActivity(intent);
+                if(!AssertValue.isNotNull(clientCommand)) {
+                    clientCommand = new ClientCommand();
+                }
+                clientCommand.setId(sessionManager.getUser().getId());
+                ClientActivity.start(getActivity(), clientCommand);
             }
         });
 
-        arrowIV.setOnClickListener(new View.OnClickListener() {
+        userHeadWidget.getHeaderLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mContext, UserInfoActivity.class);
-                startActivity(intent);
+                if(!AssertValue.isNotNull(userInfoCommand)){
+                    userInfoCommand = new UserInfoCommand();
+                }
+                userInfoCommand.setUserid(sessionManager.getUser().getId());
+                userInfoCommand.setInstid(sessionManager.getInst().getId());
+                UserInfoActivity.start(getActivity(), userInfoCommand);
             }
         });
 
@@ -146,7 +156,9 @@ public class UserFragment extends JupiterFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
+        if(AssertValue.isNotNull(userInfoCommand) && requestCode == userInfoCommand.getRequestCode() && resultCode == userInfoCommand.RESULT_CODE_OK){
+            refresh();
+        }
     }
 
     private void refresh() {

@@ -9,33 +9,13 @@ import java.util.List;
  * Created by li on 2015/6/26.
  */
 public class UserInfoCommand extends JupiterCommand {
-    private boolean edit;
 
     private String instid;
 
     private String userid;
 
-    private String signature;
 
     private List<FileBean> onSelectImages;
-
-    public String getSignature() {
-        return signature;
-    }
-
-    public UserInfoCommand setSignature(String signature) {
-        this.signature = signature;
-        return this;
-    }
-
-    public boolean isEdit() {
-        return edit;
-    }
-
-    public UserInfoCommand setEdit(boolean edit) {
-        this.edit = edit;
-        return this;
-    }
 
     public String getInstid() {
         return instid;

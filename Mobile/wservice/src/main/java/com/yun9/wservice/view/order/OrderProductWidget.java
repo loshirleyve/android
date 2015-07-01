@@ -5,8 +5,10 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.OrderCartInfo;
 
 /**
  * Created by huangbinglong on 15/6/12.
@@ -49,7 +51,25 @@ public class OrderProductWidget extends JupiterRelativeLayout{
         productFeeTV = (TextView) this.findViewById(R.id.product_fee_tv);
     }
 
-    public void buildWithData() {
-
+    public void buildWithData(OrderCartInfo.OrderCartProduct orderCartProduct) {
+        productFeeTV.setText(orderCartProduct.getSaleprice() + "元");
+        productDescTV.setText(orderCartProduct.getIntroduce());
+        ImageLoaderUtil.getInstance(this.getContext()).displayImage(orderCartProduct.getImgid(), productImageIV);
+        productNameTV.setText(orderCartProduct.getName());
+        if (orderCartProduct.getPhases() != null && orderCartProduct.getPhases().size() > 0){
+            StringBuffer tip = new StringBuffer();
+            OrderCartInfo.ProductPhase productPhase;
+            for (int i = 0;i < orderCartProduct.getPhases().size();i++){
+                productPhase = orderCartProduct.getPhases().get(i);
+                if (i != 0){
+                    tip.append("\n").append(productPhase.getPhasedescr());
+                } else {
+                    tip.append(productPhase.getPhasedescr());
+                }
+            }
+            productTipTV.setText(tip);
+        } else {
+            productTipTV.setVisibility(GONE);
+        }
     }
 }

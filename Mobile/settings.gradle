@@ -1,1 +1,1 @@
-include ':wservice', ':jupiter',':photoview', ':sample',':ptr-lib', ':viewpagerindicator', ':segmented'
+include ':wservice', ':jupiter',':photoview',':ptr-lib', ':viewpagerindicator', ':segmented'

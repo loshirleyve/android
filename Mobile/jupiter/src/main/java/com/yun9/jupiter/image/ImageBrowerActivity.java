@@ -1,6 +1,7 @@
 package com.yun9.jupiter.image;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -17,13 +18,13 @@ public class ImageBrowerActivity extends JupiterFragmentActivity {
 
     private ImageBrowerCommand command;
 
-    public static void start(Activity activity, ImageBrowerCommand command) {
-        Intent intent = new Intent(activity, ImageBrowerActivity.class);
+    public static void start(Context content, ImageBrowerCommand command) {
+        Intent intent = new Intent(content, ImageBrowerActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        activity.startActivity(intent);
+        content.startActivity(intent);
     }
 
     @Override

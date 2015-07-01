@@ -6,11 +6,13 @@ import com.yun9.jupiter.model.User;
 /**
  * Created by li on 2015/6/26.
  */
-public class UserSignatureCommand extends JupiterCommand{
+public class UserSignatureCommand extends JupiterCommand {
 
     private String userid;
-    private String instid;
     private String signature;
+
+    public static final String PARAM_SIGNATURE = "signature";
+
 
     public String getSignature() {
         return signature;
@@ -27,15 +29,6 @@ public class UserSignatureCommand extends JupiterCommand{
 
     public UserSignatureCommand setUserid(String userid) {
         this.userid = userid;
-        return this;
-    }
-
-    public String getInstid() {
-        return instid;
-    }
-
-    public UserSignatureCommand setInstid(String instid) {
-        this.instid = instid;
         return this;
     }
 }

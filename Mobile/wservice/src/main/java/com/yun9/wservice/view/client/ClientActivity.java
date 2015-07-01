@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.client;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,6 +77,14 @@ public class ClientActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
     private Context context;
+
+    public static void start(Activity activity,ClientCommand command) {
+        Intent intent = new Intent(activity, ClientActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("command",command);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent,command.getRequestCode());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
