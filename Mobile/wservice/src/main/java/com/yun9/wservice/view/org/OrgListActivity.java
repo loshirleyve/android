@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,9 +19,11 @@ import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
+import com.yun9.jupiter.widget.JupiterSearchInputLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -36,6 +42,9 @@ public class OrgListActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
 
+
+    private JupiterSearchInputLayout jupiterSearchInputLayout;
+
     @ViewInject(id = R.id.complete)
     private JupiterImageButtonLayout completeButton;
 
@@ -52,6 +61,8 @@ public class OrgListActivity extends JupiterFragmentActivity {
     private ResourceFactory resourceFactory;
 
     private List<OrgListBean> orgs;
+
+    private List<OrgListBean> textwatchorgs;
 
     private OrgListAdapter orgListAdapter;
 
@@ -76,7 +87,8 @@ public class OrgListActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (OrgListCommand) this.getIntent().getSerializableExtra("command");
-
+        jupiterSearchInputLayout = (JupiterSearchInputLayout) this.findViewById(R.id.searchRL);
+        jupiterSearchInputLayout.getSearchET().addTextChangedListener(textWatcher);
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
             this.titleBarLayout.getTitleTv().setText(command.getTitle());
         }
@@ -185,9 +197,11 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
         if (!AssertValue.isNotNull(orgs)) {
             orgs = new ArrayList<>();
+            textwatchorgs=new ArrayList<>();
         }
         else
-            orgs.clear();
+        orgs.clear();
+        textwatchorgs.clear();
 
         if (AssertValue.isNotNullAndNotEmpty(tempOrgs)) {
             for (OrgListBean tempOrg : tempOrgs) {
@@ -202,6 +216,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
                     }
                 }
                 orgs.add(tempOrg);
+                textwatchorgs.add(tempOrg);
             }
         }
 
@@ -251,6 +266,42 @@ public class OrgListActivity extends JupiterFragmentActivity {
             }
             setResult(OrgListCommand.RESULT_CODE_OK, intent);
             finish();
+        }
+    };
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        jupiterSearchInputLayout.getEditLL().setVisibility(View.GONE);
+        jupiterSearchInputLayout.getShowLL().setVisibility(View.VISIBLE);
+        inputMethodManager.hideSoftInputFromWindow(jupiterSearchInputLayout.getSearchET().getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
+                orgs.clear();
+                for ( OrgListBean org : textwatchorgs) {
+                    if (StringUtil.contains(org.getName(), s.toString(), true)) {
+                        orgs.add(org);
+                    }
+                }
+            }
+            else
+            {
+                orgs.addAll(textwatchorgs);
+            }
+            orgListAdapter.notifyDataSetChanged();
         }
     };
 

@@ -46,7 +46,7 @@
                 android:contentDescription="@string/app_name" />
         </RelativeLayout>
 
-        <RelativeLayout style="@style/ButtonBarMain" >
+        <RelativeLayout style="@style/ButtonBarMain"   android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/button_bar_main_btn_microapp"

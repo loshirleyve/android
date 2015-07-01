@@ -20,7 +20,13 @@
         android:layout_below="@+id/titlebar"
         android:orientation="vertical">
 
+        <com.yun9.jupiter.widget.JupiterSearchInputLayout
+            android:id="@+id/searchRL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
+        </com.yun9.jupiter.widget.JupiterSearchInputLayout>
         <ListView
             android:id="@+id/userlist"
             android:layout_width="match_parent"

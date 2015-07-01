@@ -3,7 +3,11 @@ package com.yun9.wservice.view.org;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,10 +20,12 @@ import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditableView;
+import com.yun9.jupiter.widget.JupiterSearchInputLayout;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -48,6 +54,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private List<JupiterEditableView>  useritemList;
     private List<JupiterEditableView> orgitemList;
+    private List<JupiterEditableView> textwatchorgitemList;
 
     @ViewInject(id=R.id.parentorgname)
     private EditText parentorgname;
@@ -137,6 +144,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         }
         useritemList=new ArrayList<JupiterEditableView>();
         orgitemList =new ArrayList<JupiterEditableView>();
+        textwatchorgitemList=new ArrayList<JupiterEditableView>();
         setupEditIco();
     }
 
@@ -313,6 +321,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 Toast.makeText(OrgEditActivity.this, "请输入组织名称", Toast.LENGTH_SHORT).show();
         }
     };
+
 
     private void setEdit(boolean edit){
         this.edit = edit;

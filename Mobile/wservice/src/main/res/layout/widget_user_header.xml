@@ -124,6 +124,7 @@
 
         <LinearLayout
             android:id="@+id/todoUserOrg"
+            android:visibility="gone"
             style="@style/user_hader_btnbar">
 
             <ImageView

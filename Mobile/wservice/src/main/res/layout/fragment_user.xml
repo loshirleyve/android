@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/whites"
+                android:visibility="gone"
                 app:rowStyleTitleMainImage="@drawable/scan_frame_2"
                 app:rowStyleTitleText="@string/scan_frame"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
@@ -45,6 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:background="@color/whites"
                 app:rowStyleTitleMainImage="@drawable/discover"
                 app:rowStyleTitleText="@string/user_discover"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>

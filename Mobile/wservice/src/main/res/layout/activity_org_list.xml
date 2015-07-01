@@ -19,7 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <com.yun9.jupiter.widget.JupiterSearchInputLayout
+            android:id="@+id/searchRL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
+        </com.yun9.jupiter.widget.JupiterSearchInputLayout>
         <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

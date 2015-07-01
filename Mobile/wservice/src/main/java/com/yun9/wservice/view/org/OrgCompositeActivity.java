@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,12 +24,15 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
+import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
+import com.yun9.jupiter.widget.JupiterSearchInputLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Client;
 import com.yun9.wservice.model.OrgCompositeInfoBean;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.dynamic.NewDynamicCommand;
@@ -46,6 +53,8 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     private static final Logger logger = Logger.getLogger(OrgCompositeActivity.class);
 
     private OrgCompositeCommand command;
+
+    private JupiterSearchInputLayout jupiterSearchInputLayout;
 
     @ViewInject(id = R.id.userlist)
     private ListView userListView;
@@ -69,6 +78,8 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     private SessionManager sessionManager;
 
     private List<OrgCompositeUserListBean> orgCompositeUserListBeans;
+
+    private List<OrgCompositeUserListBean> textatchoOrgCompositeUsers=new ArrayList<OrgCompositeUserListBean>();
 
     private Map<String, ArrayList<Org>> onSelectOrgMaps = new HashMap<>();
 
@@ -98,7 +109,8 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         builderTopView();
-
+        jupiterSearchInputLayout = (JupiterSearchInputLayout) this.findViewById(R.id.searchRL);
+        jupiterSearchInputLayout.getSearchET().addTextChangedListener(textWatcher);
         //获取参数
         command = (OrgCompositeCommand) this.getIntent().getSerializableExtra("command");
 
@@ -223,6 +235,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                 orgCompositeUserListBeans.add(orgCompositeUserListBean);
             }
         }
+        textatchoOrgCompositeUsers.addAll(orgCompositeUserListBeans);
 
         if (!AssertValue.isNotNull(orgCompositeListAdapter)) {
             orgCompositeListAdapter = new OrgCompositeListAdapter(OrgCompositeActivity.this, orgCompositeUserListBeans, false);
@@ -516,4 +529,40 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         }
 
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        jupiterSearchInputLayout.getEditLL().setVisibility(View.GONE);
+        jupiterSearchInputLayout.getShowLL().setVisibility(View.VISIBLE);
+        inputMethodManager.hideSoftInputFromWindow(jupiterSearchInputLayout.getSearchET().getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
+                orgCompositeUserListBeans.clear();
+                for (OrgCompositeUserListBean user : textatchoOrgCompositeUsers) {
+                    if (StringUtil.contains(user.getUser().getName(), s.toString(), true)) {
+                        orgCompositeUserListBeans.add(user);
+                    }
+                }
+            }
+            else
+            {
+                orgCompositeUserListBeans.addAll(textatchoOrgCompositeUsers);
+            }
+            orgCompositeListAdapter.notifyDataSetChanged();
+        }
+    };
 }
