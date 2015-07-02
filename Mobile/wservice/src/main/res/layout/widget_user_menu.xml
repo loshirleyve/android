@@ -19,13 +19,14 @@
         android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="云图片"
+        android:text="@string/yun_img"
         android:layout_gravity="center"
         />
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/devide_line"/>
+
     <TextView
         android:background="@color/whites"
         android:padding="10dp"
@@ -34,13 +35,14 @@
         android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="本地图片"
+        android:text="@string/local_img"
         android:layout_gravity="center"
         />
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/devide_line"/>
+
     <TextView
         android:background="@color/whites"
         android:padding="10dp"
@@ -49,23 +51,24 @@
         android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="拍照"
+        android:text="@string/app_photo"
         android:layout_gravity="center"
         />
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/devide_line"/>
+
     <TextView
-        android:background="@color/whites"
         android:layout_marginTop="10dp"
+        android:background="@color/whites"
         android:padding="10dp"
         android:gravity="center"
         android:id="@+id/cancel"
         android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="取消"
+        android:text="@string/app_cancel"
         android:layout_gravity="center"
         />
 

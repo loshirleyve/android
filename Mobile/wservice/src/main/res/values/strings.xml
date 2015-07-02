@@ -188,4 +188,14 @@
     <string name="user_name">名字</string>
     <string name="agency">机构</string>
     <string name="department">部门</string>
+    <string name="local_img">本地图片</string>
+    <string name="yun_img">云图片</string>
+    <string name="pass_prompt">请输入6-15位字母或数字的密码组合！</string>
+    <string name="ori_pass">原始密码</string>
+    <string name="ori_pass_prompt">请输入原始密码</string>
+    <string name="new_pass">新密码</string>
+    <string name="new_pass_prompt">请输入新密码</string>
+    <string name="sure_pass">确认密码</string>
+    <string name="sure_pass_prompt">请输入确认密码</string>
+    <string name="user_password">用户密码</string>
 </resources>
