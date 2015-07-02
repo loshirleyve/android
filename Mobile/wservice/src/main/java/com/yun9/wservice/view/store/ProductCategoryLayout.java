@@ -53,7 +53,7 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0,MATCH_PARENT,1);
                 textView.setLayoutParams(lp);
                 textView.setGravity(Gravity.CENTER);
-                textView.setText(categoryList.get(i).getCategoryname());
+                textView.setText(categoryList.get(i).getName());
                 textView.setTextSize(16);
                 textView.setPadding(10, 10, 10, 10);
                 textView.setBackgroundResource(R.drawable.productcategory_background);

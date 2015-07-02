@@ -6,11 +6,11 @@ package com.yun9.wservice.model;
 public class ProductCategory implements java.io.Serializable {
 
     private String id;
-    private String isglobal;
-    private String categoryname;
+    private String global;
+    private String name;
     private String province;
     private String district;
-    private String city;
+    private String cityid;
     private String state;
     private int sort;
 
@@ -30,20 +30,21 @@ public class ProductCategory implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getIsglobal() {
-        return isglobal;
+
+    public String getGlobal() {
+        return global;
     }
 
-    public void setIsglobal(String isglobal) {
-        this.isglobal = isglobal;
+    public void setGlobal(String global) {
+        this.global = global;
     }
 
-    public String getCategoryname() {
-        return categoryname;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryname(String categoryname) {
-        this.categoryname = categoryname;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getProvince() {
@@ -62,12 +63,12 @@ public class ProductCategory implements java.io.Serializable {
         this.district = district;
     }
 
-    public String getCity() {
-        return city;
+    public String getCityid() {
+        return cityid;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setCityid(String cityid) {
+        this.cityid = cityid;
     }
 
     public String getState() {

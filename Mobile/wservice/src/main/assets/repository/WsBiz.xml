@@ -14,7 +14,7 @@
     <!-- 获取服务分类根据城市 -->
     <repository>
         <name>QueryCategorysBylocation</name>
-        <action>com.yun9.ws.biz.service.QueryCategorysBylocationService</action>
+        <action>com.yun9.ws.biz.service.QueryMdProductGroupBylocationService</action>
         <output>
             <classname>com.yun9.wservice.model.ProductCategory</classname>
             <type>list</type>
@@ -25,7 +25,7 @@
     <!-- 查询产品信息 -->
     <repository>
         <name>QueryProducts</name>
-        <action>com.yun9.ws.biz.service.QueryProductsByCategroyIdService</action>
+        <action>com.yun9.ws.biz.service.QueryProductsByGroupIdService</action>
         <output>
             <classname>com.yun9.wservice.model.Product</classname>
             <type>list</type>

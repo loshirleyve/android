@@ -12,6 +12,7 @@ import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.PhoneUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,16 +24,16 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
     private List<PhoneUser> users;
 
-    private boolean selectMode;
+    private boolean selectMode=true;
 
-    public OrgPhoneUserAdapter(Context context, List<PhoneUser> orgListBeans) {
+    public OrgPhoneUserAdapter(Context context, List<PhoneUser> users) {
         this.mContext = context;
-        this.users = users;
+        this.users = users;//bulied();
     }
 
     @Override
     public int getCount() {
-        if (AssertValue.isNotNull(users)) {
+        if (AssertValue.isNotNullAndNotEmpty(users)) {
             return users.size();
         } else {
             return 0;
@@ -68,13 +69,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item.setShowTime(false);
             item.setShowArrow(false);
             item.getMainIV().setImageResource(R.drawable.user_group);
-            item.setOnSelectListener(new OnSelectListener() {
-                @Override
-                public void onSelect(View view, boolean mode) {
-                    OrgListBean tempBean = (OrgListBean) view.getTag();
-                    tempBean.setSelected(mode);
-                }
-            });
         } else {
             item = (JupiterRowStyleSutitleLayout) convertView;
         }
@@ -87,6 +81,43 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
         return item;
     }
 
+
+    public List<PhoneUser> bulied()
+    {
+        users=new ArrayList<>();
+        PhoneUser user=new PhoneUser();
+        user.setUsername("阮小玉");
+        user.setUsernumber("13697110552");
+
+        PhoneUser user1=new PhoneUser();
+        user1.setUsername("权志龙");
+        user1.setUsernumber("1369101459");
+
+        PhoneUser user2=new PhoneUser();
+        user2.setUsername("崔胜贤");
+        user2.setUsernumber("136984939204");
+
+        PhoneUser user3=new PhoneUser();
+        user3.setUsername("李胜利");
+        user3.setUsernumber("13593796895");
+
+        PhoneUser user4=new PhoneUser();
+        user4.setUsername("东永裴");
+        user4.setUsernumber("1369998778");
+
+        PhoneUser user5=new PhoneUser();
+        user5.setUsername("姜大声");
+        user5.setUsernumber("135577960");
+
+        users.add(user);
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        users.add(user4);
+        users.add(user5);
+        return users;
+
+    }
 
 
 }

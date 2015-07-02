@@ -2,6 +2,7 @@ package com.yun9.wservice.view.org;
 
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.wservice.model.PhoneUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,24 +12,12 @@ import java.util.List;
  */
 public class OrgPhoneUserCommand extends JupiterCommand {
 
-    public static final String COMPLETE_TYPE_CALLBACK = "callback";
-
-    public static final String PARAM_USER = "user";
-
     public static final int REQUEST_CODE = 1007;
 
     private List<String> selectUsers;
 
-    private String completeType = COMPLETE_TYPE_CALLBACK;
+    private List<PhoneUser> users;
 
-    public String getCompleteType() {
-        return completeType;
-    }
-
-    public OrgPhoneUserCommand setCompleteType(String completeType) {
-        this.completeType = completeType;
-        return this;
-    }
 
     public List<String> getSelectUsers() {
         return selectUsers;
@@ -37,6 +26,16 @@ public class OrgPhoneUserCommand extends JupiterCommand {
     public void setSelectUsers(List<String> selectUsers) {
         this.selectUsers = selectUsers;
     }
+
+
+    public List<PhoneUser>  getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<PhoneUser> users) {
+        this.users = users;
+    }
+
 
 
     public OrgPhoneUserCommand putSelectUser(String userid) {

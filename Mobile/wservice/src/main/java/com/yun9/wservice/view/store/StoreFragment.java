@@ -185,7 +185,7 @@ public class StoreFragment extends JupiterFragment {
 
     private void addCategory(ProductCategory productCategory) {
         RadioButton radioButton = (RadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_button_item, null);
-        radioButton.setText(productCategory.getCategoryname());
+        radioButton.setText(productCategory.getName());
         radioButton.setTag(productCategory);
         radioButton.setOnClickListener(onCategoryClickListener);
         segmentedGroup.addView(radioButton);
@@ -362,7 +362,7 @@ public class StoreFragment extends JupiterFragment {
         Resource resource = resourceFactory.create("QueryCategorysBylocation");
         resource.param("province", serviceCity.getProvince());
         resource.param("city", serviceCity.getCity());
-
+        resource.param("district", "南山区");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {

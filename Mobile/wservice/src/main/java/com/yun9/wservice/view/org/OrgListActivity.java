@@ -289,9 +289,8 @@ public class OrgListActivity extends JupiterFragmentActivity {
         }
         @Override
         public void afterTextChanged(Editable s) {
-
+            orgs.clear();
             if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
-                orgs.clear();
                 for ( OrgListBean org : textwatchorgs) {
                     if (StringUtil.contains(org.getName(), s.toString(), true)) {
                         orgs.add(org);

@@ -550,9 +550,8 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         }
         @Override
         public void afterTextChanged(Editable s) {
-
+            orgCompositeUserListBeans.clear();
             if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
-                orgCompositeUserListBeans.clear();
                 for (OrgCompositeUserListBean user : textatchoOrgCompositeUsers) {
                     if (StringUtil.contains(user.getUser().getName(), s.toString(), true)) {
                         orgCompositeUserListBeans.add(user);
