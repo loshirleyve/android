@@ -220,6 +220,11 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         }
     }
 
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
+
     public void setTitleText(String text) {
         this.getTitleTV().setText(text);
     }

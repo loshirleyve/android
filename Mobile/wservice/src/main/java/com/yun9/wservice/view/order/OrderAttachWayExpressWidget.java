@@ -73,4 +73,13 @@ public class OrderAttachWayExpressWidget extends JupiterRelativeLayout implement
             detailLl.setVisibility(GONE);
         }
     }
+
+    public String getExpressNo() {
+        return editText.getText().toString();
+    }
+
+    @Override
+    public boolean isSelected() {
+        return sutitleLayout.isSelected();
+    }
 }

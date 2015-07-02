@@ -5,4 +5,5 @@ package com.yun9.jupiter.model;
  */
 public interface ISelectable {
     public void select(boolean isSelect);
+    public boolean isSelected();
 }
