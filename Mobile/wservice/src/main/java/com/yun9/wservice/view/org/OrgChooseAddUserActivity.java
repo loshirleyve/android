@@ -3,6 +3,7 @@ package com.yun9.wservice.view.org;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -99,7 +100,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleRightTv().setText("保存");
         titleBarLayout.getTitleRight().setOnClickListener(onAddUserOrgClickListener);
         adduseorg.setOnClickListener(onChooseAddUserOrgClickListener);
-        addusephonebook.setOnClickListener(null);
+        addusephonebook.setOnClickListener(onChooseAddUserPhoneClickListener);
     }
 
     private View.OnClickListener onChooseAddUserOrgClickListener=new View.OnClickListener() {
@@ -114,6 +115,20 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
             OrgCompositeActivity.start(OrgChooseAddUserActivity.this, orgCompositeCommand);
         }
     };
+
+
+
+
+    private View.OnClickListener onChooseAddUserPhoneClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgPhoneUserActivity.start(OrgChooseAddUserActivity.this, new OrgPhoneUserCommand());
+
+        }
+    };
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -137,7 +152,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override
                     public void onSuccess(Response response) {
-                        Toast.makeText(OrgChooseAddUserActivity.this, "添加用户用户成功！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrgChooseAddUserActivity.this, "添加用户成功！", Toast.LENGTH_SHORT).show();
                         finish();
                     }
                     @Override

@@ -84,6 +84,7 @@
     <string name="org_edit_new">编辑部门</string>
     <string name="org_add_newuser">添加新成员</string>
     <string name="parent_org">上级部门</string>
+    <string name="org_phone_user">通讯录</string>
 
     <string name="doc_composite_title">文档</string>
     <string name="doc_image_location">本地图片</string>

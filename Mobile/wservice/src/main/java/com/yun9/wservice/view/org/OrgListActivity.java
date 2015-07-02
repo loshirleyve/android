@@ -310,7 +310,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
     private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(edit).setDimType(command.getDimType()));
+            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(true).setDimType(command.getDimType()));
         }
     };
 }

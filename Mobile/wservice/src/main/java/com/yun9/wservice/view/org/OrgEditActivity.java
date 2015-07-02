@@ -62,9 +62,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.neworg)
     private EditText neworg;
 
-    @ViewInject(id=R.id.orgtips)
-    private TextView orgtips;
-
 
     @ViewInject(id=R.id.edit_ico_users)
     private JupiterEditIco jupiterEdituserIco;
@@ -112,34 +109,28 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 OrgEditActivity.this.setEdit(!edit);
             }
         });
-
+        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+        titleBarLayout.getTitleRight().setOnClickListener(addOrgClickListener);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
-        //检查是否进入编辑状态
-        if (AssertValue.isNotNull(command) && command.isEdit()) {
-            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
-            titleBarLayout.getTitleRightTv().setText("编辑");
-        } else
-        {
 
-        }
         //如果没有orgid则进入新增状态
         if(!AssertValue.isNotNull(command) ||  !AssertValue.isNotNullAndNotEmpty(command.getOrgid()))
         {
-            neworg.setEnabled(true);
-            titleBarLayout.getTitleRightTv().setText("保存");
             titleBarLayout.getTitleTv().setText("自定义部门");
-            titleBarLayout.getTitleRight().setOnClickListener(addOrgClickListener);
             jupiterEdituserIco.setVisibility(View.GONE);
             jupiterEditorgIco.setVisibility(View.GONE);
         }
         else {
             jupiterEdituserIco.setVisibility(View.VISIBLE);
             jupiterEditorgIco.setVisibility(View.VISIBLE);
-            neworg.setEnabled(false);
             getOrgDetails();
-            titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
-            orgtips.setText("[向左滑动可编辑]");
+        }
+
+        //检查是否进入编辑状态
+
+        if (AssertValue.isNotNull(command)) {
+            setEdit(command.isEdit());
         }
         useritemList=new ArrayList<JupiterEditableView>();
         orgitemList =new ArrayList<JupiterEditableView>();
@@ -177,7 +168,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         orgitem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrgEditActivity.start(OrgEditActivity.this, new OrgEditCommand().setEdit(false).setParentorgname(bean.getName()).setParentorgid(bean.getId()).setDimType(bean.getType()));
+                OrgEditActivity.start(OrgEditActivity.this, new OrgEditCommand().setEdit(true).setParentorgname(bean.getName()).setParentorgid(bean.getId()).setDimType(bean.getType()));
             }
         });
         orgitemList.add(orgitem);
@@ -238,7 +229,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                         deleteUserItem(useritem);
                     }
                 });
-                useritem.edit(false);
+                useritem.edit(true);
                 useritemList.add(useritem);
                 useradapter.notifyDataSetChanged();
             }
@@ -322,12 +313,25 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 addOrg(orgname);
             } else
                 Toast.makeText(OrgEditActivity.this, "请输入组织/小组名称", Toast.LENGTH_SHORT).show();
+            setEdit(edit);
         }
     };
 
 
     private void setEdit(boolean edit){
         this.edit = edit;
+        if(this.edit)
+        {
+            this.edit=false;
+            neworg.setEnabled(true);
+            titleBarLayout.getTitleRightTv().setText("保存");
+        }
+        else
+        {
+            this.edit=true;
+            neworg.setEnabled(false);
+            titleBarLayout.getTitleRightTv().setText("编辑");
+        }
     }
 
 

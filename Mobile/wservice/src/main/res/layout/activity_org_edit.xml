@@ -44,24 +44,14 @@
                     android:paddingLeft="20dp"
                     android:textColor="@color/red" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
                         android:textColor="@color/devide_line"
                         android:text="@string/org_name"
                         />
 
-                    <TextView
-                        android:id="@+id/orgtips"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/devide_line" />
-                </LinearLayout>
 
                 <EditText
                     android:id="@+id/neworg"

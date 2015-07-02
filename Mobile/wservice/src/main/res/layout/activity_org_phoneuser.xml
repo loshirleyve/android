@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tb:titleText="@string/org_phone_user"
+        tb:titleLeftIcoVisibility="true">
+
+    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/titlebar"
+        android:layout_above="@+id/buttonbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.yun9.jupiter.widget.JupiterSearchInputLayout
+            android:id="@+id/searchRL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+        </com.yun9.jupiter.widget.JupiterSearchInputLayout>
+
+        <ListView
+            android:id="@+id/orglist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
+
+        </ListView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whites">
+
+        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            button:imageButtonText="@string/app_complete"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
