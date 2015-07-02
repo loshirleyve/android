@@ -3,10 +3,16 @@ package com.yun9.wservice.view.myself;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -99,12 +105,13 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
         jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         //userInfoWidget.getUserHeadLL().setOnClickListener(onImgClickListener);
-        userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
+       /* userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openOptionsMenu();
             }
-        });
+        });*/
+        userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
 
         userInfoWidget.getSignature().setOnClickListener(onSignatureClickListener);
         userInfoWidget.postDelayed(new Runnable() {
@@ -340,22 +347,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         });
     }
 
-    /**
-     *
-     */
-  /*  private View.OnClickListener onImgClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
-                    .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
-                    .setUserid(userid)
-                    .setInstid(instid);
-            //yunImageCommand.setSelectImages(onSelectYunImages);
-            YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
-        }
-    };*/
-
-
     private View.OnClickListener onSignatureClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -365,47 +356,72 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     };
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem menIteCloudPic = menu.add(1001, 100, 1, "云图片");
-        menIteCloudPic.setTitle("云图片");
-        MenuItem menuItemLocPic = menu.add(1001, 101, 2, "本地图片");
-        menuItemLocPic.setTitle("本地图片");
-        MenuItem menuItemPhoto = menu.add(1001, 102, 3, "拍照");
-        menuItemPhoto.setTitle("拍照");
-        MenuItem menuItemCancel = menu.add(1001, 103, 4, "取消");
-        menuItemCancel.setTitle("取消");
-        return true;
+    public boolean onTouchEvent(MotionEvent event) {
+        if (pop != null && pop.isShowing()) {
+            pop.dismiss();
+            pop = null;
+        }
+        return super.onTouchEvent(event);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case 100:
-                if(!AssertValue.isNotNull(yunImageCommand)) {
-                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
-                            .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
-                            .setUserid(userid)
-                            .setInstid(instid);
-                    //yunImageCommand.setSelectImages(onSelectYunImages);
-                }
-                YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
-                break;
-            case 101:
-                if (!AssertValue.isNotNull(localImageCommand)) {
-                    localImageCommand = new LocalImageCommand().setEdit(true).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(userid).setInstid(instid);
-                }
-                LocalImageActivity.start(UserInfoActivity.this, localImageCommand);
-                break;
-            case 102:
-                if (!AssertValue.isNotNull(cameraCommand)) {
-                    cameraCommand = new CameraCommand();
-                }
-                CameraActivity.start(UserInfoActivity.this, cameraCommand);
-                break;
-            case 103:
-                finish();
-                break;
+    private PopupWindow pop;
+    private View menuLayout;
+
+    private View.OnClickListener onMenuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            menuLayout = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.widget_user_menu, null);
+            View parent = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.activity_user_info, null);
+            pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            pop.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+            pop.setBackgroundDrawable(new BitmapDrawable());
+            pop.setOutsideTouchable(true);
+
+            View yunImg = menuLayout.findViewById(R.id.yun_image);
+            View localImg = menuLayout.findViewById(R.id.local_image);
+            View photo = menuLayout.findViewById(R.id.photo);
+            View cancel = menuLayout.findViewById(R.id.cancel);
+
+            yunImg.setOnClickListener(new onMenuItemClickListener());
+            localImg.setOnClickListener(new onMenuItemClickListener());
+            photo.setOnClickListener(new onMenuItemClickListener());
+            cancel.setOnClickListener(new onMenuItemClickListener());
+
         }
-        return super.onOptionsItemSelected(item);
+    };
+
+    private class onMenuItemClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.yun_image:
+                    if(!AssertValue.isNotNull(yunImageCommand)) {
+                        yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
+                                .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
+                                .setUserid(userid)
+                                .setInstid(instid);
+                    }
+                    YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
+                    pop.dismiss();
+                    break;
+                case R.id.local_image:
+                    if (!AssertValue.isNotNull(localImageCommand)) {
+                        localImageCommand = new LocalImageCommand().setEdit(true).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(userid).setInstid(instid);
+                    }
+                    LocalImageActivity.start(UserInfoActivity.this, localImageCommand);
+                    pop.dismiss();
+                    break;
+                case R.id.photo:
+                    if (!AssertValue.isNotNull(cameraCommand)) {
+                        cameraCommand = new CameraCommand();
+                    }
+                    CameraActivity.start(UserInfoActivity.this, cameraCommand);
+                    pop.dismiss();
+                    break;
+                case R.id.cancel:
+                    pop.dismiss();
+                    break;
+            }
+        }
     }
 }
