@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -65,19 +66,23 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.userInfo)
     private UserInfoWidget userInfoWidget;
 
+    @ViewInject(id = R.id.activity_user_info)
+    private RelativeLayout userInfoRl;
+
     @BeanInject
     private SessionManager sessionManager;
 
     @BeanInject
     private ResourceFactory resourceFactory;
 
-    public static void start(Activity activity, UserInfoCommand command){
+    public static void start(Activity activity, UserInfoCommand command) {
         Intent intent = new Intent(activity, UserInfoActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(UserInfoCommand.PARAM_USER_INFO_COMMAND, command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
+
     @Override
     protected int getContentView() {
         return R.layout.activity_user_info;
@@ -88,20 +93,18 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         //获取参数
-        command = (UserInfoCommand)this.getIntent().getSerializableExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND);
+        command = (UserInfoCommand) this.getIntent().getSerializableExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND);
 
-        if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getUserid())){
+        if (!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
             userid = sessionManager.getUser().getId();
-        }
-        else {
+        } else {
             userid = command.getUserid();
             sessionManager.getUser().setId(userid);
         }
 
-        if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())){
+        if (!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
             instid = sessionManager.getInst().getId();
-        }
-        else {
+        } else {
             instid = command.getInstid();
             sessionManager.getInst().setId(instid);
         }
@@ -117,8 +120,8 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
-    private void refresh(){
-        if(AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())){
+    private void refresh() {
+        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())) {
             Resource resource = resourceFactory.create("QueryUserInfoByIdService");
             resource.param("userid", userid);
             resource.param("instid", instid);
@@ -167,18 +170,17 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK){
-           List<FileBean> onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
-            if(AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
+        if (AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK) {
+            List<FileBean> onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
+            if (AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
                 ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV());
                 updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
 
-                Intent intent = new Intent();
-                intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, onSelectYunImages.get(0).getId());
-                setResult(UserInfoCommand.RESULT_CODE_OK, intent);}
+                setResult(UserInfoCommand.RESULT_CODE_OK);
+            }
         }
 
-        if(AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK){
+        if (AssertValue.isNotNull(userSignatureCommand) && requestCode == userSignatureCommand.getRequestCode() && resultCode == UserSignatureCommand.RESULT_CODE_OK) {
             String signature = (String) data.getSerializableExtra(UserSignatureCommand.PARAM_SIGNATURE_COMMAND);
             userInfoWidget.getSignature().getSutitleTv().setText(signature);
             upadteSignature(signature);
@@ -189,17 +191,17 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             Intent intent = new Intent();
             intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, signature);
             setResult(UserInfoCommand.RESULT_CODE_OK, intent);
-         }
+        }
 
-        if(AssertValue.isNotNull(localImageCommand) && requestCode == localImageCommand.getRequestCode() && resultCode == LocalImageCommand.RESULT_CODE_OK){
+        if (AssertValue.isNotNull(localImageCommand) && requestCode == localImageCommand.getRequestCode() && resultCode == LocalImageCommand.RESULT_CODE_OK) {
             List<FileBean> images = new ArrayList<>();
             //images.get(0).setLevel(FileBean.FILE_LEVEL_SYSTEM);
             images = (List<FileBean>) data.getSerializableExtra(LocalImageCommand.PARAM_IMAGE);
-            if(AssertValue.isNotNull(images)){
-                for(FileBean currentImg : images){
+            if (AssertValue.isNotNull(images)) {
+                for (FileBean currentImg : images) {
                     currentImg.setUserid(userid);
                     currentImg.setInstid(instid);
-                    images.add(currentImg);
+                    //images.add(currentImg);
                 }
             }
 
@@ -224,28 +226,25 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                         if (AssertValue.isNotNull(currentImg)) {
                             ImageLoaderUtil.getInstance(mContext).displayImage(currentImg.getId(), userInfoWidget.getUserHeadIV());
                             updateUserByHeaderfileid(currentImg.getId());
-
-                            Intent intent = new Intent();
-                            intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, currentImg.getId());
-                            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
+                            setResult(UserInfoCommand.RESULT_CODE_OK);
                         }
                     }
                 }
             });
-            uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
-                @Override
-                public void onProgressUpdate(FileBean values) {
-                    //异步刷新界面
-                }
-            });
+//            uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
+//                @Override
+//                public void onProgressUpdate(FileBean values) {
+//                    //异步刷新界面
+//                }
+//            });
             uploadFileAsyncTask.execute();
         }
 
-        if(AssertValue.isNotNull(cameraCommand) && requestCode == cameraCommand.getRequestCode() && resultCode == CameraCommand.RESULT_CODE_OK){
+        if (AssertValue.isNotNull(cameraCommand) && requestCode == cameraCommand.getRequestCode() && resultCode == CameraCommand.RESULT_CODE_OK) {
             List<FileBean> cameraImages = new ArrayList<>();
             FileBean cameraImage = (FileBean) data.getSerializableExtra(CameraCommand.PARAM_IMAGE);
             //cameraImage.setLevel(FileBean.FILE_LEVEL_SYSTEM);
-            if(AssertValue.isNotNull(cameraImage)){
+            if (AssertValue.isNotNull(cameraImage)) {
                 cameraImage.setUserid(userid);
                 cameraImage.setInstid(instid);
                 cameraImages.add(cameraImage);
@@ -289,7 +288,11 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void updateUserByHeaderfileid(String userHeaderId){
+    private void uploadFile(List<FileBean> images) {
+        //TODO 将上传文件过程统一在此处处理
+    }
+
+    private void updateUserByHeaderfileid(String userHeaderId) {
         Resource resource = resourceFactory.create("UpdateUserByHeaderfileid");
         resource.param("userid", userid);
         resource.param("instid", instid);
@@ -313,8 +316,9 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             }
         });
     }
-    private void upadteSignature(String signature){
-        Resource resource  = resourceFactory.create("UpdateUserBySignature");
+
+    private void upadteSignature(String signature) {
+        Resource resource = resourceFactory.create("UpdateUserBySignature");
         resource.param("userid", userid);
         resource.param("instid", instid);
         resource.param("signature", signature);
@@ -359,9 +363,10 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             menuLayout = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.widget_user_menu, null);
-            View parent = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.activity_user_info, null);
+            //View parent = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.activity_user_info, null);
             pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            pop.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+            pop.setOutsideTouchable(true);
+            pop.showAtLocation(userInfoRl, Gravity.BOTTOM, 0, 0);
 
             View yunImg = menuLayout.findViewById(R.id.yun_image);
             View localImg = menuLayout.findViewById(R.id.local_image);
@@ -376,12 +381,12 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
     };
 
-    private class onMenuItemClickListener implements View.OnClickListener{
+    private class onMenuItemClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.yun_image:
-                    if(!AssertValue.isNotNull(yunImageCommand)) {
+                    if (!AssertValue.isNotNull(yunImageCommand)) {
                         yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
                                 .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
                                 .setUserid(userid)
