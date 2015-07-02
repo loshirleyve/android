@@ -77,5 +77,15 @@
                 app:rowStyleSutitleShowTimeText="false"
                 app:rowStyleSutitleText=""
                 />
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:background="@drawable/user_info_background"
+                android:id="@+id/user_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleTitleText="@string/setting_change_password"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                />
         </LinearLayout>
 </RelativeLayout>

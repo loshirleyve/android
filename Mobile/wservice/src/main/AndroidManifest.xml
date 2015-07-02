@@ -396,6 +396,10 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:label="@string/user_signature"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        <activity android:name=".view.myself.UserPasswordActivity"
+            android:label="@string/user_password"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
     </application>
 
