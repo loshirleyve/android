@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/user_menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical">
+
+    <TextView
+        android:background="@color/whites"
+        android:layout_marginBottom="5dp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:id="@+id/yun_image"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="云图片"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:background="@color/whites"
+        android:layout_marginBottom="5dp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:id="@+id/local_image"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="本地图片"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:background="@color/whites"
+        android:layout_marginBottom="5dp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:id="@+id/photo"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="拍照"
+        android:layout_gravity="center"
+        />
+    <TextView
+        android:background="@color/whites"
+        android:layout_marginTop="5dp"
+        android:padding="6dp"
+        android:gravity="center"
+        android:id="@+id/cancel"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取消"
+        android:layout_gravity="center"
+        />
+
+</LinearLayout>
