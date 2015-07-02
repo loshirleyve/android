@@ -32,6 +32,9 @@ public class UserInfoWidget extends JupiterRelativeLayout {
     @ViewInject(id = R.id.user_signature)
     private JupiterRowStyleSutitleLayout signature;
 
+    @ViewInject(id = R.id.user_password)
+    private JupiterRowStyleSutitleLayout password;
+
     public UserInfoWidget(Context context) {
         super(context);
     }
@@ -54,6 +57,14 @@ public class UserInfoWidget extends JupiterRelativeLayout {
         userHeadLL = (LinearLayout) this.findViewById(R.id.userHeadLL);
         userHeadTV = (TextView) this.findViewById(R.id.userHeadTV);
         userHeadIV = (ImageView) this.findViewById(R.id.userHeadIV);
+    }
+
+    public JupiterRowStyleSutitleLayout getPassword() {
+        return password;
+    }
+
+    public void setPassword(JupiterRowStyleSutitleLayout password) {
+        this.password = password;
     }
 
     public JupiterRowStyleSutitleLayout getUserName() {

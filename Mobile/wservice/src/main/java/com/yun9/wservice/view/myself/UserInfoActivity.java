@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -114,8 +115,8 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
         TitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
-
         userInfoWidget.getSignature().setOnClickListener(onSignatureClickListener);
+        userInfoWidget.getPassword().setOnClickListener(onPassClickListener);
 
         //初始化菜单弹出窗口
         initImgMenu();
@@ -171,6 +172,16 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    };
+
+    private View.OnClickListener onPassClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(!AssertValue.isNotNull(command)){
+                command = new UserInfoCommand().setUserid(userid).setInstid(instid);
+            }
+            UserPasswordActivity.start(UserInfoActivity.this, command);
         }
     };
 
@@ -318,7 +329,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             layoutParams.alpha = 0.4f;
             getWindow().setAttributes(layoutParams);
             pop.showAtLocation(userInfoRL, Gravity.BOTTOM, 0, 0);
-            pop.showAsDropDown(userInfoWidget.getUserHeadLL());
         }
     };
 
@@ -326,7 +336,8 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         menuLayout = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.widget_user_menu, null);
         pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         pop.setOnDismissListener(onDismissListener);
-        pop.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        /*pop.setBackgroundDrawable(new ColorDrawable(Color.argb(0.5f, )));*/
+        pop.setBackgroundDrawable(getResources().getDrawable(R.color.drak));
         pop.setOutsideTouchable(true);
         pop.setAnimationStyle(R.style.bottom2top_top2bottom);
 
