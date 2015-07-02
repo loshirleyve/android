@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+    android:id="@+id/subtitle_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:rowStyleSutitleShowMainImage="false"
+    app:rowStyleSutitleShowArrow="false"
+    app:rowStyleSutitleShowTimeText="false"
+    app:rowStyleSutitleTitleText="自助"/>
+<LinearLayout
+    android:id="@+id/detail_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/subtitle_layout"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical"
+    android:background="@color/yellow_background">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="20dp">
+        <TextView
+            android:id="@+id/address_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:textColor="@color/gray_font"
+            android:text="办公地址"/>
+        <ImageView
+            android:id="@+id/location_ico_iv"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/address_tip"
+            android:background="@drawable/landmark"/>
+        <TextView
+            android:id="@+id/tip_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/address_tip"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@id/location_ico_iv"
+            android:textSize="13dp"
+            android:textColor="@color/purple_font"
+            android:text="广东省深圳市宝安区建设一路宝安大厦C栋1908\n深圳市平安财务公司\n刘小红  1876543345561"/>
+    </RelativeLayout>
+</LinearLayout>
+</RelativeLayout>

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.util.AssertValue;
 
 import java.util.Collection;
@@ -20,7 +21,7 @@ import java.util.Iterator;
 /**
  * Created by Leon on 15/4/21.
  */
-public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout{
+public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implements ISelectable{
     private TextView titleTV;
 
     private ImageView mainIV;

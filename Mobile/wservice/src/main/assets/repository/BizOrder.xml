@@ -98,4 +98,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 根据机构ID获取机构支持的资料提交方式服务 -->
+    <repository>
+        <name>QueryTransferByInstIdService</name>
+        <action>com.yun9.ws.biz.service.QueryTransferByInstIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.AttachTransferWay</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>
