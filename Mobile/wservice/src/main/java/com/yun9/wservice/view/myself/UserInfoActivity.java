@@ -56,6 +56,8 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     private UserSignatureCommand userSignatureCommand;
     private int maxSelectNum = 1;
     private YunImageCommand yunImageCommand;
+    private PopupWindow pop;
+    private View menuLayout;
 
     @ViewInject(id = R.id.user_info_title)
     private JupiterTitleBarLayout jupiterTitleBarLayout;
@@ -104,13 +106,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             sessionManager.getInst().setId(instid);
         }
         jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
-        //userInfoWidget.getUserHeadLL().setOnClickListener(onImgClickListener);
-       /* userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openOptionsMenu();
-            }
-        });*/
         userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
 
         userInfoWidget.getSignature().setOnClickListener(onSignatureClickListener);
@@ -159,7 +154,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 }
             });
         }
-
     }
 
     private View.OnClickListener onBackClickListener = new View.OnClickListener() {
@@ -242,8 +236,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 @Override
                 public void onProgressUpdate(FileBean values) {
                     //异步刷新界面
-                    //mHandler.sendEmptyMessage(1);
-
                 }
             });
             uploadFileAsyncTask.execute();
@@ -291,7 +283,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 @Override
                 public void onProgressUpdate(FileBean values) {
                     //异步刷新界面
-                    //mHandler.sendEmptyMessage(1);
                 }
             });
             uploadFileAsyncTask.execute();
@@ -364,9 +355,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         return super.onTouchEvent(event);
     }
 
-    private PopupWindow pop;
-    private View menuLayout;
-
     private View.OnClickListener onMenuClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -374,8 +362,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             View parent = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.activity_user_info, null);
             pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             pop.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
-            pop.setBackgroundDrawable(new BitmapDrawable());
-            pop.setOutsideTouchable(true);
 
             View yunImg = menuLayout.findViewById(R.id.yun_image);
             View localImg = menuLayout.findViewById(R.id.local_image);
