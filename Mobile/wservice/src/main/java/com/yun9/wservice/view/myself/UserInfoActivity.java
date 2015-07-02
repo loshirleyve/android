@@ -3,10 +3,20 @@ package com.yun9.wservice.view.myself;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -50,9 +60,14 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     private UserSignatureCommand userSignatureCommand;
     private int maxSelectNum = 1;
     private YunImageCommand yunImageCommand;
+    private PopupWindow pop;
+    private View menuLayout;
+
+    @ViewInject(id = R.id.activity_user_info)
+    private RelativeLayout userInfoRL;
 
     @ViewInject(id = R.id.user_info_title)
-    private JupiterTitleBarLayout jupiterTitleBarLayout;
+    private JupiterTitleBarLayout TitleBarLayout;
 
     @ViewInject(id = R.id.userInfo)
     private UserInfoWidget userInfoWidget;
@@ -97,16 +112,14 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             instid = command.getInstid();
             sessionManager.getInst().setId(instid);
         }
-        jupiterTitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
-        //userInfoWidget.getUserHeadLL().setOnClickListener(onImgClickListener);
-        userInfoWidget.getUserHeadLL().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openOptionsMenu();
-            }
-        });
+        TitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
+        userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
 
         userInfoWidget.getSignature().setOnClickListener(onSignatureClickListener);
+
+        //初始化菜单弹出窗口
+        initImgMenu();
+
         userInfoWidget.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -152,7 +165,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 }
             });
         }
-
     }
 
     private View.OnClickListener onBackClickListener = new View.OnClickListener() {
@@ -184,10 +196,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             User user = sessionManager.getUser();
             user.setSignature(signature);
             sessionManager.setUser(user);
-
-            Intent intent = new Intent();
-            intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, signature);
-            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
+            setResult(UserInfoCommand.RESULT_CODE_OK);
          }
 
         if(AssertValue.isNotNull(localImageCommand) && requestCode == localImageCommand.getRequestCode() && resultCode == LocalImageCommand.RESULT_CODE_OK){
@@ -198,48 +207,9 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 for(FileBean currentImg : images){
                     currentImg.setUserid(userid);
                     currentImg.setInstid(instid);
-                    images.add(currentImg);
                 }
             }
-
-            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(UserInfoActivity.this, images);
-            uploadFileAsyncTask.setCompImage(true);
-            uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
-                @Override
-                public void onPostExecute(List<FileBean> images) {
-                    boolean upload = true;
-                    if (AssertValue.isNotNull(images)) {
-                        for (FileBean currentImg : images) {
-                            if (currentImg.FILE_STORAGE_TYPE_LOCAL.equals(currentImg.getStorageType())) {
-                                upload = false;
-                            }
-                        }
-                    }
-
-                    if (!upload) {
-                        Toast.makeText(mContext, R.string.new_image_upload_error, Toast.LENGTH_SHORT).show();
-                    } else {
-                        FileBean currentImg = images.get(0);
-                        if (AssertValue.isNotNull(currentImg)) {
-                            ImageLoaderUtil.getInstance(mContext).displayImage(currentImg.getId(), userInfoWidget.getUserHeadIV());
-                            updateUserByHeaderfileid(currentImg.getId());
-
-                            Intent intent = new Intent();
-                            intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, currentImg.getId());
-                            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
-                        }
-                    }
-                }
-            });
-            uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
-                @Override
-                public void onProgressUpdate(FileBean values) {
-                    //异步刷新界面
-                    //mHandler.sendEmptyMessage(1);
-
-                }
-            });
-            uploadFileAsyncTask.execute();
+            upLoadHeadImg(images);
         }
 
         if(AssertValue.isNotNull(cameraCommand) && requestCode == cameraCommand.getRequestCode() && resultCode == CameraCommand.RESULT_CODE_OK){
@@ -251,44 +221,37 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 cameraImage.setInstid(instid);
                 cameraImages.add(cameraImage);
             }
-            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(UserInfoActivity.this, cameraImages);
-            uploadFileAsyncTask.setCompImage(true);
-            uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
-                @Override
-                public void onPostExecute(List<FileBean> cameraImages) {
-                    boolean upload = true;
-                    if (AssertValue.isNotNull(cameraImages)) {
-                        for (FileBean cameraImage : cameraImages) {
-                            if (cameraImage.FILE_STORAGE_TYPE_LOCAL.equals(cameraImage.getStorageType())) {
-                                upload = false;
-                            }
-                        }
-                    }
-
-                    if (!upload) {
-                        Toast.makeText(mContext, getString(R.string.new_image_upload_error), Toast.LENGTH_SHORT).show();
-                    } else {
-                        if (AssertValue.isNotNull(cameraImages.get(0))) {
-                            ImageLoaderUtil.getInstance(mContext).displayImage(cameraImages.get(0).getId(), userInfoWidget.getUserHeadIV());
-                            updateUserByHeaderfileid(cameraImages.get(0).getId());
-
-                            Intent intent = new Intent();
-                            intent.putExtra(UserInfoCommand.PARAM_USER_INFO_COMMAND, cameraImages.get(0).getId());
-                            setResult(UserInfoCommand.RESULT_CODE_OK, intent);
-                        }
-                    }
-                }
-            });
-
-            uploadFileAsyncTask.setOnProgressUpdateCallback(new UploadFileAsyncTask.OnProgressUpdateCallback() {
-                @Override
-                public void onProgressUpdate(FileBean values) {
-                    //异步刷新界面
-                    //mHandler.sendEmptyMessage(1);
-                }
-            });
-            uploadFileAsyncTask.execute();
+            upLoadHeadImg(cameraImages);
         }
+    }
+
+    private void upLoadHeadImg(List<FileBean> imgs){
+        UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(UserInfoActivity.this, imgs);
+        uploadFileAsyncTask.setCompImage(true);
+        uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
+            @Override
+            public void onPostExecute(List<FileBean> imgs) {
+                boolean upload = true;
+                if (AssertValue.isNotNull(imgs)) {
+                    for (FileBean image : imgs) {
+                        if (image.FILE_STORAGE_TYPE_LOCAL.equals(image.getStorageType())) {
+                            upload = false;
+                        }
+                    }
+                }
+
+                if (!upload) {
+                    Toast.makeText(mContext, getString(R.string.new_image_upload_error), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (AssertValue.isNotNull(imgs.get(0))) {
+                        ImageLoaderUtil.getInstance(mContext).displayImage(imgs.get(0).getId(), userInfoWidget.getUserHeadIV());
+                        updateUserByHeaderfileid(imgs.get(0).getId());
+                        setResult(UserInfoCommand.RESULT_CODE_OK);
+                    }
+                }
+            }
+        });
+        uploadFileAsyncTask.execute();
     }
 
     private void updateUserByHeaderfileid(String userHeaderId){
@@ -340,22 +303,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         });
     }
 
-    /**
-     *
-     */
-  /*  private View.OnClickListener onImgClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
-                    .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
-                    .setUserid(userid)
-                    .setInstid(instid);
-            //yunImageCommand.setSelectImages(onSelectYunImages);
-            YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
-        }
-    };*/
-
-
     private View.OnClickListener onSignatureClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -364,48 +311,76 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
     };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem menIteCloudPic = menu.add(1001, 100, 1, "云图片");
-        menIteCloudPic.setTitle("云图片");
-        MenuItem menuItemLocPic = menu.add(1001, 101, 2, "本地图片");
-        menuItemLocPic.setTitle("本地图片");
-        MenuItem menuItemPhoto = menu.add(1001, 102, 3, "拍照");
-        menuItemPhoto.setTitle("拍照");
-        MenuItem menuItemCancel = menu.add(1001, 103, 4, "取消");
-        menuItemCancel.setTitle("取消");
-        return true;
+    private View.OnClickListener onMenuClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            layoutParams.alpha = 0.4f;
+            getWindow().setAttributes(layoutParams);
+            pop.showAtLocation(userInfoRL, Gravity.BOTTOM, 0, 0);
+            pop.showAsDropDown(userInfoWidget.getUserHeadLL());
+        }
+    };
+
+    private void initImgMenu(){
+        menuLayout = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.widget_user_menu, null);
+        pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setOnDismissListener(onDismissListener);
+        pop.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        pop.setOutsideTouchable(true);
+        pop.setAnimationStyle(R.style.bottom2top_top2bottom);
+
+        View yunImg = menuLayout.findViewById(R.id.yun_image);
+        View localImg = menuLayout.findViewById(R.id.local_image);
+        View photo = menuLayout.findViewById(R.id.photo);
+        View cancel = menuLayout.findViewById(R.id.cancel);
+
+        yunImg.setOnClickListener(new onMenuItemClickListener());
+        localImg.setOnClickListener(new onMenuItemClickListener());
+        photo.setOnClickListener(new onMenuItemClickListener());
+        cancel.setOnClickListener(new onMenuItemClickListener());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case 100:
-                if(!AssertValue.isNotNull(yunImageCommand)) {
-                    yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
-                            .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
-                            .setUserid(userid)
-                            .setInstid(instid);
-                    //yunImageCommand.setSelectImages(onSelectYunImages);
-                }
-                YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
-                break;
-            case 101:
-                if (!AssertValue.isNotNull(localImageCommand)) {
-                    localImageCommand = new LocalImageCommand().setEdit(true).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(userid).setInstid(instid);
-                }
-                LocalImageActivity.start(UserInfoActivity.this, localImageCommand);
-                break;
-            case 102:
-                if (!AssertValue.isNotNull(cameraCommand)) {
-                    cameraCommand = new CameraCommand();
-                }
-                CameraActivity.start(UserInfoActivity.this, cameraCommand);
-                break;
-            case 103:
-                finish();
-                break;
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+            layoutParams.alpha = 1f;
+            getWindow().setAttributes(layoutParams);
         }
-        return super.onOptionsItemSelected(item);
+    };
+    private class onMenuItemClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.yun_image:
+                    if(!AssertValue.isNotNull(yunImageCommand)) {
+                        yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(true)
+                                .setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK)
+                                .setUserid(userid)
+                                .setInstid(instid);
+                    }
+                    YunImageActivity.start(UserInfoActivity.this, yunImageCommand);
+                    pop.dismiss();
+                    break;
+                case R.id.local_image:
+                    if (!AssertValue.isNotNull(localImageCommand)) {
+                        localImageCommand = new LocalImageCommand().setEdit(true).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(userid).setInstid(instid);
+                    }
+                    LocalImageActivity.start(UserInfoActivity.this, localImageCommand);
+                    pop.dismiss();
+                    break;
+                case R.id.photo:
+                    if (!AssertValue.isNotNull(cameraCommand)) {
+                        cameraCommand = new CameraCommand();
+                    }
+                    CameraActivity.start(UserInfoActivity.this, cameraCommand);
+                    pop.dismiss();
+                    break;
+                case R.id.cancel:
+                    pop.dismiss();
+                    break;
+            }
+        }
     }
 }

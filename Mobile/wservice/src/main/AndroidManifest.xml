@@ -334,6 +334,18 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+        android:name=".view.order.OrderAttachmentActivity"
+        android:label="@string/attach_submit"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.order.OrderAttachmentChoiceWayActivity"
+            android:label="@string/attach_submit_ways"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
         android:name=".view.payment.RechargeActivity"
         android:label="@string/recharge"
         android:screenOrientation="portrait"
@@ -354,6 +366,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         <activity
             android:name=".view.payment.PaymentChoiceWaysActivity"
             android:label="@string/payment_ways"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.payment.RechargeRecordListActivity"
+            android:label="@string/recharge_history"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 

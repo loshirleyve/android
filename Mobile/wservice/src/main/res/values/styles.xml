@@ -114,4 +114,9 @@
         <item name="android:windowEnterAnimation">@anim/top_to_bottom</item>
         <item name="android:windowExitAnimation">@anim/bottom_to_top</item>
     </style>
+
+    <style name="bottom2top_top2bottom">
+        <item name="android:windowEnterAnimation">@anim/botto_to_top</item>
+        <item name="android:windowExitAnimation">@anim/top_to_botto</item>
+    </style>
 </resources>

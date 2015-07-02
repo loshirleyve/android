@@ -21,6 +21,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
+import com.yun9.wservice.view.payment.RechargeRecordListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +120,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     }
 
     private void openRechargeHistoryActivity(OrderBuyManagerInfo.RechargeGroup rechargeGroup) {
-        showToast("充值记录列表功能还未完成！");
+        RechargeRecordListActivity.start(this,rechargeGroup.getState(),rechargeGroup.getStatename());
     }
 
     private JupiterAdapter rechargeAdapter = new JupiterAdapter() {
