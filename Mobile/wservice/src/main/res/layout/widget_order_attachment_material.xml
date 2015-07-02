@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:textSize="14dp"
+    android:textColor="@color/devide_line"
+    android:text="请选择实物资料提交方式"/>
+    <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:rowStyleTitleShowMainImage="false"
+        app:rowStyleTitleText="资料提交方式"
+        app:rowStyleTitleShowHotText="true"/>
+    <com.yun9.jupiter.widget.JupiterListView
+        android:id="@+id/material_attach_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0.5dp">
+    </com.yun9.jupiter.widget.JupiterListView>
+</LinearLayout>
+</RelativeLayout>

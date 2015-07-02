@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleLeftIcoVisibility="true"
+        app:titleText="@string/attach_submit"/>
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.yun9.wservice.view.order.OrderAttachmentVitualWidget
+                android:id="@+id/order_attach_vitual_widget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <com.yun9.wservice.view.order.OrderAttachmentMaterialWidget
+                android:id="@+id/order_attach_material_widget"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+</RelativeLayout>

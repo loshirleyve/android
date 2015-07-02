@@ -2,6 +2,7 @@ package com.yun9.wservice.view.order;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
@@ -14,6 +15,8 @@ import com.yun9.wservice.model.Order;
 public class OrderDetailAttachWidget extends JupiterRelativeLayout{
 
     private JupiterRowStyleTitleLayout titleLayout;
+
+    private Order order;
 
     public OrderDetailAttachWidget(Context context) {
         super(context);
@@ -28,7 +31,7 @@ public class OrderDetailAttachWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order order) {
-
+        this.order = order;
     }
 
     @Override
@@ -45,10 +48,15 @@ public class OrderDetailAttachWidget extends JupiterRelativeLayout{
     private void buildView() {
         titleLayout.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
         titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
-//        titleLayout.getHotNitoceTV().getPaint().setFakeBoldText(true);
         titleLayout.getHotNitoceTV().setText(R.string.checkout_attach);
         titleLayout.getTitleTV().setTextSize(14);
         titleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.purple_font));
+        titleLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OrderAttachmentActivity.start(OrderDetailAttachWidget.this.mContext,order.getOrderid());
+            }
+        });
 
     }
 }

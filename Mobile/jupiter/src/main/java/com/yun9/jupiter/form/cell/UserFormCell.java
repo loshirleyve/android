@@ -142,8 +142,10 @@ public class UserFormCell extends FormCell{
                     @Override
                     public void callback(Object data) {
                         User user = (User) data;
-                        item.setTitle(user.getName());
-                        item.setImage(user.getHeaderfileid());
+                        if (user != null){
+                            item.setTitle(user.getName());
+                            item.setImage(user.getHeaderfileid());
+                        }
                     }
                 });
             } else if (uodMaps.get(i).get(PARAM_KEY_TYPE).equals("org")
@@ -152,8 +154,10 @@ public class UserFormCell extends FormCell{
                     @Override
                     public void callback(Object data) {
                         Org org = (Org) data;
-                        item.setTitle(org.getName());
-                        item.setImage("drawable://"+R.drawable.fileicon);
+                        if (org != null){
+                            item.setTitle(org.getName());
+                            item.setImage("drawable://"+R.drawable.fileicon);
+                        }
                     }
                 });
             }

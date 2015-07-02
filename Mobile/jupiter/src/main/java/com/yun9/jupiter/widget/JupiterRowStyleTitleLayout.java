@@ -6,16 +6,18 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.R;
 import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.util.AssertValue;
 
 /**
  * Created by Leon on 15/4/22.
  */
-public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
+public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout implements ISelectable{
 
     private TextView titleTV;
 
@@ -26,6 +28,8 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
     private TextView hotNitoceTV;
 
     private ImageView selectModeIV;
+
+    private RelativeLayout container;
 
     private boolean selected;
 
@@ -55,6 +59,7 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
         this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
         this.selectModeIV = (ImageView) this.findViewById(R.id.selectmode_iv);
+        this.container = (RelativeLayout) this.findViewById(R.id.row_style_title);
         this.initAttr(attrs);
     }
 
@@ -193,5 +198,7 @@ public class JupiterRowStyleTitleLayout extends JupiterRelativeLayout {
         this.onSelectListener = onSelectListener;
     }
 
-
+    public RelativeLayout getContainer() {
+        return container;
+    }
 }
