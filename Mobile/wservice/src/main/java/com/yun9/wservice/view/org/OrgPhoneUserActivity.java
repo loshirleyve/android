@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -99,6 +100,7 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
 
     public void initView()
     {
+        final ProgressDialog registerDialog = ProgressDialog.show(OrgPhoneUserActivity.this, null, getResources().getString(R.string.app_wating), true);
         mContext=getApplicationContext();
         users=new ArrayList<>();
         textwatchusers=new ArrayList<>();
@@ -107,11 +109,13 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         if(AssertValue.isNotNullAndNotEmpty(contactusers)) {
             users.addAll(contactusers.values());
             textwatchusers.addAll(users);
+            registerDialog.dismiss();
         }
         else//构造测试数据
         {
             users.addAll(build());
             textwatchusers.addAll(users);
+            registerDialog.dismiss();
         }
         phoneUserAdapter=new OrgPhoneUserAdapter(mContext,users);
         userListView.setAdapter(phoneUserAdapter);

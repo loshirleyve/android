@@ -112,6 +112,11 @@
     <string name="doc_file_online">云文件</string>
     <string name="doc_select_num_max">最多允许选择%1$d个文件</string>
     <string name="please_select">请选择</string>
+    <string name="doc_file_name">文件名称</string>
+    <string name="doc_file_from">来自：</string>
+    <string name="doc_file_uploaddate">上传时间：</string>
+    <string name="doc_file_size">大小：</string>
+    <string name="doc_file_openway">打开方式</string>
 
     <string name="register_user">注册用户</string>
     <string name="register_user_welcome">欢迎加入移办通，请输入您的邮箱地址</string>

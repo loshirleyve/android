@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -183,6 +184,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     private void getOrgDetails()
     {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
+            final ProgressDialog registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
             Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
             resource.param("orgid", command.getOrgid());
             resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
@@ -200,7 +202,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
+                    registerDialog.dismiss();
                 }
             });
         }
