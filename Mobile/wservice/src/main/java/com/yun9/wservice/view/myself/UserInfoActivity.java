@@ -20,9 +20,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
@@ -141,7 +143,10 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 public void onSuccess(Response response) {
                     User user = (User) response.getPayload();
                     if (AssertValue.isNotNull(user)) {
-                        ImageLoaderUtil.getInstance(mContext).displayImage(user.getHeaderfileid(), userInfoWidget.getUserHeadIV());
+                        CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
+                        if (AssertValue.isNotNull(cacheUser)){
+                            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userInfoWidget.getUserHeadIV());
+                        }
                         userInfoWidget.getUserName().getHotNitoceTV().setText(user.getName());
                         userInfoWidget.getUserName().getHotNitoceTV().setVisibility(View.VISIBLE);
                         userInfoWidget.getUserName().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
