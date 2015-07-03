@@ -67,4 +67,8 @@ public class OrderAttachWaySelfWidget extends JupiterRelativeLayout implements I
             detailLl.setVisibility(GONE);
         }
     }
+    @Override
+    public boolean isSelected() {
+        return sutitleLayout.isSelected();
+    }
 }

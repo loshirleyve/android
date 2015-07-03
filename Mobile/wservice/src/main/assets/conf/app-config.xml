@@ -24,4 +24,7 @@
 	
 	<config name="app.config.jm.url">http://app.ibiart.com</config>
 	<config name="app.config.resource.yun9.file.upload.baseUrl">http://120.25.201.15:9080/ws-biz/common/file/upload.yun9</config>
+
+	<!--支付宝配置 -->
+	<config name="app.config.pay.notify.url">http://120.25.201.15:9080/ws-biz/pay/alipay.yun9</config>
 </configs>

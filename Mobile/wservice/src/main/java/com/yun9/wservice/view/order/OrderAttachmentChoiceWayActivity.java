@@ -1,16 +1,20 @@
 package com.yun9.wservice.view.order;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -19,6 +23,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.AttachTransferWay;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +31,8 @@ import java.util.List;
  * Created by huangbinglong on 7/1/15.
  */
 public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
+
+    public static final String CHOICE_WAY_HOLDER = "choice_way_holder";
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -45,6 +52,9 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.cancel_widget)
     private JupiterRowStyleTitleLayout cancelWidge;
 
+    @ViewInject(id=R.id.confirm_ll)
+    private LinearLayout confirmLl;
+
     @BeanInject
     private SessionManager sessionManager;
 
@@ -53,9 +63,9 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
 
     private List<View> widgets;
 
-    public static void start(Context context) {
-        Intent intent = new Intent(context,OrderAttachmentChoiceWayActivity.class);
-        context.startActivity(intent);
+    public static void start(Activity activity,JupiterCommand command) {
+        Intent intent = new Intent(activity,OrderAttachmentChoiceWayActivity.class);
+        activity.startActivityForResult(intent,command.getRequestCode());
     }
 
     @Override
@@ -73,14 +83,67 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
                 OrderAttachmentChoiceWayActivity.this.finish();
             }
         });
+        confirmLl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirm();
+            }
+        });
         cancelWidge.setSelectMode(true);
+
+        ViewHolder viewHolder = new ViewHolder();
+        viewHolder.setKey("快递");
+        expressWidget.setTag(viewHolder);
         widgets.add(expressWidget);
+
+        viewHolder = new ViewHolder();
+        viewHolder.setKey("上门取件");
+        vistWidget.setTag(viewHolder);
         widgets.add(vistWidget);
+
+        viewHolder = new ViewHolder();
+        viewHolder.setKey("发送邮件");
+        emailWidget.setTag(viewHolder);
         widgets.add(emailWidget);
+
+        viewHolder = new ViewHolder();
+        viewHolder.setKey("自助");
+        selfWidget.setTag(viewHolder);
         widgets.add(selfWidget);
+
         widgets.add(cancelWidge);
         setupWidgetClick();
         reSelect(0);
+    }
+
+    /**
+     * 确定选择
+     */
+    private void confirm() {
+        for (View view : widgets){
+            if (((ISelectable)view).isSelected()){
+                confirmSelected(view.getTag());
+                return;
+            }
+        }
+    }
+
+    private void confirmSelected(Object tag) {
+        Intent intent = new Intent();
+        if (tag != null){
+            ViewHolder viewHolder = (ViewHolder) tag;
+            if (viewHolder.getKey().equals("快递")){
+                if (AssertValue.isNotNullAndNotEmpty(expressWidget.getExpressNo())){
+                    viewHolder.setValue(expressWidget.getExpressNo());
+                } else {
+                    showToast("请填写快递单号");
+                    return;
+                }
+            }
+            intent.putExtra(CHOICE_WAY_HOLDER, viewHolder);
+        }
+        setResult(JupiterCommand.RESULT_CODE_OK,intent);
+        this.finish();
     }
 
     private void setupWidgetClick() {
@@ -134,11 +197,53 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
     }
 
     private void setupWidgetData(AttachTransferWay way) {
-
+        for (View view : widgets){
+            Object tag = view.getTag();
+            if (tag != null){
+                ViewHolder viewHolder = (ViewHolder) tag;
+                if (viewHolder.getKey().equals(way.getName())){
+                    viewHolder.setWay(way);
+                    return;
+                }
+            }
+        }
     }
 
     @Override
     protected int getContentView() {
         return R.layout.activity_order_attachment_choice_way;
+    }
+
+    public static class ViewHolder implements Serializable{
+
+        private String key;
+
+        private AttachTransferWay way;
+
+        private String value;
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public AttachTransferWay getWay() {
+            return way;
+        }
+
+        public void setWay(AttachTransferWay way) {
+            this.way = way;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 }

@@ -112,6 +112,14 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListView.setAdapter(clientListAdapter);
         clientListView.setOnItemClickListener(onItemClickListener);
 
+        clientListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                clientListView.requestFocus();
+                return false;
+            }
+        });
+
         this.autoRefresh();
     }
 
