@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -18,6 +19,8 @@ import java.util.List;
  * Created by huangbinglong on 15/6/17.
  */
 public class OrderProductBaseListWidget extends JupiterRelativeLayout{
+
+    private static final String CTRL_CODE_ORDER_STATE_TYPE = "orderstatetype";
 
     private ListView productLV;
     private TextView orderSnTV;
@@ -40,9 +43,10 @@ public class OrderProductBaseListWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order order) {
-        orderSnTV.setText(order.getOrdersn());
-        orderStateTV.setText(order.getStatename());
-        this.products = order.getProducts();
+        orderSnTV.setText(order.getOrder().getOrdersn());
+        orderStateTV.setText(CtrlCodeCache.getInstance().getCtrlcodeName(CTRL_CODE_ORDER_STATE_TYPE,
+                                    order.getOrder().getState()));
+        this.products = order.getOrderproducts();
         if (adapter != null){
             adapter.notifyDataSetChanged();
         }

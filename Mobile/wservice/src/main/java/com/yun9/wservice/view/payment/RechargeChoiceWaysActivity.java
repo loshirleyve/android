@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.payment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -106,6 +107,7 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryRechargeTypeService");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -122,6 +124,7 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
             @Override
             public void onFinally(Response response) {
                 adapter.notifyDataSetChanged();
+                registerDialog.dismiss();
             }
         });
     }

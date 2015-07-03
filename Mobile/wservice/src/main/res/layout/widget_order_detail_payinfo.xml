@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:rowStyleSutitleTitleText="未付款"
-        app:rowStyleSutitleText="余额: 0元"
+        app:rowStyleSutitleShowSutitleText="false"
         app:rowStyleSutitleShowMainImage="false"
         app:rowStyleSutitleShowTimeText="false"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class OrderManagerActivity extends JupiterFragmentActivity {
 
-    @ViewInject(id=R.id.title_bar)
+    @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
     @ViewInject(id = R.id.order_category_list)
@@ -88,6 +89,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     }
 
     private void reLoadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryBuyManagerInfoByUserIdService");
         resource.param("userid", sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
@@ -106,6 +108,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
             public void onFinally(Response response) {
                 orderAdapter.notifyDataSetChanged();
                 rechargeAdapter.notifyDataSetChanged();
+                registerDialog.dismiss();
             }
         });
     }
@@ -116,11 +119,11 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
      * @param orderGroup
      */
     private void openOrderListActivity(OrderBuyManagerInfo.OrderGroup orderGroup) {
-        OrderListActivity.start(this,orderGroup.getState(),orderGroup.getStatename());
+        OrderListActivity.start(this, orderGroup.getState(), orderGroup.getStatename());
     }
 
     private void openRechargeHistoryActivity(OrderBuyManagerInfo.RechargeGroup rechargeGroup) {
-        RechargeRecordListActivity.start(this,rechargeGroup.getState(),rechargeGroup.getStatename());
+        RechargeRecordListActivity.start(this, rechargeGroup.getState(), rechargeGroup.getStatename());
     }
 
     private JupiterAdapter rechargeAdapter = new JupiterAdapter() {
@@ -147,8 +150,8 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             JupiterRowStyleTitleLayout row;
             final OrderBuyManagerInfo.RechargeGroup rechargeGroup = buyManagerInfo
-                                                                        .getRecharegeGroups()
-                                                                            .get(position);
+                    .getRecharegeGroups()
+                    .get(position);
             if (convertView == null) {
                 row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
                 row.getMainIV().setVisibility(View.GONE);

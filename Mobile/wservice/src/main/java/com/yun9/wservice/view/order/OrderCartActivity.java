@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -93,6 +94,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
     }
 
     private void reload() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderViewService");
         resource.param("productids",command.getProductIds());
         resource.param("userid", sessionManager.getUser().getId());
@@ -120,6 +122,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
             @Override
             public void onFinally(Response response) {
                 adapter.notifyDataSetChanged();
+                registerDialog.dismiss();
             }
         });
     }
