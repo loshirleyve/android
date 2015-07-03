@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.ProductCategory;
+import com.yun9.wservice.model.ProductGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ProductCategoryLayout extends JupiterRelativeLayout {
         return textViews;
     }
 
-    public void buildWidthData(List<ProductCategory> categoryList) {
+    public void buildWidthData(List<ProductGroup> categoryList) {
 
         textViews = new ArrayList<TextView>();
         if (AssertValue.isNotNullAndNotEmpty(categoryList)){

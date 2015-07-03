@@ -3,7 +3,7 @@ package com.yun9.wservice.model;
 /**
  * Created by xia on 2015/5/25.
  */
-public class ProductCategory implements java.io.Serializable {
+public class ProductGroup implements java.io.Serializable {
 
     private String id;
     private String global;
