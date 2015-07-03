@@ -1,5 +1,6 @@
 package com.yun9.jupiter.http;
 
+import com.yun9.jupiter.model.CacheCtrlcode;
 import com.yun9.jupiter.model.CacheFile;
 import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
@@ -17,6 +18,8 @@ public interface ResponseCache {
 
     public static final String CACHE_TYPE_INST = "inst";
 
+    public static final String CACHE_TYPE_CTRL_CODE = "ctrlcode";
+
 
 
     public Map<String, CacheFile> getCacheFiles();
@@ -24,5 +27,7 @@ public interface ResponseCache {
     public Map<String, CacheUser> getCacheUsers();
 
     public Map<String, CacheInst> getCacheInsts();
+
+    public Map<String, CacheCtrlcode> getCacheCtrlcodes();
 
 }

@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.payment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -162,6 +163,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     }
 
     private void submit() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("UpdateCollectByPayService");
         resource.param("amount",payinfo.getPayableAmount());
         resource.param("instId",command.getInstId());
@@ -184,7 +186,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }

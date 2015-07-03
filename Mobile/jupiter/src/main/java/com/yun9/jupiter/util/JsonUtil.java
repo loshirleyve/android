@@ -72,7 +72,7 @@ public class JsonUtil {
 	/**
 	 * 从json对象集合表达式中得到一个java对象列表
 	 * 
-	 * @param jsonString
+	 * @param jsonArray
 	 * @param beanClass
 	 * @return
 	 * @throws org.json.JSONException

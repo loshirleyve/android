@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -86,6 +87,7 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
         resource.param("orderid", orderId);
         resource.invok(new AsyncHttpResponseCallback() {
@@ -93,7 +95,7 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 Order order = (Order) response.getPayload();
                 if (order !=null
-                        && AssertValue.isNotNullAndNotEmpty(order.getOrderid())){
+                        && AssertValue.isNotNullAndNotEmpty(order.getOrder().getOrderid())){
                     reloadData(order);
                 }
             }
@@ -105,7 +107,7 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
@@ -126,9 +128,10 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
             return;
         }
         // 调用服务提交投诉
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddComplainService");
         resource.param("instid",sessionManager.getInst().getId());
-        resource.param("serviceinstid",order.getProvideinstid());
+        resource.param("serviceinstid",order.getOrder().getProvideinstid());
         resource.param("complain",content);
         resource.param("sourceid",orderId);
         resource.param("sourcetype","so");
@@ -148,7 +151,7 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
 

@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -55,11 +56,11 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
 
     private String orderId;
 
-    private Order.WorkOrder workOrder;
+    private Order.OrderWorkOrder workOrder;
 
     private WorkOrderComment workOrderComment;
 
-    public static void start(Activity activity,String orderId,Order.WorkOrder workOrder) {
+    public static void start(Activity activity,String orderId,Order.OrderWorkOrder workOrder) {
         Intent intent = new Intent(activity,OrderCommentDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("orderid", orderId);
@@ -72,7 +73,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.orderId = getIntent().getStringExtra("orderid");
-        this.workOrder = (Order.WorkOrder) getIntent().getSerializableExtra("workorder");
+        this.workOrder = (Order.OrderWorkOrder) getIntent().getSerializableExtra("workorder");
         buildView();
         loadData();
     }
@@ -101,6 +102,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryWorkCommentsByWorkOrderIdService");
         resource.param("workorderid", workOrder.getOrderworkid());
         resource.invok(new AsyncHttpResponseCallback() {
@@ -117,6 +119,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
+                registerDialog.dismiss();
             }
         });
     }
@@ -128,7 +131,9 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
             showCommentWidget.setTitle(user.getName());
         }
         showCommentWidget.setContent(comment.getCommenttext());
-        showCommentWidget.setTime(comment.getCreatedate());
+        if (comment.getCreatedate() != null){
+            showCommentWidget.setTime(comment.getCreatedate());
+        }
         showCommentWidget.setRating((float) comment.getScore());
         orderProviderWidget.buildWithData(comment.getBuyerinstid());
         adapter.notifyDataSetChanged();
@@ -141,6 +146,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
             return;
         }
         // 调用服务提交评论
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddWorkOrderCommentService");
         resource.param("workorderid",workOrder.getOrderworkid());
         resource.param("senderid",sessionManager.getUser().getId());
@@ -161,7 +167,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }

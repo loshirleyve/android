@@ -33,9 +33,9 @@ public class OrderDetailBaseWidget extends JupiterRelativeLayout{
     }
 
     public void builWithData(Order order) {
-        Order.OrderProduct product = order.getProducts().get(0);
+        Order.OrderProduct product = order.getOrderproducts().get(0);
         productNameTV.setText(product.getProductname());
-        orderSnTV.setText(order.getOrdersn());
+        orderSnTV.setText(order.getOrder().getOrdersn());
         productPriceTV.setText(product.getGoodsamount() + "元");
         ImageLoaderUtil.getInstance(this.mContext).displayImage(product.getProductimgid(),productImgeIV);
     }

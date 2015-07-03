@@ -44,7 +44,7 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order order) {
-        buildWithData(order.getProvideinstid());
+        buildWithData(order.getOrder().getProvideinstid());
     }
 
     public void buildWithData(String instId) {
