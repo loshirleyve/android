@@ -96,11 +96,11 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
     }
 
     private void confirm() {
-        int count = adapter.getCount();
+        Intent intent = new Intent();
         if (selectedType != null) {
-            getIntent().putExtra("type", (Serializable) selectedType);
+            intent.putExtra("type", (Serializable) selectedType);
         }
-        this.setResult(JupiterCommand.RESULT_CODE_OK, getIntent());
+        this.setResult(JupiterCommand.RESULT_CODE_OK, intent);
         this.finish();
         return;
     }
@@ -172,12 +172,6 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
                         }
                     }
                 });
-                // 如果已经选择了值
-                if (command.getSelectedType() != null
-                        && command.getSelectedType().getRechargeno().equals(rechargeTypes.get(position).getRechargeno())){
-                    selectedType = (RechargeType) sutitleLayout.getTag();
-                    sutitleLayout.select(true);
-                }
                 convertView = sutitleLayout;
             }else {
                 sutitleLayout = (JupiterRowStyleSutitleLayout) convertView;

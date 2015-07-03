@@ -13,6 +13,7 @@
     <bean class="com.yun9.wservice.bizexecutor.BizExecutorInitialBean"></bean>
     <bean class="com.yun9.wservice.loadvaluehandler.LoadValueHandlerInitialBean"></bean>
     <bean class="com.yun9.jupiter.manager.support.DefaultDeviceManager"></bean>
+    <bean class="com.yun9.wservice.manager.support.DefaultAlipayManager"></bean>
 
     <!--
 	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>
