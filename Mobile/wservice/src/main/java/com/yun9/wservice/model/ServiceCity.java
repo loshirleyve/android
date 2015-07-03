@@ -7,6 +7,8 @@ public class ServiceCity implements java.io.Serializable {
     private String id;
     private String province;
     private String city;
+    private String district;
+    private String cityno;
     private int isdefault;
     private int sortno;
     private String createby;
@@ -102,5 +104,21 @@ public class ServiceCity implements java.io.Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getCityno() {
+        return cityno;
+    }
+
+    public void setCityno(String cityno) {
+        this.cityno = cityno;
     }
 }

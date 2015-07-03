@@ -2,7 +2,6 @@ package com.yun9.wservice.view.store;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.Service;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,9 +28,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.location.LocationBean;
 import com.yun9.jupiter.location.LocationFactory;
-import com.yun9.jupiter.location.OnGetPoiInfoListener;
 import com.yun9.jupiter.location.OnLocationListener;
-import com.yun9.jupiter.location.PoiInfoBean;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.repository.Resource;
@@ -46,7 +43,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Product;
-import com.yun9.wservice.model.ProductCategory;
+import com.yun9.wservice.model.ProductGroup;
 import com.yun9.wservice.model.ServiceCity;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -60,7 +57,6 @@ import java.util.List;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
@@ -100,7 +96,7 @@ public class StoreFragment extends JupiterFragment {
 
     private ServiceCity currServiceCity;
 
-    private ProductCategory currProductCategory;
+    private ProductGroup currProductGroup;
 
     private ViewPager viewPager;
     private View pageView;
@@ -146,9 +142,9 @@ public class StoreFragment extends JupiterFragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 if (AssertValue.isNotNullAndNotEmpty(products)) {
-                    refreshProduct(currProductCategory, products.get(0).getId(), null);
+                    refreshProduct(currProductGroup, products.get(0).getId(), null);
                 } else {
-                    refreshProduct(currProductCategory, null, null);
+                    refreshProduct(currProductGroup, null, null);
                 }
             }
         });
@@ -183,10 +179,10 @@ public class StoreFragment extends JupiterFragment {
         selectCityPopupW.setAnimationStyle(R.style.top2bottom_bottom2top);
     }
 
-    private void addCategory(ProductCategory productCategory) {
+    private void addCategory(ProductGroup productGroup) {
         RadioButton radioButton = (RadioButton) getActivity().getLayoutInflater().inflate(R.layout.radio_button_item, null);
-        radioButton.setText(productCategory.getName());
-        radioButton.setTag(productCategory);
+        radioButton.setText(productGroup.getName());
+        radioButton.setTag(productGroup);
         radioButton.setOnClickListener(onCategoryClickListener);
         segmentedGroup.addView(radioButton);
         segmentedGroup.updateBackground();
@@ -281,8 +277,8 @@ public class StoreFragment extends JupiterFragment {
         });
     }
 
-    private void refreshProduct(ProductCategory productCategory, String lastupid, String lastdownid) {
-        if (!AssertValue.isNotNull(productCategory)) {
+    private void refreshProduct(ProductGroup productGroup, String lastupid, String lastdownid) {
+        if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
             return;
         }
@@ -296,7 +292,7 @@ public class StoreFragment extends JupiterFragment {
             resource.pullDown(lastdownid);
         }
 
-        resource.param("categoryid", productCategory.getId());
+        resource.param("groupid", productGroup.getId());
         resource.header("limitrow", "20");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -359,18 +355,18 @@ public class StoreFragment extends JupiterFragment {
         //设置界面当前城市
         titleBar.getTitleLeftTv().setText(currServiceCity.getCity());
 
-        Resource resource = resourceFactory.create("QueryCategorysBylocation");
+        Resource resource = resourceFactory.create("QueryMdProductGroupBylocation");
         resource.param("province", serviceCity.getProvince());
         resource.param("city", serviceCity.getCity());
-        resource.param("district", "南山区");
+        resource.param("district", serviceCity.getDistrict());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                List<ProductCategory> productCategories = (List<ProductCategory>) response.getPayload();
+                List<ProductGroup> productCategories = (List<ProductGroup>) response.getPayload();
                 cleanCategory();
                 if (AssertValue.isNotNullAndNotEmpty(productCategories)) {
-                    for (ProductCategory productCategory : productCategories) {
-                        addCategory(productCategory);
+                    for (ProductGroup productGroup : productCategories) {
+                        addCategory(productGroup);
                     }
 
                     //触发第一个分类点击
@@ -393,10 +389,22 @@ public class StoreFragment extends JupiterFragment {
 
     }
 
-    private ServiceCity findCity(String province, String city) {
+    private ServiceCity findCity(String province, String city, String district) {
         ServiceCity serviceCity = null;
 
-        if (AssertValue.isNotNullAndNotEmpty(province) && AssertValue.isNotNullAndNotEmpty(city) && AssertValue.isNotNullAndNotEmpty(serviceCities)) {
+        //查找是否有对于当前省、市、区支持的城市
+        if (AssertValue.isNotNullAndNotEmpty(province) && AssertValue.isNotNullAndNotEmpty(city) && AssertValue.isNotNullAndNotEmpty(district) && AssertValue.isNotNullAndNotEmpty(serviceCities)) {
+
+            for (ServiceCity tempSC : serviceCities) {
+                if (city.equals(tempSC.getCity()) && province.equals(tempSC.getProvince()) && district.equals(tempSC.getDistrict())) {
+                    serviceCity = tempSC;
+                    break;
+                }
+            }
+        }
+
+        //如果没有找到省市区匹配的则查找是否有对于当前省、市支持的城市
+        if (!AssertValue.isNotNull(serviceCity) && AssertValue.isNotNullAndNotEmpty(province) && AssertValue.isNotNullAndNotEmpty(city) && AssertValue.isNotNullAndNotEmpty(serviceCities)) {
 
             for (ServiceCity tempSC : serviceCities) {
                 if (tempSC.getCity().equals(city) && tempSC.getProvince().equals(province)) {
@@ -411,11 +419,11 @@ public class StoreFragment extends JupiterFragment {
     private View.OnClickListener onCategoryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ProductCategory productCategory = (ProductCategory) v.getTag();
+            ProductGroup productGroup = (ProductGroup) v.getTag();
 
-            if (AssertValue.isNotNull(productCategory)) {
+            if (AssertValue.isNotNull(productGroup)) {
                 reset();
-                currProductCategory = productCategory;
+                currProductGroup = productGroup;
                 mPtrFrame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -459,7 +467,7 @@ public class StoreFragment extends JupiterFragment {
         @Override
         public void onReceiveLocation(LocationBean locationBean) {
             //检查是否被支持的城市
-            final ServiceCity serviceCity = findCity(locationBean.getProvince(), locationBean.getCity());
+            final ServiceCity serviceCity = findCity(locationBean.getProvince(), locationBean.getCity(), locationBean.getDistrict());
             final String key = "com.yun9.wservice.store.switchcity.notice";
             boolean noticeSwitchCity = AppCache.getInstance().getAsBoolean(key);
             //当前定位城市是被支持的

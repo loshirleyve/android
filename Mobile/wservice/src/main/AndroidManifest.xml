@@ -378,6 +378,12 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+            android:name=".view.payment.RechargeResultActivity"
+            android:label="@string/pay_detail"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
             android:name=".view.product.ProductActivity"
             android:label="@string/product_detail"
             android:screenOrientation="portrait"
@@ -402,6 +408,16 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:label="@string/user_password"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <!-- 支付宝Activity-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity" android:configChanges="orientation|keyboardHidden|navigation" android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity" android:configChanges="orientation|keyboardHidden|navigation" android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
 
     </application>
 

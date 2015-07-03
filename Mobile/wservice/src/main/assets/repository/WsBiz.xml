@@ -13,10 +13,10 @@
 
     <!-- 获取服务分类根据城市 -->
     <repository>
-        <name>QueryCategorysBylocation</name>
+        <name>QueryMdProductGroupBylocation</name>
         <action>com.yun9.ws.biz.service.QueryMdProductGroupBylocationService</action>
         <output>
-            <classname>com.yun9.wservice.model.ProductCategory</classname>
+            <classname>com.yun9.wservice.model.ProductGroup</classname>
             <type>list</type>
         </output>
         <type>yun9</type>

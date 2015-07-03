@@ -68,4 +68,9 @@ public class OrderAttachWayEmailWidget extends JupiterRelativeLayout implements 
             detailLl.setVisibility(GONE);
         }
     }
+
+    @Override
+    public boolean isSelected() {
+        return sutitleLayout.isSelected();
+    }
 }

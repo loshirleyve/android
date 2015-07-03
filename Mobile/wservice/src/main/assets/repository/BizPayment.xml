@@ -11,4 +11,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 登记充值服务 -->
+    <repository>
+        <name>AddRechargeService</name>
+        <action>com.yun9.ws.biz.service.AddRechargeService</action>
+        <output>
+            <classname>com.yun9.wservice.model.AddRechargeResult</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

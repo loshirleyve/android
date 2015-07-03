@@ -17,6 +17,7 @@ import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
 import com.yun9.wservice.view.payment.PaymentOrderActivity;
 import com.yun9.wservice.view.payment.PaymentOrderCommand;
+import com.yun9.wservice.view.payment.RechargeResultActivity;
 
 /**
  * Created by huangbinglong on 15/6/16.
@@ -53,12 +54,12 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
     public void buildWithData(Order order) {
         this.order = order;
         if (!State.Order.BUY.equals(order.getState())) {
-            sutitleLayout.getHotNitoceTV().setVisibility(GONE);
+            sutitleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
+            sutitleLayout.getHotNitoceTV().setText("查看付款详情");
+            sutitleLayout.getHotNitoceTV().getPaint().setFakeBoldText(false);
             sutitleLayout.getSutitleTv().setVisibility(GONE);
-            sutitleLayout.getTitleTV().setTextSize(16);
             sutitleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.black));
             sutitleLayout.getTitleTV().setText(R.string.already_pay);
-            sutitleLayout.getArrowRightIV().setVisibility(GONE);
             sutitleLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
