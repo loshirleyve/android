@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
     private TextView timeTv;
 
     private ImageView arrowRightIV;
+
+    private ImageButton arrowRightButton;
 
     private ImageView selectModeIV;
 
@@ -65,6 +68,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         this.setTitleTV((TextView) this.findViewById(R.id.title_tv));
         this.sutitleTv = (TextView) this.findViewById(R.id.sutitle_tv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
+        this.arrowRightButton= (ImageButton) this.findViewById(R.id.arrow_right_button);
         this.timeTv = (TextView) this.findViewById(R.id.time_tv);
         this.selectModeIV = (ImageView) this.findViewById(R.id.selectmode_iv);
         this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
@@ -131,6 +135,15 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
                     this.arrowRightIV.setVisibility(View.GONE);
                 }
             }
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowArrowButton)){
+                boolean showArrowButton= typedArray.getBoolean(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleShowArrowButton,false);
+
+                if (showArrowButton){
+                    this.arrowRightButton.setVisibility(View.VISIBLE);
+                }else{
+                    this.arrowRightButton.setVisibility(View.GONE);
+                }
+            }
             if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage)){
                 Drawable mainImage = typedArray.getDrawable(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMainImage);
                 if (mainImage != null){
@@ -157,6 +170,12 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         int show = isShow?View.VISIBLE:View.GONE;
         this.getArrowRightIV().setVisibility(show);
     }
+
+    public void setShowArrowButton(boolean isShow) {
+        int show = isShow?View.VISIBLE:View.GONE;
+        this.getArrowRightButton().setVisibility(show);
+    }
+
 
     public void setShowSutitleText(boolean isShow){
         int show = isShow?View.VISIBLE:View.GONE;
@@ -250,6 +269,14 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
 
     public void setArrowRightIV(ImageView arrowRightIV) {
         this.arrowRightIV = arrowRightIV;
+    }
+
+    public ImageButton getArrowRightButton() {
+        return arrowRightButton;
+    }
+
+    public void setArrowRightButton(ImageButton arrowRightButton) {
+        this.arrowRightButton = arrowRightButton;
     }
 
     public TextView getTimeTv() {

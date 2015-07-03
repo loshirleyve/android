@@ -2,8 +2,10 @@ package com.yun9.wservice.view.org;
 
 import android.app.Activity;
 import android.content.Context;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.util.AssertValue;
@@ -24,11 +26,10 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
     private List<PhoneUser> users;
 
-    private boolean selectMode=true;
 
     public OrgPhoneUserAdapter(Context context, List<PhoneUser> users) {
         this.mContext = context;
-        this.users = users;//bulied();
+        this.users = users;
     }
 
     @Override
@@ -40,13 +41,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
         }
     }
 
-    public boolean isSelectMode() {
-        return selectMode;
-    }
-
-    public void setSelectMode(boolean selectMode) {
-        this.selectMode = selectMode;
-    }
 
     @Override
     public Object getItem(int position) {
@@ -68,12 +62,12 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item = new JupiterRowStyleSutitleLayout(mContext);
             item.setShowTime(false);
             item.setShowArrow(false);
+            item.setShowArrowButton(true);
             item.getMainIV().setImageResource(R.drawable.user_group);
+            item.getArrowRightButton().setOnClickListener(addueronclick);
         } else {
             item = (JupiterRowStyleSutitleLayout) convertView;
         }
-
-        item.setSelectMode(selectMode);
         item.getTitleTV().setText(user.getUsername());
         item.getSutitleTv().setText(user.getUsernumber());
         item.select(user.isSelected());
@@ -82,42 +76,20 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
     }
 
 
-    public List<PhoneUser> bulied()
-    {
-        users=new ArrayList<>();
-        PhoneUser user=new PhoneUser();
-        user.setUsername("阮小玉");
-        user.setUsernumber("13697110552");
+    View.OnClickListener addueronclick=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String str_num ="13697110552";//得到电话号码
+            String str_content ="权志龙，李胜贤，崔胜贤，东永裴，姜大声";//得到短信内容
+            SmsManager smsManager = SmsManager.getDefault();//得到短信管理器
+            //由于短信可能较长，故将短信拆分
+            ArrayList<String> texts = smsManager.divideMessage(str_content);
+            for(String text : texts){
+                smsManager.sendTextMessage(str_num, null, text, null, null);//分别发送每一条短信
+            }
+            Toast.makeText(mContext, "发送成功!", Toast.LENGTH_LONG).show();//提示成功
 
-        PhoneUser user1=new PhoneUser();
-        user1.setUsername("权志龙");
-        user1.setUsernumber("1369101459");
-
-        PhoneUser user2=new PhoneUser();
-        user2.setUsername("崔胜贤");
-        user2.setUsernumber("136984939204");
-
-        PhoneUser user3=new PhoneUser();
-        user3.setUsername("李胜利");
-        user3.setUsernumber("13593796895");
-
-        PhoneUser user4=new PhoneUser();
-        user4.setUsername("东永裴");
-        user4.setUsernumber("1369998778");
-
-        PhoneUser user5=new PhoneUser();
-        user5.setUsername("姜大声");
-        user5.setUsernumber("135577960");
-
-        users.add(user);
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        users.add(user4);
-        users.add(user5);
-        return users;
-
-    }
-
+        }
+    };
 
 }

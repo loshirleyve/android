@@ -35,6 +35,7 @@
         <attr name="rowStyleSutitleTitleText" format="string"></attr>
         <attr name="rowStyleSutitleText" format="string"></attr>
         <attr name="rowStyleSutitleShowArrow" format="boolean" />
+        <attr name="rowStyleSutitleShowArrowButton" format="boolean" />
         <attr name="rowStyleSutitleShowMainImage" format="boolean" />
         <attr name="rowStyleSutitleShowTimeText" format="boolean" />
         <attr name="rowStyleSutitleMainImage" format="reference"></attr>

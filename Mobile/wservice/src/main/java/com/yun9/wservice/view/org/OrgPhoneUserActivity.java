@@ -108,6 +108,11 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
             users.addAll(contactusers.values());
             textwatchusers.addAll(users);
         }
+        else//构造测试数据
+        {
+            users.addAll(build());
+            textwatchusers.addAll(users);
+        }
         phoneUserAdapter=new OrgPhoneUserAdapter(mContext,users);
         userListView.setAdapter(phoneUserAdapter);
     }
@@ -227,4 +232,43 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         }
     };
 
+
+
+
+    public List<PhoneUser> build()
+    {
+        users=new ArrayList<>();
+        PhoneUser user=new PhoneUser();
+        user.setUsername("阮小玉");
+        user.setUsernumber("13697110552");
+
+        PhoneUser user1=new PhoneUser();
+        user1.setUsername("权志龙");
+        user1.setUsernumber("1369101459");
+
+        PhoneUser user2=new PhoneUser();
+        user2.setUsername("崔胜贤");
+        user2.setUsernumber("136984939204");
+
+        PhoneUser user3=new PhoneUser();
+        user3.setUsername("李胜利");
+        user3.setUsernumber("13593796895");
+
+        PhoneUser user4=new PhoneUser();
+        user4.setUsername("东永裴");
+        user4.setUsernumber("1369998778");
+
+        PhoneUser user5=new PhoneUser();
+        user5.setUsername("姜大声");
+        user5.setUsernumber("135577960");
+
+        users.add(user);
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        users.add(user4);
+        users.add(user5);
+        return users;
+
+    }
 }

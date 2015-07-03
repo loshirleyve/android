@@ -12,9 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
@@ -100,8 +102,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //初始化控件，判断是否存在orgid有的话就查询出org的信息，没有就是新增组织的页面
     public void initView() {
-        jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText("成员列表");
-        jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText("下级部门");
+        jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.org_user_list);
+        jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.children_org);
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +119,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         //如果没有orgid则进入新增状态
         if(!AssertValue.isNotNull(command) ||  !AssertValue.isNotNullAndNotEmpty(command.getOrgid()))
         {
-            titleBarLayout.getTitleTv().setText("自定义部门");
+            titleBarLayout.getTitleTv().setText(R.string.custom_org);
             jupiterEdituserIco.setVisibility(View.GONE);
             jupiterEditorgIco.setVisibility(View.GONE);
         }
@@ -148,7 +150,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     //界面的+图片可以添加用户和组织的控件
     private void setupEditIco() {
         JupiterTextIco useritem = new JupiterTextIcoWithoutCorner(getApplicationContext());
-        useritem.setTitle("添加新成员");
+        useritem.setTitle(getResources().getString(R.string.org_add_newuser));
         useritem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
         useritem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +165,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
 
         JupiterTextIco orgitem=new JupiterTextIcoWithoutCorner(getApplicationContext());
-        orgitem.setTitle("添加新部门");
+        orgitem.setTitle(getResources().getString(R.string.org_add_neworg));
         orgitem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
         orgitem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -220,7 +222,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
                 useritem.setTitle(user.getName());
                 useritem.hideCorner();
-                useritem.setImage(user.getHeaderfileid());
+                CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
+                if (AssertValue.isNotNull(cacheUser)){
+                    useritem.setImage(cacheUser.getUrl());
+                }
                 useritem.setTag(user.getId());
                 useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
                 useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
@@ -263,12 +268,12 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 Org org = (Org) response.getPayload();
                 command = new OrgEditCommand().setOrgid(org.getId());
                 initView();
-                Toast.makeText(OrgEditActivity.this, "添加组织/小组成功！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, R.string.add_org_success_tip, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, R.string.add_org_failure_tip, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -287,12 +292,12 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Toast.makeText(OrgEditActivity.this, "删除用户成功！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this,R.string.delete_orguser_success_tip, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, "删除用户失败！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, R.string.delete_orguser_failure_tip, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -312,7 +317,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             if(AssertValue.isNotNullAndNotEmpty(orgname)) {
                 addOrg(orgname);
             } else
-                Toast.makeText(OrgEditActivity.this, "请输入组织/小组名称", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, R.string.add_org_tip, Toast.LENGTH_SHORT).show();
             setEdit(edit);
         }
     };
@@ -324,13 +329,13 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         {
             this.edit=false;
             neworg.setEnabled(true);
-            titleBarLayout.getTitleRightTv().setText("保存");
+            titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
         }
         else
         {
             this.edit=true;
             neworg.setEnabled(false);
-            titleBarLayout.getTitleRightTv().setText("编辑");
+            titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
         }
     }
 

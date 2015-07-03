@@ -83,8 +83,27 @@
 
     <string name="org_edit_new">编辑部门</string>
     <string name="org_add_newuser">添加新成员</string>
+    <string name="org_add_neworg">添加新部门</string>
     <string name="parent_org">上级部门</string>
     <string name="org_phone_user">通讯录</string>
+    <string name="org_user_list">成员列表</string>
+    <string name="children_org">下级部门</string>
+    <string name="custom_org">自定义部门</string>
+    <string name="add_org_tip">请输入组织/小组名称</string>
+    <string name="add_org_success_tip">添加组织/小组成功！</string>
+    <string name="add_org_failure_tip">添加组织/小组失败！</string>
+    <string name="add_orguser_success_tip">添加组织用户关联成功！</string>
+    <string name="add_orguser_failure_tip">添加组织用户关联失败！</string>
+    <string name="delete_orguser_success_tip">删除组织用户关联成功！</string>
+    <string name="delete_orguser_failure_tip">删除组织用户关联失败！</string>
+    <string name="org_add">添加组织</string>
+    <string name="org_name">组织名称</string>
+    <string name="new_org_tip">请输入部门/小组名称</string>
+    <string name="target_org">目标部门</string>
+    <string name="add_org_to">添加到</string>
+    <string name="add_use_org_to">通过组织结构添加</string>
+    <string name="add_use_phonebook_to">通过手机通讯录添加</string>
+    <string name="choose_add_use_to">请选择用户！</string>
 
     <string name="doc_composite_title">文档</string>
     <string name="doc_image_location">本地图片</string>
@@ -156,15 +175,6 @@
 
     <string name="client_title">客户管理</string>
     <string name="client_proxy_bill">代理下单</string>
-
-    <string name="org_add">添加组织</string>
-    <string name="org_name">组织名称</string>
-    <string name="new_org_tip">请输入部门/小组名称</string>
-    <string name="target_org">目标部门</string>
-    <string name="add_org_to">添加到</string>
-    <string name="add_org_user">添加成员</string>
-    <string name="add_use_org_to">通过组织结构添加</string>
-    <string name="add_use_phonebook_to">通过手机通讯录添加</string>
 
     <string name="new_dynamic_upload_error">上传动态附件出现错误，请重新尝试！</string>
     <string name="new_dynamic_send_notuser">发送动态出现错误，无法获取当前用户信息！</string>

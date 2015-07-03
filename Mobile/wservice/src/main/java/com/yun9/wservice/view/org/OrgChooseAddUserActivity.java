@@ -94,10 +94,10 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     public void initView()
     {
         orgname.setText(command.getOrgname());
-        titleBarLayout.getTitleTv().setText("添加新成员");
+        titleBarLayout.getTitleTv().setText(R.string.org_add_newuser);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
-        titleBarLayout.getTitleRightTv().setText("保存");
+        titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
         titleBarLayout.getTitleRight().setOnClickListener(onAddUserOrgClickListener);
         adduseorg.setOnClickListener(onChooseAddUserOrgClickListener);
         addusephonebook.setOnClickListener(onChooseAddUserPhoneClickListener);
@@ -152,12 +152,12 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override
                     public void onSuccess(Response response) {
-                        Toast.makeText(OrgChooseAddUserActivity.this, "添加用户成功！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrgChooseAddUserActivity.this, R.string.add_orguser_success_tip, Toast.LENGTH_SHORT).show();
                         finish();
                     }
                     @Override
                     public void onFailure(Response response) {
-                        Toast.makeText(OrgChooseAddUserActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrgChooseAddUserActivity.this, R.string.add_orguser_failure_tip, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -167,7 +167,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 });
             }
             else
-                Toast.makeText(OrgChooseAddUserActivity.this, "请选择用户！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgChooseAddUserActivity.this,R.string.choose_add_use_to, Toast.LENGTH_SHORT).show();
         }
     };
 
