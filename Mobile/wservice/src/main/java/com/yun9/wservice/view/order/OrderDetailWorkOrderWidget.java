@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.repository.Resource;
@@ -25,6 +26,8 @@ import org.w3c.dom.Text;
  */
 public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
 
+    private static final String CTRL_CODE_DEF_NO_WORK_ORDER_STATE = "workstate";
+
     private TextView workOrderIdTV;
     private TextView workOrderNameTV;
     private TextView workOrderStateTV;
@@ -33,7 +36,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
 
     private String orderId;
 
-    private Order.WorkOrder workOrder;
+    private Order.OrderWorkOrder workOrder;
 
     public OrderDetailWorkOrderWidget(Context context) {
         super(context);
@@ -47,12 +50,13 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(String orderId,Order.WorkOrder workOrder) {
+    public void buildWithData(String orderId,Order.OrderWorkOrder workOrder) {
         this.orderId = orderId;
         this.workOrder = workOrder;
         workOrderNameTV.setText(workOrder.getOrderworkname());
         workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
-        workOrderStateTV.setText(workOrder.getOrderworkstatecode());
+        workOrderStateTV.setText(CtrlCodeCache.getInstance()
+                .getCtrlcodeName(CTRL_CODE_DEF_NO_WORK_ORDER_STATE, workOrder.getOrderworkstate()));
         // 没有完成不能评论
         if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
             commentWorkOrderTV.setVisibility(GONE);

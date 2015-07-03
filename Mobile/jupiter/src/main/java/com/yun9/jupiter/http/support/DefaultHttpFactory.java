@@ -27,6 +27,7 @@ import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
+import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
@@ -39,6 +40,7 @@ import com.yun9.jupiter.http.RequestParams;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.http.ResponseOriginal;
 import com.yun9.jupiter.manager.DeviceManager;
+import com.yun9.jupiter.model.CacheCtrlcode;
 import com.yun9.jupiter.model.CacheFile;
 import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
@@ -364,6 +366,12 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheInsts())) {
             for (Map.Entry<String, CacheInst> entry : response.getResponseCache().getCacheInsts().entrySet()) {
                 InstCache.getInstance().putInst(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (AssertValue.isNotNull(response.getResponseCache()) && AssertValue.isNotNullAndNotEmpty(response.getResponseCache().getCacheCtrlcodes())) {
+            for (Map.Entry<String, CacheCtrlcode> entry : response.getResponseCache().getCacheCtrlcodes().entrySet()) {
+                CtrlCodeCache.getInstance().put(entry.getKey(), entry.getValue());
             }
         }
     }

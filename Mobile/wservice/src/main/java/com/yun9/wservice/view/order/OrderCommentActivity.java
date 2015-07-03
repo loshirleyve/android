@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -56,9 +57,9 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
 
     private String orderId;
 
-    private Order.WorkOrder workOrder;
+    private Order.OrderWorkOrder workOrder;
 
-    public static void start(Activity activity,String orderId,Order.WorkOrder workOrder) {
+    public static void start(Activity activity,String orderId,Order.OrderWorkOrder workOrder) {
         Intent intent = new Intent(activity,OrderCommentActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("orderid",orderId);
@@ -71,7 +72,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.orderId = getIntent().getStringExtra("orderid");
-        this.workOrder = (Order.WorkOrder) getIntent().getSerializableExtra("workorder");
+        this.workOrder = (Order.OrderWorkOrder) getIntent().getSerializableExtra("workorder");
         buildView();
         loadData();
     }
@@ -100,6 +101,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
         resource.param("orderid", orderId);
         resource.invok(new AsyncHttpResponseCallback() {
@@ -107,7 +109,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 Order order = (Order) response.getPayload();
                 if (order != null
-                        && AssertValue.isNotNullAndNotEmpty(order.getOrderid())){
+                        && AssertValue.isNotNullAndNotEmpty(order.getOrder().getOrderid())){
                     buildWithOrder(order);
                 }
             }
@@ -119,7 +121,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }

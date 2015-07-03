@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -172,6 +173,7 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryTransferByInstIdService");
         resource.param("instid", sessionManager.getInst().getId());
         resource.invok(new AsyncHttpResponseCallback() {
@@ -191,7 +193,7 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }

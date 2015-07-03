@@ -24,7 +24,7 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
 
     private Order order;
 
-    private List<Order.WorkOrder> workOrders;
+    private List<Order.OrderWorkOrder> workOrders;
 
     public OrderDetailWorkOrderListWidget(Context context) {
         super(context);
@@ -40,7 +40,7 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
 
     public void buildWithData(Order order) {
         this.order = order;
-        workOrders = order.getWorkorders();
+        workOrders = order.getOrderWorkorders();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -86,7 +86,7 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
                 } else {
                     workOrderWidget = (OrderDetailWorkOrderWidget) convertView;
                 }
-                workOrderWidget.buildWithData(order.getOrderid(),workOrders.get(position));
+                workOrderWidget.buildWithData(order.getOrder().getOrderid(),workOrders.get(position));
                 return convertView;
             }
         };

@@ -39,10 +39,10 @@ public class OrderDetailProcessWidget extends JupiterRelativeLayout{
 
     public void buildWithData(Order order) {
         processContainer.removeAllViews();
-        if (order == null || order.getOrderlogs() == null) {
+        if (order == null || order.getOrderLogs() == null) {
             return;
         }
-        List<Order.OrderLog> logs = order.getOrderlogs();
+        List<Order.OrderLog> logs = order.getOrderLogs();
         LinearLayout preItem = null;
         LinearLayout currItem = null;
         for (int i = 0; i < logs.size(); i++) {

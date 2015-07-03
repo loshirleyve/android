@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -98,6 +99,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
         resource.param("orderid", orderId);
         resource.invok(new AsyncHttpResponseCallback() {
@@ -114,51 +116,50 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
 
     private void reloadData(Order order) {
-        if (!State.Order.COMPLETE.equals(order.getState())){
+        if (!State.Order.COMPLETE.equals(order.getOrder().getState())){
             titleBarLayout.getTitleRight().setVisibility(View.GONE);
         }
-        if (order.getProducts() == null
-                || order.getProducts().size() == 0){
+        if (order.getOrderproducts() == null
+                || order.getOrderproducts().size() == 0){
             orderDetailBaseWidget.setVisibility(View.GONE);
         } else {
             orderDetailBaseWidget.builWithData(order);
         }
-        if (order.getOrderlogs() == null
-                || order.getOrderlogs().size() == 0){
+        if (order.getOrderLogs() == null
+                || order.getOrderLogs().size() == 0){
             orderDetailProcessWidget.setVisibility(View.GONE);
         } else {
             orderDetailProcessWidget.buildWithData(order);
         }
-        if (AssertValue.isNotNullAndNotEmpty(order.getState())){
+        if (AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
             orderDetailPayinfoWidget.buildWithData(order);
         } else {
             orderDetailPayinfoWidget.setVisibility(View.GONE);
         }
-        if (order.getCommitattachment() != null
-                && order.getCommitattachment() > 0){
+        if (order.getOrder().getCommitattachment() > 0){
             orderDetailAttachWidget.buildWithData(order);
         } else {
             orderDetailAttachWidget.setVisibility(View.GONE);
         }
-        if (AssertValue.isNotNullAndNotEmpty(order.getAdviseruserid())){
+        if (AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviseruserid())){
             orderDetailAdvisorWidget.buildWitdhData(order);
         } else {
             orderDetailAdvisorWidget.setVisibility(View.GONE);
         }
 
-        if (AssertValue.isNotNullAndNotEmpty(order.getProvideinstid())){
+        if (AssertValue.isNotNullAndNotEmpty(order.getOrder().getProvideinstid())){
             orderDetailProviderWidget.buildWitdhData(order);
         } else {
             orderDetailProviderWidget.setVisibility(View.GONE);
         }
-        if (order.getWorkorders() == null
-                || order.getWorkorders().size() == 0){
+        if (order.getOrderWorkorders() == null
+                || order.getOrderWorkorders().size() == 0){
             orderDetailWorkOrderListWidget.setVisibility(View.GONE);
         } else {
             orderDetailWorkOrderListWidget.buildWithData(order);
