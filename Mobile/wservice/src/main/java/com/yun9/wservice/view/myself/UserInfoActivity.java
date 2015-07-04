@@ -3,16 +3,9 @@ package com.yun9.wservice.view.myself;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,9 +13,11 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
@@ -42,10 +37,7 @@ import com.yun9.wservice.view.doc.LocalImageCommand;
 import com.yun9.wservice.view.doc.YunFileCommand;
 import com.yun9.wservice.view.doc.YunImageActivity;
 import com.yun9.wservice.view.doc.YunImageCommand;
-import com.yun9.wservice.view.inst.SelectInstActivity;
-import com.yun9.wservice.view.inst.SelectInstCommand;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +45,7 @@ import java.util.List;
  * Created by li on 2015/6/25.
  */
 public class UserInfoActivity extends JupiterFragmentActivity {
-    private UserPasswordCommand userPasswordCommand;
+    private UserPwdCommand userPwdCommand;
     private LocalImageCommand localImageCommand;
     private CameraCommand cameraCommand;
     private String userid;
@@ -104,7 +96,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
         else {
             userid = command.getUserid();
-            sessionManager.getUser().setId(userid);
         }
 
         if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())){
@@ -112,7 +103,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
         else {
             instid = command.getInstid();
-            sessionManager.getInst().setId(instid);
         }
         TitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
@@ -142,7 +132,10 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                 public void onSuccess(Response response) {
                     User user = (User) response.getPayload();
                     if (AssertValue.isNotNull(user)) {
-                        ImageLoaderUtil.getInstance(mContext).displayImage(user.getHeaderfileid(), userInfoWidget.getUserHeadIV());
+                        CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
+                        if (AssertValue.isNotNull(cacheUser)) {
+                            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userInfoWidget.getUserHeadIV());
+                        }
                         userInfoWidget.getUserName().getHotNitoceTV().setText(user.getName());
                         userInfoWidget.getUserName().getHotNitoceTV().setVisibility(View.VISIBLE);
                         userInfoWidget.getUserName().getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
@@ -179,10 +172,10 @@ public class UserInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onPwdClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!AssertValue.isNotNull(userPasswordCommand)){
-                userPasswordCommand = new UserPasswordCommand().setUserId(userid);
+            if(!AssertValue.isNotNull(userPwdCommand)){
+                userPwdCommand = new UserPwdCommand().setUserId(userid);
             }
-            UserPasswordActivity.start(UserInfoActivity.this, userPasswordCommand);
+            UserChangePwdActivity.start(UserInfoActivity.this, userPwdCommand);
         }
     };
 
