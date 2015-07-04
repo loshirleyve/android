@@ -1,15 +1,9 @@
 package com.yun9.wservice.view.myself;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,7 +11,6 @@ import android.widget.Toast;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -27,17 +20,12 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 /**
  * Created by li on 2015/7/2.
  */
-public class UserPasswordActivity extends JupiterFragmentActivity {
-    private AlertDialog alertDialog;
+public class UserChangePwdActivity extends JupiterFragmentActivity {
     private String userid;
-    private UserPasswordCommand command;
+    private UserPwdCommand command;
 
     @BeanInject
     private ResourceFactory resourceFactory;
@@ -46,23 +34,21 @@ public class UserPasswordActivity extends JupiterFragmentActivity {
     private SessionManager sessionManager;
 
     @ViewInject(id = R.id.user_passwordTitle)
-    private JupiterTitleBarLayout userPasswordTitle;
+    private JupiterTitleBarLayout userPwdTitleLayout;
 
     @ViewInject(id = R.id.oldPassword)
-    private EditText oldPassword;
+    private EditText oldPasswordEt;
 
     @ViewInject(id = R.id.newPassword)
-    private EditText newPassword;
+    private EditText newPasswordEt;
 
     @ViewInject(id = R.id.surePassword)
-    private EditText surePassword;
+    private EditText surePasswordEt;
 
-    private boolean flag;
-
-    public static void start(Activity activity, UserPasswordCommand command){
-        Intent intent = new Intent(activity, UserPasswordActivity.class);
+    public static void start(Activity activity, UserPwdCommand command){
+        Intent intent = new Intent(activity, UserChangePwdActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(UserPasswordCommand.PARAM_PWD, command);
+        bundle.putSerializable(UserPwdCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -71,15 +57,14 @@ public class UserPasswordActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        command = (UserPasswordCommand)getIntent().getSerializableExtra(UserPasswordCommand.PARAM_PWD);
+        command = (UserPwdCommand)getIntent().getSerializableExtra(UserPwdCommand.PARAM_COMMAND);
         if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserId())){
             userid = command.getUserId();
-            sessionManager.getUser().setId(userid);
         }else {
             userid = sessionManager.getUser().getId();
         }
-        userPasswordTitle.getTitleLeft().setOnClickListener(onBackClickListener);
-        userPasswordTitle.getTitleRight().setOnClickListener(onSureClickListener);
+        userPwdTitleLayout.getTitleLeft().setOnClickListener(onBackClickListener);
+        userPwdTitleLayout.getTitleRight().setOnClickListener(onSureClickListener);
     }
 
     @Override
@@ -103,14 +88,20 @@ public class UserPasswordActivity extends JupiterFragmentActivity {
     private View.OnClickListener onSureClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            flag = isPassword(newPassword.getText().toString())  && (newPassword.getText().toString().equals(surePassword.getText().toString()));
-
-            if(flag) {
-                changeUserPwd();
-            }else if(!isPassword(newPassword.getText().toString())) {
+            if(oldPasswordEt.getText().toString().equals("")){
+                Toast.makeText(mContext, getString(R.string.old_pwd_input_pro), Toast.LENGTH_SHORT).show();
+            }else if (newPasswordEt.getText().toString().equals("")){
+                Toast.makeText(mContext, getString(R.string.new_pwd_input_pro), Toast.LENGTH_SHORT).show();
+            }else if (surePasswordEt.getText().toString().equals("")){
+                Toast.makeText(mContext, getString(R.string.sure_pwd_input_pro), Toast.LENGTH_SHORT).show();
+            }else if(!isPassword(newPasswordEt.getText().toString())){
                 Toast.makeText(mContext, getString(R.string.pass_prompt), Toast.LENGTH_SHORT).show();
-            }else if (!newPassword.getText().toString().equals(surePassword.getText().toString())){
+            }
+            else if (!newPasswordEt.getText().toString().equals(surePasswordEt.getText().toString())){
                 Toast.makeText(mContext, getString(R.string.pass_promp), Toast.LENGTH_SHORT).show();
+            }
+            else {
+                changeUserPwd();
             }
         }
     };
@@ -119,8 +110,8 @@ public class UserPasswordActivity extends JupiterFragmentActivity {
         if(AssertValue.isNotNull(sessionManager.getUser())){
             final Resource resource = resourceFactory.create("UpdatePasswd");
             resource.param("userid", userid);
-            resource.param("oldPasswd", oldPassword.getText().toString());
-            resource.param("newPasswd", newPassword.getText().toString());
+            resource.param("oldPasswd", oldPasswordEt.getText().toString());
+            resource.param("newPasswd", newPasswordEt.getText().toString());
             final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
@@ -131,7 +122,7 @@ public class UserPasswordActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-                    Toast.makeText(mContext, getString(R.string.pwd_upd_fail), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

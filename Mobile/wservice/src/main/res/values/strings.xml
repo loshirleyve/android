@@ -218,5 +218,7 @@
     <string name="sure_pass">确认密码</string>
     <string name="sure_pass_prompt">请输入确认密码</string>
     <string name="user_password">用户密码</string>
-    <string name="pwd_upd_fail">密码更新失败</string>
+    <string name="old_pwd_input_pro">请输入原始密码！</string>
+    <string name="new_pwd_input_pro">请输入新密码！</string>
+    <string name="sure_pwd_input_pro">请输入确认密码！</string>
 </resources>
