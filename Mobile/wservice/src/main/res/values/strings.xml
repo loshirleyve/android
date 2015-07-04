@@ -30,6 +30,7 @@
     <string name="app_no_more_data">没有更多的数据了</string>
     <string name="app_photo">拍照</string>
     <string name="app_update_success">更新成功</string>
+    <string name="app_psw_meg">请输入正确的密码格式！ </string>
 
     <string name="user_buyer">购买管理</string>
     <string name="user_file">文件</string>
@@ -192,6 +193,8 @@
     <string name="local_img">本地图片</string>
     <string name="yun_img">云图片</string>
     <string name="pass_prompt">请输入6-15位字母或数字的密码组合！</string>
+    <string name="pass_promp">两次密码输入不一致！</string>
+    <string name="pwd_upd_success">密码更新成功</string>
     <string name="ori_pass">原始密码</string>
     <string name="ori_pass_prompt">请输入原始密码</string>
     <string name="new_pass">新密码</string>
@@ -199,4 +202,5 @@
     <string name="sure_pass">确认密码</string>
     <string name="sure_pass_prompt">请输入确认密码</string>
     <string name="user_password">用户密码</string>
+    <string name="pwd_upd_fail">密码更新失败</string>
 </resources>

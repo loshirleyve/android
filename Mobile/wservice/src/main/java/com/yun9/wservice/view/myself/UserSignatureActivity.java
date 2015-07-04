@@ -68,7 +68,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
         Intent intent = getIntent();
         if(intent != null) {
             command = (UserSignatureCommand)intent.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
-            if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getUserid())){
+            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())){
                 userid = command.getUserid();
                 sessionManager.getUser().setId(userid);
             }
@@ -76,7 +76,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
                 userid = sessionManager.getUser().getId();
             }
 
-            if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())){
+            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())){
                 instid = command.getInstid();
                 sessionManager.getInst().setId(instid);
             }

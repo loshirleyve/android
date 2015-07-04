@@ -53,6 +53,7 @@ import java.util.List;
  * Created by li on 2015/6/25.
  */
 public class UserInfoActivity extends JupiterFragmentActivity {
+    private UserPasswordCommand userPasswordCommand;
     private LocalImageCommand localImageCommand;
     private CameraCommand cameraCommand;
     private String userid;
@@ -116,7 +117,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         TitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
         userInfoWidget.getSignature().setOnClickListener(onSignatureClickListener);
-        userInfoWidget.getPassword().setOnClickListener(onPassClickListener);
+        userInfoWidget.getPassword().setOnClickListener(onPwdClickListener);
 
         //初始化菜单弹出窗口
         initImgMenu();
@@ -175,13 +176,13 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
     };
 
-    private View.OnClickListener onPassClickListener = new View.OnClickListener() {
+    private View.OnClickListener onPwdClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!AssertValue.isNotNull(command)){
-                command = new UserInfoCommand().setUserid(userid).setInstid(instid);
+            if(!AssertValue.isNotNull(userPasswordCommand)){
+                userPasswordCommand = new UserPasswordCommand().setUserId(userid);
             }
-            UserPasswordActivity.start(UserInfoActivity.this, command);
+            UserPasswordActivity.start(UserInfoActivity.this, userPasswordCommand);
         }
     };
 
@@ -289,6 +290,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             }
         });
     }
+
     private void upadteSignature(String signature){
         Resource resource  = resourceFactory.create("UpdateUserBySignature");
         resource.param("userid", userid);
@@ -336,7 +338,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         menuLayout = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.widget_user_menu, null);
         pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         pop.setOnDismissListener(onDismissListener);
-        /*pop.setBackgroundDrawable(new ColorDrawable(Color.argb(0.5f, )));*/
         pop.setBackgroundDrawable(getResources().getDrawable(R.color.drak));
         pop.setOutsideTouchable(true);
         pop.setAnimationStyle(R.style.bottom2top_top2bottom);
