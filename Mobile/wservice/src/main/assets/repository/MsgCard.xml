@@ -40,6 +40,11 @@
         <type>yun9</type>
     </repository>
 
+    <repository>
+        <name>AddPraiseLikeByMsgCardId</name>
+        <action>com.yun9.ws.biz.service.AddPraiseLikeByMsgCardIdService</action>
+        <type>yun9</type>
+    </repository>
 
 
 

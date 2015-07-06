@@ -13,7 +13,7 @@
         android:background="@color/devide_line"/>
     <TextView
         android:background="@color/whites"
-        android:padding="10dp"
+        android:padding="12dp"
         android:gravity="center"
         android:id="@+id/yun_image"
         android:textSize="18dp"
@@ -29,7 +29,7 @@
 
     <TextView
         android:background="@color/whites"
-        android:padding="10dp"
+        android:padding="12dp"
         android:gravity="center"
         android:id="@+id/local_image"
         android:textSize="18dp"
@@ -45,7 +45,7 @@
 
     <TextView
         android:background="@color/whites"
-        android:padding="10dp"
+        android:padding="12dp"
         android:gravity="center"
         android:id="@+id/photo"
         android:textSize="18dp"
@@ -62,7 +62,7 @@
     <TextView
         android:layout_marginTop="10dp"
         android:background="@color/whites"
-        android:padding="10dp"
+        android:padding="12dp"
         android:gravity="center"
         android:id="@+id/cancel"
         android:textSize="18dp"
