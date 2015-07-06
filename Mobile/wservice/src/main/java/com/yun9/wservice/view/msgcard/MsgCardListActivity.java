@@ -187,20 +187,25 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             final MsgCard msgCard = msgCards.get(position);
 
             MsgCardWidget msgCardWidget = null;
-
             if (convertView == null) {
                 msgCardWidget = new MsgCardWidget(mContext);
-
                 msgCardWidget.getPraiseRL().setTag(msgCard);
+                if(msgCard.isMypraise()){
+                    msgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
+                }else {
+                    msgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
+                }
                 final MsgCardWidget finalMsgCardWidget = msgCardWidget;
                 msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        cardPraiseLikeByMsgCardId(msgCard.getId());
+                        //cardPraiseLikeByMsgCardId(msgCard.getId());
+                        cardPraiseLikeByMsgCardId(msgCard);
                         if(msgCard.isMypraise()){
                             finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
                         }else {
-                            finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
+                            //finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
+                            finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
                         }
                         logger.d("点赞！");
                     }
@@ -240,7 +245,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         }
     };
 
-    private void cardPraiseLikeByMsgCardId(String msgcardId){
+    //private void cardPraiseLikeByMsgCardId(String msgcardId){
+    private void cardPraiseLikeByMsgCardId(final MsgCard msgCard){
+        String msgcardId = msgCard.getId();
         if(AssertValue.isNotNull(sessionManager.getUser())){
             final Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
             resource.param("userid", sessionManager.getUser().getId());
@@ -248,6 +255,12 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
+                    /*response.getPayload()
+                    if (!msgCard.isMypraise()) {
+                        //msgCard.isMypraise() = true;
+                        msgCard.getPraises().set()
+                    }
+                    else msgCard.isMypraise() = false;*/
                     Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
                 }
 
