@@ -10,4 +10,13 @@
         </output>
         <type>yun9</type>
     </repository>
+    <!-- 文件分享 -->
+    <repository>
+        <name>ShareFile</name>
+        <action>com.yun9.sys.inst.serivce.ShareFileService</action>
+        <output>
+            <type>Object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 </repositorys>

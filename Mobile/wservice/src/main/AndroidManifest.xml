@@ -234,8 +234,9 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:label="@string/doc_file_online"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
         <activity
-            android:name=".view.doc.YunFileInfoActivity"
+            android:name=".view.doc.FileInfoActivity"
             android:label="@string/doc_file_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>

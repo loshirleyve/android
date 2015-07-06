@@ -24,8 +24,6 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.view.org.OrgPhoneUserActivity;
-import com.yun9.wservice.view.org.OrgPhoneUserCommand;
 import com.yun9.wservice.widget.FileItemWidget;
 
 import java.util.ArrayList;
@@ -245,8 +243,7 @@ public class YunFileActivity extends JupiterFragmentActivity {
                 fileBean.setSelected(!fileBean.isSelected());
                 fileItemWidget.selected(fileBean.isSelected());
             } else {
-                //TODO 打开文件按详情
-
+                FileInfoActivity.start(YunFileActivity.this, new FileInfoCommand().setFileBean(fileBean));
             }
 
         }
@@ -334,22 +331,12 @@ public class YunFileActivity extends JupiterFragmentActivity {
             fileItemWidget.getFileSizeTV().setText(fileBean.getSize());
             fileItemWidget.getFileTimeTV().setText(fileBean.getDateAdded());
             fileItemWidget.setTag(fileBean);
-            fileItemWidget.setOnClickListener(onClickItemListener);
             if (mEdit) {
                 fileItemWidget.selected(fileBean.isSelected());
             } else {
                 fileItemWidget.selectMode(false);
             }
-
             return fileItemWidget;
-        }
-    };
-
-    private View.OnClickListener onClickItemListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FileBean fileBean=(FileBean)v.getTag();
-            YunFileInfoActivity.start(YunFileActivity.this, new YunFileInfoCommand().setFileBean(fileBean));
         }
     };
 }

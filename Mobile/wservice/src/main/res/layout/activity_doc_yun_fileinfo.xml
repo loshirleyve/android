@@ -14,17 +14,12 @@
         tb:titleText="@string/doc_file_name"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
     <LinearLayout
-        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titlebar"
+        android:layout_margin="20dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/qrcode"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,18 +110,38 @@
             <Button
                 android:id="@+id/fileopenway"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
                 android:background="@color/whites"
-                android:text="@string/doc_file_openway" />
+                android:text="@string/doc_file_openway"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/filedownload"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:background="@color/whites"
+                android:text="@string/doc_file_download"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/fileshare"
                 android:layout_width="100dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:background="@color/whites"
-                android:text="@string/msg_card_share" />
+                android:text="@string/msg_card_share"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/fileupload"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:background="@color/whites"
+                android:text="@string/doc_file_upload"
+                android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
 

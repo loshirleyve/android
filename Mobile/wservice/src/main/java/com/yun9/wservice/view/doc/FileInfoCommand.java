@@ -2,16 +2,11 @@ package com.yun9.wservice.view.doc;
 
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.model.FileBean;
-import com.yun9.jupiter.util.AssertValue;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Leon on 15/6/16.
  */
-public class YunFileInfoCommand extends JupiterCommand {
-
+public class FileInfoCommand extends JupiterCommand {
     private FileBean fileBean;
 
     private String userid;
@@ -23,7 +18,7 @@ public class YunFileInfoCommand extends JupiterCommand {
         return fileBean;
     }
 
-    public YunFileInfoCommand setFileBean(FileBean fileBean) {
+    public FileInfoCommand setFileBean(FileBean fileBean) {
         this.fileBean = fileBean;
         return this;
     }
@@ -32,7 +27,7 @@ public class YunFileInfoCommand extends JupiterCommand {
         return userid;
     }
 
-    public YunFileInfoCommand setUserid(String userid) {
+    public FileInfoCommand setUserid(String userid) {
         this.userid = userid;
         return this;
     }
@@ -41,12 +36,10 @@ public class YunFileInfoCommand extends JupiterCommand {
         return instid;
     }
 
-    public YunFileInfoCommand setInstid(String instid) {
+    public FileInfoCommand setInstid(String instid) {
         this.instid = instid;
         return this;
     }
-
-
 
 
 }

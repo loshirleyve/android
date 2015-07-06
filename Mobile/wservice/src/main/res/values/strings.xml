@@ -117,6 +117,11 @@
     <string name="doc_file_uploaddate">上传时间：</string>
     <string name="doc_file_size">大小：</string>
     <string name="doc_file_openway">打开方式</string>
+    <string name="doc_file_download">下载</string>
+    <string name="doc_file_upload">上传</string>
+    <string name="doc_file_share_failure_tip">分享失败！</string>
+    <string name="doc_file_share_success_tip">分享成功！</string>
+    <string name="doc_file_share_tip">你没有选择分享人哦！</string>
 
     <string name="register_user">注册用户</string>
     <string name="register_user_welcome">欢迎加入移办通，请输入您的邮箱地址</string>

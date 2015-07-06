@@ -162,9 +162,8 @@ public class LocalFileActivity extends JupiterFragmentActivity {
                 FileItemWidget fileItemWidget = (FileItemWidget) view;
                 fileBean.setSelected(!fileBean.isSelected());
                 fileItemWidget.selected(fileBean.isSelected());
-            } else {
-                //TODO 打开文件按详情
-
+            } else{
+                FileInfoActivity.start(LocalFileActivity.this, new FileInfoCommand().setFileBean(fileBean));
             }
 
         }

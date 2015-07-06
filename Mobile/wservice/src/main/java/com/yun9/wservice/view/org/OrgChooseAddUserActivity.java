@@ -2,6 +2,7 @@ package com.yun9.wservice.view.org;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.yun9.wservice.view.dynamic.OrgAndUserBean;
 
 import junit.framework.Assert;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.add_use_phonebook_to)
     private JupiterRowStyleTitleLayout addusephonebook;
 
-    @ViewInject(id=R.id.orgname)
+    @ViewInject(id = R.id.orgname)
     private TextView orgname;
 
     @BeanInject
@@ -60,11 +62,9 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
 
-    private  List<User> users=new ArrayList<User>();
+    private List<User> users = new ArrayList<User>();
 
     private OrgChooseAddUserCommand command;
-
-
 
 
     public static void start(Activity activity, OrgChooseAddUserCommand command) {
@@ -91,8 +91,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     }
 
 
-    public void initView()
-    {
+    public void initView() {
         orgname.setText(command.getOrgname());
         titleBarLayout.getTitleTv().setText(R.string.org_add_newuser);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
@@ -103,13 +102,12 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         addusephonebook.setOnClickListener(onChooseAddUserPhoneClickListener);
     }
 
-    private View.OnClickListener onChooseAddUserOrgClickListener=new View.OnClickListener() {
+    private View.OnClickListener onChooseAddUserOrgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true).setOnlyUsers(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK);
-            if(AssertValue.isNotNullAndNotEmpty(users))
-            {
+            if (AssertValue.isNotNullAndNotEmpty(users)) {
                 orgCompositeCommand.setSelectUsers(getSelectUserIds(users));
             }
             OrgCompositeActivity.start(OrgChooseAddUserActivity.this, orgCompositeCommand);
@@ -117,9 +115,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     };
 
 
-
-
-    private View.OnClickListener onChooseAddUserPhoneClickListener=new View.OnClickListener() {
+    private View.OnClickListener onChooseAddUserPhoneClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             OrgPhoneUserActivity.start(OrgChooseAddUserActivity.this, new OrgPhoneUserCommand());
@@ -128,33 +124,31 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     };
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         users.clear();
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
-            this.users=users;
+            this.users = users;
         }
     }
 
-    private View.OnClickListener onAddUserOrgClickListener=new View.OnClickListener() {
+    private View.OnClickListener onAddUserOrgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (AssertValue.isNotNullAndNotEmpty(users))
-            {
+            if (AssertValue.isNotNullAndNotEmpty(users)) {
                 Resource resource = resourceFactory.create("AddOrgCard");
                 resource.param("orgid", command.getOrgid());
-                resource.param("userid",sessionManager.getUser().getId());
-                resource.param("addUserIdList",getSelectUserIds(users));
+                resource.param("userid", sessionManager.getUser().getId());
+                resource.param("addUserIdList", getSelectUserIds(users));
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override
                     public void onSuccess(Response response) {
                         Toast.makeText(OrgChooseAddUserActivity.this, R.string.add_orguser_success_tip, Toast.LENGTH_SHORT).show();
                         finish();
                     }
+
                     @Override
                     public void onFailure(Response response) {
                         Toast.makeText(OrgChooseAddUserActivity.this, R.string.add_orguser_failure_tip, Toast.LENGTH_SHORT).show();
@@ -165,12 +159,23 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
 
                     }
                 });
-            }
-            else
-                Toast.makeText(OrgChooseAddUserActivity.this,R.string.choose_add_use_to, Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(OrgChooseAddUserActivity.this, R.string.choose_add_use_to, Toast.LENGTH_SHORT).show();
         }
     };
 
+
+
+
+    public List<String> getSelectUserIds(List<User> users) {
+        List<String> userids = new ArrayList<String>();
+        if (AssertValue.isNotNullAndNotEmpty(users)) {
+            for (User user : users) {
+                userids.add(user.getId());
+            }
+        }
+        return userids;
+    }
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
@@ -179,16 +184,5 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         }
     };
 
-    public List<String> getSelectUserIds(List<User> users)
-    {
-        List<String> userids=new ArrayList<String>();
-        if(AssertValue.isNotNullAndNotEmpty(users))
-        {
-            for (User user:users)
-            {
-                userids.add(user.getId());
-            }
-        }
-        return userids;
-    }
+
 }
