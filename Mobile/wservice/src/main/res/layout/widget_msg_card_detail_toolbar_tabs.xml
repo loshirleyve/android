@@ -26,7 +26,8 @@
                 <ImageView
                     style="@style/msg_card_btn_ico"
                     android:id="@+id/praise_iv"
-                    android:src="@drawable/star1"/>
+                    android:src="@drawable/star1"
+                    />
             </RelativeLayout>
 
             <RelativeLayout style="@style/msg_card_btn"
