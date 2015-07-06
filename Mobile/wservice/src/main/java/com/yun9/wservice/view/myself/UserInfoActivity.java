@@ -3,16 +3,9 @@ package com.yun9.wservice.view.myself;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -44,10 +37,7 @@ import com.yun9.wservice.view.doc.LocalImageCommand;
 import com.yun9.wservice.view.doc.YunFileCommand;
 import com.yun9.wservice.view.doc.YunImageActivity;
 import com.yun9.wservice.view.doc.YunImageCommand;
-import com.yun9.wservice.view.inst.SelectInstActivity;
-import com.yun9.wservice.view.inst.SelectInstCommand;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +45,7 @@ import java.util.List;
  * Created by li on 2015/6/25.
  */
 public class UserInfoActivity extends JupiterFragmentActivity {
+    private UserPwdCommand userPwdCommand;
     private LocalImageCommand localImageCommand;
     private CameraCommand cameraCommand;
     private String userid;
@@ -105,7 +96,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
         else {
             userid = command.getUserid();
-            sessionManager.getUser().setId(userid);
         }
 
         if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())){
@@ -113,12 +103,11 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
         else {
             instid = command.getInstid();
-            sessionManager.getInst().setId(instid);
         }
         TitleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         userInfoWidget.getUserHeadLL().setOnClickListener(onMenuClickListener);
         userInfoWidget.getSignature().setOnClickListener(onSignatureClickListener);
-        userInfoWidget.getPassword().setOnClickListener(onPassClickListener);
+        userInfoWidget.getPassword().setOnClickListener(onPwdClickListener);
 
         //初始化菜单弹出窗口
         initImgMenu();
@@ -144,7 +133,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
                     User user = (User) response.getPayload();
                     if (AssertValue.isNotNull(user)) {
                         CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
-                        if (AssertValue.isNotNull(cacheUser)){
+                        if (AssertValue.isNotNull(cacheUser)) {
                             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userInfoWidget.getUserHeadIV());
                         }
                         userInfoWidget.getUserName().getHotNitoceTV().setText(user.getName());
@@ -180,13 +169,13 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         }
     };
 
-    private View.OnClickListener onPassClickListener = new View.OnClickListener() {
+    private View.OnClickListener onPwdClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!AssertValue.isNotNull(command)){
-                command = new UserInfoCommand().setUserid(userid).setInstid(instid);
+            if(!AssertValue.isNotNull(userPwdCommand)){
+                userPwdCommand = new UserPwdCommand().setUserId(userid);
             }
-            UserPasswordActivity.start(UserInfoActivity.this, command);
+            UserChangePwdActivity.start(UserInfoActivity.this, userPwdCommand);
         }
     };
 
@@ -294,6 +283,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
             }
         });
     }
+
     private void upadteSignature(String signature){
         Resource resource  = resourceFactory.create("UpdateUserBySignature");
         resource.param("userid", userid);
@@ -341,7 +331,6 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         menuLayout = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.widget_user_menu, null);
         pop = new PopupWindow(menuLayout, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         pop.setOnDismissListener(onDismissListener);
-        /*pop.setBackgroundDrawable(new ColorDrawable(Color.argb(0.5f, )));*/
         pop.setBackgroundDrawable(getResources().getDrawable(R.color.drak));
         pop.setOutsideTouchable(true);
         pop.setAnimationStyle(R.style.bottom2top_top2bottom);

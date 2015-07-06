@@ -162,6 +162,7 @@ public class UserFragment extends JupiterFragment {
     }
 
     private void refresh() {
+
         if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNull(sessionManager.getUser())) {
             Resource resource = resourceFactory.create("QueryUserInfoByIdService");
             resource.param("userid", sessionManager.getUser().getId());

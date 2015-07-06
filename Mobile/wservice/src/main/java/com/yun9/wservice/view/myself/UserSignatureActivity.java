@@ -32,13 +32,12 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     private String userid;
     private String instid;
     private UserSignatureCommand command;
-    private UserInfoCommand userInfoCommand;
 
     @ViewInject(id = R.id.signature_title)
     private JupiterTitleBarLayout TitleBarLayout;
 
     @ViewInject(id = R.id.signature_content)
-    private EditText signatureContent;
+    private EditText signatureContentEt;
 
     @BeanInject
     private SessionManager sessionManager;
@@ -68,23 +67,21 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
         Intent intent = getIntent();
         if(intent != null) {
             command = (UserSignatureCommand)intent.getSerializableExtra(UserSignatureCommand.PARAM_COMMAND);
-            if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getUserid())){
+            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())){
                 userid = command.getUserid();
-                sessionManager.getUser().setId(userid);
             }
             else {
                 userid = sessionManager.getUser().getId();
             }
 
-            if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getInstid())){
+            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())){
                 instid = command.getInstid();
-                sessionManager.getInst().setId(instid);
             }
             else {
                 instid = sessionManager.getInst().getId();
             }
 
-            signatureContent.postDelayed(new Runnable() {
+            signatureContentEt.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fresh();
@@ -105,9 +102,8 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
                 @Override
                 public void onSuccess(Response response) {
                     User user = (User) response.getPayload();
-                    signatureContent.setText(user.getSignature());
-                    CharSequence text = signatureContent.getText();
-                    //Debug.asserts(text instanceof Spannable);
+                    signatureContentEt.setText(user.getSignature());
+                    CharSequence text = signatureContentEt.getText();
                     if (text instanceof Spannable) {
                         Spannable spanText = (Spannable) text;
                         Selection.setSelection(spanText, text.length());
@@ -128,7 +124,7 @@ public class UserSignatureActivity extends JupiterFragmentActivity{
     }
     private void uploadSignature(){
         Intent intent = new Intent();
-        intent.putExtra(UserSignatureCommand.PARAM_SIGNATURE_COMMAND, signatureContent.getText().toString());
+        intent.putExtra(UserSignatureCommand.PARAM_SIGNATURE_COMMAND, signatureContentEt.getText().toString());
         setResult(UserSignatureCommand.RESULT_CODE_OK, intent);
     }
     private View.OnClickListener onBackOnclickListener = new View.OnClickListener() {

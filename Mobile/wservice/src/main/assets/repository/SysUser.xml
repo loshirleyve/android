@@ -58,4 +58,11 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 注用户密码修改 -->
+    <repository>
+        <name>UpdatePasswd</name>
+        <action>com.yun9.sys.user.service.UpdatePasswdService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>
