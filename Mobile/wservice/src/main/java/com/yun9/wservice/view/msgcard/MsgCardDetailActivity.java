@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -123,9 +124,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         command = (MsgCardDetailCommand) getIntent().getSerializableExtra(MsgCardDetailCommand.PARAM_COMMAND);
-
         currUserid = sessionManager.getUser().getId();
         currInstid = sessionManager.getInst().getId();
 
@@ -139,7 +138,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 finish();
             }
         });
-
 
         commentView = new MsgCardDetailCommentWidget(mContext);
         praiseView = new MsgCardDetailPraiseWidget(mContext);
@@ -411,7 +409,14 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private View.OnClickListener onPraiseClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())){
+                cardPraiseLikeByMsgCardId(command.getMsgCardId());
+            }
+            if(mMsgCard.isMypraise()){
+                toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+            }else {
+                toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+            }
         }
     };
 
@@ -430,6 +435,28 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         msgCard.getProcess().add(new MsgCardProcessAction("撤销8", "rejected"));
         msgCard.getProcess().add(new MsgCardProcessAction("撤销9", "rejected"));
         msgCard.getProcess().add(new MsgCardProcessAction("撤销10", "rejected"));
+    }
+    private void cardPraiseLikeByMsgCardId(String msgcardId){
+        if(AssertValue.isNotNull(sessionManager.getUser())){
+            final Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
+            resource.param("userid", sessionManager.getUser().getId());
+            resource.param("msgcardid", msgcardId);
+            resource.invok(new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinally(Response response) {
+
+                }
+            });
+        }
     }
 }

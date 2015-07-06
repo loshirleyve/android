@@ -95,10 +95,10 @@ public class UserChangePwdActivity extends JupiterFragmentActivity {
             }else if (surePasswordEt.getText().toString().equals("")){
                 Toast.makeText(mContext, getString(R.string.sure_pwd_input_pro), Toast.LENGTH_SHORT).show();
             }else if(!isPassword(newPasswordEt.getText().toString())){
-                Toast.makeText(mContext, getString(R.string.pass_prompt), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.pwd_prompt), Toast.LENGTH_SHORT).show();
             }
             else if (!newPasswordEt.getText().toString().equals(surePasswordEt.getText().toString())){
-                Toast.makeText(mContext, getString(R.string.pass_promp), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getString(R.string.pwd_promp), Toast.LENGTH_SHORT).show();
             }
             else {
                 changeUserPwd();

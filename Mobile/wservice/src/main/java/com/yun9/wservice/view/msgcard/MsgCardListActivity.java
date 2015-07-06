@@ -37,8 +37,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 
 public class MsgCardListActivity extends JupiterFragmentActivity {
-
-
+    private String userid;
     private LinkedList<MsgCard> msgCards = new LinkedList<>();
 
     private MsgCardListCommand command;
@@ -74,6 +73,11 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         command = (MsgCardListCommand) getIntent().getSerializableExtra(MsgCardListCommand.PARAM_COMMAND);
+        if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())){
+            userid = command.getUserid();
+        }else {
+            userid = sessionManager.getUser().getId();
+        }
 
         titleBar.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +184,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            MsgCard msgCard = msgCards.get(position);
+            final MsgCard msgCard = msgCards.get(position);
 
             MsgCardWidget msgCardWidget = null;
 
@@ -188,9 +192,16 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 msgCardWidget = new MsgCardWidget(mContext);
 
                 msgCardWidget.getPraiseRL().setTag(msgCard);
+                final MsgCardWidget finalMsgCardWidget = msgCardWidget;
                 msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        cardPraiseLikeByMsgCardId(msgCard.getId());
+                        if(msgCard.isMypraise()){
+                            finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
+                        }else {
+                            finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
+                        }
                         logger.d("点赞！");
                     }
                 });
@@ -228,4 +239,28 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             return msgCardWidget;
         }
     };
+
+    private void cardPraiseLikeByMsgCardId(String msgcardId){
+        if(AssertValue.isNotNull(sessionManager.getUser())){
+            final Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
+            resource.param("userid", sessionManager.getUser().getId());
+            resource.param("msgcardid", msgcardId);
+            resource.invok(new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinally(Response response) {
+
+                }
+            });
+        }
+    }
 }
