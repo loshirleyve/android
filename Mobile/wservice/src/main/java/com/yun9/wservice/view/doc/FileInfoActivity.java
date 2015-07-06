@@ -219,6 +219,8 @@ public class FileInfoActivity extends JupiterFragmentActivity {
 
                 if (!upload) {
                     Toast.makeText(mContext, R.string.new_dynamic_upload_error, Toast.LENGTH_SHORT);
+                } else {
+                    Toast.makeText(mContext, "上传成功！", Toast.LENGTH_SHORT);
                 }
             }
         });
