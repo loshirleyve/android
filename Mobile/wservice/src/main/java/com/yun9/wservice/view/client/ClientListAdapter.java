@@ -5,7 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.DateFormatUtil;
+import com.yun9.jupiter.util.StringPool;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.wservice.R;
+import com.yun9.wservice.cache.CacheClientProxy;
+import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.Client;
 
 import java.util.ArrayList;
@@ -55,9 +60,44 @@ public class ClientListAdapter extends JupiterAdapter {
             clientItemLayout.getContact_TV().setText(client.getContactman());
             clientItemLayout.getPhone_TV().setText(client.getContactphone());
             clientItemLayout.setTag(client);
+            if (client.getCreatedate() != null){
+                clientItemLayout.getCreateTimeTv()
+                        .setText(DateFormatUtil
+                                .format(Long.valueOf(client.getCreatedate()),
+                                        StringPool.DATE_FORMAT_DATE));
+            }
+            // 如果正在代理该机构
+            if (ClientProxyCache.getInstance().isProxy()){
+                CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
+                if (client.getId().equals(proxy.getUserId())
+                        && client.getInstid().equals(proxy.getInstId())){
+                    clientItemLayout.getTitle_TV().setText(client.getName()+"  (正在代理)");
+                    clientItemLayout.getTitle_TV().setTextColor(clientItemLayout.getResources()
+                            .getColor(R.color.title_color));
+                    clientItemLayout.getTitle_TV().getPaint().setFakeBoldText(true);
+                }
+            }
         }
 
         return clientItemLayout;
 
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        Client client = clients.get(position);
+        if (ClientProxyCache.getInstance().isProxy()){
+            CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
+            if (client.getId().equals(proxy.getUserId())
+                    && client.getInstid().equals(proxy.getInstId())){
+                return ClientActivity.VIEW_TYPE_PROXY;
+            }
+        }
+        return ClientActivity.VIEW_TYPE_NORMAL;
     }
 }

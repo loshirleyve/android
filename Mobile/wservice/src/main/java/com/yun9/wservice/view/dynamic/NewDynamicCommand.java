@@ -26,6 +26,8 @@ public class NewDynamicCommand extends JupiterCommand {
 
     private String instid;
 
+    private String type;
+
     public List<Org> getSelectOrgs() {
         return selectOrgs;
     }

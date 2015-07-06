@@ -113,7 +113,7 @@ public class DetailFormCell extends FormCell {
      */
     private void gotoDetailForm() {
         FormActivity formActivity = (FormActivity) this.context;
-        int requestCode = formActivity.addActivityCallback(new FormActivity.IFormActivityCallback() {
+        int requestCode = formActivity.addActivityCallback(new FormActivity.IActivityCallback() {
             @Override
             public void onActivityResult(int resultCode, Intent data) {
                 if (resultCode == DetailFormCellActivity.RESPONSE_CODE.COMPLETE) {

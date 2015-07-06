@@ -113,7 +113,7 @@
                 android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
                 android:background="@color/whites"
-                android:text="@string/doc_file_openway"
+                android:text="@string/doc_file_open"
                 android:visibility="gone" />
 
             <Button

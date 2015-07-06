@@ -27,6 +27,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':jupiter')
     compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.baoyz.swipemenulistview:library:1.1.0'
     compile project(':photoview')
     compile project(':ptr-lib')
     compile project(':viewpagerindicator')

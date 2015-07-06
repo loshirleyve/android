@@ -18,6 +18,7 @@ import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AndroidFileUtil;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -132,7 +133,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onOpenlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            FileBean fileBean=(FileBean)v.getTag();
+            FileBean fileBean = (FileBean) v.getTag();
             openFile(fileBean);
 
         }
@@ -147,7 +148,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onUpLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            FileBean fileBean=(FileBean)v.getTag();
+            FileBean fileBean = (FileBean) v.getTag();
             uploadFiles(fileBean);
         }
     };
@@ -219,6 +220,8 @@ public class FileInfoActivity extends JupiterFragmentActivity {
 
                 if (!upload) {
                     Toast.makeText(mContext, R.string.new_dynamic_upload_error, Toast.LENGTH_SHORT);
+                } else {
+                    Toast.makeText(mContext, "上传成功！", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -232,43 +235,12 @@ public class FileInfoActivity extends JupiterFragmentActivity {
      * @param fileBean
      */
     private void openFile(FileBean fileBean) {
-        File file=new File(fileBean.getFilePath());
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //设置intent的Action属性
-        intent.setAction(Intent.ACTION_VIEW);
-        //获取文件file的MIME类型
-        String type = getMIMEType(file);
-        //设置intent的data和Type属性。
-        intent.setDataAndType(/*uri*/Uri.fromFile(file), type);
-        //跳转
-        startActivity(intent);
-
-    }
-
-    /**
-     * 根据文件后缀名获得对应的MIME类型。
-     *
-     * @param file
-     */
-    private String getMIMEType(File file) {
-
-        String type = "*/*";
-        String fName = file.getName();
-        //获取后缀名前的分隔符"."在fName中的位置。
-        int dotIndex = fName.lastIndexOf(".");
-        if (dotIndex < 0) {
-            return type;
+        Intent intent = AndroidFileUtil.openFile(fileBean.getAbsolutePath());
+        if (AssertValue.isNotNull(intent)) {
+            startActivity(intent);
         }
-        /* 获取文件的后缀名 */
-        String end = fName.substring(dotIndex, fName.length()).toLowerCase();
-        if (end == "") return type;
-        //在MIME和文件类型的匹配表中找到对应的MIME类型。
-        for (int i = 0; i < MIME_MapTable.length; i++) { //MIME_MapTable??在这里你一定有疑问，这个MIME_MapTable是什么？
-            if (end.equals(MIME_MapTable[i][0]))
-                type = MIME_MapTable[i][1];
-        }
-        return type;
+
+
     }
 
 
@@ -289,19 +261,6 @@ public class FileInfoActivity extends JupiterFragmentActivity {
         }
     };
 
-    private final String[][] MIME_MapTable = {
-            //{后缀名，	MIME类型}
-            {".doc", "application/msword"},
-            {".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"},
-            {".xls", "application/vnd.ms-excel"},
-            {".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
-            {".pdf", "application/pdf"},
-            {".ppt", "application/vnd.ms-powerpoint"},
-            {".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation"},
-            {".txt", "text/plain"},
-            {".wps", "application/vnd.ms-works"},
-
-    };
 
 
 }

@@ -118,7 +118,7 @@
     <string name="doc_file_from">来自：</string>
     <string name="doc_file_uploaddate">上传时间：</string>
     <string name="doc_file_size">大小：</string>
-    <string name="doc_file_openway">打开方式</string>
+    <string name="doc_file_open">打开</string>
     <string name="doc_file_download">下载</string>
     <string name="doc_file_upload">上传</string>
     <string name="doc_file_share_failure_tip">分享失败！</string>
@@ -227,4 +227,5 @@
     <string name="old_pwd_input_pro">请输入原始密码！</string>
     <string name="new_pwd_input_pro">请输入新密码！</string>
     <string name="sure_pwd_input_pro">请输入确认密码！</string>
+    <string name="my_clients">我的客户</string>
 </resources>
