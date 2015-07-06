@@ -82,4 +82,44 @@ public class OrderAttachWayExpressWidget extends JupiterRelativeLayout implement
     public boolean isSelected() {
         return sutitleLayout.isSelected();
     }
+
+    public JupiterRowStyleSutitleLayout getSutitleLayout() {
+        return sutitleLayout;
+    }
+
+    public void setSutitleLayout(JupiterRowStyleSutitleLayout sutitleLayout) {
+        this.sutitleLayout = sutitleLayout;
+    }
+
+    public EditText getEditText() {
+        return editText;
+    }
+
+    public void setEditText(EditText editText) {
+        this.editText = editText;
+    }
+
+    public ImageView getFlickIv() {
+        return flickIv;
+    }
+
+    public void setFlickIv(ImageView flickIv) {
+        this.flickIv = flickIv;
+    }
+
+    public TextView getTipTv() {
+        return tipTv;
+    }
+
+    public void setTipTv(TextView tipTv) {
+        this.tipTv = tipTv;
+    }
+
+    public LinearLayout getDetailLl() {
+        return detailLl;
+    }
+
+    public void setDetailLl(LinearLayout detailLl) {
+        this.detailLl = detailLl;
+    }
 }

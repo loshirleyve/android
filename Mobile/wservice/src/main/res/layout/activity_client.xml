@@ -11,27 +11,23 @@
         tb:titleLeftIcoVisibility="true"
         tb:titleRightText="@string/add_client"
         tb:titleRightTextVisibility="true"
-        tb:titleText="@string/detail_client" />
+        tb:titleText="@string/my_clients" />
 
 
-    <RelativeLayout
+    <com.yun9.jupiter.widget.JupiterSearchInputLayout
+        android:id="@+id/searchRL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/client_title">
+        android:layout_below="@id/client_title"
+        android:layout_marginBottom="8dp">
 
-        <com.yun9.jupiter.widget.JupiterSearchInputLayout
-            android:id="@+id/searchRL"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
-
-        </com.yun9.jupiter.widget.JupiterSearchInputLayout>
+    </com.yun9.jupiter.widget.JupiterSearchInputLayout>
 
         <in.srain.cube.views.ptr.PtrClassicFrameLayout
             xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
             android:id="@+id/rotate_header_list_view_frame_client"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_below="@id/searchRL"
             android:background="@color/groupbackground"
@@ -41,26 +37,16 @@
             cube_ptr:ptr_pull_to_fresh="false"
             cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
             cube_ptr:ptr_resistance="1.7">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ListView
+                <com.baoyz.swipemenulistview.SwipeMenuListView
                     android:id="@+id/client_list_ptr"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:choiceMode="singleChoice"
                     android:divider="@null"
                     android:fadingEdge="none"
                     android:listSelector="@android:color/transparent"
-                    android:scrollbarStyle="outsideOverlay"></ListView>
-            </LinearLayout>
+                    android:scrollbarStyle="outsideOverlay">
+                </com.baoyz.swipemenulistview.SwipeMenuListView>
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
-
-
-    </RelativeLayout>
 
 </RelativeLayout>

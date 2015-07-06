@@ -26,6 +26,13 @@ public abstract class FormCell implements java.io.Serializable{
         return FormUtilFactory.getInstance().getLoadValueHandler(type);
     }
 
+    public String getStringValue() {
+        Object object = getValue();
+        if (object != null){
+            return object.toString();
+        }
+        return null;
+    }
     public abstract View getCellView(Context context);
 
     public abstract void edit(boolean edit);

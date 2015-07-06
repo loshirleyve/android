@@ -22,6 +22,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderBaseInfo;
+import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,7 +121,8 @@ public class OrderListActivity extends JupiterFragmentActivity{
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                List<OrderBaseInfo> orderBaseInfos = (List<OrderBaseInfo>) response.getPayload();
+                OrderBaseInfoWrapper wrapper = (OrderBaseInfoWrapper) response.getPayload();
+                List<OrderBaseInfo> orderBaseInfos = wrapper.getOrderList();
                 if (orderBaseInfos != null && orderBaseInfos.size() > 0){
                     lastupid = orderBaseInfos.get(0).getOrderid();
                     orderList.addAll(0,orderBaseInfos);

@@ -23,15 +23,24 @@ public class ClientProxyCache extends AbsCache{
     }
 
     public boolean isProxy() {
-        return this.contains(CLIENT_PROXY_KEY);
+        return this.contains(CLIENT_PROXY_KEY)
+                && this.getProxy() != null;
     }
 
     public CacheClientProxy getProxy() {
-        return this.get(CLIENT_PROXY_KEY,CacheClientProxy.class);
+        return this.get(CLIENT_PROXY_KEY, CacheClientProxy.class);
     }
 
     public void putClientProxy(CacheClientProxy clientProxy) {
-        this.put(CLIENT_PROXY_KEY,clientProxy);
+        if (clientProxy != null){
+            this.put(CLIENT_PROXY_KEY,clientProxy);
+        } else {
+            removeProxy();
+        }
+    }
+
+    public void removeProxy() {
+        this.remove(CLIENT_PROXY_KEY);
     }
 
     private ClientProxyCache() {

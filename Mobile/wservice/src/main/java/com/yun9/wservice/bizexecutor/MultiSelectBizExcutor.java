@@ -11,6 +11,7 @@ import com.yun9.jupiter.form.cell.MultiSelectFormCell;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.wservice.view.common.MultiSelectActivity;
 import com.yun9.wservice.view.common.MultiSelectCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class MultiSelectBizExcutor implements FormUtilFactory.BizExecutor {
 
     @Override
-    public void execute(final FormActivity activity, final FormCell cell) {
+    public void execute(final CustomCallbackActivity activity, final FormCell cell) {
         Intent intent = new Intent(activity,MultiSelectActivity.class);
         final MultiSelectFormCell formCell = (MultiSelectFormCell) cell;
         MultiSelectFormCellBean cellBean = (MultiSelectFormCellBean) cell.getFormCellBean();
@@ -37,7 +38,7 @@ public class MultiSelectBizExcutor implements FormUtilFactory.BizExecutor {
         command.setOptions(cellBean.getOptionMap());
         command.setSelectedList((List<SerialableEntry<String, String>>) cell.getValue());
         intent.putExtra(MultiSelectCommand.PARAM_COMMAND,command);
-        int requestCode = activity.addActivityCallback(new FormActivity.IFormActivityCallback() {
+        int requestCode = activity.addActivityCallback(new FormActivity.IActivityCallback() {
             @Override
             public void onActivityResult(int resultCode, Intent data) {
                 List<SerialableEntry<String, String>> selectedList = (List<SerialableEntry<String, String>>) cell.getValue();
