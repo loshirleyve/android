@@ -12,6 +12,7 @@ import java.util.Objects;
  * Created by huangbinglong on 15/5/28.
  */
 public class FormCellBean implements java.io.Serializable{
+    private String id;
     private String label;
     private String key;
     private boolean readonly;
@@ -89,6 +90,14 @@ public class FormCellBean implements java.io.Serializable{
 
     public void buildConfigFromJson(JsonElement element) {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void buildValueFromJson(JsonElement element) {

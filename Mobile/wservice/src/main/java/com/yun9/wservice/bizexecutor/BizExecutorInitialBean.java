@@ -21,6 +21,12 @@ public class BizExecutorInitialBean implements Initialization,Bean {
         FormUtilFactory.getInstance()
                 .registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_USER_OR_DEPT,
                         new SelectUserBizExecutor());
+        FormUtilFactory.getInstance()
+                .registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_DOC,
+                        new SelectDocBizExecutor());
+        FormUtilFactory.getInstance()
+                .registerBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_IMAGE,
+                        new SelectImageBizExecutor());
     }
 
     @Override

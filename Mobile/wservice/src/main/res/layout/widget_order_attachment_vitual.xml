@@ -12,6 +12,20 @@
     android:layout_margin="10dp"
     android:textSize="14dp"
     android:textColor="@color/devide_line"
-    android:text="请填写电子资料"/>
+    android:text="请填写电子资料"
+    android:focusable="true"
+    android:focusableInTouchMode="true"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:divider="@drawable/spacer_medium"
+        android:showDividers="middle"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@color/groupbackground"
+        android:id="@+id/form_page">
+
+    </LinearLayout>
 </LinearLayout>
 </RelativeLayout>

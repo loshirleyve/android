@@ -111,6 +111,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFailure(Response response) {
+                reloadData(new Order());
                 showToast(response.getCause());
             }
 
@@ -122,7 +123,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData(Order order) {
-        if (!State.Order.COMPLETE.equals(order.getOrder().getState())){
+        if (!AssertValue.isNotNull(order.getOrder())
+                        || !State.Order.COMPLETE.equals(order.getOrder().getState())){
             titleBarLayout.getTitleRight().setVisibility(View.GONE);
         }
         if (order.getOrderproducts() == null
@@ -137,23 +139,27 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         } else {
             orderDetailProcessWidget.buildWithData(order);
         }
-        if (AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
+        if (AssertValue.isNotNull(order.getOrder())
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
             orderDetailPayinfoWidget.buildWithData(order);
         } else {
             orderDetailPayinfoWidget.setVisibility(View.GONE);
         }
-        if (order.getOrder().getCommitattachment() > 0){
+        if (AssertValue.isNotNull(order.getOrder())
+                && order.getOrder().getCommitattachment() > 0){
             orderDetailAttachWidget.buildWithData(order);
         } else {
             orderDetailAttachWidget.setVisibility(View.GONE);
         }
-        if (AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviseruserid())){
+        if (AssertValue.isNotNull(order.getOrder())
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviseruserid())){
             orderDetailAdvisorWidget.buildWitdhData(order);
         } else {
             orderDetailAdvisorWidget.setVisibility(View.GONE);
         }
 
-        if (AssertValue.isNotNullAndNotEmpty(order.getOrder().getProvideinstid())){
+        if (AssertValue.isNotNull(order.getOrder())
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getProvideinstid())){
             orderDetailProviderWidget.buildWitdhData(order);
         } else {
             orderDetailProviderWidget.setVisibility(View.GONE);

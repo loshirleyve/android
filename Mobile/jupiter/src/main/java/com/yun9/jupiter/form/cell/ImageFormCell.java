@@ -10,6 +10,7 @@ import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.ImageFormCellBean;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
@@ -84,7 +85,6 @@ public class ImageFormCell extends FormCell {
     }
 
     private void setupEditIco() {
-        appendAddButton();
         adapter = new BasicJupiterEditAdapter(itemList);
         jupiterEditIco.setAdapter(adapter);
         this.restore();
@@ -104,22 +104,27 @@ public class ImageFormCell extends FormCell {
     }
 
     private void restore() {
-        itemList.clear();
         if (cellBean.getValue() == null) {
             return;
         }
-        String[] ids = ((String[]) cellBean.getValue());
+        restore(((String[]) cellBean.getValue()));
+    }
+
+    public void restore(String[] ids) {
+        itemList.clear();
         for (String id : ids) {
             createItem(id);
         }
+        reCaculateLimit();
         adapter.notifyDataSetInvalidated();
     }
 
     private void startUploadImage() {
-        // TODO 调用相册功能，添加图片
-        createItem("drawable://" + R.drawable.add_user);
-        reCaculateLimit();
-        adapter.notifyDataSetChanged();
+        FormUtilFactory.BizExecutor bizExecutor =
+                findBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_IMAGE);
+        if (bizExecutor != null){
+            bizExecutor.execute((CustomCallbackActivity) this.context,this);
+        }
     }
 
     private JupiterTextIco createItem(String id) {
@@ -201,7 +206,7 @@ public class ImageFormCell extends FormCell {
                 ids.add((String) ico.getTag());
             }
         }
-        return ids;
+        return ids.toArray(new String[0]);
     }
 
     @Override

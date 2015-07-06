@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.DocFormCellBean;
 import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.model.CacheFile;
 import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditItem;
@@ -74,26 +78,36 @@ public class DocFormCell extends FormCell {
     }
 
     private void restore() {
-        itemList.clear();
         if (cellBean.getValue() == null) {
             return;
         }
-        String[] ids = (String[]) cellBean.getValue();
+        restore((String[]) cellBean.getValue());
+    }
+
+    public void restore(String[] ids) {
+        itemList.clear();
         for (int i = 0; i < ids.length; i++) {
-           createItem(ids[i]);
+            createItem(ids[i]);
         }
         adapter.notifyDataSetInvalidated();
     }
 
     private void startUploadDoc() {
-        createItem("1");
-        adapter.notifyDataSetInvalidated();
+        FormUtilFactory.BizExecutor bizExecutor =
+                                        findBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_DOC);
+        if (bizExecutor != null){
+            bizExecutor.execute((CustomCallbackActivity) this.context,this);
+        }
+
     }
 
     private JupiterItem createItem(String id) {
         final JupiterItem item = new JupiterItem(this.context);
-        item.setTitle("顶聚科技"+id+".doc");
-        item.setImage("drawable://" + R.drawable.fileicon);
+        CacheFile cacheFile = FileCache.getInstance().getFile(id);
+        if (cacheFile != null){
+            item.setTitle(cacheFile.getName());
+        }
+        item.setImage(id);
         item.setTag(id);
         item.setCornerImage(R.drawable.icn_delete);
         item.getArrowIV().setOnClickListener(new View.OnClickListener() {

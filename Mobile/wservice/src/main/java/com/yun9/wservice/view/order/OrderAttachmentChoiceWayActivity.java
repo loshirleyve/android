@@ -205,9 +205,22 @@ public class OrderAttachmentChoiceWayActivity extends JupiterFragmentActivity{
                 ViewHolder viewHolder = (ViewHolder) tag;
                 if (viewHolder.getKey().equals(way.getName())){
                     viewHolder.setWay(way);
-                    return;
+                    break;
                 }
             }
+        }
+        // 根据附件类型设置不同的控件的值
+        if (way.getName().equals("快递")){
+            expressWidget.getSutitleLayout().getSutitleTv().setText(way.getDescr());
+            expressWidget.getTipTv().setText(way.getTips());
+        } else if (way.getName().equals("上门取件")) {
+            vistWidget.getSutitleLayout().getSutitleTv().setText(way.getDescr());
+        } else if (way.getName().equals("发送邮件")) {
+            emailWidget.getSutitleLayout().getSutitleTv().setText(way.getDescr());
+            emailWidget.getTipTv().setText(way.getTips());
+        } else if (way.getName().equals("自助")) {
+            selfWidget.getSutitleLayout().getSutitleTv().setText(way.getDescr());
+            selfWidget.getTipTv().setText(way.getTips());
         }
     }
 
