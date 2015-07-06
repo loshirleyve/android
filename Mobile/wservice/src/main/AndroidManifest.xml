@@ -128,6 +128,11 @@ android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <data android:mimeType="application/msword"></data>
+            </intent-filter>
         </activity>
 
         <activity
