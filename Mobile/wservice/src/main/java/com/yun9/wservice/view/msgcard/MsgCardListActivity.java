@@ -1,13 +1,12 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -26,6 +25,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
+import com.yun9.wservice.model.MsgCardPraise;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 
 import java.util.LinkedList;
@@ -41,7 +41,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     private LinkedList<MsgCard> msgCards = new LinkedList<>();
 
     private MsgCardListCommand command;
-
     private Logger logger = Logger.getLogger(MsgCardListActivity.class);
 
     @ViewInject(id = R.id.msg_card_list_title)
@@ -114,7 +113,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
-
     private AdapterView.OnItemClickListener msgCardOnItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -135,7 +133,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             resource.param("userid", command.getUserid());
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
-
+            final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating), true);
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
@@ -148,7 +146,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                             msgCards.addFirst(msgCard);
                         }
                     }
-
                     msgCardListAdapter.notifyDataSetChanged();
                 }
 
@@ -160,11 +157,18 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 @Override
                 public void onFinally(Response response) {
                     mPtrFrame.refreshComplete();
+                    progressDialog.dismiss();
                 }
             });
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == MsgCardDetailCommand.RESULT_CODE_OK){
+            refresh();
+        }
+    }
 
     private JupiterAdapter msgCardListAdapter = new JupiterAdapter() {
         @Override
@@ -185,83 +189,70 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final MsgCard msgCard = msgCards.get(position);
-
-            MsgCardWidget msgCardWidget = null;
+            final MsgCardWidget msgCardWidget;
             if (convertView == null) {
                 msgCardWidget = new MsgCardWidget(mContext);
+
+
                 msgCardWidget.getPraiseRL().setTag(msgCard);
-                if(msgCard.isMypraise()){
-                    msgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
-                }else {
-                    msgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
-                }
-                final MsgCardWidget finalMsgCardWidget = msgCardWidget;
                 msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //cardPraiseLikeByMsgCardId(msgCard.getId());
-                        cardPraiseLikeByMsgCardId(msgCard);
-                        if(msgCard.isMypraise()){
-                            finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
-                        }else {
-                            //finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
-                            finalMsgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
-                        }
+                        cardPraiseLikeByMsgCardId(msgCard, msgCardWidget);
                         logger.d("点赞！");
                     }
                 });
-
                 msgCardWidget.getFwRL().setTag(msgCard);
-                msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        logger.d("转发！");
-                    }
-                });
-
                 msgCardWidget.getCommentRL().setTag(msgCard);
-                msgCardWidget.getCommentRL().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MsgCard msgCard = (MsgCard) v.getTag();
-                        if (AssertValue.isNotNull(msgCard)) {
-                            MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()).setScrollComment(true));
-                        }
-                    }
-                });
 
                 RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(20, 20, 20, 20);
                 msgCardWidget.getMainRl().setLayoutParams(params);
-
             } else {
                 msgCardWidget = (MsgCardWidget) convertView;
             }
-
-            msgCardWidget.buildWithData(msgCard);
             msgCardWidget.setTag(msgCard);
-
+            msgCardWidget.buildWithData(msgCard);
+            msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    logger.d("转发！");
+                }
+            });
+            msgCardWidget.getCommentRL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MsgCard msgCard = (MsgCard) v.getTag();
+                    if (AssertValue.isNotNull(msgCard)) {
+                        MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()).setScrollComment(true));
+                    }
+                }
+            });
             return msgCardWidget;
         }
     };
 
-    //private void cardPraiseLikeByMsgCardId(String msgcardId){
-    private void cardPraiseLikeByMsgCardId(final MsgCard msgCard){
+    private void cardPraiseLikeByMsgCardId(final MsgCard msgCard, final MsgCardWidget msgCardWidget){
         String msgcardId = msgCard.getId();
         if(AssertValue.isNotNull(sessionManager.getUser())){
-            final Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
+            Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
             resource.param("userid", sessionManager.getUser().getId());
             resource.param("msgcardid", msgcardId);
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
-                    /*response.getPayload()
-                    if (!msgCard.isMypraise()) {
-                        //msgCard.isMypraise() = true;
-                        msgCard.getPraises().set()
+                    MsgCardPraise msgCardPraise = (MsgCardPraise) response.getPayload();
+                    if (AssertValue.isNotNull(msgCardPraise)) {
+                        if (msgCardPraise.getPraise() == 0) {
+                            msgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
+                            msgCardWidget.getPraiseNumTV().setText(String.valueOf(Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString()) - 1));
+                            Toast.makeText(mContext, getString(R.string.msg_card_praise_cancel), Toast.LENGTH_SHORT).show();
+                        } else {
+                            msgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
+                            msgCardWidget.getPraiseNumTV().setText(String.valueOf(Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString()) + 1));
+                            Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
+                        }
                     }
-                    else msgCard.isMypraise() = false;*/
-                    Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -271,7 +262,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
                 }
             });
         }

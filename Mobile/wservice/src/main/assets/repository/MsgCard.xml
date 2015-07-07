@@ -40,9 +40,14 @@
         <type>yun9</type>
     </repository>
 
+    <!--点赞消息卡片服务-->
     <repository>
         <name>AddPraiseLikeByMsgCardId</name>
         <action>com.yun9.ws.biz.service.AddPraiseLikeByMsgCardIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.MsgCardPraise</classname>
+            <type>object</type>
+        </output>
         <type>yun9</type>
     </repository>
 

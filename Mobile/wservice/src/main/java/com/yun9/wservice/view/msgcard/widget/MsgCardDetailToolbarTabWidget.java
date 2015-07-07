@@ -44,7 +44,7 @@ public class MsgCardDetailToolbarTabWidget extends JupiterRelativeLayout {
         forwardLayout = (RelativeLayout) this.findViewById(R.id.fw_rl);
         commentLayout = (RelativeLayout) this.findViewById(R.id.comm_rl);
         actionLayout = (RelativeLayout) this.findViewById(R.id.action_rl);
-        msgCardPraiseIv =(ImageView)this.findViewById(R.id.praise_iv);
+        msgCardPraiseIv =(ImageView)this.findViewById(R.id.praise_iv_item);
     }
 
     public ImageView getMsgCardPraiseIv() {

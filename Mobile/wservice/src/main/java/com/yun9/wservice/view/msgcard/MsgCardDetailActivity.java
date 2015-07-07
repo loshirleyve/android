@@ -1,17 +1,15 @@
 package com.yun9.wservice.view.msgcard;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -106,13 +104,13 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private MsgCardDetailPraiseWidget praiseView;
     private MsgCardDetailShareWidget shareView;
 
-    public static void start(Context context, MsgCardDetailCommand command) {
-        Intent intent = new Intent(context, MsgCardDetailActivity.class);
+    public static void start(Activity activity, MsgCardDetailCommand command) {
+        Intent intent = new Intent(activity, MsgCardDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MsgCardListCommand.PARAM_COMMAND, command);
+        bundle.putSerializable(MsgCardDetailCommand.PARAM_COMMAND, command);
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent,command.getRequestCode());
     }
 
     @Override
@@ -123,6 +121,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         command = (MsgCardDetailCommand) getIntent().getSerializableExtra(MsgCardDetailCommand.PARAM_COMMAND);
         currUserid = sessionManager.getUser().getId();
@@ -167,11 +166,10 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
             }
         });
-
         toolbarTabWidget.getActionLayout().setOnClickListener(onActionClickListener);
         toolbarTabWidget.getCommentLayout().setOnClickListener(onCommentClickListener);
         toolbarTabWidget.getForwardLayout().setOnClickListener(onForwardClickListener);
-        toolbarTabWidget.getPraiseLayout().setOnClickListener(onPraiseClickListener);
+        toolbarTabWidget.getPraiseLayout().setOnClickListener(new OnPraiseClickListener(toolbarTabWidget));
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId()) && AssertValue.isNotNullAndNotEmpty(currUserid)) {
             Handler handler = new Handler() {
@@ -195,6 +193,11 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
+                    if(mMsgCard.isMypraise()){
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+                    }else {
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+                    }
                     refreshComplete();
                 }
             }
@@ -406,16 +409,16 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     };
 
-    private View.OnClickListener onPraiseClickListener = new View.OnClickListener() {
+    private class OnPraiseClickListener implements View.OnClickListener {
+        private MsgCardDetailToolbarTabWidget toolbarTabWidget;
+
+        public OnPraiseClickListener(MsgCardDetailToolbarTabWidget toolbarTabWidget){
+            this.toolbarTabWidget = toolbarTabWidget;
+        }
         @Override
         public void onClick(View v) {
-            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())){
-                cardPraiseLikeByMsgCardId(command.getMsgCardId());
-            }
-            if(mMsgCard.isMypraise()){
-                toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
-            }else {
-                toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())) {
+                cardPraiseLikeByMsgCardId(command.getMsgCardId(), toolbarTabWidget);
             }
         }
     };
@@ -436,15 +439,24 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         msgCard.getProcess().add(new MsgCardProcessAction("撤销9", "rejected"));
         msgCard.getProcess().add(new MsgCardProcessAction("撤销10", "rejected"));
     }
-    private void cardPraiseLikeByMsgCardId(String msgcardId){
+    private void cardPraiseLikeByMsgCardId(String msgcardId, final MsgCardDetailToolbarTabWidget toolbarTabWidget){
         if(AssertValue.isNotNull(sessionManager.getUser())){
             final Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
-            resource.param("userid", sessionManager.getUser().getId());
+            resource.param("userid", currUserid);
             resource.param("msgcardid", msgcardId);
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
-                    Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
+                    MsgCardPraise msgCardPraise = (MsgCardPraise) response.getPayload();
+                    if(AssertValue.isNotNull(msgCardPraise)) {
+                        if(msgCardPraise.getPraise() == 1){
+                            toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+                            Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
+                        }else {
+                            toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+                            Toast.makeText(mContext, getString(R.string.msg_card_praise_cancel), Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
 
                 @Override
@@ -454,7 +466,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
+                    setResult(MsgCardDetailCommand.RESULT_CODE_OK);
                 }
             });
         }
