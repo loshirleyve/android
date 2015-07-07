@@ -70,7 +70,7 @@ public class ClientListAdapter extends JupiterAdapter {
             if (ClientProxyCache.getInstance().isProxy()){
                 CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
                 if (client.getId().equals(proxy.getUserId())
-                        && client.getInstid().equals(proxy.getInstId())){
+                        && proxy.getInstId().equals(client.getClientinstid())){
                     clientItemLayout.getTitle_TV().setText(client.getName()+"  (正在代理)");
                     clientItemLayout.getTitle_TV().setTextColor(clientItemLayout.getResources()
                             .getColor(R.color.title_color));
@@ -94,7 +94,7 @@ public class ClientListAdapter extends JupiterAdapter {
         if (ClientProxyCache.getInstance().isProxy()){
             CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
             if (client.getId().equals(proxy.getUserId())
-                    && client.getInstid().equals(proxy.getInstId())){
+                    && proxy.getInstId().equals(client.getClientinstid())){
                 return ClientActivity.VIEW_TYPE_PROXY;
             }
         }

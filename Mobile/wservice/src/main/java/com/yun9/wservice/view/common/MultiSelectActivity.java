@@ -48,9 +48,9 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
     public static void start(Activity activity, MultiSelectCommand command) {
         Intent intent = new Intent(activity,MultiSelectActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MultiSelectCommand.PARAM_COMMAND,command);
+        bundle.putSerializable(MultiSelectCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent,command.getRequestCode());
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
@@ -89,11 +89,11 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         }
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
         Resource resource = resourceFactory.create("QueryCtrlCode");
-        resource.param("defno",ctrlCode);
+        resource.param("defno", ctrlCode);
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                if (response.getPayload() == null){
+                if (response.getPayload() == null) {
                     return;
                 }
                 List<CtrlCode> ctrlCodes = (List<CtrlCode>) response.getPayload();
@@ -101,7 +101,7 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
                 for (int i = 0; i < ctrlCodes.size(); i++) {
                     ctrlCode = ctrlCodes.get(i);
                     options.add(new SerialableEntry<String, String>(ctrlCode.getNo()
-                                                                        ,ctrlCode.getName()));
+                            , ctrlCode.getName()));
                 }
             }
 
@@ -128,6 +128,12 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
         };
         titleBarLayout.getTitleLeft().setOnClickListener(clickListener);
         submitTV.setOnClickListener(clickListener);
+        if (command.getMaxNum() > 0){
+            titleBarLayout.getTitleRightTv().setTextSize(13);
+            titleBarLayout.getTitleRightTv().setText("最多选择"+command.getMaxNum()+"个");
+        } else {
+            titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
+        }
     }
 
     private void setupAdapter() {
@@ -189,6 +195,13 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
             return;
         }
 
+        if (command.getMaxNum() > 0
+                && command.getMaxNum() != 1
+                && selectedList.size() >= command.getMaxNum()){
+            showToast("最多选择"+command.getMaxNum()+"个");
+            return;
+        }
+
         // 删除取消的选择
         int len = selectedList.size();
         for (int i = 0; i < len; i++) {
@@ -198,10 +211,18 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
             }
         }
 
+        // 如果选中则取消，反之则选中
         if (selectedList.indexOf(param) != -1) {
             itemLayout.select(false);
             selectedList.remove(param);
         } else {
+            itemLayout.select(true);
+            selectedList.add(param);
+        }
+
+        // 如果是单选
+        if (command.getMaxNum() == 1){
+            selectedList.clear();
             itemLayout.select(true);
             selectedList.add(param);
         }

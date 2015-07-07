@@ -87,6 +87,10 @@ public class TextFormCell extends FormCell {
                 && value.length() > cellBean.getMaxNum()) {
             return cellBean.getLabel() + " 的长度必须小于 "+cellBean.getMaxNum();
         }
+        if (AssertValue.isNotNullAndNotEmpty(cellBean.getRegular())
+                && !value.matches(cellBean.getRegular())){
+            return cellBean.getErrorMessage();
+        }
         return null;
     }
 

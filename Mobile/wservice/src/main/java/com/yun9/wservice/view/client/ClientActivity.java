@@ -25,6 +25,7 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCommand;
 import com.yun9.jupiter.form.cell.MultiSelectFormCell;
@@ -96,6 +97,8 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private List<Client> clients;
     private List<Client> showClients;
+
+    private EditClientCommand command;
 
 
     public static void start(Activity activity,ClientCommand command) {
@@ -200,15 +203,19 @@ public class ClientActivity extends JupiterFragmentActivity {
                 Client client = showClients.get(position);
                 switch (index) {
                     case 0:
-                        showToast("打开客户");
+                        editClient(client.getId());
                         break;
                     case 1:
                         showToast("初始化机构：" + client.getName());
                         break;
                     case 2:
                         if (menu.getViewType() == VIEW_TYPE_NORMAL){
+                            if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
+                                showToast("该客户尚未初始化机构，请先初始化.");
+                                return false;
+                            }
                             CacheClientProxy clientProxy = new CacheClientProxy();
-                            clientProxy.setInstId(client.getInstid());
+                            clientProxy.setInstId(client.getClientinstid());
                             clientProxy.setUserId(client.getId());
                             ClientProxyCache.getInstance().putClientProxy(clientProxy);
                             showToast("成功代理客户：" + client.getFullname());
@@ -278,7 +285,10 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == command.getRequestCode()
+                    && resultCode == JupiterCommand.RESULT_CODE_OK){
+                completeRefresh();
+            }
 
     }
 
@@ -311,9 +321,15 @@ public class ClientActivity extends JupiterFragmentActivity {
     private View.OnClickListener onTitleRightTvClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // TODO 添加客户
+            editClient(null);
         }
     };
+
+    private void editClient(String clientId) {
+        command = new EditClientCommand();
+        command.setClientId(clientId);
+        EditClientActivity.start(this,command);
+    }
 
     private View.OnClickListener onTitleLeftClickListener = new View.OnClickListener() {
         @Override

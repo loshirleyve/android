@@ -5,12 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
@@ -78,7 +78,7 @@ public class MultiSelectFormCell extends FormCell {
     private void openActivity() {
        FormUtilFactory.BizExecutor executor = findBizExecutor(FormUtilFactory.BizExecutor.TYPE_MULTI_SELECT);
         if (executor != null) {
-            FormActivity activity = (FormActivity) this.context;
+            CustomCallbackActivity activity = (CustomCallbackActivity) this.context;
             executor.execute(activity, this);
         }
     }
@@ -101,6 +101,23 @@ public class MultiSelectFormCell extends FormCell {
     @Override
     public void edit(boolean edit) {
         editIco.edit(edit);
+    }
+
+    @Override
+    public String getStringValue() {
+        Object object = getValue();
+        if (object != null){
+            List<SerialableEntry<String,String>> list =
+                    (List<SerialableEntry<String, String>>) object;
+            StringBuffer sb = new StringBuffer();
+            for (SerialableEntry<String, String> entry : list){
+                sb.append(",").append(entry.getKey());
+            }
+            if (sb.length() > 0){
+                return sb.substring(1);
+            }
+        }
+        return null;
     }
 
     @Override

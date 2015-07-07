@@ -133,7 +133,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             resource.param("userid", command.getUserid());
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
-            final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating), true);
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
@@ -157,7 +156,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 @Override
                 public void onFinally(Response response) {
                     mPtrFrame.refreshComplete();
-                    progressDialog.dismiss();
                 }
             });
         }
@@ -166,7 +164,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == MsgCardDetailCommand.RESULT_CODE_OK){
-            refresh();
+            mPtrFrame.autoRefresh();
         }
     }
 
@@ -246,11 +244,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                         if (msgCardPraise.getPraise() == 0) {
                             msgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
                             msgCardWidget.getPraiseNumTV().setText(String.valueOf(Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString()) - 1));
-                            Toast.makeText(mContext, getString(R.string.msg_card_praise_cancel), Toast.LENGTH_SHORT).show();
                         } else {
                             msgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
                             msgCardWidget.getPraiseNumTV().setText(String.valueOf(Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString()) + 1));
-                            Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

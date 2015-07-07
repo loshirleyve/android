@@ -451,10 +451,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                     if(AssertValue.isNotNull(msgCardPraise)) {
                         if(msgCardPraise.getPraise() == 1){
                             toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
-                            Toast.makeText(mContext, getString(R.string.msg_card_praise_success), Toast.LENGTH_SHORT).show();
                         }else {
                             toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
-                            Toast.makeText(mContext, getString(R.string.msg_card_praise_cancel), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }

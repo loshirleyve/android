@@ -70,8 +70,8 @@ public class UserRegisterActivity extends JupiterFragmentActivity {
 
                     final ProgressDialog registerDialog = ProgressDialog.show(UserRegisterActivity.this, null, tipsText, true);
 
-                    Resource resource = resourceFactory.create("AddUserAndNotice");
-                    resource.param("no", email).param("name", email);
+                    Resource resource = resourceFactory.create("RegisteUser");
+                    resource.param("userno", email).param("email", email).param("state", "unactivated");
 
                     resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                         @Override

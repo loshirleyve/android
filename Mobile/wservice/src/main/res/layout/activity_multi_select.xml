@@ -7,6 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tb:titleLeftIcoVisibility="true"
+        tb:titleRightTextVisibility="true"
         tb:titleText="@string/please_select" />
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"

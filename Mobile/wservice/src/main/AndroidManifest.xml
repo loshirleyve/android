@@ -295,6 +295,13 @@
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
+            android:name=".view.client.EditClientActivity"
+            android:label="@string/detail_client"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <activity
             android:name=".view.order.OrderManagerActivity"
             android:label="@string/user_buyer"
             android:screenOrientation="portrait"
@@ -439,8 +446,13 @@
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
 
+            android:screenOrientation="behind"></activity>
+        <activity
+            android:name=".view.register.UserRegisterCompleteActivity"
+            android:label="@string/user_register"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

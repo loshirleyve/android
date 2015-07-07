@@ -18,7 +18,6 @@ public abstract class AssertValue {
 	 * 
 	 * @param arg
 	 *            Argument.
-	 * @param argName
 	 *            Argument name.
 	 * @throws IllegalArgumentException
 	 *             Argument is null.
@@ -35,7 +34,6 @@ public abstract class AssertValue {
 	 * 
 	 * @param arg
 	 *            Argument.
-	 * @param argName
 	 *            Argument name.
 	 * @throws IllegalArgumentException
 	 *             Argument is not null, but is empty.
@@ -52,7 +50,6 @@ public abstract class AssertValue {
 	 * 
 	 * @param arg
 	 *            Argument.
-	 * @param argName
 	 *            Argument name.
 	 * @throws IllegalArgumentException
 	 *             Argument is null or empty.
@@ -69,7 +66,6 @@ public abstract class AssertValue {
 	 * 
 	 * @param arg
 	 *            Argument.
-	 * @param argName
 	 *            Argument name.
 	 * @throws IllegalArgumentException
 	 *             Argument is null or empty.
@@ -86,7 +82,6 @@ public abstract class AssertValue {
 	 * 
 	 * @param arg
 	 *            Argument.
-	 * @param argName
 	 *            Argument name.
 	 * @throws IllegalArgumentException
 	 *             Argument is null or empty.
@@ -103,7 +98,6 @@ public abstract class AssertValue {
 	 * 
 	 * @param arg
 	 *            Argument.
-	 * @param argName
 	 *            Argument name.
 	 * @throws IllegalArgumentException
 	 *             Argument is null or empty.
