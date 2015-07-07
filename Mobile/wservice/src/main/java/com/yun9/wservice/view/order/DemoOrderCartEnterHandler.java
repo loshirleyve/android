@@ -17,9 +17,9 @@ public class DemoOrderCartEnterHandler implements FuncEnterHandler {
     @Override
     public void enter(Activity activity, Bundle bundle, NavigationBean navigationBean) {
         OrderCartCommand command = new OrderCartCommand();
-        List<String> productIds = new ArrayList<>();
-        productIds.add("45950000000010107");
-        command.setProductIds(productIds);
+        List<OrderCartCommand.OrderProductView> orderProductViews = new ArrayList<>();
+        orderProductViews.add(new OrderCartCommand.OrderProductView(900L,"45950000000010107","50970000000010001"));
+        command.setOrderProductViews(orderProductViews);
         OrderCartActivity.start(activity,command);
     }
 }

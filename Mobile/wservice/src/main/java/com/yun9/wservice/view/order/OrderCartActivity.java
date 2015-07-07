@@ -24,10 +24,12 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.cache.CacheClientProxy;
 import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.Client;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderCartInfo;
+import com.yun9.wservice.model.wrapper.OrderCartInfoWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,22 +98,16 @@ public class OrderCartActivity extends JupiterFragmentActivity{
     private void reload() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderViewService");
-        resource.param("productids",command.getProductIds());
-        resource.param("userid", sessionManager.getUser().getId());
-
-        // 接口有问题，临时带上这两个
-        resource.param("proxyman","");
-        resource.param("proxyinstid","");
-
-        if (ClientProxyCache.getInstance().isProxy()) {
-            resource.param("proxyman",sessionManager.getUser().getId());
-            resource.param("userid",ClientProxyCache.getInstance().getProxy().getUserId());
-            resource.param("proxyinstid",ClientProxyCache.getInstance().getProxy().getInstId());
+        resource.param("buyinstid",sessionManager.getInst().getId());
+        if (ClientProxyCache.getInstance().isProxy()){
+            resource.param("buyinstid",ClientProxyCache.getInstance().getProxy().getInstId());
         }
+        resource.param("orderProductViews",command.getOrderProductViews());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                orderList = (List<OrderCartInfo>) response.getPayload();
+                OrderCartInfoWrapper wrapper = (OrderCartInfoWrapper) response.getPayload();
+                orderList = wrapper.getOrderViews();
             }
 
             @Override
