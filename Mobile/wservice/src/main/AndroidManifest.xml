@@ -439,8 +439,13 @@
             android:name="com.alipay.sdk.auth.AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
-            android:screenOrientation="behind"></activity>
 
+            android:screenOrientation="behind"></activity>
+        <activity
+            android:name=".view.register.UserRegisterCompleteActivity"
+            android:label="@string/user_register"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
