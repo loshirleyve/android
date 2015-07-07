@@ -19,6 +19,8 @@ public class SelectCityItemLayout extends JupiterRelativeLayout {
 
     private LinearLayout itemLL;
 
+    private RelativeLayout itemRL;
+
     public SelectCityItemLayout(Context context) {
         super(context);
     }
@@ -40,23 +42,18 @@ public class SelectCityItemLayout extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         cityTV = (TextView) findViewById(R.id.city_tv);
         itemLL = (LinearLayout) findViewById(R.id.item_ll);
+        itemRL = (RelativeLayout) findViewById(R.id.item_rl);
     }
 
     public LinearLayout getItemLL() {
         return itemLL;
     }
 
-    public void setCityText(String province, String city) {
-        String text = "";
+    public TextView getCityTV() {
+        return cityTV;
+    }
 
-        if (AssertValue.isNotNullAndNotEmpty(province)) {
-            text = text + province;
-        }
-
-        if (AssertValue.isNotNullAndNotEmpty(city)) {
-            text = text + city;
-        }
-
-        cityTV.setText(text);
+    public void selected(boolean selected) {
+        itemLL.setEnabled(!selected);
     }
 }

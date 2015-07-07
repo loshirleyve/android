@@ -14,6 +14,8 @@ public class SelectCityLayout extends JupiterRelativeLayout {
 
     private JupiterGridView cityGV;
 
+    private JupiterGridView districtGV;
+
     public SelectCityLayout(Context context) {
         super(context);
     }
@@ -35,9 +37,14 @@ public class SelectCityLayout extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         cityGV = (JupiterGridView) findViewById(R.id.city_gv);
+        districtGV = (JupiterGridView) findViewById(R.id.district_gv);
     }
 
     public JupiterGridView getCityGV() {
         return cityGV;
+    }
+
+    public JupiterGridView getDistrictGV() {
+        return districtGV;
     }
 }

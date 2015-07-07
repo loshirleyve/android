@@ -98,7 +98,7 @@ public abstract class LoadMoreContainerBase extends LinearLayout implements Load
             return;
         }
 
-        // no more content and also not load for first page
+        // no more content and also not load for first Page
         if (!mHasMore && !(mListEmpty && mShowLoadingForFirstPage)) {
             return;
         }
@@ -177,7 +177,7 @@ public abstract class LoadMoreContainerBase extends LinearLayout implements Load
     }
 
     /**
-     * page has loaded
+     * Page has loaded
      *
      * @param emptyResult
      * @param hasMore

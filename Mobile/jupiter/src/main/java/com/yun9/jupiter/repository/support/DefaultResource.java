@@ -1,6 +1,7 @@
 package com.yun9.jupiter.repository.support;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Repository;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -20,7 +21,7 @@ public class DefaultResource implements Resource {
 
     private Map<String, Object> header;
 
-    private String pullType = PULL_TYPE.UP;
+    private Page page = new Page();
 
     private boolean fromService;
 
@@ -95,26 +96,7 @@ public class DefaultResource implements Resource {
         this.fromService = fromService;
     }
 
-    @Override
-    public Resource pullUp(String id) {
-        this.header(HEADER.LASTUPID, id);
-        this.header(HEADER.LASTDOWNID, null);
-        pullType = PULL_TYPE.UP;
-        return this;
+    public Page page() {
+        return page;
     }
-
-    @Override
-    public Resource pullDown(String id) {
-        this.header(HEADER.LASTDOWNID, id);
-        this.header(HEADER.LASTUPID, null);
-        pullType = PULL_TYPE.DOWN;
-        return this;
-    }
-
-    @Override
-    public String getPullType() {
-        return pullType;
-    }
-
-
 }

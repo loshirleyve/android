@@ -18,15 +18,15 @@ public interface Resource {
         public static final String LOCATIONLABEL = "locationlabel";
         public static final String LOCATIONSCALE = "locationscale";
 
-        public static final String LASTUPID = "lastupid";
-        public static final String LASTDOWNID = "lastdownid";
-        public static final String LIMITROW = "limitrow";
+//        public static final String LASTUPID = "lastupid";
+//        public static final String LASTDOWNID = "lastdownid";
+//        public static final String LIMITROW = "limitrow";
     }
 
-    public final class PULL_TYPE {
-		public static final String DOWN = "down";
-        public static final String UP ="up";
-    }
+//    public final class PULL_TYPE {
+//		public static final String DOWN = "down";
+//        public static final String UP ="up";
+//    }
 
     public void invok(AsyncHttpResponseCallback callback);
 
@@ -50,9 +50,5 @@ public interface Resource {
 
     public void setFromService(boolean fromService);
 
-    public Resource pullUp(String id);
-
-    public Resource pullDown(String id);
-
-    public String getPullType();
+    public Page page();
 }

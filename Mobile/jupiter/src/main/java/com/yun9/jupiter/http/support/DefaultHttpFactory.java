@@ -208,6 +208,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
 
         requestParams.setAction(resource.getRepository().getAction());
         requestParams.setToken(resource.getRepository().getToken());
+        requestParams.setPage(resource.page());
 
         if (AssertValue.isNotNull(resource.getRepository().getParams())) {
             for (RepositoryParam repositoryParam : resource.getRepository()
@@ -223,6 +224,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 requestParams.data(entity.getKey(), entity.getValue());
             }
         }
+
 
         // 初始化heander信息,当前用户，当前机构，设备类型
         requestParams

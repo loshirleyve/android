@@ -3,4 +3,7 @@
 
     <item android:state_pressed="true" android:drawable="@color/title_color"></item>
     <!--<item android:drawable="@color/whites"></item>-->
+    <item android:state_enabled="false" android:drawable="@color/drak"></item>
+    <item android:state_enabled="true" android:drawable="@color/transparent"></item>
+
 </selector>

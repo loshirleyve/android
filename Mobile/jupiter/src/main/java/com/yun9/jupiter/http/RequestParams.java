@@ -1,5 +1,7 @@
 package com.yun9.jupiter.http;
 
+import com.yun9.jupiter.repository.Page;
+
 import java.util.Map;
 
 public interface RequestParams {
@@ -36,4 +38,7 @@ public interface RequestParams {
 
 	public void setData(Map<String, Object> data);
 
+	public Page getPage();
+
+	public void setPage(Page page);
 }
