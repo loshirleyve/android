@@ -129,8 +129,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         users.clear();
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
-            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
-            this.users = users;
+            users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
         }
     }
 
@@ -163,8 +162,6 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 Toast.makeText(OrgChooseAddUserActivity.this, R.string.choose_add_use_to, Toast.LENGTH_SHORT).show();
         }
     };
-
-
 
 
     public List<String> getSelectUserIds(List<User> users) {

@@ -11,6 +11,7 @@ import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.AttachTransferWay;
 
 
 /**
@@ -72,5 +73,29 @@ public class OrderAttachWayEmailWidget extends JupiterRelativeLayout implements 
     @Override
     public boolean isSelected() {
         return sutitleLayout.isSelected();
+    }
+
+    public JupiterRowStyleSutitleLayout getSutitleLayout() {
+        return sutitleLayout;
+    }
+
+    public void setSutitleLayout(JupiterRowStyleSutitleLayout sutitleLayout) {
+        this.sutitleLayout = sutitleLayout;
+    }
+
+    public TextView getTipTv() {
+        return tipTv;
+    }
+
+    public void setTipTv(TextView tipTv) {
+        this.tipTv = tipTv;
+    }
+
+    public LinearLayout getDetailLl() {
+        return detailLl;
+    }
+
+    public void setDetailLl(LinearLayout detailLl) {
+        this.detailLl = detailLl;
     }
 }

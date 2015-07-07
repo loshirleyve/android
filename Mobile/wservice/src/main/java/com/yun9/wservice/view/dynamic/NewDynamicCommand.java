@@ -5,6 +5,7 @@ import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.wservice.model.MsgCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,12 @@ import java.util.List;
  * Created by Leon on 15/6/11.
  */
 public class NewDynamicCommand extends JupiterCommand {
+
+    public static final String NEW_MSG="sendmsg";//发送消息
+
+    public static final String MSG_FORWARD="forward";//转发
+
+    public static final String MSG_COMMENT="comment";//评论
 
     private List<Org> selectOrgs;
 
@@ -25,6 +32,10 @@ public class NewDynamicCommand extends JupiterCommand {
     private String userid;
 
     private String instid;
+
+    private String type=NEW_MSG;
+
+    private String msgCardId;
 
     public List<Org> getSelectOrgs() {
         return selectOrgs;
@@ -97,4 +108,22 @@ public class NewDynamicCommand extends JupiterCommand {
         this.onSelectFiles = onSelectFiles;
         return this;
     }
+    public String getType() {
+        return type;
+    }
+
+    public NewDynamicCommand setType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public String getMsgCardId() {
+        return msgCardId;
+    }
+
+    public NewDynamicCommand setMsgCardId(String msgCardId) {
+        this.msgCardId = msgCardId;
+        return this;
+    }
+
 }

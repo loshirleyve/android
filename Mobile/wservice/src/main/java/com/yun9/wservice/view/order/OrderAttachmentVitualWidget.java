@@ -2,16 +2,48 @@ package com.yun9.wservice.view.order;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.yun9.jupiter.exception.JupiterRuntimeException;
+import com.yun9.jupiter.form.FormCell;
+import com.yun9.jupiter.form.FormUtilFactory;
+import com.yun9.jupiter.form.cell.DetailFormCell;
+import com.yun9.jupiter.form.cell.DocFormCell;
+import com.yun9.jupiter.form.cell.ImageFormCell;
+import com.yun9.jupiter.form.cell.MultiSelectFormCell;
+import com.yun9.jupiter.form.cell.TextFormCell;
+import com.yun9.jupiter.form.cell.UserFormCell;
+import com.yun9.jupiter.form.model.DetailFormCellBean;
+import com.yun9.jupiter.form.model.DocFormCellBean;
+import com.yun9.jupiter.form.model.FormBean;
+import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.form.model.ImageFormCellBean;
+import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
+import com.yun9.jupiter.form.model.TextFormCellBean;
+import com.yun9.jupiter.form.model.UserFormCellBean;
+import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.AttachTransferWay;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Created by huangbinglong on 15/7/1.
  */
 public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
+
+    private LinearLayout formPage;
+
+    private List<FormCell> cells;
 
     public OrderAttachmentVitualWidget(Context context) {
         super(context);
@@ -32,6 +64,108 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
+        formPage = (LinearLayout) this.findViewById(R.id.form_page);
+        cells = new ArrayList<>();
+        buildView();
+    }
 
+    private void buildView() {
+        List<FormCellBean> cellBeans = buildFakeData();
+        FormCellBean formCellBean;
+        FormCell cell;
+        Class<? extends FormCell> type;
+        for (int i = 0; i < cellBeans.size(); i++) {
+            formCellBean = cellBeans.get(i);
+            type = FormUtilFactory.getInstance().getCellTypeClassByType(formCellBean.getType());
+            if (type != null){
+                cell = FormUtilFactory.createCell(type, formCellBean);
+                cells.add(cell);
+                View view = cell.getCellView(this.mContext);
+                if (AssertValue.isNotNull(view)) {
+                    formPage.addView(view);
+                    cell.edit(true);
+                }
+            }
+        }
+    }
+
+    public List<Attachement> getValue() {
+        List<Attachement> attachements = new ArrayList<>();
+        String validate;
+        for (FormCell formCell : cells){
+            validate = formCell.validate();
+            if (AssertValue.isNotNullAndNotEmpty(validate)){
+                Toast.makeText(this.mContext,validate,Toast.LENGTH_SHORT).show();
+                return null;
+            }
+            attachements.add(new Attachement(formCell.getFormCellBean().getId(),
+                    formCell.getStringValue()));
+        }
+        return attachements;
+    }
+
+    public class Attachement{
+        private String id;
+        private String inputvalue;
+
+        public Attachement(String id, String inputvalue) {
+            this.id = id;
+            this.inputvalue = inputvalue;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getInputvalue() {
+            return inputvalue;
+        }
+
+        public void setInputvalue(String inputvalue) {
+            this.inputvalue = inputvalue;
+        }
+    }
+
+    /*假数据------------------------*/
+    public List<FormCellBean> buildFakeData() {
+        List<FormCellBean> cellBeans = new ArrayList<>();
+        TextFormCellBean textFormCell = new TextFormCellBean();
+        textFormCell.setType(TextFormCell.class.getSimpleName());
+        textFormCell.setKey("testText");
+        textFormCell.setId("testText");
+        textFormCell.setLabel("请输入身份证号码");
+        textFormCell.setRequired(true);
+        cellBeans.add(textFormCell);
+
+        TextFormCellBean textFormCell2 = new TextFormCellBean();
+        textFormCell2.setType(TextFormCell.class.getSimpleName());
+        textFormCell2.setKey("testText2");
+        textFormCell2.setId("testText2");
+        textFormCell2.setLabel("请输入您的手机号码");
+        textFormCell2.setRequired(true);
+        cellBeans.add(textFormCell2);
+
+        TextFormCellBean textFormCell3 = new TextFormCellBean();
+        textFormCell3.setType(TextFormCell.class.getSimpleName());
+        textFormCell3.setKey("testText3");
+        textFormCell3.setId("testText3");
+        textFormCell3.setLabel("请输入您的年龄");
+        textFormCell3.setRequired(true);
+        cellBeans.add(textFormCell3);
+
+        ImageFormCellBean imageFormCell = new ImageFormCellBean();
+        imageFormCell.setMaxNum(3);
+        imageFormCell.setKey("testImage");
+        imageFormCell.setId("testImage");
+        imageFormCell.setValue(new String[]{"1", "2"});
+        imageFormCell.setType(ImageFormCell.class.getSimpleName());
+        imageFormCell.setLabel("请选择头像");
+        cellBeans.add(imageFormCell);
+
+        return cellBeans;
     }
 }

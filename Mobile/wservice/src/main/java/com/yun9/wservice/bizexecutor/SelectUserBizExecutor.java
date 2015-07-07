@@ -1,6 +1,7 @@
 package com.yun9.wservice.bizexecutor;
 
 import android.content.Intent;
+
 import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory.BizExecutor;
@@ -8,8 +9,7 @@ import com.yun9.jupiter.form.cell.UserFormCell;
 import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
-import com.yun9.wservice.cache.OrgCache;
-import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 
@@ -24,11 +24,11 @@ import java.util.Map;
 public class SelectUserBizExecutor implements BizExecutor{
 
     @Override
-    public void execute(FormActivity activity, FormCell cell) {
+    public void execute(CustomCallbackActivity activity, FormCell cell) {
         final UserFormCell formCell = (UserFormCell) cell;
         final UserFormCellBean cellBean = (UserFormCellBean) cell.getFormCellBean();
         activity.addActivityCallback(OrgCompositeCommand.REQUEST_CODE,
-                new FormActivity.IFormActivityCallback() {
+                new FormActivity.IActivityCallback() {
                     @Override
                     public void onActivityResult(int resultCode, Intent data) {
                         if (resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
@@ -45,16 +45,12 @@ public class SelectUserBizExecutor implements BizExecutor{
                                 map.put(UserFormCell.PARAM_KEY_TYPE,OrgCompositeCommand.PARAM_ORG);
                                 map.put(UserFormCell.PARAM_KEY_VALUE, onSelectOrgs.get(i).getId());
                                 uodMaps.add(map);
-                                // 测试代码
-                                OrgCache.getInstance().put(onSelectOrgs.get(i).getId(),onSelectOrgs.get(i).getId());
                             }
                             for (int i = 0; i < onSelectUsers.size(); i++) {
                                 map = new HashMap<String, String>();
                                 map.put(UserFormCell.PARAM_KEY_TYPE,OrgCompositeCommand.PARAM_USER);
                                 map.put(UserFormCell.PARAM_KEY_VALUE,onSelectUsers.get(i).getId());
                                 uodMaps.add(map);
-                                // 测试代码
-                                UserCache.getInstance().put(onSelectUsers.get(i).getId(),onSelectUsers.get(i));
                             }
                             formCell.reload(uodMaps);
                         }

@@ -45,7 +45,18 @@
         <action>com.yun9.ws.biz.service.AddPraiseLikeByMsgCardIdService</action>
         <type>yun9</type>
     </repository>
-
+    <!--消息卡片评论-->
+    <repository>
+        <name>AddMsgCardComment</name>
+        <action>com.yun9.ws.biz.service.AddMsgCardCommentService</action>
+        <type>yun9</type>
+    </repository>
+    <!--消息卡片转发-->
+    <repository>
+        <name>AddMsgCardShare</name>
+        <action>com.yun9.ws.biz.service.AddMsgCardShareService</action>
+        <type>yun9</type>
+    </repository>
 
 
 </repositorys>

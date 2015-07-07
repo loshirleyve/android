@@ -5,13 +5,15 @@ import com.google.gson.JsonObject;
 /**
  * Created by Leon on 15/5/27.
  */
-public class PushMessageBean {
+public class PushMessageBean implements java.io.Serializable{
 
     private String title;
 
     private String desc;
 
     private JsonObject content;
+
+    private JsonObject data;
 
     private String type;
 
@@ -45,5 +47,13 @@ public class PushMessageBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public JsonObject getData() {
+        return data;
+    }
+
+    public void setData(JsonObject data) {
+        this.data = data;
     }
 }

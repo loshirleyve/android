@@ -9,8 +9,6 @@ import com.yun9.wservice.model.PushMessageBean;
  */
 public interface MessageReceiverHandler {
 
-    public void sendMessage(Context context,PushMessageBean message);
-
-    public String getType();
+    public void sendMessage(Context context, String pushContent);
 
 }

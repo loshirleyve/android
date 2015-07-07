@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import android.webkit.URLUtil;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
@@ -55,6 +57,7 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.jupiter.util.UrlUtil;
 import com.yun9.mobile.annotation.BeanInject;
 
 public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
@@ -410,8 +413,8 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
         String url = baseUrl + "?floderid=1" + "&userid=" + userid
                 + "&instid=" + instid + "&level=" + level
                 + "&filetype=" + filetype
-                + "&descr=" + descr
-                + "&name=" + name;
+                + "&descr=" + UrlUtil.encode(descr)
+                + "&name=" + UrlUtil.encode(name);
 
         //String url = baseUrl;
         String contentType = "multipart/form-data";

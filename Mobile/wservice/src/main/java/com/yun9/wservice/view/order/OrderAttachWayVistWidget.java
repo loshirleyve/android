@@ -58,4 +58,12 @@ public class OrderAttachWayVistWidget extends JupiterRelativeLayout implements I
     public boolean isSelected() {
         return sutitleLayout.isSelected();
     }
+
+    public JupiterRowStyleSutitleLayout getSutitleLayout() {
+        return sutitleLayout;
+    }
+
+    public void setSutitleLayout(JupiterRowStyleSutitleLayout sutitleLayout) {
+        this.sutitleLayout = sutitleLayout;
+    }
 }

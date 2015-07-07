@@ -19,7 +19,7 @@ public class ClientItemLayout extends JupiterRelativeLayout{
     private TextView contact_TV;
     private ImageView phone_IV;
     private TextView phone_TV;
-    private TextView actOrder_BT;
+    private TextView createTimeTv;
 
     @Override
     protected int getContextView() {
@@ -29,11 +29,9 @@ public class ClientItemLayout extends JupiterRelativeLayout{
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         title_TV = (TextView)findViewById(R.id.title_tv);
-//        contact_IV = (ImageView)findViewById(R.id.contact_iv);
         contact_TV = (TextView)findViewById(R.id.contact_tv);
-//        phone_IV = (ImageView)findViewById(R.id.phone_iv);
         phone_TV = (TextView)findViewById(R.id.phone_tv);
-        actOrder_BT = (TextView)findViewById(R.id.actOrder_BT);
+        createTimeTv = (TextView) this.findViewById(R.id.create_time_tv);
     }
     public TextView getTitle_TV() {
         return title_TV;
@@ -75,14 +73,6 @@ public class ClientItemLayout extends JupiterRelativeLayout{
         this.phone_TV = phone_TV;
     }
 
-    public TextView getActOrder_BT() {
-        return actOrder_BT;
-    }
-
-    public void setActOrder_BT(Button actOrder_BT) {
-        this.actOrder_BT = actOrder_BT;
-    }
-
     public ClientItemLayout(Context context) {
         super(context);
     }
@@ -95,4 +85,11 @@ public class ClientItemLayout extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
+    public TextView getCreateTimeTv() {
+        return createTimeTv;
+    }
+
+    public void setCreateTimeTv(TextView createTimeTv) {
+        this.createTimeTv = createTimeTv;
+    }
 }
