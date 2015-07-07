@@ -225,8 +225,6 @@ public class ClientActivity extends JupiterFragmentActivity {
             }
         });
 
-        clientListView.setMotionEventSplittingEnabled(false);
-
         this.autoRefresh();
     }
 
