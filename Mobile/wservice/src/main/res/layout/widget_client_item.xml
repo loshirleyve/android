@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/row_style_background"
+    android:background="@color/whites"
     android:layout_marginTop="2dp">
 
     <RelativeLayout
@@ -25,12 +25,13 @@
                 android:text="深圳市顶聚科技有限公司" />
 
             <TextView
+                android:id="@+id/create_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textSize="16dp"
-                android:text="意向客户"
-                android:textColor="@color/title_color"/>
+                android:textSize="13dp"
+                android:text="2015-07-06"
+                android:textColor="@color/gray_font"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -78,43 +79,7 @@
                     android:text="135101010101"/>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:padding="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/user_head"/>
-
-                <TextView
-                    android:id="@+id/actOrder_BT"
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/client_proxy_bill"/>
-
-            </LinearLayout>
-
         </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/arrow_right_ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_right"/>
-    </LinearLayout>
 
 </RelativeLayout>

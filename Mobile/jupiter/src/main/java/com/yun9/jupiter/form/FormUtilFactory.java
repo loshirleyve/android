@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.yun9.jupiter.exception.JupiterRuntimeException;
 import com.yun9.jupiter.form.cell.DetailFormCell;
 import com.yun9.jupiter.form.cell.DocFormCell;
 import com.yun9.jupiter.form.cell.ImageFormCell;
@@ -18,6 +19,9 @@ import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.view.CustomCallbackActivity;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +47,27 @@ public class FormUtilFactory {
             }
         }
         return singleton;
+    }
+
+
+    public static <T extends FormCell> T createCell(Class<T> type,FormCellBean bean) {
+        try {
+            FormCell formCell = type.getConstructor(FormCellBean.class).newInstance(bean);
+            formCell.init();
+            return (T) formCell;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            throw new JupiterRuntimeException(e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            throw new JupiterRuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new JupiterRuntimeException(e);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            throw new JupiterRuntimeException(e);
+        }
     }
 
     private FormUtilFactory() {
@@ -139,10 +164,11 @@ public class FormUtilFactory {
 
     public interface BizExecutor{
         public static final String TYPE_SELECT_USER_OR_DEPT = "selectUserOrDept";
-        public static final String TYPE_SELECT_FILE = "selectFile";
+        public static final String TYPE_SELECT_DOC = "selectDoc";
+        public static final String TYPE_SELECT_IMAGE = "selectImage";
         public static final String TYPE_VIEW_IMAGE = "viewImage";
         public static final String TYPE_MULTI_SELECT = "multiSelect";
-        public void execute(FormActivity activity,FormCell cell);
+        public void execute(CustomCallbackActivity activity,FormCell cell);
     }
 
 }

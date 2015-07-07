@@ -20,6 +20,7 @@ import com.yun9.jupiter.form.model.FormBean;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 
@@ -31,7 +32,7 @@ import java.util.Map;
 /**
  * Created by Leon on 15/5/25.
  */
-public class FormActivity extends JupiterFragmentActivity {
+public class FormActivity extends CustomCallbackActivity {
 
     private JupiterTitleBarLayout titleBarLayout;
 
@@ -47,7 +48,7 @@ public class FormActivity extends JupiterFragmentActivity {
 
     private FormBean formBean;// 原始的表单数据模型
 
-    private Map<Integer, IFormActivityCallback> activityCallbackMap;
+    private Map<Integer, IActivityCallback> activityCallbackMap;
 
     private int baseRequestCode = 10000;
 
@@ -271,7 +272,7 @@ public class FormActivity extends JupiterFragmentActivity {
         }
     }
 
-    public int addActivityCallback(IFormActivityCallback callback) {
+    public int addActivityCallback(IActivityCallback callback) {
         if (callback == null) {
             callback = EMPTY_CALL_BACK;
         }
@@ -280,7 +281,7 @@ public class FormActivity extends JupiterFragmentActivity {
         return requestCode;
     }
 
-    public void addActivityCallback(int requestCode,IFormActivityCallback callback) {
+    public void addActivityCallback(int requestCode,IActivityCallback callback) {
         if (callback == null) {
             callback = EMPTY_CALL_BACK;
         }
@@ -293,7 +294,7 @@ public class FormActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IFormActivityCallback callback = activityCallbackMap.get(requestCode);
+        IActivityCallback callback = activityCallbackMap.get(requestCode);
         if (callback != null) {
             callback.onActivityResult(resultCode, data);
             activityCallbackMap.remove(requestCode);
@@ -305,15 +306,10 @@ public class FormActivity extends JupiterFragmentActivity {
         public static final int CANCEL = 200;
     }
 
-    private static final IFormActivityCallback EMPTY_CALL_BACK = new IFormActivityCallback() {
+    private static final IActivityCallback EMPTY_CALL_BACK = new IActivityCallback() {
         @Override
         public void onActivityResult(int resultCode, Intent data) {
 
         }
     };
-
-    public interface IFormActivityCallback {
-        public void onActivityResult(int resultCode, Intent data);
-    }
-
 }

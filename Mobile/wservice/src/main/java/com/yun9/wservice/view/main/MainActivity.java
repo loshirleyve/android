@@ -3,20 +3,28 @@ package com.yun9.wservice.view.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.handler.MessageReceiverHandler;
+import com.yun9.wservice.model.PushMessageBean;
+import com.yun9.wservice.support.MessageReceiverFactory;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -29,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends JupiterFragmentActivity {
+public class MainActivity extends JupiterFragmentActivity implements MessageReceiverHandler {
 
     private static final Logger logger = Logger.getLogger(MainActivity.class);
 
@@ -55,6 +63,9 @@ public class MainActivity extends JupiterFragmentActivity {
     @BeanInject
     private PushFactory pushFactory;
 
+    @BeanInject
+    private MessageReceiverFactory messageReceiverFactory;
+
     private View currentButton;
 
     private View preButton;
@@ -66,6 +77,7 @@ public class MainActivity extends JupiterFragmentActivity {
     private SelectInstCommand selectInstCommand;
 
     private List<FuncFragmentHandler> funcFragmentHandlerList;
+
 
     public static void start(Context context, Bundle bundle) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -80,8 +92,25 @@ public class MainActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        messageReceiverFactory.regHandler(this);
         this.initView();
         storeBtn.performClick();
+
+        Intent intent = getIntent();
+        final String pushMsg = intent.getStringExtra("push");
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 0) {
+                    if (AssertValue.isNotNullAndNotEmpty(pushMsg)) {
+                        processMessage(pushMsg);
+                    }
+                }
+            }
+        };
+
+        handler.sendEmptyMessageDelayed(0, 100);
     }
 
     @Override
@@ -113,6 +142,7 @@ public class MainActivity extends JupiterFragmentActivity {
         super.onResume();
         if (!sessionManager.isLogin()) {
             switchFragment(FuncFragmentHandler.FUNC_STORE, storeBtn);
+            return;
         }
     }
 
@@ -204,5 +234,16 @@ public class MainActivity extends JupiterFragmentActivity {
             this.switchFragment(FuncFragmentHandler.FUNC_STORE, storeBtn);
         }
 
+    }
+
+    public void processMessage(String pushContent) {
+        if (AssertValue.isNotNullAndNotEmpty(pushContent)) {
+            messageReceiverFactory.processMsg(MainActivity.this, pushContent);
+        }
+    }
+
+    @Override
+    public void sendMessage(Context context, String pushContent) {
+        processMessage(pushContent);
     }
 }

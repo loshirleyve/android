@@ -71,4 +71,28 @@ public class OrderAttachWaySelfWidget extends JupiterRelativeLayout implements I
     public boolean isSelected() {
         return sutitleLayout.isSelected();
     }
+
+    public JupiterRowStyleSutitleLayout getSutitleLayout() {
+        return sutitleLayout;
+    }
+
+    public void setSutitleLayout(JupiterRowStyleSutitleLayout sutitleLayout) {
+        this.sutitleLayout = sutitleLayout;
+    }
+
+    public TextView getTipTv() {
+        return tipTv;
+    }
+
+    public void setTipTv(TextView tipTv) {
+        this.tipTv = tipTv;
+    }
+
+    public LinearLayout getDetailLl() {
+        return detailLl;
+    }
+
+    public void setDetailLl(LinearLayout detailLl) {
+        this.detailLl = detailLl;
+    }
 }

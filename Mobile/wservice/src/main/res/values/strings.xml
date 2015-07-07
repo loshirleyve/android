@@ -233,4 +233,5 @@
     <string name="old_pwd_input_pro">请输入原始密码！</string>
     <string name="new_pwd_input_pro">请输入新密码！</string>
     <string name="sure_pwd_input_pro">请输入确认密码！</string>
+    <string name="my_clients">我的客户</string>
 </resources>
