@@ -74,5 +74,14 @@
         <type>yun9</type>
     </repository>
 
+    <!--修改组织名称-->
+    <repository>
+        <name>UpdateOrg</name>
+        <action>com.yun9.sys.inst.serivce.UpdateOrgService</action>
+        <output>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 
 </repositorys>

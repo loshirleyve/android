@@ -194,6 +194,20 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         this.imageGV.setAdapter(imageGridViewAdapter);
         this.fileLV.setAdapter(fileListViewAdapter);
 
+        if (AssertValue.isNotNull(command)) {
+            if (NewDynamicCommand.MSG_FORWARD.equals(command.getType()) || NewDynamicCommand.MSG_COMMENT.equals(command.getType())) {
+                this.selectImageRL.setVisibility(View.GONE);
+                this.selectTopocRL.setVisibility(View.GONE);
+                if (NewDynamicCommand.MSG_COMMENT.equals(command.getType())) {
+                    this.selectUserRL.setVisibility(View.GONE);
+                    titleBarLayout.getTitleTv().setText(R.string.msg_card_comment);
+                    this.titleBarLayout.getTitleRight().setOnClickListener(onCommentClickListener);
+                } else if (NewDynamicCommand.MSG_FORWARD.equals(command.getType())) {
+                    titleBarLayout.getTitleTv().setText(R.string.msg_card_fw);
+                    this.titleBarLayout.getTitleRight().setOnClickListener(onForwandClickListener);
+                }
+            }
+        }
 
         //初始化分享范围
         this.builderShareInfo();
@@ -458,7 +472,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-   if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
             cleanOrgAndUser(OrgAndUserBean.TYPE_USER);
@@ -594,19 +608,134 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
             }
 
 
-            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
-            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
-                //未选择任何分享范围
-                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
-            }
-
-            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
-            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
-                //未获取到地理位置信息，暂时允许继续发送
-            }
+//            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
+//            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
+//                //未选择任何分享范围
+//                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
+//            }
+//
+//            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
+//            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
+//                //未获取到地理位置信息，暂时允许继续发送
+//            }
 
             //上传文件以及图片
             uploadFiles();
+        }
+    };
+
+
+    private View.OnClickListener onForwandClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notinst, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Resource resource = resourceFactory.create("AddMsgCardShare");
+            resource.param("msgcardid", command.getMsgCardId());
+            resource.param("userid", userid);
+            resource.param("touserid", userid);
+            resource.param("content", dynamicContentET.getText().toString());
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+
+                @Override
+                public void onSuccess(Response response) {
+                    Toast.makeText(NewDynamicActivity.this, R.string.add_forwadr_success_tip, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(NewDynamicActivity.this, R.string.add_forward_failure_tip, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinally(Response response) {
+
+                }
+            });
+
+//            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
+//            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
+//                //未选择任何分享范围
+//                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
+//            }
+//
+//            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
+//            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
+//                //未获取到地理位置信息，暂时允许继续发送
+//            }
+
+        }
+    };
+
+    private View.OnClickListener onCommentClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            if (!AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Resource resource = resourceFactory.create("AddMsgCardComment");
+            resource.param("msgcardid", command.getMsgCardId());
+            resource.param("from", userid);
+            resource.param("content", dynamicContentET.getText().toString());
+            resource.param("type", "normal");
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    Toast.makeText(NewDynamicActivity.this, R.string.add_comment_success_tip, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(NewDynamicActivity.this, R.string.add_comment_failure_tip, Toast.LENGTH_SHORT).show();
+                }
+
+
+                @Override
+                public void onFinally(Response response) {
+
+                }
+            });
+
+//            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
+//            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
+//                //未选择任何分享范围
+//                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
+//            }
+//
+//            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
+//            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
+//                //未获取到地理位置信息，暂时允许继续发送
+//            }
+
         }
     };
 
