@@ -43,7 +43,6 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     private RelativeLayout praiseRL;
     private RelativeLayout fwRL;
     private RelativeLayout commentRL;
-    //private RelativeLayout actionRL;
     private RelativeLayout mainRl;
 
     private TextView praiseNumTV;
@@ -231,6 +230,12 @@ public class MsgCardWidget extends JupiterRelativeLayout {
             timeTV.setText(DateUtil.timeAgo(msgCard.getCreatedate()));
         }
 
+        //praiseIv
+        if(mMsgCard.isMypraise()){
+            praiseIV.setImageResource(R.drawable.star_sel);
+        }else {
+            praiseIV.setImageResource(R.drawable.star1);
+        }
         //Praisecount
         praiseNumTV.setText(String.valueOf(msgCard.getPraisecount()));
 

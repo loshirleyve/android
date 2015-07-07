@@ -234,4 +234,5 @@
     <string name="new_pwd_input_pro">请输入新密码！</string>
     <string name="sure_pwd_input_pro">请输入确认密码！</string>
     <string name="my_clients">我的客户</string>
+    <string name="msg_card_praise_cancel">取消点赞</string>
 </resources>
