@@ -3,12 +3,9 @@ package com.yun9.jupiter.form.cell;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
@@ -16,14 +13,15 @@ import com.yun9.jupiter.form.model.UserFormCellBean;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
-import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
+import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,7 +125,7 @@ public class UserFormCell extends FormCell{
     private void choiceUserOrDept() {
         FormUtilFactory.BizExecutor executor = findBizExecutor(FormUtilFactory.BizExecutor.TYPE_SELECT_USER_OR_DEPT);
         if (executor != null) {
-            executor.execute((FormActivity) this.context,this);
+            executor.execute((CustomCallbackActivity) this.context,this);
         }
     }
 

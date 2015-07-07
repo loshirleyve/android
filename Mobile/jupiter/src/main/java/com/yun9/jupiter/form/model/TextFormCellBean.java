@@ -9,12 +9,32 @@ public class TextFormCellBean extends FormCellBean{
 
     private String defaultValue;
 
+    private String regular;
+
+    private String errorMessage;
+
     public String getDefaultValue() {
         return defaultValue;
     }
 
     public void setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public String getRegular() {
+        return regular;
+    }
+
+    public void setRegular(String regular) {
+        this.regular = regular;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @Override

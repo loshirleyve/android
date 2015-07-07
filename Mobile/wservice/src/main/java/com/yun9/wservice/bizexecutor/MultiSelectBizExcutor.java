@@ -37,6 +37,8 @@ public class MultiSelectBizExcutor implements FormUtilFactory.BizExecutor {
         command.setCtrlCode(cellBean.getCtrlCode());
         command.setOptions(cellBean.getOptionMap());
         command.setSelectedList((List<SerialableEntry<String, String>>) cell.getValue());
+        command.setMinNum(cellBean.getMinNum());
+        command.setMaxNum(cellBean.getMaxNum());
         intent.putExtra(MultiSelectCommand.PARAM_COMMAND,command);
         int requestCode = activity.addActivityCallback(new FormActivity.IActivityCallback() {
             @Override

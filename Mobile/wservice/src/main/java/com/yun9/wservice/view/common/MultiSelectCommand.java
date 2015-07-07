@@ -18,6 +18,10 @@ public class MultiSelectCommand extends JupiterCommand{
 
     private String ctrlCode;
 
+    private int minNum;
+
+    private int maxNum;
+
     public boolean isCancelable() {
         return isCancelable;
     }
@@ -48,5 +52,21 @@ public class MultiSelectCommand extends JupiterCommand{
 
     public void setCtrlCode(String ctrlCode) {
         this.ctrlCode = ctrlCode;
+    }
+
+    public int getMinNum() {
+        return minNum;
+    }
+
+    public void setMinNum(int minNum) {
+        this.minNum = minNum;
+    }
+
+    public int getMaxNum() {
+        return maxNum;
+    }
+
+    public void setMaxNum(int maxNum) {
+        this.maxNum = maxNum;
     }
 }

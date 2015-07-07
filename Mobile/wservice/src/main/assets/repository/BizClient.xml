@@ -11,10 +11,10 @@
         <type>yun9</type>
     </repository>
 
-    <!--上传机构客户信息-->
+    <!--保存机构客户信息-->
     <repository>
-        <name>AddInstClients</name>
-        <action>com.yun9.ws.biz.service.AddInstClientsService</action>
+        <name>AddOrUpdateInstClientsService</name>
+        <action>com.yun9.ws.biz.service.AddOrUpdateInstClientsService</action>
         <output>
             <type>object</type>
         </output>

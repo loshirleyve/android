@@ -9,122 +9,160 @@ import java.util.List;
  */
 public class OrderCartInfo implements Serializable{
 
-    private String proxyinstid;
-    private double total;
-    private String purchase;
-    private String proxyman;
-    private Provider provideinstinfo;
-    private List<OrderCartProduct> productinfos;
+    private String productname;
+    private String ordersn;
+    private String state;
+    private String orderamount;
+    private String commitattachment;
+    private String instid;
+    private String buyerinstid;
+    private String provideinstid;
+    private String salesmanid;
+    private String adviseruserid;
+    private Long createdate;
+    private String createby;
+    private int paystate;
+    private List<OrderProduct> orderproducts;
+    private List<OrderAttachment> orderAttachments;
 
-    public String getProxyinstid() {
-        return proxyinstid;
+    public String getProductname() {
+        return productname;
     }
 
-    public void setProxyinstid(String proxyinstid) {
-        this.proxyinstid = proxyinstid;
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 
-    public double getTotal() {
-        return total;
+    public String getOrdersn() {
+        return ordersn;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    public void setOrdersn(String ordersn) {
+        this.ordersn = ordersn;
     }
 
-    public String getPurchase() {
-        return purchase;
+    public String getState() {
+        return state;
     }
 
-    public void setPurchase(String purchase) {
-        this.purchase = purchase;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getProxyman() {
-        return proxyman;
+    public String getOrderamount() {
+        return orderamount;
     }
 
-    public void setProxyman(String proxyman) {
-        this.proxyman = proxyman;
+    public void setOrderamount(String orderamount) {
+        this.orderamount = orderamount;
     }
 
-    public Provider getProvideinstinfo() {
-        return provideinstinfo;
+    public String getCommitattachment() {
+        return commitattachment;
     }
 
-    public void setProvideinstinfo(Provider provideinstinfo) {
-        this.provideinstinfo = provideinstinfo;
+    public void setCommitattachment(String commitattachment) {
+        this.commitattachment = commitattachment;
     }
 
-    public List<OrderCartProduct> getProductinfos() {
-        return productinfos;
+    public String getInstid() {
+        return instid;
     }
 
-    public void setProductinfos(List<OrderCartProduct> productinfos) {
-        this.productinfos = productinfos;
+    public void setInstid(String instid) {
+        this.instid = instid;
     }
 
-    public static class OrderCartProduct implements Serializable {
-        private String imgid;
-        private String introduce;
-        private double saleprice;
-        private List<ProductProfile> profiles;
-        private String type;
-        private String introduceurl;
+    public String getBuyerinstid() {
+        return buyerinstid;
+    }
+
+    public void setBuyerinstid(String buyerinstid) {
+        this.buyerinstid = buyerinstid;
+    }
+
+    public String getProvideinstid() {
+        return provideinstid;
+    }
+
+    public void setProvideinstid(String provideinstid) {
+        this.provideinstid = provideinstid;
+    }
+
+    public String getSalesmanid() {
+        return salesmanid;
+    }
+
+    public void setSalesmanid(String salesmanid) {
+        this.salesmanid = salesmanid;
+    }
+
+    public String getAdviseruserid() {
+        return adviseruserid;
+    }
+
+    public void setAdviseruserid(String adviseruserid) {
+        this.adviseruserid = adviseruserid;
+    }
+
+    public Long getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(Long createdate) {
+        this.createdate = createdate;
+    }
+
+    public String getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(String createby) {
+        this.createby = createby;
+    }
+
+    public int getPaystate() {
+        return paystate;
+    }
+
+    public void setPaystate(int paystate) {
+        this.paystate = paystate;
+    }
+
+    public List<OrderProduct> getOrderproducts() {
+        return orderproducts;
+    }
+
+    public void setOrderproducts(List<OrderProduct> orderproducts) {
+        this.orderproducts = orderproducts;
+    }
+
+    public List<OrderAttachment> getOrderAttachments() {
+        return orderAttachments;
+    }
+
+    public void setOrderAttachments(List<OrderAttachment> orderAttachments) {
+        this.orderAttachments = orderAttachments;
+    }
+
+    public static class OrderProduct implements Serializable {
+
+        private double goodsamount;
         private String instid;
-        private String name;
-        private String id;
-        private String sn;
-        private String state;
-        private int daynum;
-        private List<ProductPhase> phases;
+        private String productimgid;
+        private String productid;
+        private String productclassifyid;
+        private String productclassifyname;
+        private int goodsnum;
+        private String productname;
+        private List<ProductPhases> productPhases;
 
-        public String getImgid() {
-            return imgid;
+        public double getGoodsamount() {
+            return goodsamount;
         }
 
-        public void setImgid(String imgid) {
-            this.imgid = imgid;
-        }
-
-        public String getIntroduce() {
-            return introduce;
-        }
-
-        public void setIntroduce(String introduce) {
-            this.introduce = introduce;
-        }
-
-        public double getSaleprice() {
-            return saleprice;
-        }
-
-        public void setSaleprice(double saleprice) {
-            this.saleprice = saleprice;
-        }
-
-        public List<ProductProfile> getProfiles() {
-            return profiles;
-        }
-
-        public void setProfiles(List<ProductProfile> profiles) {
-            this.profiles = profiles;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getIntroduceurl() {
-            return introduceurl;
-        }
-
-        public void setIntroduceurl(String introduceurl) {
-            this.introduceurl = introduceurl;
+        public void setGoodsamount(double goodsamount) {
+            this.goodsamount = goodsamount;
         }
 
         public String getInstid() {
@@ -135,60 +173,13 @@ public class OrderCartInfo implements Serializable{
             this.instid = instid;
         }
 
-        public String getName() {
-            return name;
+        public String getProductimgid() {
+            return productimgid;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setProductimgid(String productimgid) {
+            this.productimgid = productimgid;
         }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getSn() {
-            return sn;
-        }
-
-        public void setSn(String sn) {
-            this.sn = sn;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public int getDaynum() {
-            return daynum;
-        }
-
-        public void setDaynum(int daynum) {
-            this.daynum = daynum;
-        }
-
-        public List<ProductPhase> getPhases() {
-            return phases;
-        }
-
-        public void setPhases(List<ProductPhase> phases) {
-            this.phases = phases;
-        }
-    }
-
-    public static class ProductProfile {
-        private String productid;
-        private String id;
-        private String synopsis;
-        private int sort;
 
         public String getProductid() {
             return productid;
@@ -198,37 +189,72 @@ public class OrderCartInfo implements Serializable{
             this.productid = productid;
         }
 
-        public String getId() {
-            return id;
+        public String getProductclassifyid() {
+            return productclassifyid;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setProductclassifyid(String productclassifyid) {
+            this.productclassifyid = productclassifyid;
         }
 
-        public String getSynopsis() {
-            return synopsis;
+        public String getProductclassifyname() {
+            return productclassifyname;
         }
 
-        public void setSynopsis(String synopsis) {
-            this.synopsis = synopsis;
+        public void setProductclassifyname(String productclassifyname) {
+            this.productclassifyname = productclassifyname;
         }
 
-        public int getSort() {
-            return sort;
+        public int getGoodsnum() {
+            return goodsnum;
         }
 
-        public void setSort(int sort) {
-            this.sort = sort;
+        public void setGoodsnum(int goodsnum) {
+            this.goodsnum = goodsnum;
+        }
+
+        public String getProductname() {
+            return productname;
+        }
+
+        public void setProductname(String productname) {
+            this.productname = productname;
+        }
+
+        public List<ProductPhases> getProductPhases() {
+            return productPhases;
+        }
+
+        public void setProductPhases(List<ProductPhases> productPhases) {
+            this.productPhases = productPhases;
         }
     }
 
-    public static class ProductPhase {
+    public static class ProductPhases implements Serializable{
+        private String id;
         private String productid;
         private String name;
+        private int times;
+        private String cycle;
+        private String cyclevalue;
+        private int processdays;
+        private int sortno;
+        private int disabled;
+        private String createby;
+        private Long createdate;
+        private String updateby;
+        private Long updatedate;
         private String remark;
         private String phasedescr;
 
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
         public String getProductid() {
             return productid;
         }
@@ -243,6 +269,86 @@ public class OrderCartInfo implements Serializable{
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public int getTimes() {
+            return times;
+        }
+
+        public void setTimes(int times) {
+            this.times = times;
+        }
+
+        public String getCycle() {
+            return cycle;
+        }
+
+        public void setCycle(String cycle) {
+            this.cycle = cycle;
+        }
+
+        public String getCyclevalue() {
+            return cyclevalue;
+        }
+
+        public void setCyclevalue(String cyclevalue) {
+            this.cyclevalue = cyclevalue;
+        }
+
+        public int getProcessdays() {
+            return processdays;
+        }
+
+        public void setProcessdays(int processdays) {
+            this.processdays = processdays;
+        }
+
+        public int getSortno() {
+            return sortno;
+        }
+
+        public void setSortno(int sortno) {
+            this.sortno = sortno;
+        }
+
+        public int getDisabled() {
+            return disabled;
+        }
+
+        public void setDisabled(int disabled) {
+            this.disabled = disabled;
+        }
+
+        public String getCreateby() {
+            return createby;
+        }
+
+        public void setCreateby(String createby) {
+            this.createby = createby;
+        }
+
+        public Long getCreatedate() {
+            return createdate;
+        }
+
+        public void setCreatedate(Long createdate) {
+            this.createdate = createdate;
+        }
+
+        public String getUpdateby() {
+            return updateby;
+        }
+
+        public void setUpdateby(String updateby) {
+            this.updateby = updateby;
+        }
+
+        public Long getUpdatedate() {
+            return updatedate;
+        }
+
+        public void setUpdatedate(Long updatedate) {
+            this.updatedate = updatedate;
         }
 
         public String getRemark() {
@@ -262,19 +368,14 @@ public class OrderCartInfo implements Serializable{
         }
     }
 
-    public static class Provider{
-        private String template;
+    public static class OrderAttachment implements Serializable {
         private String id;
-        private String no_;
-        private String name_;
-
-        public String getTemplate() {
-            return template;
-        }
-
-        public void setTemplate(String template) {
-            this.template = template;
-        }
+        private String attachkey;
+        private String attachname;
+        private String inputtype;
+        private String inputdesc;
+        private String demovalue;
+        private String transfertype;
 
         public String getId() {
             return id;
@@ -284,20 +385,52 @@ public class OrderCartInfo implements Serializable{
             this.id = id;
         }
 
-        public String getNo_() {
-            return no_;
+        public String getAttachkey() {
+            return attachkey;
         }
 
-        public void setNo_(String no_) {
-            this.no_ = no_;
+        public void setAttachkey(String attachkey) {
+            this.attachkey = attachkey;
         }
 
-        public String getName_() {
-            return name_;
+        public String getAttachname() {
+            return attachname;
         }
 
-        public void setName_(String name_) {
-            this.name_ = name_;
+        public void setAttachname(String attachname) {
+            this.attachname = attachname;
+        }
+
+        public String getInputtype() {
+            return inputtype;
+        }
+
+        public void setInputtype(String inputtype) {
+            this.inputtype = inputtype;
+        }
+
+        public String getInputdesc() {
+            return inputdesc;
+        }
+
+        public void setInputdesc(String inputdesc) {
+            this.inputdesc = inputdesc;
+        }
+
+        public String getDemovalue() {
+            return demovalue;
+        }
+
+        public void setDemovalue(String demovalue) {
+            this.demovalue = demovalue;
+        }
+
+        public String getTransfertype() {
+            return transfertype;
+        }
+
+        public void setTransfertype(String transfertype) {
+            this.transfertype = transfertype;
         }
     }
 }

@@ -5,23 +5,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.yun9.jupiter.R;
-import com.yun9.jupiter.form.FormActivity;
 import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
-import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditAdapter;
+import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Leon on 15/5/25.
@@ -146,7 +143,7 @@ public class ImageFormCell extends FormCell {
             public void onClick(View v) {
                 if (executor != null) {
                     currentIndex = indexOfItem(item);
-                    executor.execute((FormActivity) ImageFormCell.this.context, ImageFormCell.this);
+                    executor.execute((CustomCallbackActivity) ImageFormCell.this.context, ImageFormCell.this);
                 }
             }
         });

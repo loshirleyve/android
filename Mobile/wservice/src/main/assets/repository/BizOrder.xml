@@ -81,7 +81,7 @@
         <name>QueryOrderViewService</name>
         <action>com.yun9.ws.biz.service.QueryOrderViewService</action>
         <output>
-            <classname>com.yun9.wservice.model.OrderCartInfo</classname>
+            <classname>com.yun9.wservice.model.wrapper.OrderCartInfoWrapper</classname>
             <type>list</type>
         </output>
         <type>yun9</type>
@@ -89,8 +89,8 @@
 
     <!-- 新增订单服务 -->
     <repository>
-        <name>AddOrderByProductIdsService</name>
-        <action>com.yun9.ws.biz.service.AddOrderByProductIdsService</action>
+        <name>AddOrderByOrderViewService</name>
+        <action>com.yun9.ws.biz.service.AddOrderByOrderViewService</action>
         <output>
             <classname>com.yun9.wservice.model.SimpleIdReturn</classname>
             <type>list</type>
