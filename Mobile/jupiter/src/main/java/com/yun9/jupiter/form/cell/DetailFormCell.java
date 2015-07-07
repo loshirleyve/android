@@ -11,6 +11,7 @@ import com.yun9.jupiter.form.FormCell;
 import com.yun9.jupiter.form.model.DetailFormCellBean;
 import com.yun9.jupiter.form.model.FormBean;
 import com.yun9.jupiter.form.model.FormCellBean;
+import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class DetailFormCell extends FormCell {
      * 进入二级表单
      */
     private void gotoDetailForm() {
-        FormActivity formActivity = (FormActivity) this.context;
+        CustomCallbackActivity formActivity = (CustomCallbackActivity) this.context;
         int requestCode = formActivity.addActivityCallback(new FormActivity.IActivityCallback() {
             @Override
             public void onActivityResult(int resultCode, Intent data) {

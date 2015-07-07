@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleLeftIcoVisibility="true"
+        app:titleText="@string/detail_client"/>
+    <LinearLayout
+        android:id="@+id/confirm_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whites">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:text="@string/app_ok"
+            android:layout_gravity="center"
+            android:textColor="@color/title_color"/>
+    </LinearLayout>
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_above="@id/confirm_ll">
+        <LinearLayout
+            android:id="@+id/form_page"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:divider="@drawable/spacer_medium"
+            android:showDividers="middle"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@color/groupbackground">
+
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+</RelativeLayout>

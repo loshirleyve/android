@@ -295,6 +295,13 @@
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
+            android:name=".view.client.EditClientActivity"
+            android:label="@string/detail_client"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+
+        <activity
             android:name=".view.order.OrderManagerActivity"
             android:label="@string/user_buyer"
             android:screenOrientation="portrait"
