@@ -152,7 +152,7 @@ public class StoreFragment extends JupiterFragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
 
-                if (!AssertValue.isNotNullAndNotEmpty(serviceCit
+                if (!AssertValue.isNotNullAndNotEmpty(serviceCities)) {
                     refresh();
                     mPtrFrame.refreshComplete();
                 } else {

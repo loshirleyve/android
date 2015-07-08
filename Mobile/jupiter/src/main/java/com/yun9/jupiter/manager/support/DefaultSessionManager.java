@@ -142,6 +142,7 @@ public class DefaultSessionManager implements SessionManager, Bean,
 
     @Override
     public void init(BeanManager beanManager) {
+
     }
 
 

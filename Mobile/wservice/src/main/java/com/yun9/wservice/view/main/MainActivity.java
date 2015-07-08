@@ -15,6 +15,7 @@ import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
+import com.yun9.jupiter.util.AppUtil;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
@@ -111,6 +112,19 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
         };
 
         handler.sendEmptyMessageDelayed(0, 100);
+
+        Handler checkVersionHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 0) {
+                    String version = AppUtil.getVersion(MainActivity.this);
+                    int versionCode = AppUtil.getVersionCode(MainActivity.this);
+                    logger.d("verison:" + version + ";Version Code:" + versionCode);
+                }
+            }
+        };
+
+        checkVersionHandler.sendEmptyMessageDelayed(0, 5000);
     }
 
     @Override
