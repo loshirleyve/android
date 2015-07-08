@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -121,7 +122,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
                     @Override
                     public void onFinally(Response response) {
-
                     }
                 });
             }
