@@ -194,8 +194,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private FileBean createCamera() {
         FileBean fileBean = new FileBean();
         fileBean.setCamera(true);
-        fileBean.setFilePath("drawable://" + R.drawable.mapp);
-        fileBean.setThumbnailPath("drawable://" + R.drawable.mapp);
+        fileBean.setFilePath("drawable://" + R.drawable.camera);
+        fileBean.setThumbnailPath("drawable://" + R.drawable.camera);
 
         return fileBean;
     }
