@@ -21,7 +21,7 @@ public class OnLogoutUnNoticeBindListener implements SessionManager.OnLogoutList
     public void logout(User user) {
         DeviceManager deviceManager = JupiterApplication.getBeanManager().get(DeviceManager.class);
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
-        String deviceid = deviceManager.getDevice().getId();
+        String deviceid = deviceManager.getDevice().getSerial();
         Resource resource = resourceFactory.create("NoticeUserPushUnbind");
         resource.param("deviceId", deviceid);
         resource.invok(new AsyncHttpResponseCallback() {
