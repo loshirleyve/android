@@ -9,6 +9,7 @@ import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.location.LocationFactory;
 import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.util.AppUtil;
@@ -74,11 +75,7 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mRegId = cmdArg1;
                 logger.d("mi push regid:" + mRegId);
-                //TODO 调用绑定服务
-                //TODO 用户id暂时1
-                DeviceManager deviceManager = JupiterApplication.getBeanManager().get(DeviceManager.class);
-                String deviceid = deviceManager.getDevice().getId();
-
+                AppCache.getInstance().put("com.yun9.wservice.push.regid", mRegId);
             }
         }
 
