@@ -25,12 +25,12 @@ public class OnLoginNoticeBindListener implements SessionManager.OnLoginListener
         DeviceManager deviceManager = JupiterApplication.getBeanManager().get(DeviceManager.class);
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
 
-        String deviceid = deviceManager.getDevice().getId();
+        String deviceid = deviceManager.getDevice().getSerial();
         String regid = deviceManager.getDevice().getPushRegid();
         if (AssertValue.isNotNull(deviceid) && AssertValue.isNotNull(regid)) {
             Resource resource = resourceFactory.create("NoticeUserPushBind");
             resource.param("userId", user.getId()).param("pushType", "xiaomi").param("deviceType", "android")
-                    .param("deviceId", deviceid).param("params", Collections.singletonMap("regIds", Collections.singletonList(regid)));
+                    .param("deviceId", deviceid).param("params", regid);
 
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
