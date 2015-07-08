@@ -26,6 +26,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.handler.MessageReceiverHandler;
 import com.yun9.wservice.model.PushMessageBean;
 import com.yun9.wservice.support.MessageReceiverFactory;
+import com.yun9.wservice.support.OnLoginNoticeBindListener;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -232,6 +233,7 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
             setRefresh(true);
 
             //切换到之前准备打开的页面
+            new OnLoginNoticeBindListener().login(sessionManager.getUser());
             this.switchFragment(currType, preButton);
         }
 

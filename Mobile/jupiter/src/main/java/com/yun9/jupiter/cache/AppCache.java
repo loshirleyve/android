@@ -8,7 +8,7 @@ package com.yun9.jupiter.cache;
  *
  */
 public class AppCache extends AbsCache{
-	
+
 	private static final String CACHE_KEY = "com.yun9.wservice";
 	private static AppCache instance;
 
@@ -17,7 +17,6 @@ public class AppCache extends AbsCache{
 			if (instance == null) {
 				instance = new AppCache();
 			}
-				
 		}
 		return instance;
 	}
