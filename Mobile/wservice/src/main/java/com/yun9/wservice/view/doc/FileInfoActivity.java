@@ -25,6 +25,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.task.DownloadFileAsyncTask;
 import com.yun9.wservice.task.UploadFileAsyncTask;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
@@ -123,6 +124,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
                 fileupload.setOnClickListener(onUpLoadlClickListener);
             } else if (fileBean.getStorageType().equals(FileBean.FILE_STORAGE_TYPE_YUN)) {
                 filedownload.setVisibility(View.VISIBLE);
+                filedownload.setOnClickListener(onDownLoadlClickListener);
                 fileshare.setVisibility(View.VISIBLE);
                 fileshare.setOnClickListener(onSharelClickListener);
             }
@@ -142,6 +144,21 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onDownLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (AssertValue.isNotNull(fileBean) && FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
+                DownloadFileAsyncTask downloadFileAsyncTask = new DownloadFileAsyncTask();
+                downloadFileAsyncTask.execute(fileBean);
+                downloadFileAsyncTask.setOnFileDownloadCallback(new DownloadFileAsyncTask.OnFileDownloadCallback() {
+                    @Override
+                    public void onPostExecute(List<FileBean> fileBeans) {
+                        //检查文件是否已经为本地文件。如果是表示成功
+                        if (AssertValue.isNotNullAndNotEmpty(fileBeans) && fileBeans.get(0).getStorageType().equals(FileBean.FILE_STORAGE_TYPE_LOCAL)) {
+                            fileBean = fileBeans.get(0);
+
+                            //TODO 下载文件成功，完善界面部分
+                        }
+                    }
+                });
+            }
         }
     };
 
@@ -260,7 +277,6 @@ public class FileInfoActivity extends JupiterFragmentActivity {
             finish();
         }
     };
-
 
 
 }
