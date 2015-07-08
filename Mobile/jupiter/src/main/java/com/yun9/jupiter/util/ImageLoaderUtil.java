@@ -50,8 +50,8 @@ public class ImageLoaderUtil {
         config.imageDownloader(new Y9ImageDownloader(context)); // 设置我们自己的imageDownloader，支持文件ID格式：y9fileid://1234
 
         options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.user_head)
-                .showImageForEmptyUri(R.drawable.ic_empty)
+                .showImageOnLoading(R.drawable.icon_loading)
+                .showImageForEmptyUri(R.drawable.icon_empty)
                 .showImageOnFail(R.drawable.ic_error)
                 .cacheInMemory(false)
                 .cacheOnDisk(true)

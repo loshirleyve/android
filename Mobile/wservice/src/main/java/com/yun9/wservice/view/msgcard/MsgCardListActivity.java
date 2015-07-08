@@ -11,9 +11,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -127,12 +129,14 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     }
 
     private void refresh() {
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())) {
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())
+                && AssertValue.isNotNullAndNotEmpty(command.getType())) {
             Resource resource = resourceFactory.create("QueryMsgCardByScene");
             resource.param("instid", sessionManager.getInst().getId());
             resource.param("userid", command.getUserid());
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
+            resource.param("topic", command.getTopic());
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {

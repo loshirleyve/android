@@ -236,4 +236,5 @@
     <string name="my_clients">我的客户</string>
     <string name="msg_card_praise_cancel">取消点赞</string>
     <string name="user_register">用户注册</string>
+    <string name="confirm_order">确认订单</string>
 </resources>

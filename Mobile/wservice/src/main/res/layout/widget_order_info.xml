@@ -56,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whites"
-                android:text="@string/pay_now"
+                android:text="@string/app_ok"
                 android:layout_marginRight="10dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"

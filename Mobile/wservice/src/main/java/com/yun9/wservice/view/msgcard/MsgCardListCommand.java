@@ -11,10 +11,15 @@ public class MsgCardListCommand extends JupiterCommand {
 
     public static final String TYPE_USER_GIVEME = "usergiveme";
 
+
+    public static final String TYPE_TOPIC = "topic";
+
     private String type;
     private String userid;
     private String fromuserid;
     private String title;
+
+    private String topic;
 
     public String getType() {
         return type;
@@ -49,6 +54,15 @@ public class MsgCardListCommand extends JupiterCommand {
 
     public MsgCardListCommand setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public MsgCardListCommand setTopic(String topic) {
+        this.topic = topic;
         return this;
     }
 }

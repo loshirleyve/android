@@ -2,10 +2,12 @@ package com.yun9.wservice.view.order;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -21,6 +23,9 @@ import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
 import com.yun9.wservice.view.msgcard.MsgCardDetailActivity;
 import com.yun9.wservice.view.msgcard.MsgCardDetailCommand;
+import com.yun9.wservice.view.payment.PaymentOrderActivity;
+import com.yun9.wservice.view.payment.PaymentOrderCommand;
+import com.yun9.wservice.view.payment.PaymentResultActivity;
 
 /**
  * Created by huangbinglong on 15/6/15.
@@ -58,12 +63,12 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
     private String orderId;
 
-    public static void start(Activity activity,String orderId) {
-        Intent intent = new Intent(activity,OrderDetailActivity.class);
+    public static void start(Context context,String orderId) {
+        Intent intent = new Intent(context,OrderDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("orderid",orderId);
+        bundle.putSerializable("orderid", orderId);
         intent.putExtras(bundle);
-        activity.startActivity(intent);
+        context.startActivity(intent);
     }
 
     @Override
@@ -71,12 +76,14 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         super.onCreate(savedInstanceState);
         orderId = getIntent().getStringExtra("orderid");
         this.buildView();
+        reloadData();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        reloadData();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == JupiterCommand.RESULT_CODE_OK){
+            reloadData();
+        }
     }
 
     @Override
@@ -124,7 +131,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         });
     }
 
-    private void reloadData(Order order) {
+    private void reloadData(final Order order) {
         if (!AssertValue.isNotNull(order.getOrder())
                         || !State.Order.COMPLETE.equals(order.getOrder().getState())){
             titleBarLayout.getTitleRight().setVisibility(View.GONE);
@@ -144,6 +151,36 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNull(order.getOrder())
                 && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
             orderDetailPayinfoWidget.buildWithData(order);
+            orderDetailPayinfoWidget.getSutitleLayout().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (order.getOrder().getPaystate() > 0) {
+                        orderDetailPayinfoWidget.getSutitleLayout()
+                                .getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
+                        orderDetailPayinfoWidget.getSutitleLayout()
+                                .getHotNitoceTV().setText("查看付款详情");
+                        orderDetailPayinfoWidget.getSutitleLayout()
+                                .getHotNitoceTV().getPaint().setFakeBoldText(false);
+                        orderDetailPayinfoWidget.getSutitleLayout()
+                                .getTitleTV().setTextColor(getResources().getColor(R.color.black));
+                        orderDetailPayinfoWidget.getSutitleLayout()
+                                .getTitleTV().setText(R.string.already_pay);
+                        orderDetailPayinfoWidget.getSutitleLayout()
+                                .setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                PaymentResultActivity.start(OrderDetailActivity.this);
+                            }
+                        });
+                    } else {
+                        PaymentOrderCommand command = new PaymentOrderCommand();
+                        command.setSource(PaymentOrderCommand.SOURCE_ORDER);
+                        command.setSourceValue(order.getOrder().getOrderid());
+                        command.setInstId(order.getOrder().getProvideinstid());
+                        PaymentOrderActivity.start(OrderDetailActivity.this, command);
+                    }
+                }
+            });
         } else {
             orderDetailPayinfoWidget.setVisibility(View.GONE);
         }

@@ -67,6 +67,7 @@
         <action>com.yun9.ws.biz.service.AddMsgCardCommentService</action>
         <type>yun9</type>
     </repository>
+
     <!--消息卡片转发-->
     <repository>
         <name>AddMsgCardShare</name>
@@ -74,5 +75,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询话题 -->
+    <repository>
+        <name>QueryTopicsService</name>
+        <action>com.yun9.ws.biz.service.QueryTopicsService</action>
+        <output>
+            <classname>com.yun9.wservice.model.TopicBean</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 
 </repositorys>

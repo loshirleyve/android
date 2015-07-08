@@ -27,8 +27,6 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
 
     private JupiterRowStyleSutitleLayout sutitleLayout;
 
-    private Order order;
-
     public OrderDetailPayinfoWidget(Context context) {
         super(context);
     }
@@ -53,20 +51,7 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
     }
 
     public void buildWithData(Order order) {
-        this.order = order;
-        if (order.getOrder().getPaystate() > 0) {
-            sutitleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
-            sutitleLayout.getHotNitoceTV().setText("查看付款详情");
-            sutitleLayout.getHotNitoceTV().getPaint().setFakeBoldText(false);
-            sutitleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.black));
-            sutitleLayout.getTitleTV().setText(R.string.already_pay);
-            sutitleLayout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PaymentResultActivity.start(OrderDetailPayinfoWidget.this.mContext);
-                }
-            });
-        }
+
     }
 
     private void buildView() {
@@ -78,18 +63,9 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
         sutitleLayout.getTitleTV().setTextSize(14);
         sutitleLayout.getSutitleTv().setTextColor(getResources().getColor(R.color.purple_font));
         sutitleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.red));
-            sutitleLayout.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (order != null) {
-                        PaymentOrderCommand command = new PaymentOrderCommand();
-                        command.setSource(PaymentOrderCommand.SOURCE_ORDER);
-                        command.setSourceValue(order.getOrder().getOrderid());
-                        command.setInstId(order.getOrder().getProvideinstid());
-                        PaymentOrderActivity.start(OrderDetailPayinfoWidget.this.getContext(), command);
-                    }
-                }
-            });
     }
 
+    public JupiterRowStyleSutitleLayout getSutitleLayout() {
+        return sutitleLayout;
+    }
 }

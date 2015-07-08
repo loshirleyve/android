@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -84,6 +85,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     }
 
     private void submitOrderAndPay() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this.mContext, null, getResources().getString(R.string.app_wating), true);
         SessionManager sessionManager = JupiterApplication.getBeanManager().get(SessionManager.class);
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
         Resource resource = resourceFactory.create("AddOrderByOrderViewService");
@@ -93,7 +95,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
             @Override
             public void onSuccess(Response response) {
                 List<SimpleIdReturn> orderIds= (List<SimpleIdReturn>) response.getPayload();
-                payNow(orderIds.get(0).getId());
+                showOrder(orderIds.get(0).getId());
             }
 
             @Override
@@ -103,18 +105,13 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
 
-    private void payNow(String orderId) {
-        PaymentOrderCommand command = new PaymentOrderCommand();
-        command.setSource(PaymentOrderCommand.SOURCE_ORDER);
-        command.setSourceValue(orderId);
-        command.setInstId(order.getProvideinstid());
-        ((Activity)(this.getContext())).finish();
-        PaymentOrderActivity.start(this.getContext(), command);
+    private void showOrder(String orderId) {
+        OrderDetailActivity.start(this.mContext,orderId);
     }
 
     private List<String> getProductIds() {
