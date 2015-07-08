@@ -26,6 +26,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.handler.MessageReceiverHandler;
 import com.yun9.wservice.model.PushMessageBean;
 import com.yun9.wservice.support.MessageReceiverFactory;
+import com.yun9.wservice.task.UpdateProgramAsyncTask;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -117,9 +118,15 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 0) {
-                    String version = AppUtil.getVersion(MainActivity.this);
-                    int versionCode = AppUtil.getVersionCode(MainActivity.this);
-                    logger.d("verison:" + version + ";Version Code:" + versionCode);
+                    final UpdateProgramAsyncTask updateProgramAsyncTask = new UpdateProgramAsyncTask(MainActivity.this);
+                    updateProgramAsyncTask.checkUpdate(new UpdateProgramAsyncTask.OnUpdateProgramCallback() {
+                        @Override
+                        public void update(boolean update) {
+                            if (update) {
+                                updateProgramAsyncTask.execute();
+                            }
+                        }
+                    });
                 }
             }
         };

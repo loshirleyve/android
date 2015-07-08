@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -108,5 +110,18 @@ public class AppUtil {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    /**
+     * 安装APK
+     * @param apk
+     */
+    public static void installAPK(File apk, Context context) {
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.setDataAndType(Uri.fromFile(apk), "application/vnd.android.package-archive");
+        context.startActivity(intent);
+
     }
 }
