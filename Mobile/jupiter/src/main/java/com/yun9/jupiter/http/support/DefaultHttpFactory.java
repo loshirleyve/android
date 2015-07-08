@@ -235,11 +235,11 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 .header(RequestParams.DEVICESERIAL,
                         deviceManager.getDevice().getSerial());
 
-        if (AssertValue.isNotNullAndNotEmpty(sessionManager.getInst().getId())) {
+        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNullAndNotEmpty(sessionManager.getInst().getId())) {
             requestParams.header(RequestParams.INSTID, sessionManager.getInst().getId());
         }
 
-        if (AssertValue.isNotNullAndNotEmpty(sessionManager.getUser().getId())) {
+        if (AssertValue.isNotNull(sessionManager.getUser()) && AssertValue.isNotNullAndNotEmpty(sessionManager.getUser().getId())) {
             requestParams.header(RequestParams.USERID, sessionManager.getUser().getId());
         }
 
