@@ -23,6 +23,7 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditableView;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
@@ -48,10 +49,10 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     private JupiterTitleBarLayout titleBarLayout;
 
     @ViewInject(id = R.id.add_use_org_to)
-    private JupiterRowStyleTitleLayout adduseorg;
+    private JupiterRowStyleSutitleLayout adduseorg;
 
     @ViewInject(id = R.id.add_use_phonebook_to)
-    private JupiterRowStyleTitleLayout addusephonebook;
+    private JupiterRowStyleSutitleLayout addusephonebook;
 
     @ViewInject(id = R.id.orgname)
     private TextView orgname;
@@ -65,6 +66,10 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     private List<User> users = new ArrayList<User>();
 
     private OrgChooseAddUserCommand command;
+
+    private String userid;
+
+    private String instid;
 
 
     public static void start(Activity activity, OrgChooseAddUserCommand command) {
@@ -86,6 +91,20 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (OrgChooseAddUserCommand) this.getIntent().getSerializableExtra("command");
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
+            userid = command.getUserid();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
+            instid = command.getInstid();
+        }
+        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+            userid = sessionManager.getUser().getId();
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+            instid = sessionManager.getInst().getId();
+        }
         initView();
 
     }
@@ -97,6 +116,8 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
+        adduseorg.getSutitleTv().setText("");
+        addusephonebook.getSutitleTv().setText("");
         titleBarLayout.getTitleRight().setOnClickListener(onAddUserOrgClickListener);
         adduseorg.setOnClickListener(onChooseAddUserOrgClickListener);
         addusephonebook.setOnClickListener(onChooseAddUserPhoneClickListener);
@@ -118,7 +139,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     private View.OnClickListener onChooseAddUserPhoneClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgPhoneUserActivity.start(OrgChooseAddUserActivity.this, new OrgPhoneUserCommand());
+            OrgPhoneUserActivity.start(OrgChooseAddUserActivity.this, new OrgPhoneUserCommand().setOrgid(command.getOrgid()));
 
         }
     };
@@ -130,6 +151,15 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         users.clear();
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
+            if (AssertValue.isNotNullAndNotEmpty(users)) {
+                String userstring="";
+                for (User user : users) {
+                    userstring+=user.getName()+",";
+                }
+                userstring.substring(0,userstring.length());
+              String m=userstring.length()>15?userstring.substring(0,15):userstring;
+                adduseorg.getSutitleTv().setText(userstring);
+            }
         }
     }
 
@@ -139,12 +169,13 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNullAndNotEmpty(users)) {
                 Resource resource = resourceFactory.create("AddOrgCard");
                 resource.param("orgid", command.getOrgid());
-                resource.param("userid", sessionManager.getUser().getId());
+                resource.param("userid", userid);
                 resource.param("addUserIdList", getSelectUserIds(users));
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override
                     public void onSuccess(Response response) {
                         Toast.makeText(OrgChooseAddUserActivity.this, R.string.add_orguser_success_tip, Toast.LENGTH_SHORT).show();
+                        setResult(OrgChooseAddUserCommand.RESULT_CODE_OK);
                         finish();
                     }
 
@@ -164,7 +195,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     };
 
 
-    public List<String> getSelectUserIds(List<User> users) {
+    private List<String> getSelectUserIds(List<User> users) {
         List<String> userids = new ArrayList<String>();
         if (AssertValue.isNotNullAndNotEmpty(users)) {
             for (User user : users) {
@@ -177,6 +208,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            setResult(OrgChooseAddUserCommand.RESULT_CODE_CANCEL);
             finish();
         }
     };

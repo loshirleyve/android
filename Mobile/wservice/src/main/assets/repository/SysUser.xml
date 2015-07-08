@@ -65,4 +65,27 @@
         <type>yun9</type>
     </repository>
 
+    <!--通过手机号码邀请用户注册 -->
+    <repository>
+        <name>InviteUser</name>
+        <action>com.yun9.sys.user.service.InviteUserService</action>
+        <output>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!--验证用户是否已经注册了 -->
+    <repository>
+        <name>QueryUsersByPhones</name>
+        <action>com.yun9.sys.user.service.QueryUsersByPhonesService</action>
+        <output>
+            <classname>com.yun9.jupiter.model.User</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+
+
 </repositorys>

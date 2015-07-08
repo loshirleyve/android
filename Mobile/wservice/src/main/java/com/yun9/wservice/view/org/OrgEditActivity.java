@@ -37,6 +37,8 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrgDetailInfoBean;
 
+import junit.framework.Assert;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,13 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
 
+    private String userid;
+
+    private String instid;
+
     private OrgDetailInfoBean bean;
+
+    private int requestcode;
 
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
@@ -99,6 +107,21 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (OrgEditCommand) this.getIntent().getSerializableExtra("command");
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
+            userid = command.getUserid();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
+            instid = command.getInstid();
+        }
+        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+            userid = sessionManager.getUser().getId();
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+            instid = sessionManager.getInst().getId();
+        }
+        initView();
     }
 
     //初始化控件，判断是否存在orgid有的话就查询出org的信息，没有就是新增组织的页面
@@ -139,11 +162,14 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         setupEditIco();
     }
 
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        // 加载数据，绘制界面
-        initView();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == OrgChooseAddUserCommand.REQUEST_CODE && resultCode == OrgChooseAddUserCommand.RESULT_CODE_OK) || (requestCode == OrgEditCommand.REQUEST_CODE && resultCode == OrgEditCommand.RESULT_CODE_OK)) {
+            requestcode = OrgEditCommand.RESULT_CODE_OK;
+            initView();
+        }
     }
 
     //界面的+图片可以添加用户和组织的控件
@@ -218,8 +244,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 final JupiterTextIco useritem = new JupiterTextIco(getApplicationContext());
                 useritem.setTitle(user.getName());
                 useritem.hideCorner();
+                useritem.setImage("drawable://" + R.drawable.user_head);
                 CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
-                if (AssertValue.isNotNull(cacheUser)) {
+                if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
                     useritem.setImage(cacheUser.getUrl());
                 }
                 useritem.setTag(user.getId());
@@ -240,7 +267,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 final JupiterTextIcoWithoutCorner orgitem = new JupiterTextIcoWithoutCorner(getApplicationContext());
                 orgitem.setTitle(org.getName());
                 orgitem.hideCorner();
-                orgitem.setImage("24130000000032768");
+                orgitem.setImage("drawable://" + R.drawable.user_group);
                 orgitem.setTag(org.getId());
                 orgitemList.add(orgitem);
                 orgadapter.notifyDataSetChanged();
@@ -251,8 +278,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     //添加组织的方法
     private void addOrg(String orgname) {
         Resource resource = resourceFactory.create("AddOrg");
-        resource.param("instid", sessionManager.getInst().getId());
-        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("instid", instid);
+        resource.param("userid", userid);
         resource.param("name", orgname);
         resource.param("type", command.getDimType());
         resource.param("parentid", command.getParentorgid() == null ? "0" : command.getParentorgid());
@@ -261,6 +288,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 Org org = (Org) response.getPayload();
                 command = new OrgEditCommand().setOrgid(org.getId());
+                setResult(OrgEditCommand.RESULT_CODE_OK);
                 initView();
                 Toast.makeText(OrgEditActivity.this, R.string.add_org_success_tip, Toast.LENGTH_SHORT).show();
             }
@@ -281,7 +309,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     private void updateOrgName(String orgname) {
         Resource resource = resourceFactory.create("UpdateOrg");
         resource.param("orgid", command.getOrgid());
-        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("userid", userid);
         resource.param("name", orgname);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
@@ -304,10 +332,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //删除用户的一项的方法
     private void deleteUserItem(JupiterEditableView item) {
-        String userid = (String) item.getTag();
+        String resourceid = (String) item.getTag();
         Resource resource = resourceFactory.create("RemoveOrgCardByUserId");
-        resource.param("userid", sessionManager.getUser().getId());
-        resource.param("resourceid", userid);
+        resource.param("userid", userid);
+        resource.param("resourceid", resourceid);
         resource.param("orgid", command.getOrgid());
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
@@ -373,6 +401,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (requestcode == OrgEditCommand.RESULT_CODE_OK)
+                setResult(requestcode);
             finish();
         }
     };
