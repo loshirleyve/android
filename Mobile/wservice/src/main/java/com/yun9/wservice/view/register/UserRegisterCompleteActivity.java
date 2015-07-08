@@ -64,7 +64,7 @@ public class UserRegisterCompleteActivity extends JupiterFragmentActivity {
             if (!AssertValue.isNotNull(loginCommand)) {
                 loginCommand = new LoginCommand();
             }
-            loginCommand.setUserno(command);
+            loginCommand.setUserno(command).setNewRegisterUser(true);
             Intent i = new Intent(UserRegisterCompleteActivity.this, LoginActivity.class);
             i.putExtra("command", loginCommand);
             startActivity(i);

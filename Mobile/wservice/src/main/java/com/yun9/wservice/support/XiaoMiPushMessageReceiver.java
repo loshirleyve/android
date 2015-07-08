@@ -76,6 +76,7 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
                 mRegId = cmdArg1;
                 logger.d("mi push regid:" + mRegId);
                 AppCache.getInstance().put("com.yun9.wservice.push.regid", mRegId);
+                logger.d("-----------------mi push regid:" + mRegId);
             }
         }
 
