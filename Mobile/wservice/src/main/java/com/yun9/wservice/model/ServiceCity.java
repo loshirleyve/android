@@ -18,6 +18,8 @@ public class ServiceCity implements java.io.Serializable {
     private int disabled;
     private String remark;
 
+    private boolean selected = false;
+
     public String getId() {
         return id;
     }
@@ -120,5 +122,13 @@ public class ServiceCity implements java.io.Serializable {
 
     public void setCityno(String cityno) {
         this.cityno = cityno;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

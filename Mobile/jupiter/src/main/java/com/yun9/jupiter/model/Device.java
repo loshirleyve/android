@@ -14,6 +14,7 @@ public class Device implements java.io.Serializable {
 	private String board;
 	private String brand;
 	private String fingerprint;
+	private String pushRegid;
 	private Map<String, String> others;
 
 	public String getId() {
@@ -80,4 +81,11 @@ public class Device implements java.io.Serializable {
 		this.others = others;
 	}
 
+	public String getPushRegid() {
+		return pushRegid;
+	}
+
+	public void setPushRegid(String pushRegid) {
+		this.pushRegid = pushRegid;
+	}
 }

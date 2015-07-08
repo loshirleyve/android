@@ -2,22 +2,17 @@ package com.yun9.wservice.support;
 
 import android.content.Context;
 
-import com.google.gson.JsonObject;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
 import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
+import com.yun9.jupiter.app.JupiterApplication;
+import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.util.AppUtil;
-import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.IntentIntegrator;
-import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.wservice.MainApplication;
-import com.yun9.wservice.model.PushMessageBean;
-import com.yun9.wservice.view.main.MainActivity;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,6 +66,8 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mRegId = cmdArg1;
                 logger.d("mi push regid:" + mRegId);
+                DeviceManager deviceManager = JupiterApplication.getBeanManager().get(DeviceManager.class);
+                deviceManager.getDevice().setPushRegid(mRegId);
             }
         }
 

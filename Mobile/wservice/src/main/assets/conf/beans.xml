@@ -18,10 +18,6 @@
     <!--
 	<bean class="com.yun9.mobile.framework.support.DefaultAuthManager"></bean>
 
-
-
-
-
 	<bean class="com.yun9.mobile.framework.support.BaiduLocationFactory"></bean>
 	<bean class="com.yun9.mobile.framework.support.BaiduLocation"></bean>
 

@@ -1,6 +1,7 @@
 package com.yun9.jupiter.model;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.FileUtil;
@@ -57,6 +58,7 @@ public class FileBean implements java.io.Serializable {
     private String size;
     private String level = FILE_LEVEL_USER;
     private String storageType = FILE_STORAGE_TYPE_LOCAL;
+    private String url;
     private int icoResource = R.drawable.small_ico_unkwon;
     private boolean selected = false;
     private boolean camera;
@@ -74,7 +76,7 @@ public class FileBean implements java.io.Serializable {
     }
 
     public FileBean(File file) {
-        filePath = "file://" +file.getPath();
+        filePath = "file://" + file.getPath();
         absolutePath = file.getAbsolutePath();
         thumbnailPath = "file://" + file.getPath();
         name = FileUtil.getFileNameNoEx(file);
@@ -114,10 +116,15 @@ public class FileBean implements java.io.Serializable {
         name = sysFileBean.getName();
         extensionName = sysFileBean.getType();
         dateAdded = DateUtil.getDateStr(sysFileBean.getCreatedate());
-        type = FILE_STORAGE_TYPE_YUN;
+        type = sysFileBean.getFiletype();
         storageType = FileBean.FILE_STORAGE_TYPE_YUN;
         size = "";
         id = sysFileBean.getId();
+        CacheFile cacheFile = FileCache.getInstance().getFile(sysFileBean.getId());
+        if (AssertValue.isNotNull(cacheFile)){
+            this.setUrl(cacheFile.getUrl());
+            this.setSize(FileUtil.getFileSize(cacheFile.getFilesize()));
+        }
         initIcoResource();
     }
 
@@ -303,5 +310,13 @@ public class FileBean implements java.io.Serializable {
 
     public void setCamera(boolean camera) {
         this.camera = camera;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

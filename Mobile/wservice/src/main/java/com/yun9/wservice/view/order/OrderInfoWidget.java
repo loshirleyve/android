@@ -19,13 +19,13 @@ import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.cache.ClientProxyCache;
-import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderCartInfo;
 import com.yun9.wservice.model.SimpleIdReturn;
 import com.yun9.wservice.view.payment.PaymentOrderActivity;
 import com.yun9.wservice.view.payment.PaymentOrderCommand;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -86,14 +86,8 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     private void submitOrderAndPay() {
         SessionManager sessionManager = JupiterApplication.getBeanManager().get(SessionManager.class);
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
-        Resource resource = resourceFactory.create("AddOrderByProductIdsService");
-        resource.param("userid",sessionManager.getUser().getId());
-        resource.param("buyerinstid",sessionManager.getInst().getId());
-        resource.param("productids", getProductIds());
-        if (ClientProxyCache.getInstance().isProxy()){
-            resource.param("salemanid", sessionManager.getUser().getId());
-            resource.param("userid",ClientProxyCache.getInstance().getProxy().getUserId());
-        }
+        Resource resource = resourceFactory.create("AddOrderByOrderViewService");
+        resource.param("orderViews", Collections.singletonList(this.order));
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -117,7 +111,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
         PaymentOrderCommand command = new PaymentOrderCommand();
         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
         command.setSourceValue(orderId);
-        command.setInstId(order.getProvideinstinfo().getId());
+        command.setInstId(order.getProvideinstid());
         ((Activity)(this.getContext())).finish();
         PaymentOrderActivity.start(this.getContext(), command);
     }
@@ -125,17 +119,17 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     private List<String> getProductIds() {
         List<String> ids = new ArrayList<>();
         if (order != null
-                && order.getProductinfos() != null){
-            for (OrderCartInfo.OrderCartProduct product : order.getProductinfos()){
-                ids.add(product.getId());
+                && order.getOrderproducts() != null){
+            for (OrderCartInfo.OrderProduct product : order.getOrderproducts()){
+                ids.add(product.getProductid());
             }
         }
         return ids;
     }
 
     private void reload() {
-        orderFeeTV.setText(order.getTotal()+"元");
-        providerWidget.buildWithData(order.getProvideinstinfo().getId());
+        orderFeeTV.setText(order.getOrderamount()+"元");
+        providerWidget.buildWithData(order.getProvideinstid());
         productLV.setAdapter(adapter);
     }
 
@@ -143,8 +137,8 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
         @Override
         public int getCount() {
             if (order != null
-                    && order.getProductinfos() != null){
-                return order.getProductinfos().size();
+                    && order.getOrderproducts() != null){
+                return order.getOrderproducts().size();
             }
             return 0;
         }
@@ -164,7 +158,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
             OrderProductWidget widget;
             if (convertView == null) {
                 widget = new OrderProductWidget(OrderInfoWidget.this.getContext());
-                widget.buildWithData(order.getProductinfos().get(position));
+                widget.buildWithData(order.getOrderproducts().get(position));
                 convertView = widget;
             } else {
                 widget = (OrderProductWidget) convertView;

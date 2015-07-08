@@ -15,6 +15,7 @@ import com.yun9.jupiter.image.ImageBrowerCommand;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.SysFileBean;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -109,7 +110,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
                 if (AssertValue.isNotNullAndNotEmpty(mFileBeans)) {
                     logger.d("达到加载更多条件执行加载");
                     FileBean fileBean = mFileBeans.get(mFileBeans.size() - 1);
-                    refresh(null, fileBean.getId());
+                    refresh(fileBean.getId(), Page.PAGE_DIR_PUSH);
                 } else {
                     imageGV.onFinishLoading(true, null);
                 }
@@ -129,9 +130,9 @@ public class YunImageActivity extends JupiterFragmentActivity {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 if (AssertValue.isNotNullAndNotEmpty(mFileBeans)) {
                     FileBean fileBean = mFileBeans.get(0);
-                    refresh(fileBean.getId(), null);
+                    refresh(fileBean.getId(), Page.PAGE_DIR_PULL);
                 } else {
-                    refresh(null, null);
+                    refresh(null, Page.PAGE_DIR_PULL);
                 }
             }
         });
@@ -144,29 +145,21 @@ public class YunImageActivity extends JupiterFragmentActivity {
         }, 50);
     }
 
-    private void refresh(String lastupid, String lastdownid) {
+    private void refresh(String rowid, final String dir) {
         final Resource resource = resourceFactory.create("QueryFile");
 
         resource.param("userid", sessionManager.getUser().getId());
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("level", "user");
         resource.param("filetype", "image");
-        resource.header("limitrow", "18");
-
-        if (AssertValue.isNotNullAndNotEmpty(lastupid)) {
-            resource.pullUp(lastupid);
-        }
-
-        if (AssertValue.isNotNullAndNotEmpty(lastdownid) && !AssertValue.isNotNullAndNotEmpty(lastupid)) {
-            resource.pullDown(lastdownid);
-        }
+        resource.page().setRowid(rowid).setDir(dir);
 
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 List<SysFileBean> sysFileBeans = (List<SysFileBean>) response.getPayload();
 
-                if (AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Resource.PULL_TYPE.UP.equals(resource.getPullType())) {
+                if (AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Page.PAGE_DIR_PULL.equals(dir)) {
                     for (int i = sysFileBeans.size(); i > 0; i--) {
                         FileBean fileBean = new FileBean(sysFileBeans.get(i - 1));
 
@@ -185,7 +178,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
                     gridViewAdapter.notifyDataSetChanged();
                 }
 
-                if (AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
+                if (AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     for (SysFileBean sysFileBean : sysFileBeans) {
                         FileBean fileBean = new FileBean(sysFileBean);
 
@@ -203,7 +196,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
                     gridViewAdapter.notifyDataSetChanged();
                 }
 
-                if (!AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Resource.PULL_TYPE.DOWN.equals(resource.getPullType())) {
+                if (!AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     logger.d("加载更多没有数据。关闭加载更多。");
                     imageGV.onFinishLoading(false, null);
                 }

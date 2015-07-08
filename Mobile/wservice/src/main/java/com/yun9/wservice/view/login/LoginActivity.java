@@ -92,10 +92,16 @@ public class LoginActivity extends JupiterFragmentActivity {
         this.loginButton.setOnClickListener(loginButtonOnClickListener);
         this.passwordET.getTextET().setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        if (AssertValue.isNotNull(command) && command.isDemo()) {
-            this.userNoET.getTextET().setText("7959598");
-            this.passwordET.getTextET().setText("linux12");
-            this.login();
+        if (AssertValue.isNotNull(command)) {
+            if (command.isDemo()) {
+                this.userNoET.getTextET().setText("7959598");
+                this.passwordET.getTextET().setText("123456");
+                this.login();
+            }
+
+            if (AssertValue.isNotNullAndNotEmpty(command.getUserno())) {
+                this.userNoET.getTextET().setText(command.getUserno());
+            }
         }
     }
 

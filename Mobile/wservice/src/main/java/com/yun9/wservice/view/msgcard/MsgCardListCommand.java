@@ -14,7 +14,6 @@ public class MsgCardListCommand extends JupiterCommand {
     private String type;
     private String userid;
     private String fromuserid;
-
     private String title;
 
     public String getType() {

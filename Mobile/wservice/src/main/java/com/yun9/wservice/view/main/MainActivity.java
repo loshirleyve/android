@@ -7,24 +7,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.handler.MessageReceiverHandler;
-import com.yun9.wservice.model.PushMessageBean;
 import com.yun9.wservice.support.MessageReceiverFactory;
+import com.yun9.wservice.task.UpdateProgramAsyncTask;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -111,6 +107,25 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
         };
 
         handler.sendEmptyMessageDelayed(0, 100);
+
+        Handler checkVersionHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 0) {
+                    final UpdateProgramAsyncTask updateProgramAsyncTask = new UpdateProgramAsyncTask(MainActivity.this);
+                    updateProgramAsyncTask.checkUpdate(new UpdateProgramAsyncTask.OnUpdateProgramCallback() {
+                        @Override
+                        public void update(boolean update) {
+                            if (update) {
+                                updateProgramAsyncTask.execute();
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+        checkVersionHandler.sendEmptyMessageDelayed(0, 5000);
     }
 
     @Override

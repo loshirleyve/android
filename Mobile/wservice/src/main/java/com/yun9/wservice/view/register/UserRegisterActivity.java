@@ -63,21 +63,21 @@ public class UserRegisterActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = imageEditLayout.getTextET().getText().toString();
+                final String email = imageEditLayout.getTextET().getText().toString();
 
                 if (AssertValue.isNotNullAndNotEmpty(email) && isEmail(email)) {
                     String tipsText = getResources().getString(R.string.app_wating);
 
                     final ProgressDialog registerDialog = ProgressDialog.show(UserRegisterActivity.this, null, tipsText, true);
 
-                    Resource resource = resourceFactory.create("AddUserAndNotice");
-                    resource.param("no", email).param("name", email);
+                    Resource resource = resourceFactory.create("RegisteUser");
+                    resource.param("userno", email).param("email", email).param("state", "unactivated");
 
                     resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                         @Override
                         public void onSuccess(Response response) {
                             UserRegisterActivity.this.finish();
-                            UserRegisterCompleteActivity.start(UserRegisterActivity.this);
+                            UserRegisterCompleteActivity.start(UserRegisterActivity.this, email);
                         }
 
                         @Override

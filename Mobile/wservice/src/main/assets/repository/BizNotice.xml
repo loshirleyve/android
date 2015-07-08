@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+    <!--推送消息设备绑定-->
+    <repository>
+        <name>NoticeUserPushBind</name>
+        <action>com.yun9.kit.notice.service.NoticeUserPushBindService</action>
+        <type>yun9</type>
+    </repository>
+
+    <!--推送消息设备解绑-->
+    <repository>
+        <name>NoticeUserPushUnbind</name>
+        <action>com.yun9.kit.notice.service.NoticeUserPushUnbindService</action>
+        <type>yun9</type>
+    </repository>
+</repositorys>

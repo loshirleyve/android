@@ -208,6 +208,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
 
         requestParams.setAction(resource.getRepository().getAction());
         requestParams.setToken(resource.getRepository().getToken());
+        requestParams.setPage(resource.page());
 
         if (AssertValue.isNotNull(resource.getRepository().getParams())) {
             for (RepositoryParam repositoryParam : resource.getRepository()
@@ -224,6 +225,7 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
             }
         }
 
+
         // 初始化heander信息,当前用户，当前机构，设备类型
         requestParams
                 .header(RequestParams.DEVICEID,
@@ -233,11 +235,11 @@ public class DefaultHttpFactory implements HttpFactory, Bean, Initialization {
                 .header(RequestParams.DEVICESERIAL,
                         deviceManager.getDevice().getSerial());
 
-        if (AssertValue.isNotNullAndNotEmpty(sessionManager.getInst().getId())) {
+        if (AssertValue.isNotNull(sessionManager.getInst()) && AssertValue.isNotNullAndNotEmpty(sessionManager.getInst().getId())) {
             requestParams.header(RequestParams.INSTID, sessionManager.getInst().getId());
         }
 
-        if (AssertValue.isNotNullAndNotEmpty(sessionManager.getUser().getId())) {
+        if (AssertValue.isNotNull(sessionManager.getUser()) && AssertValue.isNotNullAndNotEmpty(sessionManager.getUser().getId())) {
             requestParams.header(RequestParams.USERID, sessionManager.getUser().getId());
         }
 

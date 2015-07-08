@@ -46,11 +46,24 @@
         </output>
         <type>yun9</type>
     </repository>
+<!--
 
-    <!-- 注册新用户并发送通知 -->
+    &lt;!&ndash; 注册新用户并发送通知 &ndash;&gt;
     <repository>
         <name>AddUserAndNotice</name>
         <action>com.yun9.ws.biz.service.AddUserAndNoticeService</action>
+        <output>
+            <classname>com.yun9.jupiter.model.User</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+-->
+
+    <!--注册新用户并发送通知-->
+    <repository>
+        <name>RegisteUser</name>
+        <action>com.yun9.sys.user.service.RegisteUserService</action>
         <output>
             <classname>com.yun9.jupiter.model.User</classname>
             <type>object</type>

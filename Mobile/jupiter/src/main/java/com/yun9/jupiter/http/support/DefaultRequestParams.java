@@ -1,6 +1,7 @@
 package com.yun9.jupiter.http.support;
 
 import com.yun9.jupiter.http.RequestParams;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.util.AssertValue;
 
 import java.util.HashMap;
@@ -17,6 +18,8 @@ public class DefaultRequestParams implements RequestParams {
 	private Map<String, Object> header;
 
 	private Map<String, Object> data = new HashMap<>();
+
+	private Page page;
 
 	public Map<String, Object> getHeader() {
 		return header;
@@ -50,6 +53,7 @@ public class DefaultRequestParams implements RequestParams {
 		this.action = action;
 	}
 
+
 	public RequestParams data(String key, Object value) {
 		if (!AssertValue.isNotNull(data)) {
 			this.data = new HashMap<String, Object>();
@@ -66,4 +70,12 @@ public class DefaultRequestParams implements RequestParams {
 		return this;
 	}
 
+
+	public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
 }
