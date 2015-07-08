@@ -97,8 +97,10 @@ public class LoginActivity extends JupiterFragmentActivity {
                 this.userNoET.getTextET().setText("7959598");
                 this.passwordET.getTextET().setText("123456");
                 this.login();
-            }else {
-                this.userNoET.getTextET().setText(command.getUserno().toString());
+            }
+
+            if (AssertValue.isNotNullAndNotEmpty(command.getUserno())) {
+                this.userNoET.getTextET().setText(command.getUserno());
             }
         }
     }
