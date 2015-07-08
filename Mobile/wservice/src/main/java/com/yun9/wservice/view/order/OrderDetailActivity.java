@@ -19,6 +19,8 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
+import com.yun9.wservice.view.msgcard.MsgCardDetailActivity;
+import com.yun9.wservice.view.msgcard.MsgCardDetailCommand;
 
 /**
  * Created by huangbinglong on 15/6/15.
@@ -154,6 +156,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNull(order.getOrder())
                 && AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviseruserid())){
             orderDetailAdvisorWidget.buildWitdhData(order);
+            orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
         } else {
             orderDetailAdvisorWidget.setVisibility(View.GONE);
         }
@@ -171,4 +174,12 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             orderDetailWorkOrderListWidget.buildWithData(order);
         }
     }
+
+    private View.OnClickListener onContactUsClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            MsgCardDetailActivity.start(OrderDetailActivity.this,
+                    new MsgCardDetailCommand().setOrderId(orderId));
+        }
+    };
 }

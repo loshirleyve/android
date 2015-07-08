@@ -40,6 +40,17 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 获取消息卡片详细信息基于订单ID -->
+    <repository>
+        <name>QueryMsgCardBySourceService</name>
+        <action>com.yun9.ws.biz.service.QueryMsgCardBySourceService</action>
+        <output>
+            <classname>com.yun9.wservice.model.MsgCard</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
     <!--点赞消息卡片服务-->
     <repository>
         <name>AddPraiseLikeByMsgCardId</name>

@@ -31,6 +31,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
@@ -171,7 +172,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         toolbarTabWidget.getForwardLayout().setOnClickListener(onForwardClickListener);
         toolbarTabWidget.getPraiseLayout().setOnClickListener(new OnPraiseClickListener(toolbarTabWidget));
 
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId()) && AssertValue.isNotNullAndNotEmpty(currUserid)) {
+        if (AssertValue.isNotNull(command)
+                && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())
+                && AssertValue.isNotNullAndNotEmpty(currUserid)) {
             Handler handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg) {
@@ -180,7 +183,44 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 }
             };
             handler.sendEmptyMessageDelayed(0, 500);
+        } else if (AssertValue.isNotNull(command)
+                && AssertValue.isNotNullAndNotEmpty(command.getOrderId())
+                && AssertValue.isNotNullAndNotEmpty(currUserid)) {
+                    refreshByOrderId(command.getOrderId(),currUserid);
         }
+    }
+
+    private void refreshByOrderId(final String orderId, String userid) {
+        Resource resource = resourceFactory.create("QueryMsgCardBySourceService");
+        resource.param("source", SourceType.TYPE_ORDER)
+                .param("sourceid", orderId)
+                .param("userid",userid);
+        final ProgressDialog progressDialog = ProgressDialog.show(MsgCardDetailActivity.this, null, getResources().getString(R.string.app_wating), true);
+
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                mMsgCard = (MsgCard) response.getPayload();
+                if (AssertValue.isNotNull(mMsgCard)) {
+                    if(mMsgCard.isMypraise()){
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+                    }else {
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+                    }
+                    refreshComplete();
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                progressDialog.dismiss();
+            }
+        });
     }
 
     private void refresh(final String msgCardId, String userid) {

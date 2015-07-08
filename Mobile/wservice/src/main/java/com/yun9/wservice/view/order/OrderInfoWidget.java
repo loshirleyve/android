@@ -87,6 +87,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
         SessionManager sessionManager = JupiterApplication.getBeanManager().get(SessionManager.class);
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
         Resource resource = resourceFactory.create("AddOrderByOrderViewService");
+        this.order.setCreateby(sessionManager.getUser().getId());
         resource.param("orderViews", Collections.singletonList(this.order));
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
