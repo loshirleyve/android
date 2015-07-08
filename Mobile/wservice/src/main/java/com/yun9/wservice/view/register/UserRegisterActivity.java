@@ -63,7 +63,7 @@ public class UserRegisterActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = imageEditLayout.getTextET().getText().toString();
+                final String email = imageEditLayout.getTextET().getText().toString();
 
                 if (AssertValue.isNotNullAndNotEmpty(email) && isEmail(email)) {
                     String tipsText = getResources().getString(R.string.app_wating);
@@ -77,7 +77,7 @@ public class UserRegisterActivity extends JupiterFragmentActivity {
                         @Override
                         public void onSuccess(Response response) {
                             UserRegisterActivity.this.finish();
-                            UserRegisterCompleteActivity.start(UserRegisterActivity.this);
+                            UserRegisterCompleteActivity.start(UserRegisterActivity.this, email);
                         }
 
                         @Override

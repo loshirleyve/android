@@ -7,6 +7,16 @@ import com.yun9.jupiter.command.JupiterCommand;
  */
 public class LoginCommand extends JupiterCommand{
     private boolean demo;
+    private String userno;
+
+    public String getUserno() {
+        return userno;
+    }
+
+    public LoginCommand setUserno(String userno) {
+        this.userno = userno;
+        return this;
+    }
 
     public boolean isDemo() {
         return demo;
