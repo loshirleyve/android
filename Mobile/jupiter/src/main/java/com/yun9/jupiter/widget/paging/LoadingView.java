@@ -1,4 +1,4 @@
-package com.yun9.jupiter.widget.paging.gridview;
+package com.yun9.jupiter.widget.paging;
 
 import android.content.Context;
 import android.util.AttributeSet;

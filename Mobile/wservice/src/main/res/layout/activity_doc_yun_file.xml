@@ -33,14 +33,14 @@
             cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
             cube_ptr:ptr_resistance="1.7">
 
-            <com.yun9.jupiter.widget.JupiterPagingListView
+            <com.yun9.jupiter.widget.paging.listview.PagingListView
                 android:id="@+id/file_lv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/buttonbar"
                 android:layout_below="@+id/titlebar">
 
-            </com.yun9.jupiter.widget.JupiterPagingListView>
+            </com.yun9.jupiter.widget.paging.listview.PagingListView>
 
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 

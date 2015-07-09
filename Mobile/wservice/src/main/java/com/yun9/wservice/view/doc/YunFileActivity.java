@@ -20,7 +20,7 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
-import com.yun9.jupiter.widget.JupiterPagingListView;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -50,7 +50,7 @@ public class YunFileActivity extends JupiterFragmentActivity {
     private PtrClassicFrameLayout mFrame;
 
     @ViewInject(id = R.id.file_lv)
-    private JupiterPagingListView fileLV;
+    private PagingListView fileLV;
 
     @ViewInject(id = R.id.titlebar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -112,18 +112,17 @@ public class YunFileActivity extends JupiterFragmentActivity {
             }
         });
 
-        fileLV.setPagingableListener(new JupiterPagingListView.Pagingable() {
+        fileLV.setPagingableListener(new PagingListView.Pagingable() {
             @Override
             public void onLoadMoreItems() {
                 if (AssertValue.isNotNullAndNotEmpty(mFileBeans)) {
                     FileBean fileBean = mFileBeans.get(mFileBeans.size() - 1);
                     refresh(fileBean.getId(), Page.PAGE_DIR_PUSH);
                 } else {
-                    fileLV.loadComplete();
+                    fileLV.onFinishLoading(true);
                 }
             }
         });
-        fileLV.setHasMoreItems(true);
 
         mFrame.postDelayed(new Runnable() {
             @Override
@@ -141,6 +140,7 @@ public class YunFileActivity extends JupiterFragmentActivity {
         resource.param("level", "user");
         resource.param("filetype", "doc");
         resource.page().setRowid(rowid);
+        resource.page().setDir(dir);
 
 
         resource.invok(new AsyncHttpResponseCallback() {
@@ -164,7 +164,7 @@ public class YunFileActivity extends JupiterFragmentActivity {
 
                 if (!AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
-                    fileLV.setHasMoreItems(false);
+                    fileLV.onFinishLoading(false);
                 }
 
                 fileListViewAdapter.notifyDataSetChanged();
@@ -178,7 +178,7 @@ public class YunFileActivity extends JupiterFragmentActivity {
             @Override
             public void onFinally(Response response) {
                 mFrame.refreshComplete();
-                fileLV.loadComplete();
+                fileLV.onFinishLoading(true);
             }
         });
     }

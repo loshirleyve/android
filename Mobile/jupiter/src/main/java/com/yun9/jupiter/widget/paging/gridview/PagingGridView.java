@@ -3,11 +3,9 @@ package com.yun9.jupiter.widget.paging.gridview;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.AbsListView;
-import android.widget.ListAdapter;
 
 import com.yun9.jupiter.util.Logger;
-
-import java.util.List;
+import com.yun9.jupiter.widget.paging.LoadingView;
 
 
 public class PagingGridView extends HeaderGridView {
@@ -61,18 +59,12 @@ public class PagingGridView extends HeaderGridView {
     }
 
 
-    public void onFinishLoading(boolean hasMoreItems, List<? extends Object> newItems) {
+    public void onFinishLoading(boolean hasMoreItems) {
 
         if (this.hasMoreItems) {
             setHasMoreItems(hasMoreItems);
             setIsLoading(false);
             loadinView.showLoading(false);
-            if (newItems != null && newItems.size() > 0) {
-                ListAdapter adapter = ((FooterViewGridAdapter) getAdapter()).getWrappedAdapter();
-                if (adapter instanceof PagingBaseAdapter) {
-                    ((PagingBaseAdapter) adapter).addMoreItems(newItems);
-                }
-            }
         }
     }
 
