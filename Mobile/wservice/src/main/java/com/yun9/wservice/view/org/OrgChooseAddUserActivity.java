@@ -157,7 +157,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                     userstring+=user.getName()+",";
                 }
                 String userstring2=userstring.substring(0,userstring.length()-1);
-                String m=userstring2.length()>20?userstring2.substring(0,20)+"...":userstring2;
+                String m=userstring2.length()>20?userstring2.substring(0, 20)+"...":userstring2;
                 adduseorg.getSutitleTv().setText(m);
             }
         }
@@ -181,7 +181,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
 
                     @Override
                     public void onFailure(Response response) {
-                        Toast.makeText(OrgChooseAddUserActivity.this, R.string.add_orguser_failure_tip, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrgChooseAddUserActivity.this,response.getCause(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

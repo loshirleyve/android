@@ -97,13 +97,9 @@
     <string name="custom_org">自定义部门</string>
     <string name="add_org_tip">请输入组织/小组名称</string>
     <string name="add_org_success_tip">添加组织/小组成功！</string>
-    <string name="add_org_failure_tip">添加组织/小组失败！</string>
     <string name="add_orguser_success_tip">添加组织用户关联成功！</string>
     <string name="update_org_success_tip">修改组织/小组成功！！</string>
-    <string name="update_org_failure_tip">修改组织/小组失败！</string>
-    <string name="add_orguser_failure_tip">添加组织用户关联失败！</string>
     <string name="delete_orguser_success_tip">删除组织用户关联成功！</string>
-    <string name="delete_orguser_failure_tip">删除组织用户关联失败！</string>
     <string name="org_add">添加组织</string>
     <string name="org_name">组织名称</string>
     <string name="new_org_tip">请输入部门/小组名称</string>

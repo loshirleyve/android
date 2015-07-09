@@ -295,7 +295,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, R.string.add_org_failure_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -320,7 +320,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, R.string.update_org_failure_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this,  response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -345,7 +345,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, R.string.delete_orguser_failure_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this,response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -390,13 +390,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         }
     }
 
-
-    private View.OnClickListener onCompleteClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
