@@ -28,6 +28,7 @@ import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
 import com.yun9.jupiter.widget.JupiterEditIco;
 import com.yun9.jupiter.widget.JupiterEditableView;
+import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterSearchInputLayout;
 import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
@@ -36,6 +37,8 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrgDetailInfoBean;
+import com.yun9.wservice.view.dynamic.NewDynamicActivity;
+import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 
 import junit.framework.Assert;
 
@@ -67,6 +70,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.neworg)
     private EditText neworg;
 
+    @ViewInject(id = R.id.sendmsgcard)
+    private JupiterImageButtonLayout sendMsgCardButton;
 
     @ViewInject(id = R.id.edit_ico_users)
     private JupiterEditIco jupiterEdituserIco;
@@ -138,6 +143,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         titleBarLayout.getTitleRight().setOnClickListener(addOrgClickListener);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
+        sendMsgCardButton.setOnClickListener(onSendMsgClickListener);
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
 
         //如果没有orgid则进入新增状态
@@ -250,7 +256,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                     useritem.setImage(cacheUser.getUrl());
                 }
                 useritem.setTag(user.getId());
-                useritem.setCornerImage(com.yun9.jupiter.R.drawable.icn_delete);
+                if (user.getName().equals(bean.getOwnerName()))
+                    useritem.setCornerImage(R.drawable.groupadmin);
                 useritem.getBadgeView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -382,19 +389,22 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         if (this.edit) {
             this.edit = false;
             neworg.setEnabled(true);
+            sendMsgCardButton.setVisibility(View.VISIBLE);
             titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
         } else {
             this.edit = true;
             neworg.setEnabled(false);
+            sendMsgCardButton.setVisibility(View.GONE);
             titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
         }
     }
 
 
-    private View.OnClickListener onCompleteClickListener = new View.OnClickListener() {
+    private View.OnClickListener onSendMsgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            if (AssertValue.isNotNull(bean))
+                NewDynamicActivity.start(OrgEditActivity.this, new NewDynamicCommand().setSelectUsers(bean.getUsers()));
         }
     };
 

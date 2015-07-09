@@ -18,6 +18,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheUser;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -36,6 +37,8 @@ import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
 import com.yun9.wservice.model.MsgCardProcessAction;
 import com.yun9.wservice.model.MsgCardShare;
+import com.yun9.wservice.view.dynamic.NewDynamicActivity;
+import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailCommentWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailPraiseWidget;
@@ -44,6 +47,8 @@ import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelPageWidget
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarTabWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
+import com.yun9.wservice.view.org.OrgCompositeActivity;
+import com.yun9.wservice.view.org.OrgCompositeCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -234,7 +239,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         shareItem.getDescTextTV().setText(msgCard.getSharecount() + "");
         praiseItem.getDescTextTV().setText(msgCard.getPraisecount() + "");
 
-
         commentView.getCommonLl().removeAllViews();
         shareView.getShareLl().removeAllViews();
         praiseView.getPraiseLl().removeAllViews();
@@ -399,13 +403,14 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             scrollView.scrollTo(0, segmentedGroup.getTop());
+            NewDynamicActivity.start(MsgCardDetailActivity.this, new NewDynamicCommand().setMsgCardId(command.getMsgCardId()).setType(NewDynamicCommand.MSG_COMMENT));
         }
     };
 
     private View.OnClickListener onForwardClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            OrgCompositeActivity.start(MsgCardDetailActivity.this,new OrgCompositeCommand().setEdit(true));
         }
     };
 
@@ -422,6 +427,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             }
         }
     };
+
 
     private void fakeDataProcessAction(MsgCard msgCard) {
         msgCard.setProcess(new ArrayList<MsgCardProcessAction>());
