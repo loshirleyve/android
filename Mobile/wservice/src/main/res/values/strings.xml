@@ -32,10 +32,10 @@
     <string name="app_update_success">更新成功</string>
     <string name="app_psw_meg">请输入正确的密码格式！ </string>
 
-    <string name="user_buyer">购买管理</string>
-    <string name="user_file">文件</string>
+    <string name="user_buyer">我的订单</string>
+    <string name="user_file">我的文件</string>
     <string name="user_org">组织架构</string>
-    <string name="user_contact">联系人/组</string>
+    <string name="user_contact">联系人/小组</string>
     <string name="user_discover">发现</string>
     <string name="user_mycontact">我的客户</string>
     <string name="user_signature">个性签名</string>

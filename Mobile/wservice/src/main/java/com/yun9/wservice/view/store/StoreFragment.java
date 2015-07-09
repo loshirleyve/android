@@ -41,6 +41,7 @@ import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -82,7 +83,7 @@ public class StoreFragment extends JupiterFragment {
     private SegmentedGroup segmentedGroup;
 
     @ViewInject(id = R.id.product_lv)
-    private ListView productLV;
+    private PagingListView productLV;
 
     @BeanInject
     private ResourceFactory resourceFactory;
@@ -157,9 +158,9 @@ public class StoreFragment extends JupiterFragment {
                     mPtrFrame.refreshComplete();
                 } else {
                     if (AssertValue.isNotNullAndNotEmpty(products)) {
-                        refreshProduct(currProductGroup, products.get(0).getId(), null);
+                        refreshProduct(currProductGroup, products.get(0).getId(), Page.PAGE_DIR_PULL);
                     } else {
-                        refreshProduct(currProductGroup, null, null);
+                        refreshProduct(currProductGroup, null, Page.PAGE_DIR_PULL);
                     }
                 }
             }
@@ -167,6 +168,17 @@ public class StoreFragment extends JupiterFragment {
 
         productLV.setAdapter(productListViewAdapter);
         productLV.setOnItemClickListener(onProductItemClickListener);
+        productLV.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(products)) {
+                    Product product = products.get(products.size() - 1);
+                    refreshProduct(currProductGroup, product.getId(), Page.PAGE_DIR_PUSH);
+                } else {
+                    productLV.onFinishLoading(true);
+                }
+            }
+        });
 
         //读取缓存的当前城市
         currServiceCity = AppCache.getInstance().get(CURR_CITY, ServiceCity.class);
@@ -318,7 +330,7 @@ public class StoreFragment extends JupiterFragment {
 
         Resource resource = resourceFactory.create("QueryProducts");
         resource.param("groupid", productGroup.getId());
-        resource.page().setRowid(rowid);
+        resource.page().setRowid(rowid).setDir(dir);
 
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -345,8 +357,8 @@ public class StoreFragment extends JupiterFragment {
                 }
 
                 if (!AssertValue.isNotNullAndNotEmpty(tempProducts) && Page.PAGE_DIR_PUSH.equals(dir)) {
-//                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
-//                    fileLV.setHasMoreItems(false);
+                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+                    productLV.onFinishLoading(false);
                 }
 
                 productListViewAdapter.notifyDataSetChanged();
@@ -362,6 +374,7 @@ public class StoreFragment extends JupiterFragment {
             @Override
             public void onFinally(Response response) {
                 mPtrFrame.refreshComplete();
+                productLV.onFinishLoading(true);
             }
         });
     }

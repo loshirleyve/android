@@ -116,6 +116,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
                     public void onSuccess(Response response) {
                         String msginfo = (String) response.getPayload();
                         sendMsgInfo(user.getUsernumber(), msginfo);
+                        Toast.makeText(mContext, "发送成功！", Toast.LENGTH_LONG).show();//提示成功
                     }
 
                     @Override
@@ -135,7 +136,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
     private void sendMsgInfo(String phonenumber, String msginfo) {
         SmsManager smsManager = SmsManager.getDefault();//得到短信管理器
         smsManager.sendTextMessage(phonenumber, null, msginfo, null, null);
-        Toast.makeText(mContext, "发送成功！", Toast.LENGTH_LONG).show();//提示成功
     }
 
 

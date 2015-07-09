@@ -112,7 +112,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
                     FileBean fileBean = mFileBeans.get(mFileBeans.size() - 1);
                     refresh(fileBean.getId(), Page.PAGE_DIR_PUSH);
                 } else {
-                    imageGV.onFinishLoading(true, null);
+                    imageGV.onFinishLoading(true);
                 }
             }
         });
@@ -198,7 +198,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
 
                 if (!AssertValue.isNotNullAndNotEmpty(sysFileBeans) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     logger.d("加载更多没有数据。关闭加载更多。");
-                    imageGV.onFinishLoading(false, null);
+                    imageGV.onFinishLoading(false);
                 }
             }
 
@@ -211,7 +211,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
             @Override
             public void onFinally(Response response) {
                 mFrame.refreshComplete();
-                imageGV.onFinishLoading(true, null);
+                imageGV.onFinishLoading(true);
             }
         });
     }

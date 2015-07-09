@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -21,6 +22,7 @@ import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -47,7 +49,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     private JupiterTitleBarLayout titleBar;
 
     @ViewInject(id = R.id.msg_card_lv)
-    private ListView msgCardList;
+    private PagingListView msgCardList;
 
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout mPtrFrame;
@@ -72,9 +74,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         command = (MsgCardListCommand) getIntent().getSerializableExtra(MsgCardListCommand.PARAM_COMMAND);
-        if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())){
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
             userid = command.getUserid();
-        }else {
+        } else {
             userid = sessionManager.getUser().getId();
         }
 
@@ -96,12 +98,28 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                if (AssertValue.isNotNullAndNotEmpty(msgCards)) {
+                    refresh(msgCards.get(0).getId(), Page.PAGE_DIR_PULL);
+                } else {
+                    refresh(null, Page.PAGE_DIR_PULL);
+                }
             }
 
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+
+        msgCardList.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(msgCards)) {
+                    MsgCard msgCard = msgCards.get(msgCards.size() - 1);
+                    refresh(msgCard.getId(), Page.PAGE_DIR_PULL);
+                } else {
+                    msgCardList.onFinishLoading(true);
+                }
             }
         });
 
@@ -126,25 +144,39 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         return R.layout.activity_msg_card_list;
     }
 
-    private void refresh() {
+    private void refresh(String rowid, final String dir) {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())) {
             Resource resource = resourceFactory.create("QueryMsgCardByScene");
             resource.param("instid", sessionManager.getInst().getId());
             resource.param("userid", command.getUserid());
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
+            resource.page().setDir(dir).setRowid(rowid);
+
+
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
                     List<MsgCard> tempMsgCards = (List<MsgCard>) response.getPayload();
-                    msgCards.clear();
 
-                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards)) {
+                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards) && Page.PAGE_DIR_PULL.equals(dir)) {
                         for (int i = tempMsgCards.size(); i > 0; i--) {
                             MsgCard msgCard = tempMsgCards.get(i - 1);
                             msgCards.addFirst(msgCard);
                         }
                     }
+
+                    if (AssertValue.isNotNullAndNotEmpty(tempMsgCards) && Page.PAGE_DIR_PUSH.equals(dir)) {
+                        for (MsgCard msgCard : tempMsgCards) {
+                            msgCards.addLast(msgCard);
+                        }
+                    }
+
+                    if (!AssertValue.isNotNullAndNotEmpty(tempMsgCards) && Page.PAGE_DIR_PUSH.equals(dir)) {
+                        Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+                        msgCardList.onFinishLoading(false);
+                    }
+
                     msgCardListAdapter.notifyDataSetChanged();
                 }
 
@@ -156,6 +188,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 @Override
                 public void onFinally(Response response) {
                     mPtrFrame.refreshComplete();
+                    msgCardList.onFinishLoading(true);
                 }
             });
         }
@@ -163,7 +196,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == MsgCardDetailCommand.RESULT_CODE_OK){
+        if (resultCode == MsgCardDetailCommand.RESULT_CODE_OK) {
             mPtrFrame.autoRefresh();
         }
     }
@@ -230,9 +263,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         }
     };
 
-    private void cardPraiseLikeByMsgCardId(final MsgCard msgCard, final MsgCardWidget msgCardWidget){
+    private void cardPraiseLikeByMsgCardId(final MsgCard msgCard, final MsgCardWidget msgCardWidget) {
         String msgcardId = msgCard.getId();
-        if(AssertValue.isNotNull(sessionManager.getUser())){
+        if (AssertValue.isNotNull(sessionManager.getUser())) {
             Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
             resource.param("userid", sessionManager.getUser().getId());
             resource.param("msgcardid", msgcardId);
