@@ -69,9 +69,7 @@
     <string name="msg_card_share">分享</string>
     <string name="msg_card_fw_to">转发给了@$1%s</string>
     <string name="msg_card_sieve">掷筛子</string>
-    <string name="add_comment_failure_tip">消息卡片评论失败！</string>
     <string name="add_comment_success_tip">消息卡片评论成功！</string>
-    <string name="add_forward_failure_tip">消息卡片转发失败！</string>
     <string name="add_forwadr_success_tip">消息卡片转发成功！</string>
 
 
@@ -97,13 +95,9 @@
     <string name="custom_org">自定义部门</string>
     <string name="add_org_tip">请输入组织/小组名称</string>
     <string name="add_org_success_tip">添加组织/小组成功！</string>
-    <string name="add_org_failure_tip">添加组织/小组失败！</string>
     <string name="add_orguser_success_tip">添加组织用户关联成功！</string>
     <string name="update_org_success_tip">修改组织/小组成功！！</string>
-    <string name="update_org_failure_tip">修改组织/小组失败！</string>
-    <string name="add_orguser_failure_tip">添加组织用户关联失败！</string>
     <string name="delete_orguser_success_tip">删除组织用户关联成功！</string>
-    <string name="delete_orguser_failure_tip">删除组织用户关联失败！</string>
     <string name="org_add">添加组织</string>
     <string name="org_name">组织名称</string>
     <string name="new_org_tip">请输入部门/小组名称</string>
@@ -129,7 +123,6 @@
     <string name="doc_file_open">打开</string>
     <string name="doc_file_download">下载</string>
     <string name="doc_file_upload">上传</string>
-    <string name="doc_file_share_failure_tip">分享失败！</string>
     <string name="doc_file_share_success_tip">分享成功！</string>
     <string name="doc_file_share_tip">你没有选择分享人哦！</string>
 

@@ -302,7 +302,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, R.string.add_org_failure_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -327,7 +327,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, R.string.update_org_failure_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this,  response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -352,7 +352,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                Toast.makeText(OrgEditActivity.this, R.string.delete_orguser_failure_tip, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrgEditActivity.this,response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -400,6 +400,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     }
 
 
+
     private View.OnClickListener onSendMsgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -407,6 +408,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 NewDynamicActivity.start(OrgEditActivity.this, new NewDynamicCommand().setSelectUsers(bean.getUsers()));
         }
     };
+
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
