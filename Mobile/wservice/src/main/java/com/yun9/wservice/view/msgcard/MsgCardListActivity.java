@@ -274,12 +274,17 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 public void onSuccess(Response response) {
                     MsgCardPraise msgCardPraise = (MsgCardPraise) response.getPayload();
                     if (AssertValue.isNotNull(msgCardPraise)) {
+                        int praiseNum = Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString());
                         if (msgCardPraise.getPraise() == 0) {
-                            msgCardWidget.getPraiseIV().setImageResource(R.drawable.star1);
-                            msgCardWidget.getPraiseNumTV().setText(String.valueOf(Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString()) - 1));
+                            msgCardWidget.getPraiseIV().setImageResource(R.drawable.some_praise1);
+                            if(praiseNum != 0) {
+                                msgCardWidget.getPraiseNumTV().setText(String.valueOf(praiseNum - 1));
+                            }else {
+                                msgCardWidget.getPraiseNumTV().setText(String.valueOf(praiseNum + 1));
+                            }
                         } else {
-                            msgCardWidget.getPraiseIV().setImageResource(R.drawable.star_sel);
-                            msgCardWidget.getPraiseNumTV().setText(String.valueOf(Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString()) + 1));
+                            msgCardWidget.getPraiseIV().setImageResource(R.drawable.some_praise);
+                            msgCardWidget.getPraiseNumTV().setText(String.valueOf(praiseNum + 1));
                         }
                     }
                 }

@@ -116,6 +116,7 @@ public class SelectInstActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
+                //InitInstActivity.start(SelectInstActivity.this, new InstCommand());
                 Toast.makeText(SelectInstActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
@@ -142,17 +143,20 @@ public class SelectInstActivity extends JupiterFragmentActivity {
                 }
             }
         }
-
-        if (!AssertValue.isNotNull(selectInstAdapter)) {
-            this.selectInstAdapter = new SelectInstAdapter(this, insts);
-            this.selectInstAdapter.setOnSelectListener(onInstSelectListener);
-            Inst currInst = sessionManager.getInst(command.getUser().getId());
-            if (AssertValue.isNotNull(currInst)){
-                selectInstAdapter.setCurrInst(currInst);
-            }
-            instListView.setAdapter(selectInstAdapter);
-        } else {
-            selectInstAdapter.notifyDataSetChanged();
+        if(insts.size() == 0){
+            InitInstActivity.start(SelectInstActivity.this, new InstCommand());
+        }else {
+            if (!AssertValue.isNotNull(selectInstAdapter)) {
+                        this.selectInstAdapter = new SelectInstAdapter(this, insts);
+                        this.selectInstAdapter.setOnSelectListener(onInstSelectListener);
+                        Inst currInst = sessionManager.getInst(command.getUser().getId());
+                        if (AssertValue.isNotNull(currInst)){
+                            selectInstAdapter.setCurrInst(currInst);
+                        }
+                        instListView.setAdapter(selectInstAdapter);
+                    } else {
+                        selectInstAdapter.notifyDataSetChanged();
+                    }
         }
     }
 

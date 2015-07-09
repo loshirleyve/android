@@ -10,4 +10,11 @@
         </output>
         <type>yun9</type>
     </repository>
+    
+    <!-- 初始化机构服务 -->
+    <repository>
+        <name>InstInit</name>
+        <action>com.yun9.ws.biz.service.InstInitService</action>
+        <type>yun9</type>
+    </repository>
 </repositorys>
