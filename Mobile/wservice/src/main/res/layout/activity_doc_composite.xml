@@ -36,6 +36,7 @@
                     android:id="@+id/camera"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    row:rowStyleSutitleMainImage="@drawable/camera"
                     row:rowStyleSutitleShowSutitleText="false"
                     row:rowStyleSutitleShowTimeText="false"
                     row:rowStyleSutitleTitleText="@string/app_photo" />
