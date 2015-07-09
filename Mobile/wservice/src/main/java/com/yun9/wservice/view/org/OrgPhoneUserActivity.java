@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Leon on 15/6/2.
@@ -64,13 +65,27 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.complete)
     private JupiterImageButtonLayout completeButton;
 
-    private HashMap<String, PhoneUser> contactusers =null;
+    private HashMap<String, PhoneUser> contactusers;
 
     private OrgPhoneUserAdapter phoneUserAdapter;
 
-    private List<PhoneUser> users;
+    private List<PhoneUser> phoneusers;
+
+    private List<User> users;
 
     private List<PhoneUser> textwatchusers;
+
+    private List<String> phonenumbers;
+
+    @BeanInject
+    private ResourceFactory resourceFactory;
+
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private String userid;
+
+    private String instid;
 
     public static void start(Activity activity, OrgPhoneUserCommand command) {
         Intent intent = new Intent(activity, OrgPhoneUserActivity.class);
@@ -91,6 +106,20 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (OrgPhoneUserCommand) this.getIntent().getSerializableExtra("command");
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())) {
+            userid = command.getUserid();
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
+            instid = command.getInstid();
+        }
+        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+            userid = sessionManager.getUser().getId();
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+            instid = sessionManager.getInst().getId();
+        }
         jupiterSearchInputLayout = (JupiterSearchInputLayout) this.findViewById(R.id.searchRL);
         jupiterSearchInputLayout.getSearchET().addTextChangedListener(textWatcher);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
@@ -98,48 +127,94 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         initView();
     }
 
-    public void initView()
-    {
+    public void initView() {
         final ProgressDialog registerDialog = ProgressDialog.show(OrgPhoneUserActivity.this, null, getResources().getString(R.string.app_wating), true);
-        mContext=getApplicationContext();
-        users=new ArrayList<>();
-        textwatchusers=new ArrayList<>();
+        mContext = getApplicationContext();
+        phoneusers = new ArrayList<>();
+        textwatchusers = new ArrayList<>();
+        phonenumbers = new ArrayList<>();
         getPhoneContracts(mContext);//获取本机储存的电话号码
         getSimContracts(mContext);//获取sim卡储存的电话号码
-        if(AssertValue.isNotNullAndNotEmpty(contactusers)) {
-            users.addAll(contactusers.values());
-            textwatchusers.addAll(users);
+        getRegisterUsers();
+        if (AssertValue.isNotNullAndNotEmpty(contactusers)) {
+            phoneusers.addAll(contactusers.values());
+            textwatchusers.addAll(phoneusers);
             registerDialog.dismiss();
-        }
-        else//构造测试数据
+        } else//构造测试数据
         {
-            users.addAll(build());
-            textwatchusers.addAll(users);
+            phoneusers.addAll(build());
+            textwatchusers.addAll(phoneusers);
             registerDialog.dismiss();
         }
-        phoneUserAdapter=new OrgPhoneUserAdapter(mContext,users);
-        userListView.setAdapter(phoneUserAdapter);
     }
 
+    public void getRegisterUsers() {
+        if (AssertValue.isNotNullAndNotEmpty(phonenumbers)) {
+            Resource resource = resourceFactory.create("QueryUsersByPhones");
+            resource.param("instid", instid);
+            resource.param("phones", phonenumbers);
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    users = (List<User>) response.getPayload();
+                    setIsRegister();
+                }
+
+                @Override
+                public void onFailure(Response response) {
+
+                }
+
+                @Override
+                public void onFinally(Response response) {
+
+                }
+            });
+        }
+    }
+
+
+    public void setIsRegister() {
+        if (AssertValue.isNotNullAndNotEmpty(contactusers)) {
+            if (AssertValue.isNotNullAndNotEmpty(users)) {
+                for (User user : users) {
+                    PhoneUser pu = contactusers.get(user.getPhone());
+                    if (AssertValue.isNotNull(pu))
+                        pu.setIsregister(true);
+                }
+            }
+            phoneUserAdapter = new OrgPhoneUserAdapter(mContext,resourceFactory, phoneusers,instid,userid,command.getOrgid());
+            userListView.setAdapter(phoneUserAdapter);
+        }
+    }
+
+
     //取本机通讯录
-    public  HashMap<String, PhoneUser> getPhoneContracts(Context mContext){
+    private HashMap<String, PhoneUser> getPhoneContracts(Context mContext) {
         contactusers = new HashMap<>();
         ContentResolver resolver = mContext.getContentResolver();
         // 获取手机联系人
-        Cursor phoneCursor = resolver.query(Phone.CONTENT_URI,null, null, null, null); //传入正确的uri
-        if(phoneCursor!=null){
-            while(phoneCursor.moveToNext()){
+        Cursor phoneCursor = resolver.query(Phone.CONTENT_URI, null, null, null, null); //传入正确的uri
+        if (phoneCursor != null) {
+            while (phoneCursor.moveToNext()) {
                 int nameIndex = phoneCursor.getColumnIndex(Phone.DISPLAY_NAME); //获取联系人name
                 String name = phoneCursor.getString(nameIndex);
                 String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(Phone.NUMBER)); //获取联系人number
-                if(TextUtils.isEmpty(phoneNumber)){
+                if (TextUtils.isEmpty(phoneNumber)) {
                     continue;
                 }
+                phoneNumber = phoneNumber.replace("-", "").replace(" ", "");
+                if (phoneNumber.length() > 11)
+                    phoneNumber = phoneNumber.substring(phoneNumber.length() - 11, phoneNumber.length());
                 //以下是我自己的数据封装。
-                PhoneUser user = new PhoneUser();
-                user.setUsername(name);
-                user.setUsernumber(phoneNumber);
-                contactusers.put(phoneNumber, user);
+                if (phoneNumber.length() == 11) {
+                    PhoneUser user = new PhoneUser();
+                    user.setUsername(name);
+                    user.setUsernumber(phoneNumber);
+                    user.setIsregister(false);
+                    phonenumbers.add(phoneNumber);
+                    contactusers.put(phoneNumber, user);
+                }
             }
             System.out.print(contactusers.size());
             phoneCursor.close();
@@ -147,25 +222,31 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         return contactusers;
     }
 
-
-   // 接下来看获取sim卡的方法，sim卡的uri有两种可能content://icc/adn与content://sim/adn （一般情况下是第一种）
-    public  HashMap<String, PhoneUser> getSimContracts(Context mContext){
+    // 接下来看获取sim卡的方法，sim卡的uri有两种可能content://icc/adn与content://sim/adn （一般情况下是第一种）
+    private HashMap<String, PhoneUser> getSimContracts(Context mContext) {
         //读取SIM卡手机号,有两种可能:content://icc/adn与content://sim/adn
         ContentResolver resolver = mContext.getContentResolver();
         Uri uri = Uri.parse("content://icc/adn");
-        Cursor phoneCursor = resolver.query(uri,null, null, null, null);
-        if(phoneCursor!=null){
-            while(phoneCursor.moveToNext()){
+        Cursor phoneCursor = resolver.query(uri, null, null, null, null);
+        if (phoneCursor != null) {
+            while (phoneCursor.moveToNext()) {
                 String name = phoneCursor.getString(phoneCursor.getColumnIndex("name"));
                 String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex("number"));
-                if(TextUtils.isEmpty(phoneNumber)){
+                if (TextUtils.isEmpty(phoneNumber)) {
                     continue;
                 }
+                phoneNumber = phoneNumber.replace("-", "").replace(" ", "");
+                if (phoneNumber.length() > 11)
+                    phoneNumber = phoneNumber.substring(phoneNumber.length() - 11, phoneNumber.length());
                 //以下是我自己的数据封装。
-                PhoneUser user = new PhoneUser();
-                user.setUsername(name);
-                user.setUsernumber(phoneNumber);
-                contactusers.put(phoneNumber, user);
+                if (phoneNumber.length() == 11) {
+                    PhoneUser user = new PhoneUser();
+                    user.setUsername(name);
+                    user.setUsernumber(phoneNumber);
+                    user.setIsregister(false);
+                    phonenumbers.add(phoneNumber);
+                    contactusers.put(phoneNumber, user);
+                }
             }
             System.out.print(contactusers.size());
             phoneCursor.close();
@@ -177,9 +258,9 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             ArrayList<PhoneUser> selectuser = new ArrayList<>();
-            if (AssertValue.isNotNullAndNotEmpty(users)) {
-                for (PhoneUser u : users) {
-                    if (u.isSelected()) {
+            if (AssertValue.isNotNullAndNotEmpty(phoneusers)) {
+                for (PhoneUser u : phoneusers) {
+                    if (u.isregister()) {
                         PhoneUser user = new PhoneUser();
                         user.setUsername(u.getUsername());
                         user.setUsernumber(u.getUsernumber());
@@ -195,6 +276,7 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         }
     };
 
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -209,22 +291,22 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
-            users.clear();
+            phoneusers.clear();
             if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
-                for ( PhoneUser user : textwatchusers) {
+                for (PhoneUser user : textwatchusers) {
                     if (StringUtil.contains(user.getUsername(), s.toString(), true)) {
-                        users.add(user);
+                        phoneusers.add(user);
                     }
                 }
-            }
-            else
-            {
-                users.addAll(textwatchusers);
+            } else {
+                phoneusers.addAll(textwatchusers);
             }
             phoneUserAdapter.notifyDataSetChanged();
         }
@@ -237,42 +319,39 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
     };
 
 
-
-
-    public List<PhoneUser> build()
-    {
-        users=new ArrayList<>();
-        PhoneUser user=new PhoneUser();
+    public List<PhoneUser> build() {
+        phoneusers = new ArrayList<>();
+        PhoneUser user = new PhoneUser();
         user.setUsername("阮小玉");
         user.setUsernumber("13697110552");
 
-        PhoneUser user1=new PhoneUser();
+        PhoneUser user1 = new PhoneUser();
         user1.setUsername("权志龙");
         user1.setUsernumber("1369101459");
 
-        PhoneUser user2=new PhoneUser();
+        PhoneUser user2 = new PhoneUser();
         user2.setUsername("崔胜贤");
         user2.setUsernumber("136984939204");
 
-        PhoneUser user3=new PhoneUser();
+        PhoneUser user3 = new PhoneUser();
         user3.setUsername("李胜利");
         user3.setUsernumber("13593796895");
 
-        PhoneUser user4=new PhoneUser();
+        PhoneUser user4 = new PhoneUser();
         user4.setUsername("东永裴");
         user4.setUsernumber("1369998778");
 
-        PhoneUser user5=new PhoneUser();
+        PhoneUser user5 = new PhoneUser();
         user5.setUsername("姜大声");
         user5.setUsernumber("135577960");
 
-        users.add(user);
-        users.add(user1);
-        users.add(user2);
-        users.add(user3);
-        users.add(user4);
-        users.add(user5);
-        return users;
+        phoneusers.add(user);
+        phoneusers.add(user1);
+        phoneusers.add(user2);
+        phoneusers.add(user3);
+        phoneusers.add(user4);
+        phoneusers.add(user5);
+        return phoneusers;
 
     }
 }

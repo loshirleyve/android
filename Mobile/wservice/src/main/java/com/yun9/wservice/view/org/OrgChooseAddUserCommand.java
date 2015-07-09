@@ -28,8 +28,6 @@ public class OrgChooseAddUserCommand extends JupiterCommand {
     private String parentorgtype;
 
 
-
-
     public String getOrgid() {
         return orgid;
     }
@@ -47,22 +45,24 @@ public class OrgChooseAddUserCommand extends JupiterCommand {
         this.orgname = orgname;
         return this;
     }
+
     public String getInstid() {
         return instid;
     }
 
-    public void setInstid(String instid) {
+    public OrgChooseAddUserCommand setInstid(String instid) {
         this.instid = instid;
+        return this;
     }
 
     public String getUserid() {
         return userid;
     }
 
-    public void setUserid(String userid) {
+    public OrgChooseAddUserCommand setUserid(String userid) {
         this.userid = userid;
+        return this;
     }
-
 
     public String getParentorgid() {
         return parentorgid;

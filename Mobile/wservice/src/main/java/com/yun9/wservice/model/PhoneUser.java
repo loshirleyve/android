@@ -8,7 +8,7 @@ public class PhoneUser implements java.io.Serializable {
     private String username;
     private String usernumber;
 
-    private boolean selected;
+    private boolean isregister;
 
     public String getUsername() {
         return username;
@@ -26,11 +26,11 @@ public class PhoneUser implements java.io.Serializable {
         this.usernumber = usernumber;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public boolean isregister() {
+        return isregister;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setIsregister(boolean isregister) {
+        this.isregister = isregister;
     }
 }

@@ -395,22 +395,26 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == OrgListCommand.REQUEST_CODE && resultCode == OrgListCommand.RESULT_CODE_OK) {
 
-            ArrayList<Org> orgs = (ArrayList<Org>) data.getSerializableExtra(OrgListCommand.PARAM_ORG);
-            String dimType = data.getStringExtra(OrgListCommand.PARAM_DIMTYPE);
+            if (AssertValue.isNotNull(data)) {
+                ArrayList<Org> orgs = (ArrayList<Org>) data.getSerializableExtra(OrgListCommand.PARAM_ORG);
+                String dimType = data.getStringExtra(OrgListCommand.PARAM_DIMTYPE);
 
-            if (AssertValue.isNotNullAndNotEmpty(orgs) && AssertValue.isNotNullAndNotEmpty(dimType)) {
-                onSelectOrgMaps.put(dimType, orgs);
-            } else {
-                //如果没有选择则设置此处选择为空
-                onSelectOrgMaps.put(dimType, new ArrayList<Org>());
+                if (AssertValue.isNotNullAndNotEmpty(orgs) && AssertValue.isNotNullAndNotEmpty(dimType)) {
+                    onSelectOrgMaps.put(dimType, orgs);
+                } else {
+                    //如果没有选择则设置此处选择为空
+                    onSelectOrgMaps.put(dimType, new ArrayList<Org>());
+                }
+
+                //设置Item sutitle
+                this.setItemSutitle();
+                //设置sutitle
+                this.setSutitle();
+
+                logger.d("选择组织数量：" + orgs.size() + ",类型：" + dimType);
             }
-
-            //设置Item sutitle
-            this.setItemSutitle();
-            //设置sutitle
-            this.setSutitle();
-
-            logger.d("选择组织数量：" + orgs.size() + ",类型：" + dimType);
+            else
+                this.refresh();
         }
     }
 
@@ -523,6 +527,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         }
 
     }
+
     private void selectMode(boolean mode) {
         if (AssertValue.isNotNull(this.orgCompositeListAdapter)) {
             this.orgCompositeListAdapter.setSelectMode(mode);
@@ -545,9 +550,11 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
             orgCompositeUserListBeans.clear();
@@ -557,9 +564,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                         orgCompositeUserListBeans.add(user);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 orgCompositeUserListBeans.addAll(textatchoOrgCompositeUsers);
             }
             orgCompositeListAdapter.notifyDataSetChanged();

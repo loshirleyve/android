@@ -68,6 +68,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
     private boolean edit = false;
 
+    private int requestcode;
     public static void start(Activity activity, OrgListCommand command) {
         Intent intent = new Intent(activity, OrgListActivity.class);
 
@@ -92,18 +93,10 @@ public class OrgListActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
             this.titleBarLayout.getTitleTv().setText(command.getTitle());
         }
-
-
         //初始化界面
         this.initViews();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // 加载数据，绘制界面
-        this.refresh();
-    }
 
     private void initViews() {
         titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
@@ -117,7 +110,9 @@ public class OrgListActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(OrgListCommand.RESULT_CODE_CANCEL);
+                if (requestcode == OrgEditCommand.RESULT_CODE_OK)
+                    setResult(requestcode);
+                //setResult(OrgListCommand.RESULT_CODE_CANCEL);
                 finish();
             }
         });
@@ -131,6 +126,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
         }
 
         this.completeButton.setOnClickListener(onClickCompletionListener);
+        refresh();
     }
 
     private void refresh() {
@@ -304,7 +300,14 @@ public class OrgListActivity extends JupiterFragmentActivity {
             orgListAdapter.notifyDataSetChanged();
         }
     };
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==OrgEditCommand.REQUEST_CODE && resultCode==OrgEditCommand.RESULT_CODE_OK) {
+            requestcode=OrgEditCommand.RESULT_CODE_OK;
+          this.refresh();
+        }
+    }
 
     private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
         @Override

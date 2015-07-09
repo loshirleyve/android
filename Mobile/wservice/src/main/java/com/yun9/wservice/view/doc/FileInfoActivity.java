@@ -104,6 +104,10 @@ public class FileInfoActivity extends JupiterFragmentActivity {
 
     public void initView() {
         users = new ArrayList<>();
+        fileopenway.setVisibility(View.GONE);
+        fileupload.setVisibility(View.GONE);
+        filedownload.setVisibility(View.GONE);
+        fileshare.setVisibility(View.GONE);
         if (AssertValue.isNotNull(command) && AssertValue.isNotNull(command.getFileBean())) {
             fileBean = command.getFileBean();
             fileName.setText(fileBean.getName());
@@ -112,15 +116,10 @@ public class FileInfoActivity extends JupiterFragmentActivity {
             CacheUser cacheUser = UserCache.getInstance().getUser(fileBean.getUserid());
             if (AssertValue.isNotNull(cacheUser))
                 fileFrom.setText(cacheUser.getName());
-            else
-                fileFrom.setText("未知");
-
             if (fileBean.getStorageType().equals(FileBean.FILE_STORAGE_TYPE_LOCAL)) {
                 fileopenway.setVisibility(View.VISIBLE);
-                fileupload.setVisibility(View.VISIBLE);
-                fileopenway.setTag(fileBean);
                 fileopenway.setOnClickListener(onOpenlClickListener);
-                fileupload.setTag(fileBean);
+                fileupload.setVisibility(View.VISIBLE);
                 fileupload.setOnClickListener(onUpLoadlClickListener);
             } else if (fileBean.getStorageType().equals(FileBean.FILE_STORAGE_TYPE_YUN)) {
                 filedownload.setVisibility(View.VISIBLE);
@@ -135,9 +134,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onOpenlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            FileBean fileBean = (FileBean) v.getTag();
             openFile(fileBean);
-
         }
     };
 
@@ -153,8 +150,8 @@ public class FileInfoActivity extends JupiterFragmentActivity {
                         //检查文件是否已经为本地文件。如果是表示成功
                         if (AssertValue.isNotNullAndNotEmpty(fileBeans) && fileBeans.get(0).getStorageType().equals(FileBean.FILE_STORAGE_TYPE_LOCAL)) {
                             fileBean = fileBeans.get(0);
-
-                            //TODO 下载文件成功，完善界面部分
+                            command.setFileBean(fileBean);
+                            initView();
                         }
                     }
                 });
@@ -165,7 +162,6 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onUpLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            FileBean fileBean = (FileBean) v.getTag();
             uploadFiles(fileBean);
         }
     };
@@ -228,12 +224,13 @@ public class FileInfoActivity extends JupiterFragmentActivity {
                 //上传文件完成后,检查是否所有文件都已经成功上传，启动发送动态
                 boolean upload = true;
                 if (AssertValue.isNotNull(fileBeans)) {
-                    for (FileBean fileBean : fileBeans) {
-                        if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBean.getStorageType())) {
-                            upload = false;
-                        }
+                    if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBeans.get(0).getStorageType())) {
+                        upload = false;
                     }
                 }
+                fileBean = fileBeans.get(0);
+                command.setFileBean(fileBean);
+                initView();
 
                 if (!upload) {
                     Toast.makeText(mContext, R.string.new_dynamic_upload_error, Toast.LENGTH_SHORT);

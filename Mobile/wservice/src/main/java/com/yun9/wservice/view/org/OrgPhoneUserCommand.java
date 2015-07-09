@@ -14,21 +14,27 @@ public class OrgPhoneUserCommand extends JupiterCommand {
 
     public static final int REQUEST_CODE = 1007;
 
+    private String orgid;
+
     private List<String> selectUsers;
 
     private List<PhoneUser> users;
 
+    private String instid;
+
+    private String userid;
 
     public List<String> getSelectUsers() {
         return selectUsers;
     }
 
-    public void setSelectUsers(List<String> selectUsers) {
+    public OrgPhoneUserCommand setSelectUsers(List<String> selectUsers) {
         this.selectUsers = selectUsers;
+        return this;
     }
 
 
-    public List<PhoneUser>  getUsers() {
+    public List<PhoneUser> getUsers() {
         return users;
     }
 
@@ -37,7 +43,14 @@ public class OrgPhoneUserCommand extends JupiterCommand {
     }
 
 
+    public String getOrgid() {
+        return orgid;
+    }
 
+    public OrgPhoneUserCommand setOrgid(String orgid) {
+        this.orgid = orgid;
+        return this;
+    }
     public OrgPhoneUserCommand putSelectUser(String userid) {
         if (!AssertValue.isNotNull(selectUsers)) {
             selectUsers = new ArrayList<>();
@@ -47,5 +60,24 @@ public class OrgPhoneUserCommand extends JupiterCommand {
 
         return this;
     }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public OrgPhoneUserCommand setInstid(String instid) {
+        this.instid = instid;
+        return this;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public OrgPhoneUserCommand setUserid(String userid) {
+        this.userid = userid;
+        return this;
+    }
+
 
 }
