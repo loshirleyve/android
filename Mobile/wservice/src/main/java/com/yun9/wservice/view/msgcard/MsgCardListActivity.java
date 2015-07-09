@@ -116,7 +116,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             public void onLoadMoreItems() {
                 if (AssertValue.isNotNullAndNotEmpty(msgCards)) {
                     MsgCard msgCard = msgCards.get(msgCards.size() - 1);
-                    refresh(msgCard.getId(), Page.PAGE_DIR_PULL);
+                    refresh(msgCard.getId(), Page.PAGE_DIR_PUSH);
                 } else {
                     msgCardList.onFinishLoading(true);
                 }
