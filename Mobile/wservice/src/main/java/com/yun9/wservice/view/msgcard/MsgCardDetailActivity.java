@@ -410,7 +410,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private View.OnClickListener onForwardClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgCompositeActivity.start(MsgCardDetailActivity.this,new OrgCompositeCommand().setEdit(true));
+            OrgCompositeActivity.start(MsgCardDetailActivity.this,new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
         }
     };
 
@@ -428,6 +428,17 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     };
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
+            if (AssertValue.isNotNullAndNotEmpty(users)) {
+                NewDynamicActivity.start(MsgCardDetailActivity.this, new NewDynamicCommand().setMsgCardId(command.getMsgCardId()).setSelectUsers(users).setType(NewDynamicCommand.MSG_FORWARD));
+            }
+        }
+    }
 
     private void fakeDataProcessAction(MsgCard msgCard) {
         msgCard.setProcess(new ArrayList<MsgCardProcessAction>());
