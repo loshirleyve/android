@@ -194,9 +194,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
                     if(mMsgCard.isMypraise()){
-                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise);
                     }else {
-                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                     }
                     refreshComplete();
                 }
@@ -450,9 +450,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                     MsgCardPraise msgCardPraise = (MsgCardPraise) response.getPayload();
                     if(AssertValue.isNotNull(msgCardPraise)) {
                         if(msgCardPraise.getPraise() == 1){
-                            toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+                            toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise);
                         }else {
-                            toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+                            toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                         }
                     }
                 }

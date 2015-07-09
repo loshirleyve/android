@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/staffNumTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleLeftIcoSrc="@drawable/arrow_left"
+        app:titleLeftIcoVisibility="true"
+        app:titleText="@string/please_select"
+        app:titleRightText="@string/select_num_max"
+        app:titleRightTextVisibility="true"/>
+
+    <com.yun9.jupiter.widget.JupiterScrollView
+        android:layout_below="@id/staffNumTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/staff_num_category1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowArrow="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleSelectModel="true"
+                app:rowStyleSutitleTitleText="@string/staff_num_category1"
+                />
+
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/staff_num_category2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowArrow="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleSelectModel="true"
+                app:rowStyleSutitleTitleText="@string/staff_num_category2"
+                />
+
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/staff_num_category3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowArrow="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleSelectModel="true"
+                app:rowStyleSutitleTitleText="@string/staff_num_category3"
+                />
+
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/staff_num_category4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowArrow="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleSelectModel="true"
+                app:rowStyleSutitleTitleText="@string/staff_num_category4"
+                />
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterScrollView>
+
+    <TextView
+        android:id="@+id/finishTv"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/finish"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
