@@ -46,8 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
                 android:background="@color/whites"
+                android:visibility="gone"
                 app:rowStyleTitleMainImage="@drawable/discover"
                 app:rowStyleTitleText="@string/user_discover"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
@@ -60,14 +60,6 @@
                 app:rowStyleTitleMainImage="@drawable/contact"
                 app:rowStyleTitleText="@string/user_mycontact"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
-            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
-                android:id="@+id/setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/whites"
-                app:rowStyleTitleMainImage="@drawable/setting"
-                app:rowStyleTitleText="@string/setting"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
             <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
                 android:id="@+id/switch_inst"
@@ -77,6 +69,16 @@
                 android:background="@color/whites"
                 app:rowStyleTitleMainImage="@drawable/switch_acc"
                 app:rowStyleTitleText="@string/switch_acc"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/setting"
+                app:rowStyleTitleText="@string/setting"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
 
         </LinearLayout>
