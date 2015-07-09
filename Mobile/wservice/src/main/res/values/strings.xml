@@ -114,6 +114,7 @@
     <string name="doc_file_location">本地文件</string>
     <string name="doc_file_online">云文件</string>
     <string name="doc_select_num_max">最多允许选择%1$d个文件</string>
+    <string name="select_num_max">最多选择%1$d个</string>
     <string name="please_select">请选择</string>
     <string name="doc_file_name">文件名称</string>
     <string name="doc_file_tip">未知</string>
@@ -231,4 +232,18 @@
     <string name="my_clients">我的客户</string>
     <string name="msg_card_praise_cancel">取消点赞</string>
     <string name="user_register">用户注册</string>
+    <string name="init">初始化</string>
+    <string name="init_inst">初始化机构</string>
+    <string name="inst_no">机构编号</string>
+    <string name="inst_no_input_notice">请输入机构编号</string>
+    <string name="company_name">公司名称</string>
+    <string name="company_name_input_notice">请输入公司名称</string>
+    <string name="staff_num">公司人数</string>
+    <string name="staff_num_input_notice">请输入公司人数</string>
+    <string name="manager">管理员</string>
+    <string name="staff_num_category1">10-100人</string>
+    <string name="staff_num_category2">100-500人</string>
+    <string name="staff_num_category3">500-2000人</string>
+    <string name="staff_num_category4">2000人以上</string>
+    <string name="finish">完成</string>
 </resources>
