@@ -156,9 +156,9 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 for (User user : users) {
                     userstring+=user.getName()+",";
                 }
-                userstring.substring(0,userstring.length());
-              String m=userstring.length()>15?userstring.substring(0,15):userstring;
-                adduseorg.getSutitleTv().setText(userstring);
+                String userstring2=userstring.substring(0,userstring.length()-1);
+                String m=userstring2.length()>20?userstring2.substring(0,20)+"...":userstring2;
+                adduseorg.getSutitleTv().setText(m);
             }
         }
     }

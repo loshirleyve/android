@@ -57,6 +57,7 @@
 
                     <TextView
                         android:id="@+id/file_from"
+                        android:text="@string/doc_file_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
@@ -75,6 +76,7 @@
 
                     <TextView
                         android:id="@+id/file_uploaddate"
+                        android:text="@string/doc_file_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />
@@ -93,6 +95,7 @@
 
                     <TextView
                         android:id="@+id/file_size"
+                        android:text="@string/doc_file_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center" />

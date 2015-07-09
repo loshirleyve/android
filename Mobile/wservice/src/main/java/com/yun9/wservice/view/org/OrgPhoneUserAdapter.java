@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -83,6 +84,8 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item = new JupiterRowStyleSutitleLayout(mContext);
             item.setShowTime(false);
             item.setShowArrow(false);
+            item.getArrowRightButton().setText(R.string.invitation_reg);
+            item.getArrowRightButton().setBackgroundResource(R.drawable.button_border);
             if (!user.isregister())
                 item.setShowArrowButton(true);
 
@@ -135,6 +138,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
         Toast.makeText(mContext, "发送成功！", Toast.LENGTH_LONG).show();//提示成功
     }
 
-    ;
+
 
 }

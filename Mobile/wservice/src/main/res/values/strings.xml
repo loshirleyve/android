@@ -112,6 +112,7 @@
     <string name="add_use_org_to">通过组织结构添加</string>
     <string name="add_use_phonebook_to">通过手机通讯录添加</string>
     <string name="choose_add_use_to">请选择用户！</string>
+    <string name="invitation_reg">邀请注册</string>
 
     <string name="doc_composite_title">文档</string>
     <string name="doc_image_location">本地图片</string>
@@ -121,6 +122,7 @@
     <string name="doc_select_num_max">最多允许选择%1$d个文件</string>
     <string name="please_select">请选择</string>
     <string name="doc_file_name">文件名称</string>
+    <string name="doc_file_tip">未知</string>
     <string name="doc_file_from">来自：</string>
     <string name="doc_file_uploaddate">上传时间：</string>
     <string name="doc_file_size">大小：</string>
