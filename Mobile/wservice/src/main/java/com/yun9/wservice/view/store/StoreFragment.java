@@ -245,6 +245,7 @@ public class StoreFragment extends JupiterFragment {
         topProductViewPageAdapter.notifyDataSetChanged();
         productListViewAdapter.notifyDataSetChanged();
         circlePageIndicator.notifyDataSetChanged();
+        productLV.setHasMoreItems(true);
 
     }
 
@@ -660,8 +661,7 @@ public class StoreFragment extends JupiterFragment {
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
             ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
-            //TODO 待服务调整后修改
-            productItemLayout.getHotnoticeTV().setText("每月100元");
+            productItemLayout.getHotnoticeTV().setText(product.getPricedescr());
             productItemLayout.setTag(product);
 
             return productItemLayout;
