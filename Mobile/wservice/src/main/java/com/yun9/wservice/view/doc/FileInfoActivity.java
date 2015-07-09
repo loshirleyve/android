@@ -196,7 +196,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-                    Toast.makeText(FileInfoActivity.this, R.string.doc_file_share_failure_tip, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FileInfoActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

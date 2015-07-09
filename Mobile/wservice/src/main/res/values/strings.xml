@@ -69,9 +69,7 @@
     <string name="msg_card_share">分享</string>
     <string name="msg_card_fw_to">转发给了@$1%s</string>
     <string name="msg_card_sieve">掷筛子</string>
-    <string name="add_comment_failure_tip">消息卡片评论失败！</string>
     <string name="add_comment_success_tip">消息卡片评论成功！</string>
-    <string name="add_forward_failure_tip">消息卡片转发失败！</string>
     <string name="add_forwadr_success_tip">消息卡片转发成功！</string>
 
 
@@ -125,7 +123,6 @@
     <string name="doc_file_open">打开</string>
     <string name="doc_file_download">下载</string>
     <string name="doc_file_upload">上传</string>
-    <string name="doc_file_share_failure_tip">分享失败！</string>
     <string name="doc_file_share_success_tip">分享成功！</string>
     <string name="doc_file_share_tip">你没有选择分享人哦！</string>
 

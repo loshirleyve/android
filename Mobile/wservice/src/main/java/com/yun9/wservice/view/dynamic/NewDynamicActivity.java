@@ -659,7 +659,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-                    Toast.makeText(NewDynamicActivity.this, R.string.add_forward_failure_tip, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewDynamicActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -715,7 +715,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFailure(Response response) {
-                    Toast.makeText(NewDynamicActivity.this, R.string.add_comment_failure_tip, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewDynamicActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
                 }
 
 
