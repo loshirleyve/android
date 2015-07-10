@@ -81,23 +81,25 @@
                 <com.yun9.jupiter.widget.JupiterEditIco
                     android:id="@+id/edit_ico_orgs"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterEditIco>
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="50dp"></com.yun9.jupiter.widget.JupiterEditIco>
             </LinearLayout>
 
-            <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/sendmsgcard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_weight="1"
-                android:background="@color/whites"
-                button:imageButtonIcoSrc="@drawable/newpost"
-                button:imageButtonShowIco="true"
-                button:imageButtonText="@string/app_send_msgcard">
 
-            </com.yun9.jupiter.widget.JupiterImageButtonLayout>
         </RelativeLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 
+    <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/sendmsgcard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:background="@color/whites"
+        button:imageButtonIcoSrc="@drawable/newpost"
+        button:imageButtonShowIco="true"
+        button:imageButtonText="@string/app_send_msgcard">
+
+    </com.yun9.jupiter.widget.JupiterImageButtonLayout>
 
 </RelativeLayout>
