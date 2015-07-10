@@ -232,9 +232,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         //praiseIv
         if(mMsgCard.isMypraise()){
-            praiseIV.setImageResource(R.drawable.star_sel);
+            praiseIV.setImageResource(R.drawable.some_praise);
         }else {
-            praiseIV.setImageResource(R.drawable.star1);
+            praiseIV.setImageResource(R.drawable.some_praise1);
         }
         //Praisecount
         praiseNumTV.setText(String.valueOf(msgCard.getPraisecount()));

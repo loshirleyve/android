@@ -10,10 +10,12 @@ public class Product implements java.io.Serializable {
     private String sn;
     private String name;
     private double saleprice;
+    private String pricedescr;
     private int sort;
     private String instid;
     private String state;
     private String introduce;
+    private String introduceurl;
     private String type;
     private String imageid;
     private int daynum;
@@ -152,5 +154,21 @@ public class Product implements java.io.Serializable {
 
     public void setReqirements(List<ProductReqirement> reqirements) {
         this.reqirements = reqirements;
+    }
+
+    public String getPricedescr() {
+        return pricedescr;
+    }
+
+    public void setPricedescr(String pricedescr) {
+        this.pricedescr = pricedescr;
+    }
+
+    public String getIntroduceurl() {
+        return introduceurl;
+    }
+
+    public void setIntroduceurl(String introduceurl) {
+        this.introduceurl = introduceurl;
     }
 }
