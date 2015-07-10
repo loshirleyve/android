@@ -31,6 +31,7 @@
     <string name="app_photo">拍照</string>
     <string name="app_update_success">更新成功</string>
     <string name="app_psw_meg">请输入正确的密码格式！ </string>
+    <string name="app_notice">提示信息</string>
 
     <string name="user_buyer">我的订单</string>
     <string name="user_file">我的文件</string>
@@ -250,4 +251,7 @@
     <string name="send_msg_to_him">给他发动态</string>
     <string name="inst_no_right_input_notice">请输入由4-8位字母或数字组成的机构编号！</string>
     <string name="init_inst_success">初始化机构成功</string>
+    <string name="init_inst_notice">没有检测到您的机构信息，是否要初始化机构信息？</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
 </resources>
