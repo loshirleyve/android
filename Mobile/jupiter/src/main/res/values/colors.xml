@@ -11,6 +11,7 @@
     <color name="yellow_background">#FEFCEB</color>
     <color name="gray_font">#969696</color>
     <color name="drak">#DEDEDE</color>
+    <color name="about_background">#F8F8F8</color>
 
     <color name="radio_button_selected_color">#ff33b5e5</color>
     <color name="radio_button_unselected_color">@android:color/transparent</color>

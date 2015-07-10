@@ -12,6 +12,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.myself.AppAboutActivity;
 
 /**
  * Created by Leon on 15/6/9.
@@ -62,7 +63,7 @@ public class SettingActivity extends JupiterFragmentActivity {
 
         logoutLayout.setOnClickListener(onLogoutClickListener);
 
-
+        aboutLayout.setOnClickListener(onAboutClickListener);
     }
 
     private View.OnClickListener onLogoutClickListener = new View.OnClickListener() {
@@ -70,6 +71,13 @@ public class SettingActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             sessionManager.logout(sessionManager.getUser());
             SettingActivity.this.finish();
+        }
+    };
+
+    private View.OnClickListener onAboutClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AppAboutActivity.start(SettingActivity.this);
         }
     };
 }

@@ -254,4 +254,9 @@
     <string name="init_inst_notice">没有检测到您的机构信息，是否要初始化机构信息？</string>
     <string name="yes">是</string>
     <string name="no">否</string>
+    <string name="edition">版本1.0</string>
+    <string name="rating">给我评分</string>
+    <string name="app_company_name">深圳市顶聚科技有限公司</string>
+    <string name="rights_reserved">版权所有</string>
+    <string name="rights_reserved_info">Copyright © 2015-2016</string>
 </resources>
