@@ -119,4 +119,5 @@
         <item name="android:windowEnterAnimation">@anim/botto_to_top</item>
         <item name="android:windowExitAnimation">@anim/top_to_botto</item>
     </style>
+
 </resources>
