@@ -427,6 +427,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 titleBarLayout.getTitleTv().setText(orgname);
                 bean.setName(orgname);
+                setResult(OrgEditCommand.RESULT_CODE_OK);
                 Toast.makeText(OrgEditActivity.this, R.string.update_org_success_tip, Toast.LENGTH_SHORT).show();
             }
 
