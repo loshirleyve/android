@@ -239,11 +239,13 @@
     <string name="company_name">公司名称</string>
     <string name="company_name_input_notice">请输入公司名称</string>
     <string name="staff_num">公司人数</string>
-    <string name="staff_num_input_notice">请输入公司人数</string>
+    <string name="staff_num_input_notice">请选择公司人数</string>
     <string name="manager">管理员</string>
     <string name="staff_num_category1">10-100人</string>
     <string name="staff_num_category2">100-500人</string>
     <string name="staff_num_category3">500-2000人</string>
     <string name="staff_num_category4">2000人以上</string>
     <string name="finish">完成</string>
+    <string name="inst_no_right_input_notice">请输入由4-8位字母或数字组成的机构编号！</string>
+    <string name="init_inst_success">初始化机构成功</string>
 </resources>

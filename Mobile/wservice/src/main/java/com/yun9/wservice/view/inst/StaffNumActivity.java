@@ -42,6 +42,7 @@ public class StaffNumActivity extends JupiterFragmentActivity {
 
         String value = getResources().getString(R.string.select_num_max,1);
         staffNumTitle.getTitleRightTv().setText(value);
+        staffNumTitle.getTitleLeftIV().setOnClickListener(onBackClickListener);
         staffNumCatOneLayout.getSelectModeIV().setImageResource(R.drawable.selector_empty);
         staffNumCatOneLayout.getSelectModeIV().setVisibility(View.VISIBLE);
         staffNumCatTwoLayout.getSelectModeIV().setImageResource(R.drawable.selector_empty);
@@ -56,7 +57,7 @@ public class StaffNumActivity extends JupiterFragmentActivity {
         staffNumCatThrLayout.setOnClickListener(new OnStaffNumCatItemClickListener());
         staffNumCatFouLayout.setOnClickListener(new OnStaffNumCatItemClickListener());
 
-        finishTv.setOnClickListener(onFinishClickListener);
+        //finishTv.setOnClickListener(onFinishClickListener);
     }
 
     @Override
@@ -67,21 +68,34 @@ public class StaffNumActivity extends JupiterFragmentActivity {
     private class OnStaffNumCatItemClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent();
             switch (v.getId()){
                 case R.id.staff_num_category1:
                     staffNumCatOneLayout.getSelectModeIV().setImageResource(R.drawable.selector);
+                    intent.putExtra(StaffNumCommand.STAFF_NUM_CATEGORY, "miniature");
+                    setResult(StaffNumCommand.RESULT_CODE_OK, intent);
+                    finish();
                     break;
                 case R.id.staff_num_category2:
                     staffNumCatTwoLayout.getSelectModeIV().setImageResource(R.drawable.selector);
+                    intent.putExtra(StaffNumCommand.STAFF_NUM_CATEGORY, "small");
+                    setResult(StaffNumCommand.RESULT_CODE_OK, intent);
+                    finish();
                     break;
                 case R.id.staff_num_category3:
                     staffNumCatThrLayout.getSelectModeIV().setImageResource(R.drawable.selector);
+                    intent.putExtra(StaffNumCommand.STAFF_NUM_CATEGORY, "medium");
+                    setResult(StaffNumCommand.RESULT_CODE_OK, intent);
+                    finish();
                     break;
                 case R.id.staff_num_category4:
                     staffNumCatFouLayout.getSelectModeIV().setImageResource(R.drawable.selector);
+                    intent.putExtra(StaffNumCommand.STAFF_NUM_CATEGORY, "large");
+                    setResult(StaffNumCommand.RESULT_CODE_OK, intent);
+                    finish();
                     break;
-                default:
-                    finishTv.setVisibility(View.VISIBLE);
+                //default:
+                    //finishTv.setVisibility(View.VISIBLE);
             }
         }
     };
@@ -90,6 +104,13 @@ public class StaffNumActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
 
+        }
+    };
+
+    private View.OnClickListener onBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
         }
     };
 }

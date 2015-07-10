@@ -34,6 +34,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class SelectInstActivity extends JupiterFragmentActivity {
 
+    private InstCommand instCommand;
     private SelectInstCommand command;
 
     @ViewInject(id = R.id.titlebar)
@@ -102,6 +103,14 @@ public class SelectInstActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == InstCommand.RESULT_CODE_OK){
+            refresh();
+        }
+    }
+
     private void refresh() {
 
         Resource resource = resourceFactory.create("QueryUserInsts");
@@ -144,7 +153,11 @@ public class SelectInstActivity extends JupiterFragmentActivity {
             }
         }
         if(insts.size() == 0){
-            InitInstActivity.start(SelectInstActivity.this, new InstCommand());
+            if(!AssertValue.isNotNull(instCommand)){
+                instCommand = new InstCommand();
+            }
+            instCommand.setUserid(command.getUser().getId());
+            InitInstActivity.start(SelectInstActivity.this, instCommand);
         }else {
             if (!AssertValue.isNotNull(selectInstAdapter)) {
                         this.selectInstAdapter = new SelectInstAdapter(this, insts);
