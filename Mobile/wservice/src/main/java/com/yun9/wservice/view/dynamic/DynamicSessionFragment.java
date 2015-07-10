@@ -27,11 +27,13 @@ import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgsGroup;
+import com.yun9.wservice.model.TopicBean;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
 import com.yun9.wservice.view.msgcard.MsgCardListCommand;
 
@@ -49,6 +51,8 @@ public class DynamicSessionFragment extends JupiterFragment {
 
     private static final Logger logger = Logger.getLogger(DynamicSessionFragment.class);
 
+    public static final String TOPIC_LIMIT_ROW = "5";
+
     @BeanInject
     private SessionManager sessionManager;
 
@@ -65,6 +69,8 @@ public class DynamicSessionFragment extends JupiterFragment {
     private PtrClassicFrameLayout mPtrClassicFrameLayout;
 
     private LinkedList<MsgsGroup> msgsGroups = new LinkedList<>();
+
+    private List<TopicBean> topicBeans;
 
     private PopupWindow scenePopW;
 
@@ -104,7 +110,10 @@ public class DynamicSessionFragment extends JupiterFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MsgsGroup msgsGroup = (MsgsGroup) view.getTag();
                 if (AssertValue.isNotNull(msgsGroup)) {
-                    MsgCardListCommand msgCardListCommand = new MsgCardListCommand().setType(MsgCardListCommand.TYPE_USER_GIVEME).setFromuserid(msgsGroup.getFromuserid()).setUserid(msgsGroup.getTouserid());
+                    MsgCardListCommand msgCardListCommand = new MsgCardListCommand()
+                            .setType(MsgCardListCommand.TYPE_USER_GIVEME)
+                            .setFromuserid(msgsGroup.getFromuserid())
+                            .setUserid(msgsGroup.getTouserid());
                     //获取用户信息
                     CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
                     if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getName())) {
@@ -169,6 +178,31 @@ public class DynamicSessionFragment extends JupiterFragment {
         scenePopW.setHeight(maxHeight);
         scenePopW.setWidth((scWidht / 3) * 2);
         scenePopW.setAnimationStyle(R.style.secen_popwindow);
+
+        scenePopListLayout.getHotTopicLV().setAdapter(topicAdapter);
+        loadTopicData();
+    }
+
+    private void loadTopicData() {
+        Resource resource = resourceFactory.create("QueryTopicsService");
+        resource.param("instid", sessionManager.getInst().getId());
+        resource.header(Resource.HEADER.LIMITROW, TOPIC_LIMIT_ROW);
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                topicBeans  = (List<TopicBean>) response.getPayload();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                topicBeans = null;
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                topicAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void refresh(String lastupid, String lastdownid) {
@@ -256,6 +290,52 @@ public class DynamicSessionFragment extends JupiterFragment {
             }
 
             return jupiterRowStyleSutitleLayout;
+        }
+    };
+
+    private JupiterAdapter topicAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            if (topicBeans != null){
+                return topicBeans.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            JupiterRowStyleTitleLayout titleLayout;
+            if (convertView == null){
+                titleLayout = new JupiterRowStyleTitleLayout(DynamicSessionFragment.this.getActivity());
+                titleLayout.getArrowRightIV().setVisibility(View.GONE);
+                titleLayout.getHotNitoceTV().setVisibility(View.GONE);
+                titleLayout.getMainIV().setVisibility(View.GONE);
+                final TopicBean bean = topicBeans.get(position);
+                titleLayout.getTitleTV().setText(bean.getName());
+                titleLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MsgCardListCommand msgCardListCommand = new MsgCardListCommand()
+                                .setType(MsgCardListCommand.TYPE_TOPIC)
+                                .setUserid(sessionManager.getUser().getId());
+                        msgCardListCommand.setTitle(bean.getName());
+                        msgCardListCommand.setTopic(bean.getName());
+                        MsgCardListActivity.start(getActivity(), msgCardListCommand);
+                    }
+                });
+                convertView = titleLayout;
+            }
+            return convertView;
         }
     };
 

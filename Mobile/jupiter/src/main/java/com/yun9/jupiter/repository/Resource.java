@@ -20,7 +20,7 @@ public interface Resource {
 
 //        public static final String LASTUPID = "lastupid";
 //        public static final String LASTDOWNID = "lastdownid";
-//        public static final String LIMITROW = "limitrow";
+        public static final String LIMITROW = "limitrow";
     }
 
 //    public final class PULL_TYPE {

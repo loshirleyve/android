@@ -246,4 +246,8 @@
     <string name="staff_num_category3">500-2000人</string>
     <string name="staff_num_category4">2000人以上</string>
     <string name="finish">完成</string>
+    <string name="confirm_order">确认订单</string>
+    <string name="user_detail">用户详情</string>
+    <string name="checkou_msg_card">查看动态</string>
+    <string name="send_msg_to_him">给他发动态</string>
 </resources>

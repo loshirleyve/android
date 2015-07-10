@@ -8,75 +8,20 @@ import java.io.Serializable;
  */
 public class OrderBaseInfo implements Serializable{
 
-    private String productimage;
-    private String ordersn;
-    private double goodsamount;
-    private Long createdate;
-    private String instid;
-    private int goodsnum;
-    private String state;
-    private String statename;
     private String orderid;
-    private String productdesc;
-    private String adviseruserid;
     private String productname;
-    private String customername;
-
-    public String getProductimage() {
-        return productimage;
-    }
-
-    public void setProductimage(String productimage) {
-        this.productimage = productimage;
-    }
-
-    public String getOrdersn() {
-        return ordersn;
-    }
-
-    public void setOrdersn(String ordersn) {
-        this.ordersn = ordersn;
-    }
-
-    public double getGoodsamount() {
-        return goodsamount;
-    }
-
-    public void setGoodsamount(double goodsamount) {
-        this.goodsamount = goodsamount;
-    }
-
-    public String getInstid() {
-        return instid;
-    }
-
-    public void setInstid(String instid) {
-        this.instid = instid;
-    }
-
-    public int getGoodsnum() {
-        return goodsnum;
-    }
-
-    public void setGoodsnum(int goodsnum) {
-        this.goodsnum = goodsnum;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getStatename() {
-        return statename;
-    }
-
-    public void setStatename(String statename) {
-        this.statename = statename;
-    }
+    private String ordersn;
+    private String state;
+    private Double orderamount;
+    private int commitattachment;
+    private String instid;
+    private String buyerinstid;
+    private String provideinstid;
+    private String salesmanid;
+    private String adviseruserid;
+    private Long createdate;
+    private String createby;
+    private int paystate;
 
     public String getOrderid() {
         return orderid;
@@ -84,22 +29,6 @@ public class OrderBaseInfo implements Serializable{
 
     public void setOrderid(String orderid) {
         this.orderid = orderid;
-    }
-
-    public String getProductdesc() {
-        return productdesc;
-    }
-
-    public void setProductdesc(String productdesc) {
-        this.productdesc = productdesc;
-    }
-
-    public String getAdviseruserid() {
-        return adviseruserid;
-    }
-
-    public void setAdviseruserid(String adviseruserid) {
-        this.adviseruserid = adviseruserid;
     }
 
     public String getProductname() {
@@ -110,12 +39,76 @@ public class OrderBaseInfo implements Serializable{
         this.productname = productname;
     }
 
-    public String getCustomername() {
-        return customername;
+    public String getOrdersn() {
+        return ordersn;
     }
 
-    public void setCustomername(String customername) {
-        this.customername = customername;
+    public void setOrdersn(String ordersn) {
+        this.ordersn = ordersn;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Double getOrderamount() {
+        return orderamount;
+    }
+
+    public void setOrderamount(Double orderamount) {
+        this.orderamount = orderamount;
+    }
+
+    public int getCommitattachment() {
+        return commitattachment;
+    }
+
+    public void setCommitattachment(int commitattachment) {
+        this.commitattachment = commitattachment;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public void setInstid(String instid) {
+        this.instid = instid;
+    }
+
+    public String getBuyerinstid() {
+        return buyerinstid;
+    }
+
+    public void setBuyerinstid(String buyerinstid) {
+        this.buyerinstid = buyerinstid;
+    }
+
+    public String getProvideinstid() {
+        return provideinstid;
+    }
+
+    public void setProvideinstid(String provideinstid) {
+        this.provideinstid = provideinstid;
+    }
+
+    public String getSalesmanid() {
+        return salesmanid;
+    }
+
+    public void setSalesmanid(String salesmanid) {
+        this.salesmanid = salesmanid;
+    }
+
+    public String getAdviseruserid() {
+        return adviseruserid;
+    }
+
+    public void setAdviseruserid(String adviseruserid) {
+        this.adviseruserid = adviseruserid;
     }
 
     public Long getCreatedate() {
@@ -124,5 +117,21 @@ public class OrderBaseInfo implements Serializable{
 
     public void setCreatedate(Long createdate) {
         this.createdate = createdate;
+    }
+
+    public String getCreateby() {
+        return createby;
+    }
+
+    public void setCreateby(String createby) {
+        this.createby = createby;
+    }
+
+    public int getPaystate() {
+        return paystate;
+    }
+
+    public void setPaystate(int paystate) {
+        this.paystate = paystate;
     }
 }

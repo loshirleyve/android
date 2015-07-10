@@ -12,6 +12,8 @@ public class MsgCardDetailCommand extends JupiterCommand {
 
     private boolean scrollComment;
 
+    private String orderId;
+
     public String getMsgCardId() {
         return msgCardId;
     }
@@ -36,6 +38,15 @@ public class MsgCardDetailCommand extends JupiterCommand {
 
     public MsgCardDetailCommand setScrollComment(boolean scrollComment) {
         this.scrollComment = scrollComment;
+        return this;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public MsgCardDetailCommand setOrderId(String orderId) {
+        this.orderId = orderId;
         return this;
     }
 }

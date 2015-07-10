@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.payment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -86,12 +87,12 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
     private Map<String,Payinfo.PaymodeInfo> categoryChoicePaymodeMap;
 
-    public static void start(Context context,PaymentOrderCommand command) {
-        Intent intent =  new Intent(context,PaymentOrderActivity.class);
+    public static void start(Activity activity,PaymentOrderCommand command) {
+        Intent intent =  new Intent(activity,PaymentOrderActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(JupiterCommand.PARAM_COMMAND,command);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent,command.getRequestCode());
     }
 
     @Override
@@ -176,6 +177,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             @Override
             public void onSuccess(Response response) {
                 showToast(R.string.pay_success_be_wait);
+                setResult(JupiterCommand.RESULT_CODE_OK);
                 PaymentOrderActivity.this.finish();
             }
 
@@ -198,6 +200,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayinfoService");
         resource.param("source", command.getSource());
         resource.param("instId", sessionManager.getInst().getId());
@@ -218,7 +221,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
