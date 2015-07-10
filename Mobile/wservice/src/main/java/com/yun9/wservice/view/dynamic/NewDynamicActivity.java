@@ -1,6 +1,8 @@
 package com.yun9.wservice.view.dynamic;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -357,6 +359,13 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 }
             }
         }
+        if (!AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
+            Dialog alertDialog = new Dialog(mContext);
+            alertDialog.setTitle("选择范围");
+            alertDialog.show();
+            return ;
+        }
+
 
         final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
 
@@ -379,10 +388,10 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(lastLocationBean)) {
             resource.header("locationscale", lastLocationBean.getRadius() + "");
         }
-
         if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
             resource.param("users", newMsgCard.getUsers());
         }
+
         if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getActions())) {
             resource.param("actions", newMsgCard.getActions());
         }

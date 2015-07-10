@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -28,7 +29,11 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardPraise;
+import com.yun9.wservice.view.dynamic.NewDynamicActivity;
+import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
+import com.yun9.wservice.view.org.OrgCompositeActivity;
+import com.yun9.wservice.view.org.OrgCompositeCommand;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +64,8 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     @BeanInject
     private SessionManager sessionManager;
+
+    private String forwardMsgCardId;
 
     public static void start(Activity activity, MsgCardListCommand command) {
         Intent intent = new Intent(activity, MsgCardListActivity.class);
@@ -194,10 +201,17 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == MsgCardDetailCommand.RESULT_CODE_OK) {
+        if (resultCode == MsgCardDetailCommand.RESULT_CODE_OK || resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             mPtrFrame.autoRefresh();
+        }
+        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
+            if (AssertValue.isNotNullAndNotEmpty(users) && AssertValue.isNotNullAndNotEmpty(forwardMsgCardId)) {
+                NewDynamicActivity.start(MsgCardListActivity.this, new NewDynamicCommand().setMsgCardId(forwardMsgCardId).setSelectUsers(users).setType(NewDynamicCommand.MSG_FORWARD));
+            }
         }
     }
 
@@ -247,6 +261,8 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    forwardMsgCardId=msgCard.getId();
+                    OrgCompositeActivity.start(MsgCardListActivity.this, new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
                     logger.d("转发！");
                 }
             });
@@ -277,9 +293,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                         int praiseNum = Integer.parseInt(msgCardWidget.getPraiseNumTV().getText().toString());
                         if (msgCardPraise.getPraise() == 0) {
                             msgCardWidget.getPraiseIV().setImageResource(R.drawable.some_praise1);
-                            if(praiseNum != 0) {
+                            if (praiseNum != 0) {
                                 msgCardWidget.getPraiseNumTV().setText(String.valueOf(praiseNum - 1));
-                            }else {
+                            } else {
                                 msgCardWidget.getPraiseNumTV().setText(String.valueOf(praiseNum + 1));
                             }
                         } else {
@@ -300,4 +316,5 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             });
         }
     }
+
 }

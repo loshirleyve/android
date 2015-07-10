@@ -105,6 +105,7 @@
     <string name="add_use_phonebook_to">通过手机通讯录添加</string>
     <string name="choose_add_use_to">请选择用户！</string>
     <string name="invitation_reg">邀请注册</string>
+    <string name="orguserphone_tip">邀请消息发送成功！</string>
 
     <string name="doc_composite_title">文档</string>
     <string name="doc_image_location">本地图片</string>

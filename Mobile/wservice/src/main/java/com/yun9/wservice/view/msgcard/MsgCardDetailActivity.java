@@ -432,6 +432,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if ( resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+            this.refreshComplete();
+        }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             if (AssertValue.isNotNullAndNotEmpty(users)) {

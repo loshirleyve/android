@@ -83,7 +83,7 @@
         <name>InviteUser</name>
         <action>com.yun9.sys.user.service.InviteUserService</action>
         <output>
-            <type>object</type>
+            <type>map</type>
         </output>
         <type>yun9</type>
     </repository>

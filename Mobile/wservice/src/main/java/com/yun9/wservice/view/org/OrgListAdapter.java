@@ -27,10 +27,13 @@ public class OrgListAdapter extends JupiterAdapter {
 
     private String dimType;
 
-    public OrgListAdapter(Context context, List<OrgListBean> orgListBeans,String  dimType) {
+    private String dimid;
+
+    public OrgListAdapter(Context context, List<OrgListBean> orgListBeans,String  dimType, String dimid) {
         this.mContext = context;
         this.orgListBeans = orgListBeans;
         this.dimType=dimType;
+        this.dimid=dimid;
     }
 
     @Override
@@ -98,7 +101,9 @@ public class OrgListAdapter extends JupiterAdapter {
         @Override
         public void onClick(View v) {
             OrgListBean bean=(OrgListBean) v.getTag();
-            OrgEditActivity.start((Activity) mContext, new OrgEditCommand().setEdit(false).setParentorgid(bean.getParentid()).setDimType(dimType).setOrgid(bean.getId()));
+            OrgEditActivity.start((Activity) mContext, new OrgEditCommand().setEdit(false)
+                    .setParentorgid(bean.getParentid()).setDimType(dimType).setOrgid(bean.getId())
+                    .setDimid(dimid));
         }
     };
 }

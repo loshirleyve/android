@@ -69,6 +69,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
     private boolean edit = false;
 
     private int requestcode;
+
     public static void start(Activity activity, OrgListCommand command) {
         Intent intent = new Intent(activity, OrgListActivity.class);
 
@@ -175,7 +176,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
     private void selectMode(boolean mode) {
 
-        if(AssertValue.isNotNull(this.orgListAdapter)) {
+        if (AssertValue.isNotNull(this.orgListAdapter)) {
 
             this.orgListAdapter.setSelectMode(mode);
             this.orgListAdapter.notifyDataSetChanged();
@@ -193,9 +194,8 @@ public class OrgListActivity extends JupiterFragmentActivity {
 
         if (!AssertValue.isNotNull(orgs)) {
             orgs = new ArrayList<>();
-            textwatchorgs=new ArrayList<>();
-        }
-        else {
+            textwatchorgs = new ArrayList<>();
+        } else {
             orgs.clear();
             textwatchorgs.clear();
         }
@@ -218,7 +218,7 @@ public class OrgListActivity extends JupiterFragmentActivity {
         }
 
         if (!AssertValue.isNotNull(this.orgListAdapter)) {
-            this.orgListAdapter = new OrgListAdapter(this, this.orgs,command.getDimType());
+            this.orgListAdapter = new OrgListAdapter(this, this.orgs, command.getDimType(), command.getDimid());
             this.orgListView.setAdapter(orgListAdapter);
         } else {
             this.orgListAdapter.notifyDataSetChanged();
@@ -280,39 +280,42 @@ public class OrgListActivity extends JupiterFragmentActivity {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
             orgs.clear();
             if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
-                for ( OrgListBean org : textwatchorgs) {
+                for (OrgListBean org : textwatchorgs) {
                     if (StringUtil.contains(org.getName(), s.toString(), true)) {
                         orgs.add(org);
                     }
                 }
-            }
-            else
-            {
+            } else {
                 orgs.addAll(textwatchorgs);
             }
             orgListAdapter.notifyDataSetChanged();
         }
     };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==OrgEditCommand.REQUEST_CODE && resultCode==OrgEditCommand.RESULT_CODE_OK) {
-            requestcode=OrgEditCommand.RESULT_CODE_OK;
-          this.refresh();
+        if (requestCode == OrgEditCommand.REQUEST_CODE && resultCode == OrgEditCommand.RESULT_CODE_OK) {
+            requestcode = OrgEditCommand.RESULT_CODE_OK;
+            this.refresh();
         }
     }
 
     private View.OnClickListener onClickNewOrgListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(true).setDimType(command.getDimType()));
+            OrgEditActivity.start(OrgListActivity.this, new OrgEditCommand().setEdit(true)
+                    .setDimType(command.getDimType()).setDimid(command.getDimid()));
+
         }
     };
 }

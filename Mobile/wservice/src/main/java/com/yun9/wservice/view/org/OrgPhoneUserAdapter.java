@@ -27,6 +27,7 @@ import com.yun9.wservice.model.PhoneUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Leon on 15/6/1.
@@ -114,9 +115,11 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override
                     public void onSuccess(Response response) {
-                        String msginfo = (String) response.getPayload();
-                        sendMsgInfo(user.getUsernumber(), msginfo);
-                        Toast.makeText(mContext, "发送成功！", Toast.LENGTH_LONG).show();//提示成功
+                        Map<String, String> msginfo = (Map<String, String>) response.getPayload();
+                        if (AssertValue.isNotNullAndNotEmpty(msginfo)) {
+                            sendMsgInfo(user.getUsernumber(), (String) msginfo.get("message"));
+                            Toast.makeText(mContext, R.string.orguserphone_tip, Toast.LENGTH_LONG).show();//提示成功
+                        }
                     }
 
                     @Override
@@ -137,7 +140,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
         SmsManager smsManager = SmsManager.getDefault();//得到短信管理器
         smsManager.sendTextMessage(phonenumber, null, msginfo, null, null);
     }
-
 
 
 }
