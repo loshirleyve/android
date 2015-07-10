@@ -96,11 +96,16 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                if (AssertValue.isNotNullAndNotEmpty(msgCards)) {
-                    refresh(msgCards.get(0).getId(), Page.PAGE_DIR_PULL);
-                } else {
-                    refresh(null, Page.PAGE_DIR_PULL);
-                }
+//                if (AssertValue.isNotNullAndNotEmpty(msgCards)) {
+//                    refresh(msgCards.get(0).getId(), Page.PAGE_DIR_PULL);
+//                } else {
+//                    refresh(null, Page.PAGE_DIR_PULL);
+//                }
+
+                //由于会出现顺序变化，下拉刷新必须清理原始数据重新开始
+                msgCards.clear();
+                msgCardList.setHasMoreItems(true);
+                refresh(null, Page.PAGE_DIR_PULL);
             }
 
             @Override
