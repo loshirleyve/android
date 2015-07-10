@@ -237,4 +237,7 @@
     <string name="msg_card_praise_cancel">取消点赞</string>
     <string name="user_register">用户注册</string>
     <string name="confirm_order">确认订单</string>
+    <string name="user_detail">用户详情</string>
+    <string name="checkou_msg_card">查看动态</string>
+    <string name="send_msg_to_him">给他发动态</string>
 </resources>

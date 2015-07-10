@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yun9.jupiter.R;
@@ -52,7 +53,7 @@ public class ImageLoaderUtil {
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.icon_loading)
                 .showImageForEmptyUri(R.drawable.icon_empty)
-                .showImageOnFail(R.drawable.ic_error)
+                .showImageOnFail(R.drawable.icon_failed)
                 .cacheInMemory(false)
                 .cacheOnDisk(true)
                 //.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
@@ -60,6 +61,10 @@ public class ImageLoaderUtil {
 
 //                .considerExifParams(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
+                //              .displayer(new RoundedBitmapDisplayer(20))
+//              DO NOT USE RoundedBitmapDisplayer. Use SimpleBitmapDisplayer!
+                // 否则SelectableRoundedImageView会不兼容
+                .displayer(new SimpleBitmapDisplayer())
                         .build();
         config.defaultDisplayImageOptions(options);
 

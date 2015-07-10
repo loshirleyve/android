@@ -22,6 +22,8 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 
     private OnSelectListener onSelectListener;
 
+    private View.OnClickListener onClickForDetail;
+
     private boolean selectMode;
 
     public OrgCompositeListAdapter(Context context, List<OrgCompositeUserListBean> orgCompositeUserListBeans, boolean selectMode) {
@@ -36,6 +38,14 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 
     public void setSelectMode(boolean selectMode) {
         this.selectMode = selectMode;
+    }
+
+    public View.OnClickListener getOnClickForDetail() {
+        return onClickForDetail;
+    }
+
+    public void setOnClickForDetail(View.OnClickListener onClickForDetail) {
+        this.onClickForDetail = onClickForDetail;
     }
 
     public OnSelectListener getOnSelectListener() {
@@ -80,6 +90,9 @@ public class OrgCompositeListAdapter extends BaseAdapter {
             tempView.setSelectMode(true);
             tempView.setOnSelectListener(onSelectListener);
             tempView.select(orgCompositeUserListBean.isSelected());
+        } else {
+            tempView.setSelectMode(false);
+            tempView.setOnClickListener(onClickForDetail);
         }
 
         tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
