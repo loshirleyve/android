@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -150,15 +151,17 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         users.clear();
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+            ProgressDialog registerDialog = ProgressDialog.show(OrgChooseAddUserActivity.this, null, getResources().getString(R.string.app_wating), true);
             users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             if (AssertValue.isNotNullAndNotEmpty(users)) {
-                String userstring="";
+                String userstring = "";
                 for (User user : users) {
-                    userstring+=user.getName()+",";
+                    userstring += user.getName() + ",";
                 }
-                String userstring2=userstring.substring(0,userstring.length()-1);
-                String m=userstring2.length()>20?userstring2.substring(0, 20)+"...":userstring2;
+                String userstring2 = userstring.substring(0, userstring.length() - 1);
+                String m = userstring2.length() > 20 ? userstring2.substring(0, 20) + "..." : userstring2;
                 adduseorg.getSutitleTv().setText(m);
+                registerDialog.dismiss();
             }
         }
     }
@@ -181,7 +184,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
 
                     @Override
                     public void onFailure(Response response) {
-                        Toast.makeText(OrgChooseAddUserActivity.this,response.getCause(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrgChooseAddUserActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

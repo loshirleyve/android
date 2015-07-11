@@ -188,16 +188,17 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private void setEdit(boolean edit) {
         this.edit = edit;
-        if (orgUserRole != 2)
+        if (orgUserRole != 2 || !AssertValue.isNotNullAndNotEmpty(command.getOrgid()))
             titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         if (this.edit) {
             neworg.setEnabled(true);
             sendMsgCardButton.setVisibility(View.GONE);
             titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
-            if (AssertValue.isNotNull(bean) && orgUserRole != 2) {
+            if (AssertValue.isNotNull(bean)) {
                 useritemList.clear();
                 orgitemList.clear();
-                setupEditIco();
+                if (orgUserRole != 2)
+                    setupEditIco();
                 builderUserOrg();
             }
             titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
@@ -216,10 +217,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             });
         } else {
             neworg.setEnabled(false);
-            if (orgUserRole != 2)
-                sendMsgCardButton.setVisibility(View.VISIBLE);
+            sendMsgCardButton.setVisibility(View.VISIBLE);
             titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
-            if (AssertValue.isNotNull(bean) && orgUserRole != 2) {
+            if (AssertValue.isNotNull(bean)) {
                 useritemList.clear();
                 orgitemList.clear();
                 builderUserOrg();
@@ -288,7 +288,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 }
                 useritemList.add(useritem);
                 useradapter.edit(true);
-                useradapter.notifyDataSetChanged();
             }
         }
         if (AssertValue.isNotNullAndNotEmpty(bean.getChildren())) {
@@ -298,9 +297,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 orgitem.setImage("drawable://" + R.drawable.user_group);
                 orgitemList.add(orgitem);
                 orgadapter.edit(true);
-                orgadapter.notifyDataSetChanged();
             }
         }
+        useradapter.notifyDataSetChanged();
+        orgadapter.notifyDataSetChanged();
     }
 
 
@@ -311,16 +311,15 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 JupiterTextIco item = (JupiterTextIco) v;
                 User user = (User) item.getTag();
                 if (orgUserRole == 0)
-                    ininPupup(item);
+                    ininPupup(item, user);
                 else if (orgUserRole == 1 && user.getRelationrole().equals(User.USER))
-                    ininPupup(item);
+                    ininPupup(item, user);
             }
             return false;
         }
     };
 
-    public void ininPupup(final JupiterTextIco item) {
-        User user = (User) item.getTag();
+    public void ininPupup(final JupiterTextIco item, User user) {
         orgUserOperateLayout = new OrgUserOperateLayout(mContext);
         if (orgUserRole == 1)
             orgUserOperateLayout.getAdd_orghelper().setVisibility(View.GONE);
@@ -357,7 +356,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     }
 
     //获取组织的详细信息
-
     private void getOrgDetails() {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
             Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");

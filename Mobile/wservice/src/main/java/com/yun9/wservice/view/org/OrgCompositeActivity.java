@@ -404,26 +404,23 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == OrgListCommand.REQUEST_CODE && resultCode == OrgListCommand.RESULT_CODE_OK) {
+            ArrayList<Org> orgs = (ArrayList<Org>) data.getSerializableExtra(OrgListCommand.PARAM_ORG);
+            String dimType = data.getStringExtra(OrgListCommand.PARAM_DIMTYPE);
 
-            if (AssertValue.isNotNull(data)) {
-                ArrayList<Org> orgs = (ArrayList<Org>) data.getSerializableExtra(OrgListCommand.PARAM_ORG);
-                String dimType = data.getStringExtra(OrgListCommand.PARAM_DIMTYPE);
+            if (AssertValue.isNotNullAndNotEmpty(orgs) && AssertValue.isNotNullAndNotEmpty(dimType)) {
+                onSelectOrgMaps.put(dimType, orgs);
+            } else {
+                //如果没有选择则设置此处选择为空
+                onSelectOrgMaps.put(dimType, new ArrayList<Org>());
+            }
 
-                if (AssertValue.isNotNullAndNotEmpty(orgs) && AssertValue.isNotNullAndNotEmpty(dimType)) {
-                    onSelectOrgMaps.put(dimType, orgs);
-                } else {
-                    //如果没有选择则设置此处选择为空
-                    onSelectOrgMaps.put(dimType, new ArrayList<Org>());
-                }
+            //设置Item sutitle
+            this.setItemSutitle();
+            //设置sutitle
+            this.setSutitle();
 
-                //设置Item sutitle
-                this.setItemSutitle();
-                //设置sutitle
-                this.setSutitle();
+            logger.d("选择组织数量：" + orgs.size() + ",类型：" + dimType);
 
-                logger.d("选择组织数量：" + orgs.size() + ",类型：" + dimType);
-            } else
-                this.refresh();
         }
     }
 
