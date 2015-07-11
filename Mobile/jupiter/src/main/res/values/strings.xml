@@ -1,6 +1,7 @@
 <resources>
     <string name="jupiter">Jupiter</string>
     <string name="jupiter_cancel">取消</string>
+    <string name="jupiter_ok">确定</string>
     <string name="jupiter_return">返回</string>
     <string name="jupiter_logout">注销</string>
     <string name="jupiter_complete">完成</string>
@@ -30,4 +31,9 @@
     <string name="cube_views_load_more_error">加载失败,点击重试</string>
 
     <string name="yuan">元</string>
+
+    <string name="update_prog_title">检查到更新</string>
+    <string name="update_prog_msg">更新内容：\n %1$s</string>
+    <string name="update_error">下载更新包出现错误，请稍后重新尝试.</string>
+    <string name="update_wating">正在下载更新程序，请稍后.</string>
 </resources>

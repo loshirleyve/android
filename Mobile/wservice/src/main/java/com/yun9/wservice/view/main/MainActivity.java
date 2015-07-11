@@ -10,8 +10,10 @@ import android.widget.ImageButton;
 
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.model.UpdateProgramBean;
 import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
+import com.yun9.jupiter.util.AppUtil;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -20,7 +22,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.handler.MessageReceiverHandler;
 import com.yun9.wservice.support.MessageReceiverFactory;
-import com.yun9.wservice.task.UpdateProgramAsyncTask;
+import com.yun9.wservice.task.DownLoadApkAsyncTask;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -112,12 +114,13 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 0) {
-                    final UpdateProgramAsyncTask updateProgramAsyncTask = new UpdateProgramAsyncTask(MainActivity.this);
-                    updateProgramAsyncTask.checkUpdate(new UpdateProgramAsyncTask.OnUpdateProgramCallback() {
+                    int versionCode = AppUtil.getVersionCode(MainActivity.this);
+                    sessionManager.checkUpdate(versionCode, new SessionManager.OnUpdateProgramCallback() {
                         @Override
-                        public void update(boolean update) {
-                            if (update) {
-                                updateProgramAsyncTask.execute();
+                        public void update(UpdateProgramBean updateProgramBean) {
+                            if (AssertValue.isNotNull(updateProgramBean)) {
+                                //检查到更新
+                                sessionManager.downloadAndInstallApk(updateProgramBean, MainActivity.this);
                             }
                         }
                     });

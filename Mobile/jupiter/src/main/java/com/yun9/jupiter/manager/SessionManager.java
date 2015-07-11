@@ -1,6 +1,9 @@
 package com.yun9.jupiter.manager;
 
+import android.app.Activity;
+
 import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.model.UpdateProgramBean;
 import com.yun9.jupiter.model.User;
 
 public interface SessionManager {
@@ -12,6 +15,8 @@ public interface SessionManager {
     public static final String USER_INFO = "userinfo";
 
     public static final String INST_INFO = "instinfo";
+
+    public static final String apkName = "Y9WService.apk";
 
     public void clean();
 
@@ -37,6 +42,10 @@ public interface SessionManager {
 
     public void regOnChangeInstListener(OnChangeInstListener onChangeInstListener);
 
+    public void checkUpdate(int versionCode, OnUpdateProgramCallback onUpdateProgramCallback);
+
+    public void downloadAndInstallApk(UpdateProgramBean updateProgramBean,Activity activity);
+
     public interface OnLoginListener {
         public void login(User user);
     }
@@ -47,5 +56,9 @@ public interface SessionManager {
 
     public interface OnChangeInstListener {
         public void changeInst(Inst inst);
+    }
+
+    public interface OnUpdateProgramCallback {
+        public void update(UpdateProgramBean updateProgramBean);
     }
 }

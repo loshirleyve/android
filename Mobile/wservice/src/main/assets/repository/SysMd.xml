@@ -17,7 +17,7 @@
         <name>QuerySysprogramupdate</name>
         <action>com.yun9.sys.program.service.QuerySysprogramupdateService</action>
         <output>
-            <classname>com.yun9.wservice.model.UpdateProgramBean</classname>
+            <classname>com.yun9.jupiter.model.UpdateProgramBean</classname>
             <type>object</type>
         </output>
         <type>yun9</type>
