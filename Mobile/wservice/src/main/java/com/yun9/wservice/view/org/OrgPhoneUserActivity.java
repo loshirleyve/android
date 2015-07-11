@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -61,9 +62,6 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.userlist)
     private ListView userListView;
-
-    @ViewInject(id = R.id.complete)
-    private JupiterImageButtonLayout completeButton;
 
     private HashMap<String, PhoneUser> contactusers;
 
@@ -123,12 +121,11 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         jupiterSearchInputLayout = (JupiterSearchInputLayout) this.findViewById(R.id.searchRL);
         jupiterSearchInputLayout.getSearchET().addTextChangedListener(textWatcher);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-        completeButton.setOnClickListener(onClickCompletionListener);
         initView();
     }
 
     public void initView() {
-        final ProgressDialog registerDialog = ProgressDialog.show(OrgPhoneUserActivity.this, null, getResources().getString(R.string.app_wating), true);
+        //ProgressDialog registerDialog = ProgressDialog.show(OrgPhoneUserActivity.this, null, getResources().getString(R.string.app_wating), true);
         mContext = getApplicationContext();
         phoneusers = new ArrayList<>();
         textwatchusers = new ArrayList<>();
@@ -139,12 +136,12 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNullAndNotEmpty(contactusers)) {
             phoneusers.addAll(contactusers.values());
             textwatchusers.addAll(phoneusers);
-            registerDialog.dismiss();
+            // registerDialog.dismiss();
         } else//构造测试数据
         {
             phoneusers.addAll(build());
             textwatchusers.addAll(phoneusers);
-            registerDialog.dismiss();
+            //registerDialog.dismiss();
         }
     }
 
@@ -183,7 +180,7 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
                         pu.setIsregister(true);
                 }
             }
-            phoneUserAdapter = new OrgPhoneUserAdapter(mContext,resourceFactory, phoneusers,instid,userid,command.getOrgid());
+            phoneUserAdapter = new OrgPhoneUserAdapter(mContext, resourceFactory, phoneusers, instid, userid, command.getOrgid());
             userListView.setAdapter(phoneUserAdapter);
         }
     }
@@ -227,54 +224,35 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         //读取SIM卡手机号,有两种可能:content://icc/adn与content://sim/adn
         ContentResolver resolver = mContext.getContentResolver();
         Uri uri = Uri.parse("content://icc/adn");
-        Cursor phoneCursor = resolver.query(uri, null, null, null, null);
-        if (phoneCursor != null) {
-            while (phoneCursor.moveToNext()) {
-                String name = phoneCursor.getString(phoneCursor.getColumnIndex("name"));
-                String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex("number"));
-                if (TextUtils.isEmpty(phoneNumber)) {
-                    continue;
+        TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        if (manager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
+            Cursor phoneCursor = resolver.query(uri, null, null, null, null);
+            if (phoneCursor != null) {
+                while (phoneCursor.moveToNext()) {
+                    String name = phoneCursor.getString(phoneCursor.getColumnIndex("name"));
+                    String phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex("number"));
+                    if (TextUtils.isEmpty(phoneNumber)) {
+                        continue;
+                    }
+                    phoneNumber = phoneNumber.replace("-", "").replace(" ", "");
+                    if (phoneNumber.length() > 11)
+                        phoneNumber = phoneNumber.substring(phoneNumber.length() - 11, phoneNumber.length());
+                    //以下是我自己的数据封装。
+                    if (phoneNumber.length() == 11) {
+                        PhoneUser user = new PhoneUser();
+                        user.setUsername(name);
+                        user.setUsernumber(phoneNumber);
+                        user.setIsregister(false);
+                        phonenumbers.add(phoneNumber);
+                        contactusers.put(phoneNumber, user);
+                    }
                 }
-                phoneNumber = phoneNumber.replace("-", "").replace(" ", "");
-                if (phoneNumber.length() > 11)
-                    phoneNumber = phoneNumber.substring(phoneNumber.length() - 11, phoneNumber.length());
-                //以下是我自己的数据封装。
-                if (phoneNumber.length() == 11) {
-                    PhoneUser user = new PhoneUser();
-                    user.setUsername(name);
-                    user.setUsernumber(phoneNumber);
-                    user.setIsregister(false);
-                    phonenumbers.add(phoneNumber);
-                    contactusers.put(phoneNumber, user);
-                }
+                System.out.print(contactusers.size());
+                phoneCursor.close();
             }
-            System.out.print(contactusers.size());
-            phoneCursor.close();
         }
         return contactusers;
     }
-
-    private View.OnClickListener onClickCompletionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            ArrayList<PhoneUser> selectuser = new ArrayList<>();
-            if (AssertValue.isNotNullAndNotEmpty(phoneusers)) {
-                for (PhoneUser u : phoneusers) {
-                    if (u.isregister()) {
-                        PhoneUser user = new PhoneUser();
-                        user.setUsername(u.getUsername());
-                        user.setUsernumber(u.getUsernumber());
-                        selectuser.add(user);
-                    }
-                }
-            }
-
-            Intent intent = new Intent();
-            intent.putExtra(OrgPhoneUserCommand.PARAM_COMMAND, selectuser);
-            setResult(OrgListCommand.RESULT_CODE_OK, intent);
-            finish();
-        }
-    };
 
 
     @Override

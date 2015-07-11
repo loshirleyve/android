@@ -37,20 +37,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/whites">
-
-        <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/complete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            button:imageButtonText="@string/app_complete"/>
-
-    </LinearLayout>
-
 </RelativeLayout>

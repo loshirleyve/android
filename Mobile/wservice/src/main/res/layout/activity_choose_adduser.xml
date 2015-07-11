@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:clickable="true"
-        row:rowStyleSutitleMainImage="@drawable/user_group"
+        row:rowStyleSutitleMainImage="@drawable/user_head"
         row:rowStyleSutitleShowTimeText="false"
         row:rowStyleSutitleTitleText="@string/add_use_phonebook_to"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 

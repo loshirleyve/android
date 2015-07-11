@@ -1,7 +1,9 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -118,13 +120,12 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
                         Map<String, String> msginfo = (Map<String, String>) response.getPayload();
                         if (AssertValue.isNotNullAndNotEmpty(msginfo)) {
                             sendMsgInfo(user.getUsernumber(), (String) msginfo.get("message"));
-                            Toast.makeText(mContext, R.string.orguserphone_tip, Toast.LENGTH_LONG).show();//提示成功
                         }
                     }
 
                     @Override
                     public void onFailure(Response response) {
-                        Toast.makeText(mContext, response.getCause(), Toast.LENGTH_LONG).show();//提示成功
+                        Toast.makeText(mContext, response.getCause(), Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -136,9 +137,11 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
     };
 
 
-    private void sendMsgInfo(String phonenumber, String msginfo) {
+    protected void sendMsgInfo(String phonenumber, String msginfo) {
         SmsManager smsManager = SmsManager.getDefault();//得到短信管理器
-        smsManager.sendTextMessage(phonenumber, null, msginfo, null, null);
+        ArrayList<String> texts = smsManager.divideMessage(msginfo);//拆分短信,短信字数太多了的时候要分几次发
+        smsManager.sendMultipartTextMessage(phonenumber, null, texts, null, null);//发送短信,mobile是对方手机号
+        Toast.makeText(mContext, R.string.orguserphone_success_tip, Toast.LENGTH_LONG).show();//提示成功
     }
 
 

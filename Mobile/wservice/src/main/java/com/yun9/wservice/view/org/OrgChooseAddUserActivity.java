@@ -151,7 +151,6 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         users.clear();
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
-            ProgressDialog registerDialog = ProgressDialog.show(OrgChooseAddUserActivity.this, null, getResources().getString(R.string.app_wating), true);
             users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             if (AssertValue.isNotNullAndNotEmpty(users)) {
                 String userstring = "";
@@ -161,7 +160,6 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 String userstring2 = userstring.substring(0, userstring.length() - 1);
                 String m = userstring2.length() > 20 ? userstring2.substring(0, 20) + "..." : userstring2;
                 adduseorg.getSutitleTv().setText(m);
-                registerDialog.dismiss();
             }
         }
     }
@@ -170,6 +168,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (AssertValue.isNotNullAndNotEmpty(users)) {
+                final ProgressDialog registerDialog = ProgressDialog.show(OrgChooseAddUserActivity.this, null, getResources().getString(R.string.app_wating), true);
                 Resource resource = resourceFactory.create("AddOrgCard");
                 resource.param("orgid", command.getOrgid());
                 resource.param("userid", userid);
@@ -189,7 +188,7 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
 
                     @Override
                     public void onFinally(Response response) {
-
+                        registerDialog.dismiss();
                     }
                 });
             } else
