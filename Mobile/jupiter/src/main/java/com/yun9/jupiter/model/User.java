@@ -5,8 +5,9 @@ import java.util.List;
 
 public class User implements java.io.Serializable {
 
-    public static final String USER="user";
-    public static final String ASSISANT="assisant";
+    public static final String OWNER = "owner";
+    public static final String USER = "user";
+    public static final String ASSISANT = "assisant";
     /**
      *
      */

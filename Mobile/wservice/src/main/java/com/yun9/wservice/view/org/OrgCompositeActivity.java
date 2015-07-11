@@ -422,8 +422,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
                 this.setSutitle();
 
                 logger.d("选择组织数量：" + orgs.size() + ",类型：" + dimType);
-            }
-            else
+            } else
                 this.refresh();
         }
     }

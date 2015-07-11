@@ -108,6 +108,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private int requestcode;
 
+    private int orgUserRole = 2;
+
     public static void start(Activity activity, OrgEditCommand command) {
         Intent intent = new Intent(activity, OrgEditActivity.class);
         Bundle bundle = new Bundle();
@@ -177,22 +179,22 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         neworg.setText(bean.getName());
         titleBarLayout.getTitleTv().setText(bean.getName());
         String sutitle = "";
-        if (sessionManager.getUser().getName().equals(bean.getOwnerName())) {
-            sutitle = "成员" + bean.getUsers().size() + "管理员" + bean.getOwnerName();
-            titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
-            this.titleBarLayout.getTitleSutitleTv().setText(sutitle);
-            setEdit(command.isEdit());
-        }
+        getCurrentUserOrgRole(bean.getUsers());
+        sutitle = "成员" + bean.getUsers().size() + "管理员" + bean.getOwnerName();
+        titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
+        this.titleBarLayout.getTitleSutitleTv().setText(sutitle);
+        setEdit(command.isEdit());
     }
 
     private void setEdit(boolean edit) {
         this.edit = edit;
-        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+        if (orgUserRole != 2)
+            titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         if (this.edit) {
             neworg.setEnabled(true);
             sendMsgCardButton.setVisibility(View.GONE);
             titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
-            if (AssertValue.isNotNull(bean) && sessionManager.getUser().getName().equals(bean.getOwnerName())) {
+            if (AssertValue.isNotNull(bean) && orgUserRole != 2) {
                 useritemList.clear();
                 orgitemList.clear();
                 setupEditIco();
@@ -214,9 +216,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             });
         } else {
             neworg.setEnabled(false);
-            sendMsgCardButton.setVisibility(View.VISIBLE);
+            if (orgUserRole != 2)
+                sendMsgCardButton.setVisibility(View.VISIBLE);
             titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
-            if (AssertValue.isNotNull(bean) && sessionManager.getUser().getName().equals(bean.getOwnerName())) {
+            if (AssertValue.isNotNull(bean) && orgUserRole != 2) {
                 useritemList.clear();
                 orgitemList.clear();
                 builderUserOrg();
@@ -265,12 +268,12 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNullAndNotEmpty(bean.getUsers())) {
             JupiterTextIco useritem;
             for (User user : bean.getUsers()) {
-                if (user.getName().equals(bean.getOwnerName())) {
+                if (user.getRelationrole().equals(User.OWNER)) {
                     useritem = new JupiterTextIcoWithCorner(this);
                     useritem.setCornerImage(R.drawable.groupadmin);
                 } else if (user.getRelationrole().equals(User.ASSISANT)) {
                     useritem = new JupiterTextIcoWithCorner(this);
-                    useritem.setCornerImage(R.drawable.groupadmin);
+                    useritem.setCornerImage(R.drawable.groupassisant);
                     useritem.setOnLongClickListener(onLongOrgUserClick);
                 } else {
                     useritem = new JupiterTextIcoWithoutCorner(this);
@@ -306,7 +309,11 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         public boolean onLongClick(View v) {
             if (edit) {
                 JupiterTextIco item = (JupiterTextIco) v;
-                ininPupup(item);
+                User user = (User) item.getTag();
+                if (orgUserRole == 0)
+                    ininPupup(item);
+                else if (orgUserRole == 1 && user.getRelationrole().equals(User.USER))
+                    ininPupup(item);
             }
             return false;
         }
@@ -315,12 +322,14 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     public void ininPupup(final JupiterTextIco item) {
         User user = (User) item.getTag();
         orgUserOperateLayout = new OrgUserOperateLayout(mContext);
+        if (orgUserRole == 1)
+            orgUserOperateLayout.getAdd_orghelper().setVisibility(View.GONE);
         if (user.getRelationrole().equals(User.USER))
             orgUserOperateLayout.getAdd_orghelper().setText("添加" + user.getName() + "为群助手");
         else if (user.getRelationrole().equals(User.ASSISANT))
             orgUserOperateLayout.getAdd_orghelper().setText("删除" + user.getName() + "为群助手");
-        orgUserOperateLayout.getDelete_orguser().setText("删除成员" + user.getName());
 
+        orgUserOperateLayout.getDelete_orguser().setText("删除成员" + user.getName());
         orgUserOperateLayout.getCancle().setOnClickListener(onOrgUserCancelClickListener);
         orgUserOperatePopupW = new PopupWindow(orgUserOperateLayout, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -348,6 +357,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     }
 
     //获取组织的详细信息
+
     private void getOrgDetails() {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
             Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
@@ -493,6 +503,18 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         });
     }
 
+
+    private void getCurrentUserOrgRole(List<User> users) {
+        String userid = sessionManager.getUser().getId();
+        for (User user : users) {
+            if (userid.equals(user.getId())) {
+                if (user.getRelationrole().equals(User.OWNER))
+                    orgUserRole = 0;
+                if (user.getRelationrole().equals(User.ASSISANT))
+                    orgUserRole = 1;
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
