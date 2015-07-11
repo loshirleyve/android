@@ -14,6 +14,8 @@ public class OrgEditCommand extends JupiterCommand {
 
     private String dimType;
 
+    private String dimid;
+
     private boolean edit;
 
     private String orgid;
@@ -45,6 +47,16 @@ public class OrgEditCommand extends JupiterCommand {
         this.edit = edit;
         return this;
     }
+
+    public String getDimid() {
+        return dimid;
+    }
+
+    public OrgEditCommand setDimid(String dimid) {
+        this.dimid = dimid;
+        return this;
+    }
+
 
     public String getOrgid() {
         return orgid;

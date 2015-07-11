@@ -1,6 +1,8 @@
 package com.yun9.wservice.view.dynamic;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -70,6 +72,10 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.dynamic_content_et)
     private EditText dynamicContentET;
+
+    @ViewInject(id = R.id.share_tv)
+    private TextView shareTv;
+
 
     @ViewInject(id = R.id.location_tv)
     private TextView locationTV;
@@ -199,6 +205,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 this.selectImageRL.setVisibility(View.GONE);
                 this.selectTopocRL.setVisibility(View.GONE);
                 if (NewDynamicCommand.MSG_COMMENT.equals(command.getType())) {
+                    shareTv.setVisibility(View.GONE);
                     this.selectUserRL.setVisibility(View.GONE);
                     titleBarLayout.getTitleTv().setText(R.string.msg_card_comment);
                     this.titleBarLayout.getTitleRight().setOnClickListener(onCommentClickListener);
@@ -357,6 +364,13 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 }
             }
         }
+        if (!AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
+            Dialog alertDialog = new Dialog(mContext);
+            alertDialog.setTitle("选择范围");
+            alertDialog.show();
+            return ;
+        }
+
 
         final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
 
@@ -379,10 +393,10 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(lastLocationBean)) {
             resource.header("locationscale", lastLocationBean.getRadius() + "");
         }
-
         if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
             resource.param("users", newMsgCard.getUsers());
         }
+
         if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getActions())) {
             resource.param("actions", newMsgCard.getActions());
         }

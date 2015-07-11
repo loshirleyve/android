@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/add_orghelper"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="55dp"
             android:background="@drawable/round_textview"
             android:gravity="center"
             android:textColor="@color/blue"
@@ -32,7 +32,7 @@
         <TextView
             android:id="@+id/delete_orguser"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="55dp"
 
             android:background="@drawable/round_textview"
             android:gravity="center"
@@ -49,7 +49,7 @@
     <TextView
         android:id="@+id/cancle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="55dp"
         android:layout_below="@id/ll_exit"
         android:layout_margin="10dp"
         android:background="@drawable/round_textview"

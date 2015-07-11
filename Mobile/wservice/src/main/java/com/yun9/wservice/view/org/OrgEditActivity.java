@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,6 +39,7 @@ import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterSearchInputLayout;
 import com.yun9.jupiter.widget.JupiterTextIco;
+import com.yun9.jupiter.widget.JupiterTextIcoWithCorner;
 import com.yun9.jupiter.widget.JupiterTextIcoWithoutCorner;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
@@ -102,6 +104,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private OrgDetailInfoBean bean;
 
+    private ProgressDialog registerDialog;
+
     private int requestcode;
 
     public static void start(Activity activity, OrgEditCommand command) {
@@ -142,41 +146,90 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //初始化控件，判断是否存在orgid有的话就查询出org的信息，没有就是新增组织的页面
     public void initView() {
+        registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
         jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.org_user_list);
         jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.children_org);
-        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
-        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+        titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
         sendMsgCardButton.setOnClickListener(onSendMsgClickListener);
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
-
+        useritemList = new ArrayList<JupiterEditableView>();
+        orgitemList = new ArrayList<JupiterEditableView>();
+        textwatchorgitemList = new ArrayList<JupiterEditableView>();
+        useradapter = new BasicJupiterEditAdapter(useritemList);
+        orgadapter = new BasicJupiterEditAdapter(orgitemList);
+        jupiterEdituserIco.setAdapter(useradapter);
+        jupiterEditorgIco.setAdapter(orgadapter);
         //如果没有orgid则进入新增状态
         if (!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
             titleBarLayout.getTitleTv().setText(R.string.custom_org);
             jupiterEdituserIco.setVisibility(View.GONE);
             jupiterEditorgIco.setVisibility(View.GONE);
+            setEdit(command.isEdit());
         } else {
             jupiterEdituserIco.setVisibility(View.VISIBLE);
             jupiterEditorgIco.setVisibility(View.VISIBLE);
             getOrgDetails();
         }
-        if (AssertValue.isNotNull(command)) {
-            setEdit(command.isEdit());
-        }
-        useritemList = new ArrayList<JupiterEditableView>();
-        orgitemList = new ArrayList<JupiterEditableView>();
-        textwatchorgitemList = new ArrayList<JupiterEditableView>();
-        setupEditIco();
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == OrgChooseAddUserCommand.REQUEST_CODE && resultCode == OrgChooseAddUserCommand.RESULT_CODE_OK) || (requestCode == OrgEditCommand.REQUEST_CODE && resultCode == OrgEditCommand.RESULT_CODE_OK)) {
-            requestcode = OrgEditCommand.RESULT_CODE_OK;
-            initView();
+    public void buildInfo() {
+        neworg.setText(bean.getName());
+        titleBarLayout.getTitleTv().setText(bean.getName());
+        String sutitle = "";
+        if (sessionManager.getUser().getName().equals(bean.getOwnerName())) {
+            sutitle = "成员" + bean.getUsers().size() + "管理员" + bean.getOwnerName();
+            titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
+            this.titleBarLayout.getTitleSutitleTv().setText(sutitle);
+            setEdit(command.isEdit());
         }
+    }
+
+    private void setEdit(boolean edit) {
+        this.edit = edit;
+        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
+        if (this.edit) {
+            neworg.setEnabled(true);
+            sendMsgCardButton.setVisibility(View.GONE);
+            titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
+            if (AssertValue.isNotNull(bean) && sessionManager.getUser().getName().equals(bean.getOwnerName())) {
+                useritemList.clear();
+                orgitemList.clear();
+                setupEditIco();
+                builderUserOrg();
+            }
+            titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String orgname = neworg.getText().toString();
+                    if (AssertValue.isNotNullAndNotEmpty(orgname)) {
+                        if (AssertValue.isNotNull(bean) && !orgname.equals(bean.getName()))
+                            updateOrgName(orgname);
+                        else if (!AssertValue.isNotNull(bean))
+                            addOrg(orgname);
+                        OrgEditActivity.this.setEdit(false);
+                    } else
+                        Toast.makeText(OrgEditActivity.this, R.string.new_org_tip, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            neworg.setEnabled(false);
+            sendMsgCardButton.setVisibility(View.VISIBLE);
+            titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
+            if (AssertValue.isNotNull(bean) && sessionManager.getUser().getName().equals(bean.getOwnerName())) {
+                useritemList.clear();
+                orgitemList.clear();
+                builderUserOrg();
+            }
+            titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrgEditActivity.this.setEdit(true);
+                }
+            });
+        }
+        if (registerDialog != null)
+            registerDialog.dismiss();
     }
 
     //界面的+图片可以添加用户和组织的控件
@@ -191,11 +244,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             }
         });
         useritemList.add(useritem);
-        useradapter = new BasicJupiterEditAdapter(useritemList);
         useradapter.edit(true);
-        jupiterEdituserIco.setAdapter(useradapter);
-
-
+        useradapter.notifyDataSetChanged();
         JupiterTextIco orgitem = new JupiterTextIcoWithoutCorner(getApplicationContext());
         orgitem.setTitle(getResources().getString(R.string.org_add_neworg));
         orgitem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
@@ -206,67 +256,35 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             }
         });
         orgitemList.add(orgitem);
-        orgadapter = new BasicJupiterEditAdapter(orgitemList);
         orgadapter.edit(true);
-        jupiterEditorgIco.setAdapter(orgadapter);
-    }
-
-
-    //获取组织的详细信息
-    private void getOrgDetails() {
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
-            final ProgressDialog registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
-            Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
-            resource.param("orgid", command.getOrgid());
-            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
-                @Override
-                public void onSuccess(Response response) {
-                    bean = (OrgDetailInfoBean) response.getPayload();
-                    if (bean != null)
-                        builder(bean);
-                }
-
-                @Override
-                public void onFailure(Response response) {
-                    Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFinally(Response response) {
-                    registerDialog.dismiss();
-                }
-            });
-        }
+        orgadapter.notifyDataSetChanged();
     }
 
     //把查询的组织信息，构建到用户和组织控件显示
-    private void builder(OrgDetailInfoBean bean) {
-        neworg.setText(bean.getName());
-        titleBarLayout.getTitleTv().setText(bean.getName());
-        String sutitle = "";
+    private void builderUserOrg() {
         if (AssertValue.isNotNullAndNotEmpty(bean.getUsers())) {
-            sutitle = "成员" + bean.getUsers().size() + "管理员" + bean.getOwnerName();
-            titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
-            this.titleBarLayout.getTitleSutitleTv().setText(sutitle);
             JupiterTextIco useritem;
             for (User user : bean.getUsers()) {
                 if (user.getName().equals(bean.getOwnerName())) {
-                    useritem = new JupiterTextIco(this);
+                    useritem = new JupiterTextIcoWithCorner(this);
                     useritem.setCornerImage(R.drawable.groupadmin);
+                } else if (user.getRelationrole().equals(User.ASSISANT)) {
+                    useritem = new JupiterTextIcoWithCorner(this);
+                    useritem.setCornerImage(R.drawable.groupadmin);
+                    useritem.setOnLongClickListener(onLongOrgUserClick);
                 } else {
                     useritem = new JupiterTextIcoWithoutCorner(this);
+                    useritem.setOnLongClickListener(onLongOrgUserClick);
                 }
+                useritem.setTag(user);
                 useritem.setTitle(user.getName());
-                useritem.hideCorner();
                 useritem.setImage("drawable://" + R.drawable.user_head);
                 CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
                 if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
                     useritem.setImage(cacheUser.getUrl());
                 }
-                useritem.setTag(user);
-                useritem.setOnLongClickListener(onLongOrgUserClick);
-                useritem.edit(true);
                 useritemList.add(useritem);
+                useradapter.edit(true);
                 useradapter.notifyDataSetChanged();
             }
         }
@@ -274,9 +292,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             for (Org org : bean.getChildren()) {
                 JupiterTextIcoWithoutCorner orgitem = new JupiterTextIcoWithoutCorner(getApplicationContext());
                 orgitem.setTitle(org.getName());
-                orgitem.hideCorner();
                 orgitem.setImage("drawable://" + R.drawable.user_group);
                 orgitemList.add(orgitem);
+                orgadapter.edit(true);
                 orgadapter.notifyDataSetChanged();
             }
         }
@@ -286,8 +304,10 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     View.OnLongClickListener onLongOrgUserClick = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            JupiterTextIco item = (JupiterTextIco) v;
-            ininPupup(item);
+            if (edit) {
+                JupiterTextIco item = (JupiterTextIco) v;
+                ininPupup(item);
+            }
             return false;
         }
     };
@@ -295,8 +315,23 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     public void ininPupup(final JupiterTextIco item) {
         User user = (User) item.getTag();
         orgUserOperateLayout = new OrgUserOperateLayout(mContext);
-        orgUserOperateLayout.getAdd_orghelper().setText("添加" + user.getName() +"为群助手");
+        if (user.getRelationrole().equals(User.USER))
+            orgUserOperateLayout.getAdd_orghelper().setText("添加" + user.getName() + "为群助手");
+        else if (user.getRelationrole().equals(User.ASSISANT))
+            orgUserOperateLayout.getAdd_orghelper().setText("删除" + user.getName() + "为群助手");
         orgUserOperateLayout.getDelete_orguser().setText("删除成员" + user.getName());
+
+        orgUserOperateLayout.getCancle().setOnClickListener(onOrgUserCancelClickListener);
+        orgUserOperatePopupW = new PopupWindow(orgUserOperateLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        orgUserOperatePopupW.setOutsideTouchable(true);
+        orgUserOperatePopupW.setFocusable(true);
+        orgUserOperatePopupW.setTouchable(true);
+        orgUserOperatePopupW.setBackgroundDrawable(new ColorDrawable(Color
+                .parseColor("#b0000000")));
+        orgUserOperatePopupW.showAtLocation(sendMsgCardButton, Gravity.BOTTOM, 0,
+                0);
+        orgUserOperatePopupW.setAnimationStyle(R.style.bottom2top_top2bottom);
         orgUserOperateLayout.getDelete_orguser().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -309,56 +344,38 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 updateOrgUserRole(item);
             }
         });
-        orgUserOperateLayout.getCancle().setOnClickListener(onOrgUserCancelClickListener);
-        orgUserOperatePopupW = new PopupWindow(orgUserOperateLayout, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        orgUserOperatePopupW.setBackgroundDrawable(new ColorDrawable(Color
-                .parseColor("#b0000000")));
-        orgUserOperatePopupW.showAtLocation(sendMsgCardButton, Gravity.BOTTOM, 0,
-                0);
-        orgUserOperatePopupW.setOutsideTouchable(true);
-        orgUserOperatePopupW.setFocusable(true);
-        orgUserOperatePopupW.setAnimationStyle(R.style.top2bottom_bottom2top);
         orgUserOperatePopupW.update();
     }
 
-    private void setEdit(boolean edit) {
-        this.edit = edit;
-        if (this.edit) {
-            neworg.setEnabled(true);
-            sendMsgCardButton.setVisibility(View.GONE);
-            titleBarLayout.getTitleRightTv().setText(R.string.app_complete);
-            titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
-                                                                  @Override
-                                                                  public void onClick(View v) {
-                  String orgname = neworg.getText().toString();
-                  if (!bean.getName().equals(orgname)) {
-                      if (AssertValue.isNotNullAndNotEmpty(orgname)) {
-                          if (AssertValue.isNotNullAndNotEmpty(command.getOrgid()))
-                              updateOrgName(orgname);
-                          else
-                              addOrg(orgname);
-                      } else
-                          Toast.makeText(OrgEditActivity.this, R.string.add_org_tip, Toast.LENGTH_SHORT).show();
-                  }
-                  OrgEditActivity.this.setEdit(false);
-              }
-          });
-        } else {
-            neworg.setEnabled(false);
-            sendMsgCardButton.setVisibility(View.VISIBLE);
-            titleBarLayout.getTitleRightTv().setText(R.string.app_edit);
-            titleBarLayout.getTitleRight().setOnClickListener(new View.OnClickListener() {
+    //获取组织的详细信息
+    private void getOrgDetails() {
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
+            Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
+            resource.param("orgid", command.getOrgid());
+            resource.param("dimid", command.getDimid());
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                 @Override
-                public void onClick(View v) {
-                    OrgEditActivity.this.setEdit(true);
+                public void onSuccess(Response response) {
+                    bean = (OrgDetailInfoBean) response.getPayload();
+                    if (bean != null) {
+                        buildInfo();
+                    }
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(OrgEditActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFinally(Response response) {
+
                 }
             });
         }
     }
 
     //添加组织的方法
-
     private void addOrg(String orgname) {
         Resource resource = resourceFactory.create("AddOrg");
         resource.param("instid", instid);
@@ -371,8 +388,9 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 Org org = (Org) response.getPayload();
                 command = new OrgEditCommand().setOrgid(org.getId());
-                setResult(OrgEditCommand.RESULT_CODE_OK);
+                command.setEdit(edit);
                 initView();
+                setResult(OrgEditCommand.RESULT_CODE_OK);
                 Toast.makeText(OrgEditActivity.this, R.string.add_org_success_tip, Toast.LENGTH_SHORT).show();
             }
 
@@ -444,17 +462,23 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     }
 
     //修改成员在组织内的角色
-    private void updateOrgUserRole(JupiterTextIco item) {
+    private void updateOrgUserRole(final JupiterTextIco item) {
         final User user = (User) item.getTag();
         Resource resource = resourceFactory.create("UpdateUserOrgRole");
         resource.param("orgid", command.getOrgid());
         resource.param("resourceid", user.getId());
         resource.param("userid", userid);
-        resource.param("relationrole", "user");
+        if (user.getRelationrole().equals(User.USER))
+            resource.param("relationrole", "assisant");
+        else if (user.getRelationrole().equals(User.ASSISANT))
+            resource.param("relationrole", "user");
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Toast.makeText(OrgEditActivity.this, "添加"+user.getName()+"为群助手成功！", Toast.LENGTH_SHORT).show();
+                String tip = user.getRelationrole().equals(User.USER) ? "添加" : "删除";
+                Toast.makeText(OrgEditActivity.this, tip + user.getName() + "为群助手成功！", Toast.LENGTH_SHORT).show();
+                command.setEdit(edit);
+                initView();
             }
 
             @Override
@@ -467,6 +491,17 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 orgUserOperatePopupW.dismiss();
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == OrgChooseAddUserCommand.REQUEST_CODE && resultCode == OrgChooseAddUserCommand.RESULT_CODE_OK) || (requestCode == OrgEditCommand.REQUEST_CODE && resultCode == OrgEditCommand.RESULT_CODE_OK)) {
+            requestcode = OrgEditCommand.RESULT_CODE_OK;
+            command.setEdit(edit);
+            initView();
+        }
     }
 
     private View.OnClickListener onSendMsgClickListener = new View.OnClickListener() {
