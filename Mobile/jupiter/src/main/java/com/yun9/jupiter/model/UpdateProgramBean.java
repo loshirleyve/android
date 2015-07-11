@@ -1,4 +1,4 @@
-package com.yun9.wservice.model;
+package com.yun9.jupiter.model;
 
 /**
  * Created by Leon on 15/7/8.

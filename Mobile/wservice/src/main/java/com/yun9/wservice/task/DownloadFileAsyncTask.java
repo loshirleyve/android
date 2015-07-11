@@ -67,7 +67,6 @@ public class DownloadFileAsyncTask extends AsyncTask<FileBean, FileBean, List<Fi
                 FileBean localFileBean = new FileBean(file);
                 fileBeanList.add(localFileBean);
                 publishProgress(localFileBean);
-
                 downloading = false;
             }
 

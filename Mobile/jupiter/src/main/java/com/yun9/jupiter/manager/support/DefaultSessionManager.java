@@ -1,18 +1,34 @@
 package com.yun9.jupiter.manager.support;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.Environment;
+import android.widget.Toast;
+
+import com.yun9.jupiter.R;
+import com.yun9.jupiter.afinal.AjaxCallBack;
+import com.yun9.jupiter.afinal.FinalHttp;
 import com.yun9.jupiter.bean.Bean;
 import com.yun9.jupiter.bean.BeanManager;
 import com.yun9.jupiter.bean.Initialization;
 import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.cache.UserDataCache;
-import com.yun9.jupiter.conf.PropertiesManager;
+import com.yun9.jupiter.http.AsyncHttpResponseCallback;
+import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.model.UpdateProgramBean;
 import com.yun9.jupiter.model.User;
+import com.yun9.jupiter.repository.Resource;
+import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AppUtil;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.mobile.annotation.BeanInject;
 
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +44,8 @@ public class DefaultSessionManager implements SessionManager, Bean,
     private List<OnLogoutListener> onLogoutListenerList;
 
     private List<OnChangeInstListener> onChangeInstListenerList;
+
+    private BeanManager beanManager;
 
     @Override
     public Class<?> getType() {
@@ -61,6 +79,94 @@ public class DefaultSessionManager implements SessionManager, Bean,
             this.onChangeInstListenerList = new ArrayList<>();
         }
         this.onChangeInstListenerList.add(onChangeInstListener);
+    }
+
+    @Override
+    public void checkUpdate(int versionCode, final OnUpdateProgramCallback onUpdateProgramCallback) {
+        ResourceFactory resourceFactory = beanManager.get(ResourceFactory.class);
+        Resource resource = resourceFactory.create("QuerySysprogramupdate");
+        resource.param("ostype", "android").param("apptype", "app").param("versioncode", versionCode);
+
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                UpdateProgramBean updateProgramBean = (UpdateProgramBean) response.getPayload();
+                if (AssertValue.isNotNull(onUpdateProgramCallback)) {
+                    onUpdateProgramCallback.update(updateProgramBean);
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                onUpdateProgramCallback.update(null);
+            }
+
+            @Override
+            public void onFinally(Response response) {
+            }
+        });
+
+
+    }
+
+    @Override
+    public void downloadAndInstallApk(final UpdateProgramBean updateProgramBean, final Activity activity) {
+        if (!AssertValue.isNotNull(updateProgramBean))
+            return;
+
+        CharSequence msg = activity.getResources().getString(R.string.update_prog_msg, updateProgramBean.getLog());
+
+        //非强制更新提示用户下载更新。
+        if (updateProgramBean.getFocus() == 0) {
+            new AlertDialog.Builder(activity).setTitle(R.string.update_prog_title).setMessage(msg).setPositiveButton(R.string.jupiter_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    execDownloadAndInstallApk(updateProgramBean, activity);
+                }
+            }).setNegativeButton(R.string.jupiter_cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            }).show();
+        } else {
+            new AlertDialog.Builder(activity).setTitle(R.string.update_prog_title).setMessage(msg).setPositiveButton(R.string.jupiter_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    execDownloadAndInstallApk(updateProgramBean, activity);
+                }
+            }).show();
+        }
+    }
+
+    private void execDownloadAndInstallApk(UpdateProgramBean updateProgramBean, final Activity activity) {
+        String apkPath = "";
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            apkPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separatorChar + "Download" + File.separatorChar + "Yun9" + File.separatorChar;
+            File apkFile = new File(apkPath);
+            if (!apkFile.exists()) {
+                apkFile.mkdir();
+            }
+        }
+
+        if (AssertValue.isNotNullAndNotEmpty(apkPath) && AssertValue.isNotNull(updateProgramBean.getUrl())) {
+            final ProgressDialog progressDialog = ProgressDialog.show(activity, null, activity.getResources().getString(R.string.update_wating), true);
+
+            FinalHttp finalHttp = new FinalHttp();
+            finalHttp.download(updateProgramBean.getUrl(), apkPath + apkName, new AjaxCallBack<File>() {
+                @Override
+                public void onSuccess(File file) {
+                    progressDialog.dismiss();
+                    AppUtil.installAPK(file, activity);
+                }
+
+                @Override
+                public void onFailure(Throwable t, int errorNo, String strMsg) {
+                    logger.e(strMsg);
+                    Toast.makeText(activity, R.string.update_error, Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
     @Override
@@ -142,7 +248,7 @@ public class DefaultSessionManager implements SessionManager, Bean,
 
     @Override
     public void init(BeanManager beanManager) {
-
+        this.beanManager = beanManager;
     }
 
 
