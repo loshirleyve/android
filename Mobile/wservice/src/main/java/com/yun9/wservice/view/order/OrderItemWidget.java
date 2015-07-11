@@ -5,12 +5,15 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.util.DateFormatUtil;
 import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.StringPool;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.CtrlCodeDefNo;
+import com.yun9.wservice.model.CtrlCode;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderBaseInfo;
 
@@ -40,10 +43,14 @@ public class OrderItemWidget extends JupiterRelativeLayout{
 
     public void builWithData(OrderBaseInfo order) {
         productNameTV.setText(order.getProductname());
-        ImageLoaderUtil.getInstance(this.getContext()).displayImage(order.getProductimage(), productImgeIV);
-        productPriceTV.setText(order.getGoodsamount() + "元");
+        // TODO 产品图片
+//        ImageLoaderUtil.getInstance(this.getContext()).displayImage(order, productImgeIV);
+        productPriceTV.setText(order.getOrderamount() + "元");
         orderSnTV.setText(order.getOrdersn());
-        orderStateTV.setText(order.getStatename());
+
+        orderStateTV.setText(
+                CtrlCodeCache.getInstance()
+                        .getCtrlcodeName(CtrlCodeDefNo.ORDER_STATE,order.getState()));
         orderTimeTV.setText(DateFormatUtil.format(order.getCreatedate(),"yyyy年MM月dd日"));
     }
 

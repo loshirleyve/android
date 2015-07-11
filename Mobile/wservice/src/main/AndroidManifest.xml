@@ -189,6 +189,12 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+            android:name=".view.org.OrgUserDetailActivity"
+            android:label="@string/user_detail"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
             android:name=".view.org.OrgListActivity"
             android:label="@string/org_list_title_hr"
             android:screenOrientation="portrait"
@@ -463,6 +469,11 @@
         <activity
             android:name=".view.inst.StaffNumActivity"
             android:label="@string/staff_num"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.myself.AppAboutActivity"
+            android:label="@string/setting_about"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
     </application>

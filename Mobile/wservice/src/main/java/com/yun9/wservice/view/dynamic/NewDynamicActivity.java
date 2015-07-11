@@ -73,6 +73,10 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.dynamic_content_et)
     private EditText dynamicContentET;
 
+    @ViewInject(id = R.id.share_tv)
+    private TextView shareTv;
+
+
     @ViewInject(id = R.id.location_tv)
     private TextView locationTV;
 
@@ -201,6 +205,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 this.selectImageRL.setVisibility(View.GONE);
                 this.selectTopocRL.setVisibility(View.GONE);
                 if (NewDynamicCommand.MSG_COMMENT.equals(command.getType())) {
+                    shareTv.setVisibility(View.GONE);
                     this.selectUserRL.setVisibility(View.GONE);
                     titleBarLayout.getTitleTv().setText(R.string.msg_card_comment);
                     this.titleBarLayout.getTitleRight().setOnClickListener(onCommentClickListener);

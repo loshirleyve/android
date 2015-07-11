@@ -60,4 +60,16 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
     private void buildView() {
 
     }
+
+    public ImageView getUserHeadIV() {
+        return userHeadIV;
+    }
+
+    public TextView getUserNameTV() {
+        return userNameTV;
+    }
+
+    public TextView getContactUsIV() {
+        return contactUsIV;
+    }
 }

@@ -1,6 +1,9 @@
 package com.yun9.wservice.view.inst;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -34,6 +37,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class SelectInstActivity extends JupiterFragmentActivity {
 
+    private InstCommand instCommand;
     private SelectInstCommand command;
 
     @ViewInject(id = R.id.titlebar)
@@ -102,6 +106,14 @@ public class SelectInstActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == InstCommand.RESULT_CODE_OK){
+            refresh();
+        }
+    }
+
     private void refresh() {
 
         Resource resource = resourceFactory.create("QueryUserInsts");
@@ -116,7 +128,6 @@ public class SelectInstActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFailure(Response response) {
-                //InitInstActivity.start(SelectInstActivity.this, new InstCommand());
                 Toast.makeText(SelectInstActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
@@ -144,7 +155,14 @@ public class SelectInstActivity extends JupiterFragmentActivity {
             }
         }
         if(insts.size() == 0){
-            InitInstActivity.start(SelectInstActivity.this, new InstCommand());
+            Dialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.app_notice))
+                    .setMessage(getString(R.string.init_inst_notice))
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setPositiveButton(getString(R.string.yes), onYesClickListener)
+                    .setNegativeButton(getString(R.string.no), onNoClickListener).create();
+            alertDialog.show();
+
         }else {
             if (!AssertValue.isNotNull(selectInstAdapter)) {
                         this.selectInstAdapter = new SelectInstAdapter(this, insts);
@@ -173,4 +191,22 @@ public class SelectInstActivity extends JupiterFragmentActivity {
             }
         }
     };
+
+    private DialogInterface.OnClickListener onYesClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if(!AssertValue.isNotNull(instCommand)){
+                instCommand = new InstCommand();
+            }
+            instCommand.setUserid(command.getUser().getId());
+            InitInstActivity.start(SelectInstActivity.this, instCommand);
+        }
+    };
+    private DialogInterface.OnClickListener onNoClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+        }
+    };
+
 }

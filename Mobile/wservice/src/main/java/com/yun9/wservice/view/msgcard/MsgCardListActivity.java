@@ -1,19 +1,18 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
@@ -34,6 +33,7 @@ import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
+import com.yun9.wservice.view.org.OrgEditCommand;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -152,12 +152,15 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     }
 
     private void refresh(String rowid, final String dir) {
-        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid()) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid()) && AssertValue.isNotNullAndNotEmpty(command.getType())) {
+        if (AssertValue.isNotNull(command)
+                && AssertValue.isNotNullAndNotEmpty(command.getUserid())
+                && AssertValue.isNotNullAndNotEmpty(command.getType())) {
             Resource resource = resourceFactory.create("QueryMsgCardByScene");
             resource.param("instid", sessionManager.getInst().getId());
             resource.param("userid", command.getUserid());
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
+            resource.param("topic", command.getTopic());
             resource.page().setDir(dir).setRowid(rowid);
 
 
@@ -204,13 +207,14 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == MsgCardDetailCommand.RESULT_CODE_OK || resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+        if (resultCode == MsgCardDetailCommand.RESULT_CODE_OK || resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             mPtrFrame.autoRefresh();
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
-            if (AssertValue.isNotNullAndNotEmpty(users) && AssertValue.isNotNullAndNotEmpty(forwardMsgCardId)) {
-                NewDynamicActivity.start(MsgCardListActivity.this, new NewDynamicCommand().setMsgCardId(forwardMsgCardId).setSelectUsers(users).setType(NewDynamicCommand.MSG_FORWARD));
+            List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
+            if ((AssertValue.isNotNullAndNotEmpty(users) || AssertValue.isNotNullAndNotEmpty(orgs)) && AssertValue.isNotNullAndNotEmpty(forwardMsgCardId)) {
+                NewDynamicActivity.start(MsgCardListActivity.this, new NewDynamicCommand().setMsgCardId(forwardMsgCardId).setSelectUsers(users).setSelectOrgs(orgs).setType(NewDynamicCommand.MSG_FORWARD));
             }
         }
     }
@@ -261,7 +265,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             msgCardWidget.getFwRL().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    forwardMsgCardId=msgCard.getId();
+                    forwardMsgCardId = msgCard.getId();
                     OrgCompositeActivity.start(MsgCardListActivity.this, new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
                     logger.d("转发！");
                 }

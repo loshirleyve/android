@@ -20,6 +20,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.Order;
 
 /**
@@ -134,7 +135,7 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
         resource.param("serviceinstid",order.getOrder().getProvideinstid());
         resource.param("complain",content);
         resource.param("sourceid",orderId);
-        resource.param("sourcetype","so");
+        resource.param("sourcetype", SourceType.TYPE_ORDER);
         resource.param("tag","1");
         resource.param("createby",sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {

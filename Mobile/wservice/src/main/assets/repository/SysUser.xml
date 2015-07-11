@@ -41,7 +41,7 @@
         <name>QueryUserInfoByIdService</name>
         <action>com.yun9.sys.user.service.QueryUserInfoByIdService</action>
         <output>
-            <classname>com.yun9.jupiter.model.User</classname>
+            <classname>com.yun9.wservice.model.OrgUser</classname>
             <type>object</type>
         </output>
         <type>yun9</type>

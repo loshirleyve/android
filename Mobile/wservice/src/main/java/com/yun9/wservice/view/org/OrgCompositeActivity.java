@@ -95,7 +95,6 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         Intent intent = new Intent(activity, OrgCompositeActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, OrgCompositeCommand.REQUEST_CODE);
     }
@@ -241,6 +240,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         if (!AssertValue.isNotNull(orgCompositeListAdapter)) {
             orgCompositeListAdapter = new OrgCompositeListAdapter(OrgCompositeActivity.this, orgCompositeUserListBeans, false);
             orgCompositeListAdapter.setOnSelectListener(onSelectListener);
+            orgCompositeListAdapter.setOnClickForDetail(onClickForDetail);
             userListView.setAdapter(orgCompositeListAdapter);
         } else {
             orgCompositeListAdapter.notifyDataSetChanged();
@@ -327,6 +327,16 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             OrgCompositeUserListBean tempOrgCompositeUserListBean = (OrgCompositeUserListBean) view.getTag();
             tempOrgCompositeUserListBean.setSelected(mode);
             setSutitle();
+        }
+    };
+
+    private View.OnClickListener onClickForDetail = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgCompositeUserListBean tempOrgCompositeUserListBean = (OrgCompositeUserListBean) v.getTag();
+            OrgUserDetailActivity.start(OrgCompositeActivity.this,
+                    new OrgUserDetailCommand()
+                            .setUserId(tempOrgCompositeUserListBean.getUser().getId()));
         }
     };
 

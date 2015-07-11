@@ -5,6 +5,8 @@ import java.util.List;
 
 public class User implements java.io.Serializable {
 
+    public static final String USER="user";
+    public static final String ASSISANT="assisant";
     /**
      *
      */
@@ -26,6 +28,7 @@ public class User implements java.io.Serializable {
     private String remark;
     private String orgNames;
     private String phone;
+    private String relationrole;
     private List<UserContact> contacts;
 
 
@@ -173,4 +176,13 @@ public class User implements java.io.Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public String getRelationrole() {
+        return relationrole;
+    }
+
+    public void setRelationrole(String relationrole) {
+        this.relationrole = relationrole;
+    }
 }
+

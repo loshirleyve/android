@@ -156,7 +156,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
                 row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
                 row.getMainIV().setVisibility(View.GONE);
                 row.getHotNitoceTV().setVisibility(View.VISIBLE);
-                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.drak));
+                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
                 row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -202,7 +202,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
                 row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
                 row.getMainIV().setVisibility(View.GONE);
                 row.getHotNitoceTV().setVisibility(View.VISIBLE);
-                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.drak));
+                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
                 row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
                 row.setOnClickListener(new View.OnClickListener() {
                     @Override
