@@ -271,7 +271,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 @Override
                 public void onClick(View v) {
                     forwardMsgCardId = msgCard.getId();
-                    OrgCompositeActivity.start(MsgCardListActivity.this, new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
+                    OrgCompositeActivity.start(MsgCardListActivity.this, new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK).setSingleSelect(true).setOnlyUsers(true));
                     logger.d("转发！");
                 }
             });

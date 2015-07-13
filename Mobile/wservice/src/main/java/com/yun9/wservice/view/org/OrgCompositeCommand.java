@@ -37,6 +37,8 @@ public class OrgCompositeCommand extends JupiterCommand {
 
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
 
+    private boolean singleSelect=false;
+
     public boolean isEdit() {
         return edit;
     }
@@ -117,4 +119,15 @@ public class OrgCompositeCommand extends JupiterCommand {
         selectOrgs.add(orgid);
         return this;
     }
+
+    public boolean singleSelect() {
+        return singleSelect;
+    }
+
+    public OrgCompositeCommand setSingleSelect(boolean singleSelect) {
+        this.singleSelect = singleSelect;
+
+        return this;
+    }
+
 }

@@ -48,6 +48,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
     private String orgid;
 
+
     public OrgPhoneUserAdapter(Context context, ResourceFactory resourceFactory, List<PhoneUser> users, String instid, String userid, String orgid) {
         this.mContext = context;
         this.resourceFactory = resourceFactory;
@@ -88,7 +89,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item.setShowTime(false);
             item.setShowArrow(false);
             item.getArrowRightButton().setText(R.string.invitation_reg);
-            item.getArrowRightButton().setBackgroundResource(R.drawable.button_border);
+            item.getArrowRightButton().setBackgroundResource(R.drawable.button_background);
             if (!user.isregister())
                 item.setShowArrowButton(true);
 

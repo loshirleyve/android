@@ -85,6 +85,7 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
 
     private String instid;
 
+
     public static void start(Activity activity, OrgPhoneUserCommand command) {
         Intent intent = new Intent(activity, OrgPhoneUserActivity.class);
         Bundle bundle = new Bundle();
@@ -125,7 +126,6 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
     }
 
     public void initView() {
-        //ProgressDialog registerDialog = ProgressDialog.show(OrgPhoneUserActivity.this, null, getResources().getString(R.string.app_wating), true);
         mContext = getApplicationContext();
         phoneusers = new ArrayList<>();
         textwatchusers = new ArrayList<>();
@@ -136,17 +136,12 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNullAndNotEmpty(contactusers)) {
             phoneusers.addAll(contactusers.values());
             textwatchusers.addAll(phoneusers);
-            // registerDialog.dismiss();
-        } else//构造测试数据
-        {
-            phoneusers.addAll(build());
-            textwatchusers.addAll(phoneusers);
-            //registerDialog.dismiss();
         }
     }
 
     public void getRegisterUsers() {
         if (AssertValue.isNotNullAndNotEmpty(phonenumbers)) {
+           final ProgressDialog registerDialog = ProgressDialog.show(OrgPhoneUserActivity.this, null, getResources().getString(R.string.app_wating), true);
             Resource resource = resourceFactory.create("QueryUsersByPhones");
             resource.param("instid", instid);
             resource.param("phones", phonenumbers);
@@ -164,7 +159,7 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
+                    registerDialog.dismiss();
                 }
             });
         }

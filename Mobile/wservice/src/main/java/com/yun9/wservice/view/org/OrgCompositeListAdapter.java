@@ -79,7 +79,6 @@ public class OrgCompositeListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         JupiterRowStyleSutitleLayout tempView = null;
         OrgCompositeUserListBean orgCompositeUserListBean = mOrgCompositeUserListBeans.get(position);
-
         if (AssertValue.isNotNull(convertView)) {
             tempView = (JupiterRowStyleSutitleLayout) convertView;
         } else {
