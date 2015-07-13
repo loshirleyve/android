@@ -91,6 +91,8 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
     private boolean onlyUsers;
 
+    private boolean singleSelect;
+
     public static void start(Activity activity, OrgCompositeCommand command) {
         Intent intent = new Intent(activity, OrgCompositeActivity.class);
         Bundle bundle = new Bundle();
@@ -120,6 +122,10 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
         if (AssertValue.isNotNull(command) && !AssertValue.isNotNullAndNotEmpty(command.getInstid())) {
             command.setInstid(sessionManager.getInst().getId());
+        }
+
+        if (AssertValue.isNotNull(command)) {
+            this.singleSelect = command.singleSelect();
         }
 
         //刷新界面数据
@@ -325,7 +331,13 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onSelect(View view, boolean mode) {
             OrgCompositeUserListBean tempOrgCompositeUserListBean = (OrgCompositeUserListBean) view.getTag();
+            if(singleSelect) {
+                for (OrgCompositeUserListBean orguser : orgCompositeUserListBeans) {
+                    orguser.setSelected(false);
+                }
+            }
             tempOrgCompositeUserListBean.setSelected(mode);
+            orgCompositeListAdapter.notifyDataSetChanged();
             setSutitle();
         }
     };

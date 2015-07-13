@@ -151,6 +151,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
         jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.org_user_list);
         jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.children_org);
+        titleBarLayout.getTitleTv().setText("");
         titleBarLayout.getTitleRightTv().setVisibility(View.GONE);
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
         sendMsgCardButton.setOnClickListener(onSendMsgClickListener);

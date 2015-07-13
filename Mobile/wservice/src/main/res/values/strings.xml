@@ -22,6 +22,7 @@
     <string name="app_edit">编辑</string>
     <string name="app_complete">完成</string>
     <string name="app_ok">确定</string>
+    <string name="app_continue">继续</string>
     <string name="app_next">下一步</string>
     <string name="app_wating">正在处理,请稍后...</string>
     <string name="app_send">发送</string>
@@ -72,7 +73,10 @@
     <string name="msg_card_sieve">掷筛子</string>
     <string name="add_comment_success_tip">消息卡片评论成功！</string>
     <string name="add_forwadr_success_tip">消息卡片转发成功！</string>
-
+    <string name="msg_dialog_title">为选择分享范围！</string>
+    <string name="msg_dialog_content">还未选择分享范围，这样将只有本人可以看到此消息！</string>
+    <string name="msg_dialog_continue">返回选择</string>
+    <string name="msg_dialog_cancel">确定发送</string>
 
     <string name="activity_msg_card_list_title">消息卡片列表</string>
     <string name="activity_msg_card_detail_title">消息详情</string>

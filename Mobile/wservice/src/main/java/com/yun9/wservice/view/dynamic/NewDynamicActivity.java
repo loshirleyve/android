@@ -2,7 +2,7 @@ package com.yun9.wservice.view.dynamic;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.DialogInterface;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -364,16 +364,15 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 }
             }
         }
-        if (!AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
-            Dialog alertDialog = new Dialog(mContext);
-            alertDialog.setTitle("选择范围");
-            alertDialog.show();
-            return ;
-        }
+//        if (!AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
+//            Dialog alertDialog = new Dialog(mContext);
+//            alertDialog.setTitle("选择范围");
+//            alertDialog.show();
+//            return ;
+//        }
 
 
         final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
-
 
         // 执行发送消息
         Resource resource = resourceFactory.create("AddMsgCard");
@@ -383,7 +382,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         resource.param("content", newMsgCard.getContent());
         resource.param("source", newMsgCard.getSource());
         resource.param("scope", newMsgCard.getScope());
-
+        resource.param("users", newMsgCard.getUsers());
         if (AssertValue.isNotNull(lastPoiInfoBean)) {
             resource.header("locationx", lastPoiInfoBean.getLatitude() + "");
             resource.header("locationy", lastPoiInfoBean.getLontitude() + "");
@@ -393,9 +392,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(lastLocationBean)) {
             resource.header("locationscale", lastLocationBean.getRadius() + "");
         }
-        if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getUsers())) {
-            resource.param("users", newMsgCard.getUsers());
-        }
 
         if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getActions())) {
             resource.param("actions", newMsgCard.getActions());
@@ -403,6 +399,8 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNullAndNotEmpty(newMsgCard.getAttachments())) {
             resource.param("attachments", newMsgCard.getAttachments());
         }
+
+
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -605,21 +603,53 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers))
+                showDialog();
+            else
+                sendMsg();
+        }
+    };
 
-            if (!AssertValue.isNotNullAndNotEmpty(userid)) {
-                Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
-                return;
-            }
+    public void showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(NewDynamicActivity.this);
+        builder.setTitle(R.string.msg_dialog_title);
+        builder.setMessage(R.string.msg_dialog_content);
+        builder.setPositiveButton(R.string.msg_dialog_continue, new DialogInterface.OnClickListener() {
 
-            if (!AssertValue.isNotNullAndNotEmpty(instid)) {
-                Toast.makeText(mContext, R.string.new_dynamic_send_notinst, Toast.LENGTH_SHORT).show();
-                return;
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                OrgCompositeActivity.start(NewDynamicActivity.this, new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
             }
+        });
 
-            if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
-                Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
-                return;
+        builder.setNegativeButton(R.string.msg_dialog_cancel, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                sendMsg();
             }
+        });
+
+        builder.create().show();
+    }
+
+    public void sendMsg() {
+        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+            Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+            Toast.makeText(mContext, R.string.new_dynamic_send_notinst, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
+            Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
 //            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
@@ -633,10 +663,9 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 //                //未获取到地理位置信息，暂时允许继续发送
 //            }
 
-            //上传文件以及图片
-            uploadFiles();
-        }
-    };
+        //上传文件以及图片
+        uploadFiles();
+    }
 
 
     private View.OnClickListener onForwandClickListener = new View.OnClickListener() {

@@ -452,7 +452,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private View.OnClickListener onForwardClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            OrgCompositeActivity.start(MsgCardDetailActivity.this, new OrgCompositeCommand().setEdit(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
+            OrgCompositeActivity.start(MsgCardDetailActivity.this, new OrgCompositeCommand().setEdit(true).setOnlyUsers(true).setSingleSelect(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
         }
     };
 
