@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ext="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/groupbackground">
@@ -15,7 +16,7 @@
 
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/titlebar">
 
 
@@ -92,13 +93,25 @@
                             android:textColor="@color/title_color"
                             android:textSize="18dp" />
 
-                        <Button
-                            android:id="@+id/buy_btn"
+                        <LinearLayout
+                            android:id="@+id/buy_ll"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_marginRight="10dp"
-                            android:text="立即购买" />
+                            android:orientation="horizontal"
+                            android:gravity="center_horizontal"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:background="@color/title_color">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/buy_right_now"
+                                android:textColor="@color/whites"/>
+                        </LinearLayout>
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -178,6 +191,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/comment_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -218,6 +232,13 @@
                     android:paddingTop="8dp"
                     ext:isIndicator="true"
                     ext:numsOfStar="5" />
+                <com.yun9.jupiter.widget.JupiterListView
+                    android:background="@color/groupbackground"
+                    android:paddingLeft="20dp"
+                    android:id="@+id/sub_comment_lv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </com.yun9.jupiter.widget.JupiterListView>
 
                 <View
                     android:layout_width="match_parent"

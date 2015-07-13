@@ -2,7 +2,6 @@ package com.yun9.wservice.view.payment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -27,9 +26,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.Payinfo;
 import com.yun9.wservice.view.order.OrderRechargeWidget;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -265,9 +262,8 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             JupiterRowStyleTitleLayout titleLayout;
-            final Payinfo.PaymodeCategory category = payinfo.getPaymodeCategorys().get(position);
             if (convertView == null) {
                 titleLayout = new JupiterRowStyleTitleLayout(PaymentOrderActivity.this);
                 titleLayout.getHotNitoceTV()
@@ -277,12 +273,12 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
                 titleLayout.getMainIV().setVisibility(View.GONE);
                 titleLayout.getTitleTV()
-                        .setText(category.getName());
+                        .setText(payinfo.getPaymodeCategorys().get(position).getName());
                 titleLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         choiceWaysCommand = new PaymentChoiceWaysCommand();
-                        choiceWaysCommand.setCategory(category);
+                        choiceWaysCommand.setCategory(payinfo.getPaymodeCategorys().get(position));
                         PaymentChoiceWaysActivity.start(PaymentOrderActivity.this,choiceWaysCommand);
                     }
                 });
@@ -290,7 +286,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             } else {
                 titleLayout = (JupiterRowStyleTitleLayout) convertView;
             }
-            double amount = getUserAmount(category);
+            double amount = getUserAmount(payinfo.getPaymodeCategorys().get(position));
             if (amount > 0) {
                 titleLayout.getHotNitoceTV().setText(amount+"元");
             } else {

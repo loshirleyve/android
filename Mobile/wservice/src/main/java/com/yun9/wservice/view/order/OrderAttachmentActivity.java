@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.order;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +18,13 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.AttachmentInputType;
+import com.yun9.wservice.enums.AttachmentTransferType;
+import com.yun9.wservice.model.Attachment;
+import com.yun9.wservice.model.wrapper.AttachmentWrapper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,38 +96,87 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
     }
 
     private void loadData() {
-
-        materialWidget.buildWithData();
-        materialWidget.getTitleLayout().setOnClickListener(new View.OnClickListener() {
+        final ProgressDialog registerDialog =
+                ProgressDialog.show(this, null,
+                        getResources().getString(R.string.app_wating), true);
+        Resource resource = resourceFactory.create("QueryOrderAttachmentService");
+        resource.param("orderid", orderId);
+        resource.invok(new AsyncHttpResponseCallback() {
             @Override
-            public void onClick(View v) {
-                openMaterialCommand = new JupiterCommand() {
-                };
-                addActivityCallback(openMaterialCommand.getRequestCode(), new IActivityCallback() {
-                    @Override
-                    public void onActivityResult(int resultCode, Intent data) {
-                        if (resultCode == JupiterCommand.RESULT_CODE_OK) {
-                            Serializable tag = data
-                                    .getSerializableExtra(OrderAttachmentChoiceWayActivity.CHOICE_WAY_HOLDER);
-                            if (tag != null) {
-                                choicedMaterialWay =
-                                        (OrderAttachmentChoiceWayActivity.ViewHolder) tag;
-                                materialWidget.getTitleLayout().getHotNitoceTV().setTextColor(getResources()
-                                        .getColor(R.color.title_color));
-                                materialWidget.getTitleLayout().getHotNitoceTV().setText(choicedMaterialWay
-                                        .getWay().getName());
-                            } else {
-                                choicedMaterialWay = null;
-                                materialWidget.getTitleLayout().getHotNitoceTV().setTextColor(getResources()
-                                        .getColor(R.color.black));
-                                materialWidget.getTitleLayout().getHotNitoceTV().setText("未选择");
-                            }
-                        }
-                    }
-                });
-                OrderAttachmentChoiceWayActivity.start(OrderAttachmentActivity.this, openMaterialCommand);
+            public void onSuccess(Response response) {
+                AttachmentWrapper wrapper = (AttachmentWrapper) response.getPayload();
+                List<Attachment> attachments = wrapper.getOrderAttachments();
+                buildWithData(attachments);
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                registerDialog.dismiss();
             }
         });
+
+    }
+
+    private void buildWithData(List<Attachment> attachments) {
+        if (attachments == null
+                || attachments.size() == 0){
+            return;
+        }
+        List<Attachment> materialAttachs = new ArrayList<>();
+        List<Attachment> vitualAttachs = new ArrayList<>();
+        for (Attachment attachment : attachments) {
+            if (AttachmentTransferType.ENTITY.equals(attachment.getTransfertype())){
+                materialAttachs.add(attachment);
+            } else if (AttachmentTransferType.DOC.equals(attachment.getTransfertype())) {
+                vitualAttachs.add(attachment);
+            }
+        }
+        if (materialAttachs.size() == 0){
+            materialWidget.setVisibility(View.GONE);
+        } else {
+            materialWidget.buildWithData(materialAttachs);
+            materialWidget.getTitleLayout().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openMaterialCommand = new JupiterCommand() {
+                    };
+                    addActivityCallback(openMaterialCommand.getRequestCode(), new IActivityCallback() {
+                        @Override
+                        public void onActivityResult(int resultCode, Intent data) {
+                            if (resultCode == JupiterCommand.RESULT_CODE_OK) {
+                                Serializable tag = data
+                                        .getSerializableExtra(OrderAttachmentChoiceWayActivity.CHOICE_WAY_HOLDER);
+                                if (tag != null) {
+                                    choicedMaterialWay =
+                                            (OrderAttachmentChoiceWayActivity.ViewHolder) tag;
+                                    materialWidget.getTitleLayout().getHotNitoceTV().setTextColor(getResources()
+                                            .getColor(R.color.title_color));
+                                    materialWidget.getTitleLayout().getHotNitoceTV().setText(choicedMaterialWay
+                                            .getWay().getName());
+                                } else {
+                                    choicedMaterialWay = null;
+                                    materialWidget.getTitleLayout().getHotNitoceTV().setTextColor(getResources()
+                                            .getColor(R.color.black));
+                                    materialWidget.getTitleLayout().getHotNitoceTV().setText("未选择");
+                                }
+                            }
+                        }
+                    });
+                    OrderAttachmentChoiceWayActivity.start(OrderAttachmentActivity.this, openMaterialCommand);
+                }
+            });
+        }
+        if (vitualAttachs.size() == 0){
+            vitualWidget.setVisibility(View.GONE);
+        } else {
+            vitualWidget.buildWithData(vitualAttachs);
+        }
+
     }
 
     @Override

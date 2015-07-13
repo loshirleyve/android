@@ -114,7 +114,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         Intent intent = new Intent(activity, MsgCardDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(MsgCardDetailCommand.PARAM_COMMAND, command);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent,command.getRequestCode());
     }
@@ -127,8 +126,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         command = (MsgCardDetailCommand) getIntent().getSerializableExtra(MsgCardDetailCommand.PARAM_COMMAND);
         currUserid = sessionManager.getUser().getId();
         currInstid = sessionManager.getInst().getId();
@@ -208,9 +205,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
                     if(mMsgCard.isMypraise()){
-                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star_sel);
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise);
                     }else {
-                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.star1);
+                        toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                     }
                     refreshComplete();
                 }

@@ -38,7 +38,7 @@
         <name>QueryProductInfoById</name>
         <action>com.yun9.ws.biz.service.QueryProductInfoByIdService</action>
         <output>
-            <classname>com.yun9.wservice.model.Product</classname>
+            <classname>com.yun9.wservice.model.CompositeProduct</classname>
             <type>object</type>
         </output>
         <type>yun9</type>

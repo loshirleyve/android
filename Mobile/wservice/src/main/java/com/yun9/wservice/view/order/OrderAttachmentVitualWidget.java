@@ -27,7 +27,9 @@ import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.AttachmentInputType;
 import com.yun9.wservice.model.AttachTransferWay;
+import com.yun9.wservice.model.Attachment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -69,8 +71,8 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
         buildView();
     }
 
-    private void buildView() {
-        List<FormCellBean> cellBeans = buildFakeData();
+    public void buildWithData(List<Attachment> attachments) {
+        List<FormCellBean> cellBeans = toFormCellBeans(attachments);
         FormCellBean formCellBean;
         FormCell cell;
         Class<? extends FormCell> type;
@@ -87,6 +89,35 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
                 }
             }
         }
+    }
+
+    private List<FormCellBean> toFormCellBeans(List<Attachment> attachments) {
+        List<FormCellBean> cellBeans = new ArrayList<>();
+        // 目前只有这两种，先这样处理吧
+        for (Attachment attachment : attachments) {
+            if (AttachmentInputType.FILE.equals(attachment.getInputtype())){
+                DocFormCellBean cellBean = new DocFormCellBean();
+                cellBean.setType(DocFormCell.class.getSimpleName());
+                cellBean.setKey(attachment.getAttachkey());
+                cellBean.setId(attachment.getId());
+                cellBean.setLabel(attachment.getAttachname());
+                cellBean.setMaxNum(3);
+                cellBeans.add(cellBean);
+            } else if (AttachmentInputType.FILE.equals(attachment.getInputtype())){
+                TextFormCellBean cellBean = new TextFormCellBean();
+                cellBean.setType(TextFormCell.class.getSimpleName());
+                cellBean.setKey(attachment.getAttachkey());
+                cellBean.setId(attachment.getId());
+                cellBean.setLabel(attachment.getAttachname());
+                cellBean.setDefaultValue(attachment.getInputvalue());
+                cellBeans.add(cellBean);
+            }
+        }
+        return cellBeans;
+    }
+
+    private void buildView() {
+
     }
 
     public List<Attachement> getValue() {

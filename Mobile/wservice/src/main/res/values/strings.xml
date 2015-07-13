@@ -248,4 +248,7 @@
     <string name="user_detail">用户详情</string>
     <string name="checkou_msg_card">查看动态</string>
     <string name="send_msg_to_him">给他发动态</string>
+    <string name="score">评分</string>
+    <string name="buy_right_now">立即购买</string>
+    <string name="detail">详情</string>
 </resources>

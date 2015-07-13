@@ -14,6 +14,8 @@ public class ScenePopListLayout extends JupiterRelativeLayout {
 
     private ListView hotTopicLV;
 
+    private ListView sceneLV;
+
     public ScenePopListLayout(Context context) {
         super(context);
     }
@@ -34,9 +36,14 @@ public class ScenePopListLayout extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         hotTopicLV = (ListView) findViewById(R.id.hot_top_lv);
+        sceneLV = (ListView) findViewById(R.id.scene_lv);
     }
 
     public ListView getHotTopicLV() {
         return hotTopicLV;
+    }
+
+    public ListView getSceneLV() {
+        return sceneLV;
     }
 }

@@ -71,7 +71,7 @@
                         android:textSize="16dp"
                         android:textColor="@color/red"
                         android:background="@null"
-                        android:gravity="right"
+                        android:gravity="center"
                         android:layout_alignParentRight="true"/>
                 </RelativeLayout>
             </LinearLayout>
