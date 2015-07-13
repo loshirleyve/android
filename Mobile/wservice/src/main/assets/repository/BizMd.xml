@@ -26,6 +26,7 @@
             <classname>com.yun9.wservice.model.Scene</classname>
             <type>list</type>
         </output>
+        <type>yun9</type>
     </repository>
     <!-- 查询控制编码服务 -->
     <repository>
@@ -38,3 +39,4 @@
         <type>yun9</type>
     </repository>
 </repositorys>
+        <type>yun9</type>
