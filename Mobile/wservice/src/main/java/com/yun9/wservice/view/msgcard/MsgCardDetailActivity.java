@@ -472,6 +472,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == NewDynamicCommand.RESULT_CODE_OK) {
+            setResult(MsgCardDetailCommand.RESULT_CODE_OK);
             this.refreshComplete();
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {

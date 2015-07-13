@@ -690,13 +690,14 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
             Resource resource = resourceFactory.create("AddMsgCardShare");
             resource.param("msgcardid", command.getMsgCardId());
             resource.param("userid", userid);
-            resource.param("touserid", userid);
+            resource.param("touserid", selectOrgAndUsers.get(0).getUser().getId());
             resource.param("content", dynamicContentET.getText().toString());
             resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
 
                 @Override
                 public void onSuccess(Response response) {
                     Toast.makeText(NewDynamicActivity.this, R.string.add_forwadr_success_tip, Toast.LENGTH_SHORT).show();
+                    setResult(NewDynamicCommand.RESULT_CODE_OK);
                     finish();
                 }
 
@@ -753,6 +754,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 @Override
                 public void onSuccess(Response response) {
                     Toast.makeText(NewDynamicActivity.this, R.string.add_comment_success_tip, Toast.LENGTH_SHORT).show();
+                    setResult(NewDynamicCommand.RESULT_CODE_OK);
                     finish();
                 }
 
