@@ -17,4 +17,15 @@
         <action>com.yun9.ws.biz.service.InstInitService</action>
         <type>yun9</type>
     </repository>
+
+    <!-- 查询控制编码服务 -->
+    <repository>
+        <name>QueryMdInstScale</name>
+        <action>com.yun9.ws.biz.service.QueryMdInstScaleService</action>
+        <output>
+            <classname>com.yun9.wservice.model.MdInstScales</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 </repositorys>

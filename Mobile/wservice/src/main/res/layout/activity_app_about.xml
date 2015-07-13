@@ -27,6 +27,7 @@
         android:layout_height="140dp"
         android:src="@drawable/logo_setting"/>
         <TextView
+            android:id="@+id/app_edition"
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,14 +35,6 @@
             android:gravity="center"/>
     </LinearLayout>
 
-    <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-        android:layout_marginTop="35dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:rowStyleSutitleShowMainImage="false"
-        app:rowStyleSutitleShowSutitleText="false"
-        app:rowStyleSutitleTitleText="@string/rating"
-        app:rowStyleSutitleShowTimeText="false"/>
     </LinearLayout>
 
     <LinearLayout

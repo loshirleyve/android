@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
@@ -16,10 +19,11 @@ import com.yun9.wservice.R;
  * Created by li on 2015/7/9.
  */
 public class StaffNumActivity extends JupiterFragmentActivity {
-    @ViewInject(id = R.id.finishTv)
-    private TextView finishTv;
+    @ViewInject(id = R.id.staff_num_category_lv)
+    private ListView staffNumCategoryLv;
+
     @ViewInject(id = R.id.staffNumTitle)
-    private JupiterTitleBarLayout staffNumTitle;
+    private JupiterTitleBarLayout staffNumTitle;/*
     @ViewInject(id = R.id.staff_num_category1)
     private JupiterRowStyleSutitleLayout staffNumCatOneLayout;
     @ViewInject(id = R.id.staff_num_category2)
@@ -27,7 +31,7 @@ public class StaffNumActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.staff_num_category3)
     private JupiterRowStyleSutitleLayout staffNumCatThrLayout;
     @ViewInject(id = R.id.staff_num_category4)
-    private JupiterRowStyleSutitleLayout staffNumCatFouLayout;
+    private JupiterRowStyleSutitleLayout staffNumCatFouLayout;*/
 
     public static void start(Activity activity, StaffNumCommand command){
         Intent intent = new Intent(activity, StaffNumActivity.class);
@@ -43,6 +47,9 @@ public class StaffNumActivity extends JupiterFragmentActivity {
         String value = getResources().getString(R.string.select_num_max,1);
         staffNumTitle.getTitleRightTv().setText(value);
         staffNumTitle.getTitleLeftIV().setOnClickListener(onBackClickListener);
+
+        staffNumCategoryLv.setAdapter(staffNumCategoryAdapter);
+       /*
         staffNumCatOneLayout.getSelectModeIV().setImageResource(R.drawable.selector_empty);
         staffNumCatOneLayout.getSelectModeIV().setVisibility(View.VISIBLE);
         staffNumCatTwoLayout.getSelectModeIV().setImageResource(R.drawable.selector_empty);
@@ -55,9 +62,7 @@ public class StaffNumActivity extends JupiterFragmentActivity {
         staffNumCatOneLayout.setOnClickListener(new OnStaffNumCatItemClickListener());
         staffNumCatTwoLayout.setOnClickListener(new OnStaffNumCatItemClickListener());
         staffNumCatThrLayout.setOnClickListener(new OnStaffNumCatItemClickListener());
-        staffNumCatFouLayout.setOnClickListener(new OnStaffNumCatItemClickListener());
-
-        //finishTv.setOnClickListener(onFinishClickListener);
+        staffNumCatFouLayout.setOnClickListener(new OnStaffNumCatItemClickListener());*/
     }
 
     @Override
@@ -65,7 +70,7 @@ public class StaffNumActivity extends JupiterFragmentActivity {
         return R.layout.activity_staff_num;
     }
 
-    private class OnStaffNumCatItemClickListener implements View.OnClickListener{
+/*    private class OnStaffNumCatItemClickListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
             Intent intent = new Intent();
@@ -94,23 +99,36 @@ public class StaffNumActivity extends JupiterFragmentActivity {
                     setResult(StaffNumCommand.RESULT_CODE_OK, intent);
                     finish();
                     break;
-                //default:
-                    //finishTv.setVisibility(View.VISIBLE);
             }
         }
-    };
-
-    private View.OnClickListener onFinishClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
+    };*/
 
     private View.OnClickListener onBackClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    };
+
+    private JupiterAdapter staffNumCategoryAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
         }
     };
 }
