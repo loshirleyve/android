@@ -48,9 +48,6 @@ import java.util.regex.Pattern;
  */
 public class InitInstActivity extends JupiterFragmentActivity {
     private List<SerialableEntry<String,String>> optionMap;
-/*
-    @ViewInject(id = R.id.staffNumLl)
-    private LinearLayout staffNumLl;*/
 
     @ViewInject(id = R.id.staffNum)
     private JupiterRowStyleSutitleLayout staffNumLayout;
@@ -95,8 +92,6 @@ public class InitInstActivity extends JupiterFragmentActivity {
         initInstTitle.getTitleLeft().setOnClickListener(onBackClickListener);
         staffNumLayout.setOnClickListener(onStaffNumClickListener);
         initInstTitle.getTitleRightTv().setOnClickListener(onInitInstClickListener);
-
-        //buildForm();
     }
     private View.OnClickListener onStaffNumClickListener = new View.OnClickListener() {
         @Override
@@ -104,46 +99,11 @@ public class InitInstActivity extends JupiterFragmentActivity {
             if(multiSelectCommand == null){
                 multiSelectCommand = new MultiSelectCommand();
             }
-            optionMap = new ArrayList<SerialableEntry<String, String>>();
-            getOptionMap(optionMap);
-
-            multiSelectCommand.setOptions(optionMap);
-            System.out.println("-----------------------" + optionMap.size());
-            multiSelectCommand.setMaxNum(1);
-            MultiSelectActivity.start(InitInstActivity.this, multiSelectCommand);
+            getOptionMap();
         }
     };
-/*    private void buildForm() {
-        staffNumLl.removeAllViews();
-        FormCellBean cellBean = getCellBean();
-        FormCell cell;
-        Class<? extends FormCell> type;
-            type = FormUtilFactory.getInstance().getCellTypeClassByType(cellBean.getType());
-            if (type != null){
-                cell = FormUtilFactory.createCell(type, cellBean);
-                View view = cell.getCellView(this);
-                if (AssertValue.isNotNull(view)) {
-                    staffNumLl.addView(view);
-                    cell.edit(true);
-                }
-            }
-    }
 
-
-    public FormCellBean getCellBean(){
-        optionMap = new ArrayList<SerialableEntry<String, String>>();
-        MultiSelectFormCellBean typeMSFC = new MultiSelectFormCellBean();
-        typeMSFC.setType(MultiSelectFormCell.class.getSimpleName());
-        getOptionMap((ArrayList<SerialableEntry<String, String>>) optionMap);
-        typeMSFC.setOptionMap(optionMap);
-        typeMSFC.setLabel(getString(R.string.staff_num));
-        typeMSFC.setMaxNum(1);
-        typeMSFC.setRequired(true);
-
-        return typeMSFC;
-    }*/
-
-    private void getOptionMap(final List<SerialableEntry<String, String>> optionMap){
+    private void getOptionMap(){
         Resource resource = resourceFactory.create("QueryMdInstScale");
         resource.param("limitrow", "100").param("userid", userid);
         final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
@@ -151,10 +111,14 @@ public class InitInstActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 MdInstScales mdInstScales = (MdInstScales) response.getPayload();
+                optionMap = new ArrayList<SerialableEntry<String, String>>();
                 for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
                     optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
                 }
-                //System.out.println("-----------------------" + optionMap.size());
+                multiSelectCommand.setOptions(optionMap);
+                multiSelectCommand.setMaxNum(1);
+                multiSelectCommand.setIsCancelable(true);
+                MultiSelectActivity.start(InitInstActivity.this, multiSelectCommand);
             }
 
             @Override
@@ -193,15 +157,15 @@ public class InitInstActivity extends JupiterFragmentActivity {
                 && resultCode == JupiterCommand.RESULT_CODE_OK){
                 List<SerialableEntry<String,String>> selectedList =
                         (List<SerialableEntry<String, String>>) data.getSerializableExtra("selectedList");
-            staffNumLayout.getSutitleTv().setVisibility(View.VISIBLE);
-            staffNumLayout.getSutitleTv().setText(selectedList.get(0).getValue());
+            if(AssertValue.isNotNull(selectedList) && (selectedList.size() != 0) && AssertValue.isNotNullAndNotEmpty(selectedList.get(0).getValue())) {
+                staffNumLayout.getSutitleTv().setVisibility(View.VISIBLE);
+                staffNumLayout.getSutitleTv().setText(selectedList.get(0).getValue());
+                staffNumCategory = selectedList.get(0).getKey();
+                selectedList.clear();
+            }else {
+                staffNumLayout.getSutitleTv().setVisibility(View.GONE);
+            }
         }
-
-       /* CustomCallbackActivity.IActivityCallback callback = activityCallbackMap.get(requestCode);
-        if (callback != null) {
-            callback.onActivityResult(resultCode, data);
-            activityCallbackMap.remove(requestCode);
-        }*/
     }
 
     private void queryUserByIdAndSetName(final String userid){

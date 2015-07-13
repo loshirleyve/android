@@ -28,7 +28,7 @@
         </output>
         <type>yun9</type>
     </repository>
-    <!-- 查询控制编码服务 -->
+    <!-- 查询机构规模服务 -->
     <repository>
         <name>QueryMdInstScale</name>
         <action>com.yun9.ws.biz.service.QueryMdInstScaleService</action>
