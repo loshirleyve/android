@@ -197,41 +197,42 @@ public class InitInstActivity extends JupiterFragmentActivity {
     private View.OnClickListener onInitInstClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(!AssertValue.isNotNullAndNotEmpty(instNoEt.getText().toString())){
+            if (!AssertValue.isNotNullAndNotEmpty(instNoEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.inst_no_input_notice), Toast.LENGTH_SHORT).show();
-            }else if(!AssertValue.isNotNullAndNotEmpty(companyNameEt.getText().toString())){
+            } else if (!AssertValue.isNotNullAndNotEmpty(companyNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.company_name_input_notice), Toast.LENGTH_SHORT).show();
-            }else if(!AssertValue.isNotNullAndNotEmpty(staffNumLayout.getSutitleTv().getText().toString())){
+            } else if (!AssertValue.isNotNull(staffNumLayout.getSutitleTv()) || !AssertValue.isNotNullAndNotEmpty(staffNumLayout.getSutitleTv().getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.staff_num_input_notice), Toast.LENGTH_SHORT).show();
-            }else if(!isInstNo(instNoEt.getText().toString())){
+            } else if (!isInstNo(instNoEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.inst_no_right_input_notice), Toast.LENGTH_SHORT).show();
+            } else {
+                final Resource resource = resourceFactory.create("InstInit");
+                resource.param("userid", userid)
+                        .param("companyName", companyNameEt.getText().toString())
+                        .param("companyNo", instNoEt.getText().toString())
+                        .param("companyScale", staffNumCategory)
+                        .param("homePageUrl", "http://origin.yun.com")
+                        .param("logoImg", "logoImg");
+                final ProgressDialog progressDialog = ProgressDialog.show(InitInstActivity.this, null, getString(R.string.app_wating), true);
+                resource.invok(new AsyncHttpResponseCallback() {
+                    @Override
+                    public void onSuccess(Response response) {
+                        Toast.makeText(mContext, getString(R.string.init_inst_success), Toast.LENGTH_SHORT).show();
+                        setResult(InstCommand.RESULT_CODE_OK);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Response response) {
+                        Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFinally(Response response) {
+                        progressDialog.dismiss();
+                    }
+                });
             }
-            final Resource resource = resourceFactory.create("InstInit");
-            resource.param("userid", userid)
-                    .param("companyName", companyNameEt.getText().toString())
-                    .param("companyNo", instNoEt.getText().toString())
-                    .param("companyScale", staffNumCategory)
-                    .param("homePageUrl", "http://origin.yun.com")
-                    .param("logoImg", "logoImg");
-            final ProgressDialog progressDialog = ProgressDialog.show(InitInstActivity.this, null, getString(R.string.app_wating), true);
-            resource.invok(new AsyncHttpResponseCallback() {
-                @Override
-                public void onSuccess(Response response) {
-                    Toast.makeText(mContext, getString(R.string.init_inst_success), Toast.LENGTH_SHORT).show();
-                    setResult(InstCommand.RESULT_CODE_OK);
-                    finish();
-                }
-
-                @Override
-                public void onFailure(Response response) {
-                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFinally(Response response) {
-                    progressDialog.dismiss();
-                }
-            });
         }
     };
 }
