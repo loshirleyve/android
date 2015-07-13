@@ -117,7 +117,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                                         .getSerializableExtra(
                                                 PaymentChoiceWaysCommand.RETURN_PARAM_PAYMODE);
             // 如果选择的值不大于0
-            if (!(paymodeInfo.getUseAmount() > 0.0)){
+            if (!(paymodeInfo.getUseAmount() >= 0.0)){
                 choicePayItemMap.remove(choiceWaysCommand.getCategory().getId());
                 categoryChoicePaymodeMap.remove(choiceWaysCommand.getCategory().getId());
                 loadData();

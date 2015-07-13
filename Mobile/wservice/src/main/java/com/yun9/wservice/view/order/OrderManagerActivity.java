@@ -123,7 +123,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     }
 
     private void openRechargeHistoryActivity(OrderBuyManagerInfo.RechargeGroup rechargeGroup) {
-        RechargeRecordListActivity.start(this, rechargeGroup.getState(), rechargeGroup.getStatename());
+        RechargeRecordListActivity.start(this, rechargeGroup.getStateno(), rechargeGroup.getStatename());
     }
 
     private JupiterAdapter rechargeAdapter = new JupiterAdapter() {
@@ -168,7 +168,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
             } else {
                 row = (JupiterRowStyleTitleLayout) convertView;
             }
-            row.getHotNitoceTV().setText(rechargeGroup.getCount() + "");
+            row.getHotNitoceTV().setText(rechargeGroup.getNums() + "");
             row.getTitleTV().setText(rechargeGroup.getStatename());
             return convertView;
         }

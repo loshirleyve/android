@@ -92,33 +92,33 @@ public class OrderBuyManagerInfo implements Serializable{
 
     public static class RechargeGroup implements Serializable{
 
-        private long count;
-        private String state;
+        private long nums;
+        private String stateno;
         private String statename;
 
         public RechargeGroup() {
         }
 
-        public RechargeGroup(long count, String state, String statename) {
-            this.count = count;
-            this.state = state;
+        public RechargeGroup(long nums, String stateno, String statename) {
+            this.nums = nums;
+            this.stateno = stateno;
             this.statename = statename;
         }
 
-        public long getCount() {
-            return count;
+        public long getNums() {
+            return nums;
         }
 
-        public void setCount(long count) {
-            this.count = count;
+        public void setNums(long nums) {
+            this.nums = nums;
         }
 
-        public String getState() {
-            return state;
+        public String getStateno() {
+            return stateno;
         }
 
-        public void setState(String state) {
-            this.state = state;
+        public void setStateno(String stateno) {
+            this.stateno = stateno;
         }
 
         public String getStatename() {

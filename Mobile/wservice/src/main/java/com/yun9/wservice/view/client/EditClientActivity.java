@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.client;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -60,6 +61,8 @@ public class EditClientActivity extends CustomCallbackActivity{
 
     private Map<Integer, IActivityCallback> activityCallbackMap;
 
+    private List<SerialableEntry<String,String>> optionsList = new ArrayList<>();
+
     private int baseRequestCode = 10000;
 
     public static void start(Context context,EditClientCommand command) {
@@ -76,12 +79,34 @@ public class EditClientActivity extends CustomCallbackActivity{
         command = (EditClientCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
         activityCallbackMap = new HashMap<>();
         cells = new ArrayList<>();
-        buildView();
+        loadInstScale();
     }
 
     @Override
     protected int getContentView() {
         return R.layout.activity_edit_client;
+    }
+
+    private void loadInstScale() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
+        Resource resource = resourceFactory.create("AddOrUpdateInstClientsService");
+        resource.param("id",command.getClientId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                buildView();
+            }
+        });
     }
 
     private void buildView() {
@@ -148,6 +173,7 @@ public class EditClientActivity extends CustomCallbackActivity{
     }
 
     private void doSave(Client client) {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddOrUpdateInstClientsService");
         resource.param("id",command.getClientId());
         resource.param("instid", sessionManager.getInst().getId());
@@ -178,6 +204,7 @@ public class EditClientActivity extends CustomCallbackActivity{
 
             @Override
             public void onFinally(Response response) {
+                registerDialog.dismiss();
             }
         });
     }
@@ -256,9 +283,7 @@ public class EditClientActivity extends CustomCallbackActivity{
 
         MultiSelectFormCellBean scaleMSFC = new MultiSelectFormCellBean();
         scaleMSFC.setType(MultiSelectFormCell.class.getSimpleName());
-        List<SerialableEntry<String, String>> list = new ArrayList<>();
-        list.add(new SerialableEntry<String, String>("1","50-100人"));
-        scaleMSFC.setOptionMap(list);
+        scaleMSFC.setOptionMap(optionsList);
         scaleMSFC.setKey("scaleid");
         scaleMSFC.setLabel("机构规模");
         scaleMSFC.setMaxNum(1);
