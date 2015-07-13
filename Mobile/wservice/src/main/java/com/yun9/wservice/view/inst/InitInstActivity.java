@@ -88,84 +88,14 @@ public class InitInstActivity extends JupiterFragmentActivity {
             userid = command.getUserid();
         }
         queryUserByIdAndSetName(userid);
-
         initInstTitle.getTitleLeft().setOnClickListener(onBackClickListener);
         staffNumLayout.setOnClickListener(onStaffNumClickListener);
         initInstTitle.getTitleRightTv().setOnClickListener(onInitInstClickListener);
     }
-    private View.OnClickListener onStaffNumClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if(multiSelectCommand == null){
-                multiSelectCommand = new MultiSelectCommand();
-            }
-            getOptionMap();
-        }
-    };
 
-    private void getOptionMap(){
-        Resource resource = resourceFactory.create("QueryMdInstScale");
-        resource.param("limitrow", "100").param("userid", userid);
-        final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
-        resource.invok(new AsyncHttpResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                MdInstScales mdInstScales = (MdInstScales) response.getPayload();
-                optionMap = new ArrayList<SerialableEntry<String, String>>();
-                for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
-                    optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
-                }
-                multiSelectCommand.setOptions(optionMap);
-                multiSelectCommand.setMaxNum(1);
-                multiSelectCommand.setIsCancelable(true);
-                MultiSelectActivity.start(InitInstActivity.this, multiSelectCommand);
-            }
-
-            @Override
-            public void onFailure(Response response) {
-                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFinally(Response response) {
-                progressDialog.dismiss();
-            }
-        });
-    }
     @Override
     protected int getContentView() {
         return R.layout.activity_init_inst;
-    }
-
-    public boolean isInstNo(String instNo){
-        String str = "^[a-zA-Z0-9]{4,8}$";
-        Pattern pattern = Pattern.compile(str);
-        Matcher matcher = pattern.matcher(instNo);
-        return matcher.matches();
-    }
-
-    private View.OnClickListener onBackClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            finish();
-        }
-    };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == multiSelectCommand.getRequestCode()
-                && resultCode == JupiterCommand.RESULT_CODE_OK){
-                List<SerialableEntry<String,String>> selectedList =
-                        (List<SerialableEntry<String, String>>) data.getSerializableExtra("selectedList");
-            if(AssertValue.isNotNull(selectedList) && (selectedList.size() != 0) && AssertValue.isNotNullAndNotEmpty(selectedList.get(0).getValue())) {
-                staffNumLayout.getSutitleTv().setVisibility(View.VISIBLE);
-                staffNumLayout.getSutitleTv().setText(selectedList.get(0).getValue());
-                staffNumCategory = selectedList.get(0).getKey();
-                selectedList.clear();
-            }else {
-                staffNumLayout.getSutitleTv().setVisibility(View.GONE);
-            }
-        }
     }
 
     private void queryUserByIdAndSetName(final String userid){
@@ -194,6 +124,38 @@ public class InitInstActivity extends JupiterFragmentActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == multiSelectCommand.getRequestCode()
+                && resultCode == JupiterCommand.RESULT_CODE_OK){
+            List<SerialableEntry<String,String>> selectedList =
+                    (List<SerialableEntry<String, String>>) data.getSerializableExtra("selectedList");
+            if(AssertValue.isNotNull(selectedList) && (selectedList.size() != 0) && AssertValue.isNotNullAndNotEmpty(selectedList.get(0).getValue())) {
+                staffNumLayout.getSutitleTv().setVisibility(View.VISIBLE);
+                staffNumLayout.getSutitleTv().setText(selectedList.get(0).getValue());
+                staffNumCategory = selectedList.get(0).getKey();
+            }else {
+                staffNumLayout.getSutitleTv().setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private View.OnClickListener onBackClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
+    };
+
+    private View.OnClickListener onStaffNumClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(multiSelectCommand == null){
+                multiSelectCommand = new MultiSelectCommand();
+            }
+            getOptionMap();
+        }
+    };
     private View.OnClickListener onInitInstClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -201,7 +163,7 @@ public class InitInstActivity extends JupiterFragmentActivity {
                 Toast.makeText(mContext, getString(R.string.inst_no_input_notice), Toast.LENGTH_SHORT).show();
             } else if (!AssertValue.isNotNullAndNotEmpty(companyNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.company_name_input_notice), Toast.LENGTH_SHORT).show();
-            } else if (!AssertValue.isNotNull(staffNumLayout.getSutitleTv()) || !AssertValue.isNotNullAndNotEmpty(staffNumLayout.getSutitleTv().getText().toString())) {
+            } else if (staffNumLayout.getSutitleTv().getVisibility() == View.GONE) {
                 Toast.makeText(mContext, getString(R.string.staff_num_input_notice), Toast.LENGTH_SHORT).show();
             } else if (!isInstNo(instNoEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.inst_no_right_input_notice), Toast.LENGTH_SHORT).show();
@@ -235,4 +197,39 @@ public class InitInstActivity extends JupiterFragmentActivity {
             }
         }
     };
+    public boolean isInstNo(String instNo){
+        String str = "^[a-zA-Z0-9]{4,8}$";
+        Pattern pattern = Pattern.compile(str);
+        Matcher matcher = pattern.matcher(instNo);
+        return matcher.matches();
+    }
+    private void getOptionMap(){
+        Resource resource = resourceFactory.create("QueryMdInstScale");
+        resource.param("limitrow", "100").param("userid", userid);
+        final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                MdInstScales mdInstScales = (MdInstScales) response.getPayload();
+                optionMap = new ArrayList<SerialableEntry<String, String>>();
+                for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
+                    optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
+                }
+                multiSelectCommand.setOptions(optionMap);
+                multiSelectCommand.setMaxNum(1);
+                multiSelectCommand.setIsCancelable(true);
+                MultiSelectActivity.start(InitInstActivity.this, multiSelectCommand);
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                progressDialog.dismiss();
+            }
+        });
+    }
 }
