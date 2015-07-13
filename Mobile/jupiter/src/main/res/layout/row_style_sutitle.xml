@@ -113,8 +113,6 @@
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:background="@color/whites"
-                android:textColor="@color/red"
                 android:visibility="gone"
                 android:textSize="12dp" />
 
