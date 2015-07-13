@@ -116,4 +116,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 根据订单ID查询订单需要的附件信息 -->
+    <repository>
+        <name>QueryOrderAttachmentService</name>
+        <action>com.yun9.ws.biz.service.QueryOrderAttachmentService</action>
+        <output>
+            <classname>com.yun9.wservice.model.wrapper.AttachmentWrapper</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

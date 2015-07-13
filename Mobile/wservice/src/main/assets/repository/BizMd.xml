@@ -17,4 +17,15 @@
         <action>com.yun9.ws.biz.service.InstInitService</action>
         <type>yun9</type>
     </repository>
+
+    <!-- 获取场景 -->
+    <repository>
+        <name>QuerySceneService</name>
+        <action>com.yun9.ws.biz.service.QuerySceneService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Scene</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 </repositorys>

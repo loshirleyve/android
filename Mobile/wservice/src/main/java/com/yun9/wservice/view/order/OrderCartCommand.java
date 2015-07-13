@@ -21,24 +21,24 @@ public class OrderCartCommand  extends JupiterCommand{
     }
 
     public static class OrderProductView implements Serializable{
-        private Long price;
+        private double price;
         private String productid;
         private String classifyid;
 
         public OrderProductView() {
         }
 
-        public OrderProductView(Long price, String productid, String classifyid) {
+        public OrderProductView(double price, String productid, String classifyid) {
             this.price = price;
             this.productid = productid;
             this.classifyid = classifyid;
         }
 
-        public Long getPrice() {
+        public double getPrice() {
             return price;
         }
 
-        public void setPrice(Long price) {
+        public void setPrice(double price) {
             this.price = price;
         }
 

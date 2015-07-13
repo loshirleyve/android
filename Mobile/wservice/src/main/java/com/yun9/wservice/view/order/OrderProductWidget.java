@@ -3,8 +3,10 @@ package com.yun9.wservice.view.order;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -24,6 +26,8 @@ public class OrderProductWidget extends JupiterRelativeLayout{
     private TextView productTipTV;
 
     private TextView productFeeTV;
+
+    private LinearLayout classifyLl;
 
     public OrderProductWidget(Context context) {
         super(context);
@@ -49,11 +53,16 @@ public class OrderProductWidget extends JupiterRelativeLayout{
         productDescTV = (TextView) this.findViewById(R.id.product_desc_tv);
         productTipTV = (TextView) this.findViewById(R.id.product_tip_tv);
         productFeeTV = (TextView) this.findViewById(R.id.product_fee_tv);
+        classifyLl = (LinearLayout) this.findViewById(R.id.classify_ll);
     }
 
     public void buildWithData(OrderCartInfo.OrderProduct orderCartProduct) {
         productFeeTV.setText(orderCartProduct.getGoodsamount() + "元");
-        productDescTV.setText(orderCartProduct.getProductclassifyname());
+        if (AssertValue.isNotNullAndNotEmpty(orderCartProduct.getProductclassifyname())){
+            productDescTV.setText(orderCartProduct.getProductclassifyname());
+        } else {
+            classifyLl.setVisibility(GONE);
+        }
         ImageLoaderUtil.getInstance(this.getContext()).displayImage(orderCartProduct.getProductimgid(), productImageIV);
         productNameTV.setText(orderCartProduct.getProductname());
         if (orderCartProduct.getProductPhases() != null && orderCartProduct.getProductPhases().size() > 0){

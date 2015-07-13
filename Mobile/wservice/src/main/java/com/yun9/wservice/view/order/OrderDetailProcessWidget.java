@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,14 +46,26 @@ public class OrderDetailProcessWidget extends JupiterRelativeLayout{
         List<Order.OrderLog> logs = order.getOrderLogs();
         LinearLayout preItem = null;
         LinearLayout currItem = null;
+        boolean isMark = false;
         for (int i = 0; i < logs.size(); i++) {
-            currItem = this.addItem(logs.get(i));
+            if (logs.get(i).getOrderstate().equals(order.getOrder().getState())){
+                currItem = this.addItem(logs.get(i),R.drawable.dingdang1);
+                currItem.setTag(true);
+                isMark = true;
+            } else if (!isMark){
+                currItem = this.addItem(logs.get(i),R.drawable.dingdang3);
+                currItem.setTag(false);
+            } else {
+                currItem = this.addItem(logs.get(i),R.drawable.dingdang2);
+                currItem.setTag(false);
+            }
+
             if (preItem == null) {
                 preItem = currItem;
             }
             if (currItem != preItem) {
                 addLine(preItem,currItem);
-                preItem = null;
+                preItem = currItem;
             }
         }
     }
@@ -68,9 +81,10 @@ public class OrderDetailProcessWidget extends JupiterRelativeLayout{
         outterContainter = (RelativeLayout) this.findViewById(R.id.outter_container);
     }
 
-    private LinearLayout addItem(Order.OrderLog log) {
+    private LinearLayout addItem(Order.OrderLog log,int realCircle) {
         OrderDetailProcessItemWidget itemWidget = new OrderDetailProcessItemWidget(this.getContext());
         itemWidget.buildWithData(log);
+        itemWidget.getCircleIV().setImageResource(realCircle);
         LinearLayout container = itemWidget.getContainer();
         LinearLayout item = (LinearLayout) container.getChildAt(0);
         container.removeView(item);
@@ -79,13 +93,18 @@ public class OrderDetailProcessWidget extends JupiterRelativeLayout{
     }
 
     private void addLine(LinearLayout preItem,LinearLayout currItem) {
+        final int lineHeith = 4;
         final ImageView preCircle = (ImageView) preItem.findViewById(R.id.circle_iv);
         ImageView currCircle = (ImageView) currItem.findViewById(R.id.circle_iv);
         final View line = new View(this.getContext());
         line.setBackgroundColor(this.getResources().getColor(R.color.groupbackground));
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(100,2);
-        params.setMargins((int) preCircle.getX(), 20, 40, 50);
-        line.setLayoutParams(params);
-        outterContainter.addView(line);
+        preItem.addView(line);
+        preItem.postDelayed(new Runnable() {
+            public void run() {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(400, lineHeith);
+                params.setMargins(preCircle.getWidth(),0, 0,0);
+                line.setLayoutParams(params);
+            }
+        }, 10);
     }
 }

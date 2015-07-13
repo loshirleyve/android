@@ -11,6 +11,9 @@ import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Attachment;
+
+import java.util.List;
 
 /**
  * Created by huangbinglong on 7/1/15.
@@ -20,6 +23,8 @@ public class OrderAttachmentMaterialWidget extends JupiterRelativeLayout{
     private JupiterRowStyleTitleLayout titleLayout;
 
     private ListView listView;
+
+    private List<Attachment> attachments;
 
     private JupiterAdapter adapter;
 
@@ -40,8 +45,8 @@ public class OrderAttachmentMaterialWidget extends JupiterRelativeLayout{
         return R.layout.widget_order_attachment_material;
     }
 
-    public void buildWithData() {
-
+    public void buildWithData(List<Attachment> attachments) {
+        this.attachments = attachments;
         if (adapter != null){
             adapter.notifyDataSetChanged();
         }
@@ -60,7 +65,10 @@ public class OrderAttachmentMaterialWidget extends JupiterRelativeLayout{
         adapter = new JupiterAdapter() {
             @Override
             public int getCount() {
-                return 2;
+                if (attachments != null){
+                    return attachments.size();
+                }
+                return 0;
             }
 
             @Override
@@ -80,11 +88,9 @@ public class OrderAttachmentMaterialWidget extends JupiterRelativeLayout{
                     temp = new JupiterRowStyleTitleLayout(OrderAttachmentMaterialWidget.this.mContext);
                     temp.getArrowRightIV().setVisibility(GONE);
                     temp.getMainIV().setVisibility(GONE);
-                    temp.getTitleTV().setText("公章  (实物)");
+                    temp.getTitleTV().setText(attachments.get(position).getAttachname());
                     temp.getContainer().setBackgroundColor(getResources().getColor(R.color.yellow_background));
                     convertView = temp;
-                } else {
-                    temp = (JupiterRowStyleTitleLayout) convertView;
                 }
                 return convertView;
             }

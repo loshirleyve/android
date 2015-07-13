@@ -3,20 +3,28 @@ package com.yun9.wservice.view.product;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.cache.InstCache;
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheInst;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -24,14 +32,25 @@ import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.Product;
-import com.yun9.wservice.model.ProductPhase;
+import com.yun9.wservice.model.CompositeProduct;
 import com.yun9.wservice.model.ProductProfile;
+import com.yun9.wservice.model.WorkOrderComment;
+import com.yun9.wservice.view.common.SimpleBrowserActivity;
+import com.yun9.wservice.view.common.SimpleBrowserCommand;
+import com.yun9.wservice.view.login.LoginCommand;
+import com.yun9.wservice.view.login.LoginMainActivity;
+import com.yun9.wservice.view.order.OrderCartActivity;
+import com.yun9.wservice.view.order.OrderCartCommand;
+import com.yun9.wservice.view.order.OrderWorkOrderSubCommentWidget;
 import com.yun9.wservice.widget.ShowCommentWidget;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Leon on 15/6/26.
@@ -61,8 +80,8 @@ public class ProductActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.product_price_tv)
     private TextView productPriceTV;
 
-    @ViewInject(id = R.id.buy_btn)
-    private Button buyBtn;
+    @ViewInject(id = R.id.buy_ll)
+    private LinearLayout buyLl;
 
     @ViewInject(id = R.id.select_category_layout)
     private JupiterRowStyleSutitleLayout selectCategoryLayout;
@@ -82,10 +101,25 @@ public class ProductActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.show_comment_widget)
     private ShowCommentWidget showCommentWidget;
 
+    @ViewInject(id=R.id.sub_comment_lv)
+    private ListView subCommentLV;
+
+    @ViewInject(id=R.id.comment_ll)
+    private LinearLayout commentLl;
+
     @BeanInject
     private ResourceFactory resourceFactory;
 
-    private Product product;
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private PopupWindow classifyWindow;
+
+    private ProductClassifyPopLayout classifyPopLayout;
+
+    private CompositeProduct product;
+
+    private CompositeProduct.ProductClassify selectedClassify;
 
     @Override
     protected int getContentView() {
@@ -94,11 +128,9 @@ public class ProductActivity extends JupiterFragmentActivity {
 
     public static void start(Activity activity, ProductCommand command) {
         Intent intent = new Intent(activity, ProductActivity.class);
-
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
         intent.putExtras(bundle);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
 
@@ -117,9 +149,54 @@ public class ProductActivity extends JupiterFragmentActivity {
         productPhasesLV.setAdapter(productPhasesLVAdapter);
         detailPageLayout.setOnClickListener(onProductDetailClickListener);
         selectCategoryLayout.setOnClickListener(onSelectCategoryClickListener);
-        buyBtn.setOnClickListener(onBuyClickListener);
+        buyLl.setOnClickListener(onBuyClickListener);
+    }
 
+    /**
+     * 数据完成时才调用
+     */
+    private void initPopWindow() {
+        classifyPopLayout = new ProductClassifyPopLayout(mContext);
+        classifyWindow = new PopupWindow(classifyPopLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        classifyWindow.setOnDismissListener(onDismissListener);
+        classifyWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        classifyWindow.setOutsideTouchable(true);
+        classifyWindow.setFocusable(true);
+        classifyWindow.setAnimationStyle(R.style.bottom2top_top2bottom);
 
+        ImageLoaderUtil.getInstance(this).displayImage(product.getProduct().getImgid(),
+                classifyPopLayout.getProducImage());
+        classifyPopLayout.getProductPriceTv().setText(product.getProduct().getPricedescr());
+        classifyPopLayout.getConfirmLl().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gonnaBuy();
+            }
+        });
+        classifyPopLayout.getCloseIv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                classifyWindow.dismiss();
+            }
+        });
+        classifyPopLayout.getClassifyLv().setAdapter(classifyAdapter);
+        refreshSelectedClassify();
+
+    }
+
+    private void refreshSelectedClassify() {
+        if (selectedClassify != null) {
+            selectCategoryLayout.getSutitleTv().setVisibility(View.VISIBLE);
+            selectCategoryLayout.getSutitleTv().setText(selectedClassify.getClassifyname());
+        } else {
+            selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select));
+            selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
+            return;
+        }
+        productPriceTV.setText(selectedClassify.getPrice()+"元");
+        classifyPopLayout.getProductPriceTv().setText(selectedClassify.getPrice() + "元");
+        classifyPopLayout.getClassifyNameTv().setText(selectedClassify.getClassifyname());
     }
 
     private void refresh(String productid) {
@@ -132,8 +209,9 @@ public class ProductActivity extends JupiterFragmentActivity {
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
                 public void onSuccess(Response response) {
-                    product = (Product) response.getPayload();
-                    builder(product);
+                    CompositeProduct tempProduct = (CompositeProduct) response.getPayload();
+                    builder(tempProduct);
+                    initPopWindow();
                     productPhasesLVAdapter.notifyDataSetChanged();
                     productContentLVAdapter.notifyDataSetChanged();
                 }
@@ -153,58 +231,112 @@ public class ProductActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void builder(Product tempProduct) {
-        String imageURL = FileCache.getInstance().getFileUrl(tempProduct.getImageid());
+    private void builder(CompositeProduct tempProduct) {
+        this.product = tempProduct;
+        if (product.getBizProductClassifies() != null
+                && product.getBizProductClassifies().size() > 0) {
+            selectedClassify = product.getBizProductClassifies().get(0);
+        } else {
+            selectCategoryLayout.setVisibility(View.GONE);
+        }
+        String imageURL = FileCache.getInstance().getFileUrl(product.getProduct().getImgid());
         if (AssertValue.isNotNullAndNotEmpty(imageURL)) {
             ImageLoaderUtil.getInstance(mContext).displayImage(imageURL, productIV);
         }
-        CacheInst cacheInst = InstCache.getInstance().getInst(tempProduct.getInstid());
+        CacheInst cacheInst = InstCache.getInstance().getInst(product.getProduct().getInstid());
         if (AssertValue.isNotNull(cacheInst)) {
             instnameTV.setText(getResources().getString(R.string.product_detail_instname, cacheInst.getInstname()));
         }
 
-        //TODO 待服务器返回数据后完善
-        productNameTV.setText(product.getName());
-        productDescTV.setText(product.getIntroduce());
-        productTipsTV.setText("待服务器返回数据");
-        productPriceTV.setText("待服务器返回数据");
+        productNameTV.setText(product.getProduct().getName());
+        productDescTV.setText(product.getProduct().getIntroduce());
+        productTipsTV.setText(product.getProduct().getProductdescr());
+        productPriceTV.setText(product.getProduct().getPricedescr());
 
-        //TODO 待服务器返回分类数据后，根据是否存在分类显示选择分类栏目
-
-        //TODO 待服务器返回最新评论数据,处理评论
-
-        //TODO 待服务器返回服务内容
-
-        //TODO 待服务器返回服务阶段
-
-        //TODO 待服务器返回要求的办里资料数据
+        if (product.getWorkorderComment() == null){
+            commentLl.setVisibility(View.GONE);
+        } else {
+            WorkOrderComment comment = product.getWorkorderComment();
+            CacheUser user = UserCache.getInstance().getUser(comment.getSenderid());
+            if (user != null){
+                showCommentWidget.getTitleTv().setText(user.getName());
+            }
+            showCommentWidget.getContentTv().setText(comment.getCommenttext());
+            showCommentWidget.setRating((float) comment.getScore());
+            showCommentWidget.setTime(comment.getCreatedate());
+            subCommentLV.setAdapter(subCommentAdapter);
+        }
+        // 不存在详情URL，则隐藏
+        if (!AssertValue.isNotNullAndNotEmpty(product.getProduct().getIntroduceurl())) {
+            detailPageLayout.setVisibility(View.GONE);
+        }
 
     }
 
     private View.OnClickListener onProductDetailClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            SimpleBrowserActivity.start(ProductActivity.this,
+                    new SimpleBrowserCommand(product.getProduct().getName(),
+                            product.getProduct().getIntroduceurl()));
         }
     };
 
     private View.OnClickListener onSelectCategoryClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
+            showClassifyWindow();
         }
     };
+
+    private void showClassifyWindow() {
+        if (classifyWindow != null) {
+            WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+            lp.alpha = 0.4f;
+            this.getWindow().setAttributes(lp);
+            classifyWindow.showAtLocation(this.findViewById(R.id.main), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        }
+    }
 
     private View.OnClickListener onBuyClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
-            //TODO 检查是否已经登录，如果没有登录弹出登录界面
-
-            //TODO 检查是否存在分类选择，如果存在弹出分类选择(用户在分类选择界面继续点击购买)
-
+            gonnaBuy();
         }
     };
+
+    private void gonnaBuy() {
+        if (!sessionManager.isLogin()) {
+            LoginMainActivity.start(ProductActivity.this, new LoginCommand());
+            return;
+        }
+
+        if (selectedClassify == null
+                && product.getBizProductClassifies() != null
+                && product.getBizProductClassifies().size() > 0) {
+            showToast("请选择产品分类");
+            showClassifyWindow();
+        } else {
+            buyNow();
+        }
+    }
+
+    private void buyNow() {
+        OrderCartCommand command = new OrderCartCommand();
+        List<OrderCartCommand.OrderProductView> orderProductViews = new ArrayList<>();
+        OrderCartCommand.OrderProductView productView = new OrderCartCommand.OrderProductView();
+        productView.setProductid(product.getProduct().getId());
+        if (selectedClassify != null){
+            productView.setClassifyid(selectedClassify.getId());
+            productView.setPrice(selectedClassify.getPrice());
+        } else {
+            productView.setPrice(product.getProduct().getSaleprice());
+        }
+        orderProductViews.add(productView);
+        command.setOrderProductViews(orderProductViews);
+        OrderCartActivity.start(this, command);
+        this.finish();
+    }
 
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
@@ -216,8 +348,8 @@ public class ProductActivity extends JupiterFragmentActivity {
     private JupiterAdapter productContentLVAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            if (AssertValue.isNotNull(product) && AssertValue.isNotNullAndNotEmpty(product.getProfiles())) {
-                return product.getProfiles().size();
+            if (AssertValue.isNotNull(product) && AssertValue.isNotNullAndNotEmpty(product.getBizProductProfiles())) {
+                return product.getBizProductProfiles().size();
             } else {
                 return 0;
             }
@@ -225,7 +357,7 @@ public class ProductActivity extends JupiterFragmentActivity {
 
         @Override
         public Object getItem(int position) {
-            return product.getProfiles().get(position);
+            return product.getBizProductProfiles().get(position);
         }
 
         @Override
@@ -236,7 +368,7 @@ public class ProductActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ProductProfileItemWidget productProfileItemWidget = null;
-            ProductProfile productProfile = product.getProfiles().get(position);
+            ProductProfile productProfile = product.getBizProductProfiles().get(position);
 
             if (AssertValue.isNotNull(convertView)) {
                 productProfileItemWidget = (ProductProfileItemWidget) convertView;
@@ -244,9 +376,8 @@ public class ProductActivity extends JupiterFragmentActivity {
                 productProfileItemWidget = new ProductProfileItemWidget(mContext);
             }
 
-            //TODO 服务器还没有返回数据
             productProfileItemWidget.setTag(productProfile);
-            productProfileItemWidget.getProfileTV().setText("待服务器返回数据");
+            productProfileItemWidget.getProfileTV().setText(productProfile.getSynopsis());
 
             return productProfileItemWidget;
         }
@@ -255,8 +386,8 @@ public class ProductActivity extends JupiterFragmentActivity {
     private JupiterAdapter productPhasesLVAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            if (AssertValue.isNotNull(product) && AssertValue.isNotNullAndNotEmpty(product.getPhases())) {
-                return product.getPhases().size();
+            if (AssertValue.isNotNull(product) && AssertValue.isNotNullAndNotEmpty(product.getProductPhases())) {
+                return product.getProductPhases().size();
             } else {
                 return 0;
             }
@@ -264,7 +395,7 @@ public class ProductActivity extends JupiterFragmentActivity {
 
         @Override
         public Object getItem(int position) {
-            return product.getPhases().get(position);
+            return product.getProductPhases().get(position);
         }
 
         @Override
@@ -275,7 +406,7 @@ public class ProductActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ProductPhaseItemWidget productPhaseItemWidget = null;
-            ProductPhase productPhase = product.getPhases().get(position);
+            CompositeProduct.ProductPhase productPhase = product.getProductPhases().get(position);
 
             if (AssertValue.isNotNull(convertView)) {
                 productPhaseItemWidget = (ProductPhaseItemWidget) convertView;
@@ -284,9 +415,126 @@ public class ProductActivity extends JupiterFragmentActivity {
             }
 
             productPhaseItemWidget.setTag(productPhase);
-            productPhaseItemWidget.getPhaseTV().setText(productPhase.getDescription());
+            productPhaseItemWidget.getPhaseTV().setText(productPhase.getPhasedescr());
 
             return productPhaseItemWidget;
+        }
+    };
+
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams lp = ProductActivity.this.getWindow().getAttributes();
+            lp.alpha = 1f;
+            ProductActivity.this.getWindow().setAttributes(lp);
+        }
+    };
+
+    private JupiterAdapter classifyAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            if (product != null
+                    && product.getBizProductClassifies() != null) {
+                return product.getBizProductClassifies().size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            CompositeProduct.ProductClassify classify =
+                                                product.getBizProductClassifies().get(position);
+            JupiterRowStyleTitleLayout titleLayout;
+            if (convertView == null) {
+                titleLayout = new JupiterRowStyleTitleLayout(ProductActivity.this);
+                titleLayout.getArrowRightIV().setVisibility(View.GONE);
+                titleLayout.getMainIV().setVisibility(View.GONE);
+                titleLayout.getHotNitoceTV().setVisibility(View.GONE);
+                titleLayout.getTitleTV().setText(classify.getClassifyname());
+                titleLayout.setSelectMode(true);
+                titleLayout.setTag(classify);
+                titleLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CompositeProduct.ProductClassify tag =
+                                (CompositeProduct.ProductClassify) v.getTag();
+                        if (selectedClassify != null
+                                && selectedClassify.getId().equals(tag.getId())) {
+                            return;
+                        }
+                        int count = classifyAdapter.getCount();
+                        for (int i = 0; i < count; i++) {
+                            JupiterRowStyleTitleLayout view =
+                                    (JupiterRowStyleTitleLayout) classifyPopLayout
+                                            .getClassifyLv()
+                                            .getChildAt(i);
+                            if (i == position) {
+                                view.select(true);
+                                selectedClassify = (CompositeProduct.ProductClassify) view.getTag();
+                            } else {
+                                view.select(false);
+                            }
+                        }
+                        refreshSelectedClassify();
+                    }
+                });
+                convertView = titleLayout;
+            } else {
+                titleLayout = (JupiterRowStyleTitleLayout) convertView;
+            }
+
+            if (selectedClassify != null
+                    && selectedClassify.getId().equals(classify.getId())){
+                titleLayout.select(true);
+            } else {
+                titleLayout.select(false);
+            }
+            return convertView;
+        }
+    };
+
+    private JupiterAdapter subCommentAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            if (product != null
+                    && product.getWorkorderComment() != null
+                    && product.getWorkorderComment().getAddcomments() != null) {
+                return product.getWorkorderComment().getAddcomments().size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            OrderWorkOrderSubCommentWidget subCommentWidget;
+            if (convertView == null) {
+                subCommentWidget = new OrderWorkOrderSubCommentWidget(ProductActivity.this);
+                convertView = subCommentWidget;
+            } else {
+                subCommentWidget = (OrderWorkOrderSubCommentWidget) convertView;
+            }
+            subCommentWidget.buildWithData(product.getWorkorderComment().getAddcomments().get(position));
+            return convertView;
         }
     };
 }
