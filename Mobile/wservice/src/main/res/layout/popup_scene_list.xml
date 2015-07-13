@@ -28,24 +28,11 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:orientation="vertical">
-
-                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                <com.yun9.jupiter.widget.JupiterListView
+                    android:id="@+id/scene_lv"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    ext:rowStyleSutitleShowArrow="false"
-                    ext:rowStyleSutitleShowMainImage="false"
-                    ext:rowStyleSutitleShowSutitleText="false"
-                    ext:rowStyleSutitleShowTimeText="false"
-                    ext:rowStyleSutitleTitleText="我的已办"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
-
-                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    ext:rowStyleSutitleShowArrow="false"
-                    ext:rowStyleSutitleShowMainImage="false"
-                    ext:rowStyleSutitleShowSutitleText="false"
-                    ext:rowStyleSutitleShowTimeText="false"
-                    ext:rowStyleSutitleTitleText="我的待办"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+                    android:layout_height="wrap_content">
+                </com.yun9.jupiter.widget.JupiterListView>
             </LinearLayout>
 
             <TextView

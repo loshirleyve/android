@@ -51,7 +51,8 @@
                 ie:image_ico_src="@drawable/pass_icn"></com.yun9.jupiter.widget.JupiterImageEditLayout>
 
 
-            <com.yun9.jupiter.widget.JupiterImageButtonLayout xmlns:button="http://schemas.android.com/apk/res-auto"
+            <com.yun9.jupiter.widget.JupiterImageButtonLayout
+                xmlns:button="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/login_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -67,7 +67,14 @@
         app:rowStyleSutitleTitleText="@string/staff_num"
         app:rowStyleSutitleShowSutitleText="false"
         app:rowStyleSutitleShowTimeText="false"
-        />
+        /><!--
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/staffNumLl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>-->
     <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
         android:id="@+id/manager"
         android:layout_width="match_parent"

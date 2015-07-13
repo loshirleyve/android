@@ -476,6 +476,12 @@
             android:label="@string/setting_about"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".view.common.SimpleBrowserActivity"
+            android:label="@string/detail"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

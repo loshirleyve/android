@@ -33,6 +33,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgsGroup;
+import com.yun9.wservice.model.Scene;
 import com.yun9.wservice.model.TopicBean;
 import com.yun9.wservice.view.msgcard.MsgCardListActivity;
 import com.yun9.wservice.view.msgcard.MsgCardListCommand;
@@ -71,6 +72,8 @@ public class DynamicSessionFragment extends JupiterFragment {
     private LinkedList<MsgsGroup> msgsGroups = new LinkedList<>();
 
     private List<TopicBean> topicBeans;
+
+    private List<Scene> scenes;
 
     private PopupWindow scenePopW;
 
@@ -129,7 +132,7 @@ public class DynamicSessionFragment extends JupiterFragment {
             public void onClick(View v) {
                 int maxHeight = dynamicSessionList.getHeight();
                 WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-                lp.alpha = 0.4f;
+                lp.alpha = 0.2f;
                 getActivity().getWindow().setAttributes(lp);
                 scenePopW.setHeight(maxHeight);
                 scenePopW.showAsDropDown(titleBar);
@@ -180,7 +183,29 @@ public class DynamicSessionFragment extends JupiterFragment {
         scenePopW.setAnimationStyle(R.style.secen_popwindow);
 
         scenePopListLayout.getHotTopicLV().setAdapter(topicAdapter);
+        scenePopListLayout.getSceneLV().setAdapter(sceneAdapter);
         loadTopicData();
+        loadSceneDate();
+    }
+
+    private void loadSceneDate() {
+        Resource resource = resourceFactory.create("QuerySceneService");
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                scenes  = (List<Scene>) response.getPayload();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                scenes = null;
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                sceneAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void loadTopicData() {
@@ -330,6 +355,51 @@ public class DynamicSessionFragment extends JupiterFragment {
                                 .setUserid(sessionManager.getUser().getId());
                         msgCardListCommand.setTitle(bean.getName());
                         msgCardListCommand.setTopic(bean.getName());
+                        MsgCardListActivity.start(getActivity(), msgCardListCommand);
+                    }
+                });
+                convertView = titleLayout;
+            }
+            return convertView;
+        }
+    };
+
+    private JupiterAdapter sceneAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            if (scenes != null){
+                return scenes.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            JupiterRowStyleTitleLayout titleLayout;
+            if (convertView == null){
+                titleLayout = new JupiterRowStyleTitleLayout(DynamicSessionFragment.this.getActivity());
+                titleLayout.getArrowRightIV().setVisibility(View.GONE);
+                titleLayout.getHotNitoceTV().setVisibility(View.GONE);
+                titleLayout.getMainIV().setVisibility(View.GONE);
+                final Scene scene = scenes.get(position);
+                titleLayout.getTitleTV().setText(scene.getName());
+                titleLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MsgCardListCommand msgCardListCommand = new MsgCardListCommand()
+                                .setType(scene.getNo())
+                                .setUserid(sessionManager.getUser().getId());
+                        msgCardListCommand.setTitle(scene.getName());
                         MsgCardListActivity.start(getActivity(), msgCardListCommand);
                     }
                 });

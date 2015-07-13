@@ -1,10 +1,11 @@
 package com.yun9.wservice.model;
 
-/**
- * Created by Leon on 15/6/26.
- */
-public class ProductProfile implements java.io.Serializable {
+import java.io.Serializable;
 
+/**
+ * Created by huangbinglong on 7/10/15.
+ */
+public class Scene implements Serializable{
     private String createby;
     private String updateby;
     private Long createdate;
@@ -12,9 +13,9 @@ public class ProductProfile implements java.io.Serializable {
     private int disabled;
     private String remark;
     private String id;
-    private String productid;
-    private String synopsis;
-    private int sort;
+    private String no;
+    private String name;
+    private int sortno;
 
     public String getCreateby() {
         return createby;
@@ -72,27 +73,27 @@ public class ProductProfile implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getProductid() {
-        return productid;
+    public String getNo() {
+        return no;
     }
 
-    public void setProductid(String productid) {
-        this.productid = productid;
+    public void setNo(String no) {
+        this.no = no;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public String getName() {
+        return name;
     }
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getSort() {
-        return sort;
+    public int getSortno() {
+        return sortno;
     }
 
-    public void setSort(int sort) {
-        this.sort = sort;
+    public void setSortno(int sortno) {
+        this.sortno = sortno;
     }
 }
