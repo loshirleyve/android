@@ -14,6 +14,30 @@
         app:titleRightText="@string/select_num_max"
         app:titleRightTextVisibility="true"/>
 
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rotate_header_list_view_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/staffNumTitle"
+        android:layout_alignParentBottom="true"
+        android:background="@color/groupbackground"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
+
+        <ListView
+            android:id="@+id/staff_num_category_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+<!--
     <com.yun9.jupiter.widget.JupiterScrollView
         android:layout_below="@id/staffNumTitle"
         android:layout_width="match_parent"
@@ -35,7 +59,6 @@
                 app:rowStyleSutitleTitleText="@string/staff_num_category1"
                 />
 
-
             <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
                 android:id="@+id/staff_num_category2"
                 android:layout_width="match_parent"
@@ -47,7 +70,6 @@
                 app:rowStyleSutitleSelectModel="true"
                 app:rowStyleSutitleTitleText="@string/staff_num_category2"
                 />
-
 
             <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
                 android:id="@+id/staff_num_category3"
@@ -61,7 +83,6 @@
                 app:rowStyleSutitleTitleText="@string/staff_num_category3"
                 />
 
-
             <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
                 android:id="@+id/staff_num_category4"
                 android:layout_width="match_parent"
@@ -74,16 +95,6 @@
                 app:rowStyleSutitleTitleText="@string/staff_num_category4"
                 />
         </LinearLayout>
-    </com.yun9.jupiter.widget.JupiterScrollView>
+    </com.yun9.jupiter.widget.JupiterScrollView>-->
 
-    <TextView
-        android:id="@+id/finishTv"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/finish"
-        android:gravity="center"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
