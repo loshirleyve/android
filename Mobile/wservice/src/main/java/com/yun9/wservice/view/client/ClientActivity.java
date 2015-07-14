@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.client;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -73,6 +74,10 @@ public class ClientActivity extends JupiterFragmentActivity {
     public static final int VIEW_TYPE_NORMAL = 0;
 
     public static final int VIEW_TYPE_PROXY = 1;
+
+    public static final int VIEW_TYPE_INITED_NORMAL = 2;
+
+    public static final int VIEW_TYPE_INITED_PROXY = 3;
 
     private static final Logger logger = Logger.getLogger(ClientActivity.class);
 
@@ -161,16 +166,20 @@ public class ClientActivity extends JupiterFragmentActivity {
                 openItem.setTitleColor(Color.WHITE);
                 menu.addMenuItem(openItem);
 
-                SwipeMenuItem initalItem = new SwipeMenuItem(
-                        getApplicationContext());
-                initalItem.setBackground(new ColorDrawable(Color.rgb(6, 119, 183)));
-                initalItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 100));
-                initalItem.setTitle("初始化机构");
-                initalItem.setTitleSize(18);
-                initalItem.setTitleColor(Color.WHITE);
-                menu.addMenuItem(initalItem);
+                if (menu.getViewType() == VIEW_TYPE_NORMAL
+                        || menu.getViewType() == VIEW_TYPE_PROXY){
+                    SwipeMenuItem initalItem = new SwipeMenuItem(
+                            getApplicationContext());
+                    initalItem.setBackground(new ColorDrawable(Color.rgb(6, 119, 183)));
+                    initalItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 100));
+                    initalItem.setTitle("初始化机构");
+                    initalItem.setTitleSize(18);
+                    initalItem.setTitleColor(Color.WHITE);
+                    menu.addMenuItem(initalItem);
+                }
 
-                if (menu.getViewType() == VIEW_TYPE_NORMAL){
+                if (menu.getViewType() == VIEW_TYPE_NORMAL
+                        || menu.getViewType() == VIEW_TYPE_INITED_NORMAL){
                     SwipeMenuItem proxyItem = new SwipeMenuItem(
                             getApplicationContext());
                     proxyItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
@@ -182,10 +191,11 @@ public class ClientActivity extends JupiterFragmentActivity {
                     menu.addMenuItem(proxyItem);
                 }
 
-                if (menu.getViewType() == VIEW_TYPE_PROXY){
+                if (menu.getViewType() == VIEW_TYPE_INITED_PROXY
+                        || menu.getViewType() == VIEW_TYPE_PROXY){
                     SwipeMenuItem deleteProxy = new SwipeMenuItem(
                             getApplicationContext());
-                    deleteProxy.setBackground(new ColorDrawable(Color.rgb(233, 75, 53)));
+                    deleteProxy.setBackground(new ColorDrawable(Color.rgb(127, 179, 76)));
                     deleteProxy.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
                     deleteProxy.setTitle("取消代理");
                     deleteProxy.setTitleSize(18);
@@ -206,24 +216,15 @@ public class ClientActivity extends JupiterFragmentActivity {
                         editClient(client.getId());
                         break;
                     case 1:
-                        showToast("初始化机构：" + client.getName());
+                        if (menu.getViewType() == VIEW_TYPE_NORMAL
+                                || menu.getViewType() == VIEW_TYPE_PROXY) {
+                            initClient(client);
+                        } else {
+                            proxyClient(client);
+                        }
                         break;
                     case 2:
-                        if (menu.getViewType() == VIEW_TYPE_NORMAL){
-                            if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
-                                showToast("该客户尚未初始化机构，请先初始化.");
-                                return false;
-                            }
-                            CacheClientProxy clientProxy = new CacheClientProxy();
-                            clientProxy.setInstId(client.getClientinstid());
-                            clientProxy.setUserId(client.getId());
-                            ClientProxyCache.getInstance().putClientProxy(clientProxy);
-                            showToast("成功代理客户：" + client.getFullname());
-                        } else if (menu.getViewType() == VIEW_TYPE_PROXY) {
-                            ClientProxyCache.getInstance().putClientProxy(null);
-                            showToast("成功取消代理");
-                        }
-
+                        proxyClient(client);
                         break;
                 }
                 clientListAdapter.notifyDataSetChanged();
@@ -233,6 +234,55 @@ public class ClientActivity extends JupiterFragmentActivity {
         });
 
         this.autoRefresh();
+    }
+
+    private void initClient(Client client) {
+        final ProgressDialog registerDialog =
+                ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
+        Resource resource = resourceFactory.create("InstInit");
+        resource.param("userid", sessionManager.getUser().getId())
+                .param("companyName", client.getFullname())
+                .param("companyNo", client.getSn())
+                .param("companyScale", client.getScaleid())
+                .param("homePageUrl", "")
+                .param("clientId", client.getId())
+                .param("logoImg", "");
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                showToast("初始化机构成功。");
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                registerDialog.dismiss();
+                refresh();
+            }
+        });
+    }
+
+    private void proxyClient(Client client) {
+        if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
+            showToast("该客户尚未初始化机构，请先初始化.");
+            return;
+        }
+        CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
+        if (proxy != null && client.getId().equals(proxy.getUserId())
+                && proxy.getInstId().equals(client.getClientinstid())){
+            ClientProxyCache.getInstance().putClientProxy(null);
+            showToast("成功取消代理");
+        } else {
+            CacheClientProxy clientProxy = new CacheClientProxy();
+            clientProxy.setInstId(client.getClientinstid());
+            clientProxy.setUserId(client.getId());
+            ClientProxyCache.getInstance().putClientProxy(clientProxy);
+            showToast("成功代理客户：" + client.getFullname());
+        }
     }
 
     private void refresh() {
@@ -287,7 +337,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == command.getRequestCode()
                     && resultCode == JupiterCommand.RESULT_CODE_OK){
-                completeRefresh();
+                refresh();
             }
 
     }
