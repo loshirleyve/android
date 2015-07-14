@@ -348,7 +348,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
         itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardShare.getCreatedate()));
         if (AssertValue.isNotNull(cacheToUser) && AssertValue.isNotNullAndNotEmpty(cacheToUser.getName())) {
-            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to, cacheToUser.getName()));
+            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to)+""+cacheToUser.getName()+":"+msgCardShare.getContent());
         }
         itemWidget.setShowArrow(false);
 
@@ -474,6 +474,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         if (resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             setResult(MsgCardDetailCommand.RESULT_CODE_OK);
             this.refreshComplete();
+            scrollView.scrollTo(0, segmentedGroup.getTop());
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
