@@ -35,7 +35,6 @@ public class WelcomeActivity extends JupiterActivity {
     }
 
 	private void enterAPP(){
-        this.showToast("你好！");
 		mImageView.postDelayed(new Runnable() {
 			@Override
 			public void run() {
