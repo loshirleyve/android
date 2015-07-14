@@ -247,6 +247,8 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         if (AssertValue.isNotNull(msgCard.getLastComment())) {
             lastCommentContentTV.setText(msgCard.getLastComment().getContent());
+        }else{
+            lastCommentContentTV.setText("");
         }
 
     }
