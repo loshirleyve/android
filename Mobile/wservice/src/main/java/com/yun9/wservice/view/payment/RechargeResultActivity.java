@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.payment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,12 +34,12 @@ public class RechargeResultActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.recharge_id_tv)
     private TextView rechargeIdTv;
 
-    public static void start(Context context,RechargeResultCommand command) {
-        Intent intent = new Intent(context,RechargeResultActivity.class);
+    public static void start(Activity activity,RechargeResultCommand command) {
+        Intent intent = new Intent(activity,RechargeResultActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(JupiterCommand.PARAM_COMMAND,command);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent,command.getRequestCode());
     }
 
     @Override
@@ -46,6 +47,7 @@ public class RechargeResultActivity extends JupiterFragmentActivity{
         super.onCreate(savedInstanceState);
         RechargeResultCommand command = (RechargeResultCommand) getIntent()
                 .getSerializableExtra(JupiterCommand.PARAM_COMMAND);
+        setResult(JupiterCommand.RESULT_CODE_OK);
         buildView(command);
     }
 
