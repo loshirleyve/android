@@ -316,7 +316,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
     }
 
     private String getCallbackid(RechargeRecord record) {
-        return record.getId()+CODE_RECHARGE;
+        return record.getId()+"_"+CODE_RECHARGE;
     }
 
 }
