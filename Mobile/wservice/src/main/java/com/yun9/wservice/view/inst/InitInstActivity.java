@@ -172,9 +172,7 @@ public class InitInstActivity extends JupiterFragmentActivity {
                 resource.param("userid", userid)
                         .param("companyName", companyNameEt.getText().toString())
                         .param("companyNo", instNoEt.getText().toString())
-                        .param("companyScale", staffNumCategory)
-                        .param("homePageUrl", "http://origin.yun.com")
-                        .param("logoImg", "logoImg");
+                        .param("companyScale", staffNumCategory);
                 final ProgressDialog progressDialog = ProgressDialog.show(InitInstActivity.this, null, getString(R.string.app_wating), true);
                 resource.invok(new AsyncHttpResponseCallback() {
                     @Override
@@ -205,17 +203,19 @@ public class InitInstActivity extends JupiterFragmentActivity {
     }
     private void getOptionMap(){
         Resource resource = resourceFactory.create("QueryMdInstScale");
-        resource.param("limitrow", "100").param("userid", userid);
+        resource.param("userid", userid);
         final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 MdInstScales mdInstScales = (MdInstScales) response.getPayload();
-                optionMap = new ArrayList<SerialableEntry<String, String>>();
-                for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
-                    optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
+                if(AssertValue.isNotNull(mdInstScales) && mdInstScales.getBizMdInstScales().size() != 0) {
+                    optionMap = new ArrayList<SerialableEntry<String, String>>();
+                    for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
+                        optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
+                    }
+                    multiSelectCommand.setOptions(optionMap);
                 }
-                multiSelectCommand.setOptions(optionMap);
                 multiSelectCommand.setMaxNum(1);
                 multiSelectCommand.setIsCancelable(true);
                 MultiSelectActivity.start(InitInstActivity.this, multiSelectCommand);
