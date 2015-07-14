@@ -22,10 +22,13 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.xiaomi.network.Network;
 
 public class PublicHelp {
     private static final int ww = 480;
@@ -46,6 +49,19 @@ public class PublicHelp {
         return false;
     }
 
+    //获取当前网络连接的类型信息
+    public static int getConnectedType(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null && mNetworkInfo.isAvailable()) {
+                return mNetworkInfo.getType();
+            }
+        }
+        return -1;
+    }
+
     public static int dip2px(Context context, int value) {
         float scaleing = context.getResources().getDisplayMetrics().density;
         return (int) (value * scaleing + 0.5f);
@@ -55,6 +71,7 @@ public class PublicHelp {
         float scaling = context.getResources().getDisplayMetrics().density;
         return (int) (value / scaling + 0.5f);
     }
+
 
     /**
      * 图片变圆角
