@@ -19,11 +19,13 @@
             android:layout_marginRight="26dp"
             android:visibility="visible">
 
-            <ImageView
+            <com.yun9.jupiter.widget.JupiterRoundImageView
                 android:id="@+id/main_iv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:src="@drawable/user_head" />
 
             <LinearLayout

@@ -473,7 +473,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             setResult(MsgCardDetailCommand.RESULT_CODE_OK);
-            this.refreshComplete();
+            refresh(command.getMsgCardId(), currUserid);
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
