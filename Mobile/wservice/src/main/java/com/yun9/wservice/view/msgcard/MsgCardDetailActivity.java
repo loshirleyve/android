@@ -190,7 +190,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         } else if (AssertValue.isNotNull(command)
                 && AssertValue.isNotNullAndNotEmpty(command.getOrderId())
                 && AssertValue.isNotNullAndNotEmpty(currUserid)) {
-                    refreshByOrderId(command.getOrderId(),currUserid);
+            refreshByOrderId(command.getOrderId(), currUserid);
         }
     }
 
@@ -198,7 +198,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         Resource resource = resourceFactory.create("QueryMsgCardBySourceService");
         resource.param("source", SourceType.TYPE_ORDER)
                 .param("sourceid", orderId)
-                .param("userid",userid);
+                .param("userid", userid);
         final ProgressDialog progressDialog = ProgressDialog.show(MsgCardDetailActivity.this, null, getResources().getString(R.string.app_wating), true);
 
         resource.invok(new AsyncHttpResponseCallback() {
@@ -206,9 +206,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
-                    if(mMsgCard.isMypraise()){
+                    if (mMsgCard.isMypraise()) {
                         toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise);
-                    }else {
+                    } else {
                         toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                     }
                     refreshComplete();
@@ -237,9 +237,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 mMsgCard = (MsgCard) response.getPayload();
                 if (AssertValue.isNotNull(mMsgCard)) {
-                    if(mMsgCard.isMypraise()){
+                    if (mMsgCard.isMypraise()) {
                         toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise);
-                    }else {
+                    } else {
                         toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                     }
                     refreshComplete();
@@ -348,7 +348,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
         itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardShare.getCreatedate()));
         if (AssertValue.isNotNull(cacheToUser) && AssertValue.isNotNullAndNotEmpty(cacheToUser.getName())) {
-            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to, cacheToUser.getName()));
+            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to) + "" + cacheToUser.getName() + ":" + msgCardShare.getContent());
         }
         itemWidget.setShowArrow(false);
 
@@ -456,12 +456,13 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private class OnPraiseClickListener implements View.OnClickListener {
         private MsgCardDetailToolbarTabWidget toolbarTabWidget;
 
-        public OnPraiseClickListener(MsgCardDetailToolbarTabWidget toolbarTabWidget){
+        public OnPraiseClickListener(MsgCardDetailToolbarTabWidget toolbarTabWidget) {
             this.toolbarTabWidget = toolbarTabWidget;
         }
+
         @Override
         public void onClick(View v) {
-            if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())) {
+            if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())) {
                 cardPraiseLikeByMsgCardId(command.getMsgCardId(), toolbarTabWidget);
             }
         }
@@ -473,6 +474,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             setResult(MsgCardDetailCommand.RESULT_CODE_OK);
+            scrollView.scrollTo(0, segmentedGroup.getTop());
             refresh(command.getMsgCardId(), currUserid);
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
@@ -500,8 +502,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         msgCard.getProcess().add(new MsgCardProcessAction("撤销9", "rejected"));
         msgCard.getProcess().add(new MsgCardProcessAction("撤销10", "rejected"));
     }
-    private void cardPraiseLikeByMsgCardId(String msgcardId, final MsgCardDetailToolbarTabWidget toolbarTabWidget){
-        if(AssertValue.isNotNull(sessionManager.getUser())){
+
+    private void cardPraiseLikeByMsgCardId(String msgcardId, final MsgCardDetailToolbarTabWidget toolbarTabWidget) {
+        if (AssertValue.isNotNull(sessionManager.getUser())) {
             final Resource resource = resourceFactory.create("AddPraiseLikeByMsgCardId");
             resource.param("userid", currUserid);
             resource.param("msgcardid", msgcardId);
@@ -509,10 +512,10 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 @Override
                 public void onSuccess(Response response) {
                     MsgCardPraise msgCardPraise = (MsgCardPraise) response.getPayload();
-                    if(AssertValue.isNotNull(msgCardPraise)) {
-                        if(msgCardPraise.getPraise() == 1){
+                    if (AssertValue.isNotNull(msgCardPraise)) {
+                        if (msgCardPraise.getPraise() == 1) {
                             toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise);
-                        }else {
+                        } else {
                             toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                         }
                     }

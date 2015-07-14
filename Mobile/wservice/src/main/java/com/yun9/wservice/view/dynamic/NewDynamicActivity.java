@@ -676,6 +676,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 return;
             }
 
+            final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
             Resource resource = resourceFactory.create("AddMsgCardShare");
             resource.param("msgcardid", command.getMsgCardId());
             resource.param("userid", userid);
@@ -697,7 +698,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
+                    progressDialog.dismiss();
                 }
             });
 
@@ -728,7 +729,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
             Resource resource = resourceFactory.create("AddMsgCardComment");
             resource.param("msgcardid", command.getMsgCardId());
             resource.param("from", userid);
@@ -750,7 +751,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
+                    progressDialog.dismiss();
                 }
             });
 
