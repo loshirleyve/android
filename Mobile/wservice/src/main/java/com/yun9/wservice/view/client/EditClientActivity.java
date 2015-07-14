@@ -29,6 +29,8 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Client;
+import com.yun9.wservice.model.MdInstScale;
+import com.yun9.wservice.model.MdInstScales;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,12 +91,21 @@ public class EditClientActivity extends CustomCallbackActivity{
 
     private void loadInstScale() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
-        Resource resource = resourceFactory.create("AddOrUpdateInstClientsService");
-        resource.param("id",command.getClientId());
+        Resource resource = resourceFactory.create("QueryMdInstScale");
+        resource.param("userid", sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-
+                MdInstScales scales = (MdInstScales) response.getPayload();
+                if (scales != null
+                        && scales.getBizMdInstScales() != null
+                        && scales.getBizMdInstScales().size()>0) {
+                    for (MdInstScale scale : scales.getBizMdInstScales()) {
+                        optionsList.add(new SerialableEntry<String, String>(
+                                scale.getType(),scale.getName()
+                        ));
+                    }
+                }
             }
 
             @Override
@@ -105,6 +116,7 @@ public class EditClientActivity extends CustomCallbackActivity{
             @Override
             public void onFinally(Response response) {
                 buildView();
+                registerDialog.dismiss();
             }
         });
     }
@@ -160,6 +172,7 @@ public class EditClientActivity extends CustomCallbackActivity{
         client.setRegion(cellValueMap.get("region"));
         client.setSource(cellValueMap.get("source"));
         client.setIndustry(cellValueMap.get("industry"));
+        client.setScaleid(cellValueMap.get("scaleid"));
         client.setContactposition(cellValueMap.get("contactposition"));
         return client;
     }
@@ -186,6 +199,8 @@ public class EditClientActivity extends CustomCallbackActivity{
         resource.param("region", client.getRegion());
         resource.param("source", client.getSource());
         resource.param("industry", client.getIndustry());
+        resource.param("industry", client.getIndustry());
+        resource.param("scaleid", client.getScaleid());
         resource.param("contactposition", client.getContactposition());
         resource.param("createby", sessionManager.getUser().getId());
 
@@ -246,6 +261,8 @@ public class EditClientActivity extends CustomCallbackActivity{
         snTFC.setLabel("客户编号-建议使用公司名称拼音");
         snTFC.setRequired(true);
         snTFC.setRegular(PatternPoll.NUMBER_OR_CAPTION);
+        snTFC.setMinNum(4);
+        snTFC.setMaxNum(8);
         snTFC.setErrorMessage("客户编号：只能由数字或字母组成");
         cellBeans.add(snTFC);
 

@@ -24,6 +24,7 @@ public class Client implements java.io.Serializable {
     private String region;
     private String source;
     private String type;
+    private String scaleid;
     private String industry;
     private String contactposition;
 
@@ -194,26 +195,12 @@ public class Client implements java.io.Serializable {
     public void setContactposition(String contactposition) {
         this.contactposition = contactposition;
     }
+
+    public String getScaleid() {
+        return scaleid;
+    }
+
+    public void setScaleid(String scaleid) {
+        this.scaleid = scaleid;
+    }
 }
-
-
-//"createby": "admin",
-//        "updateby": null,
-//        "createdate": 1434384000000,
-//        "updatedate": null,
-//        "disabled": 0,
-//        "remark": null,
-//        "": "1",
-//        "": "2",
-//        "": "1001",
-//        "": "UGO",
-//        "": "UGO服饰",
-//        "level": "A",
-//        "clientinstid": "1001",
-//        "": "李",
-//        "": "深圳福田",
-//        "region": "",
-//        "source": "",
-//        "type": "",
-//        "industry": "",
-//        "contactposition": ""

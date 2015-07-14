@@ -160,43 +160,4 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
             this.inputvalue = inputvalue;
         }
     }
-
-    /*假数据------------------------*/
-    public List<FormCellBean> buildFakeData() {
-        List<FormCellBean> cellBeans = new ArrayList<>();
-        TextFormCellBean textFormCell = new TextFormCellBean();
-        textFormCell.setType(TextFormCell.class.getSimpleName());
-        textFormCell.setKey("testText");
-        textFormCell.setId("testText");
-        textFormCell.setLabel("请输入身份证号码");
-        textFormCell.setRequired(true);
-        cellBeans.add(textFormCell);
-
-        TextFormCellBean textFormCell2 = new TextFormCellBean();
-        textFormCell2.setType(TextFormCell.class.getSimpleName());
-        textFormCell2.setKey("testText2");
-        textFormCell2.setId("testText2");
-        textFormCell2.setLabel("请输入您的手机号码");
-        textFormCell2.setRequired(true);
-        cellBeans.add(textFormCell2);
-
-        TextFormCellBean textFormCell3 = new TextFormCellBean();
-        textFormCell3.setType(TextFormCell.class.getSimpleName());
-        textFormCell3.setKey("testText3");
-        textFormCell3.setId("testText3");
-        textFormCell3.setLabel("请输入您的年龄");
-        textFormCell3.setRequired(true);
-        cellBeans.add(textFormCell3);
-
-        ImageFormCellBean imageFormCell = new ImageFormCellBean();
-        imageFormCell.setMaxNum(3);
-        imageFormCell.setKey("testImage");
-        imageFormCell.setId("testImage");
-        imageFormCell.setValue(new String[]{"1", "2"});
-        imageFormCell.setType(ImageFormCell.class.getSimpleName());
-        imageFormCell.setLabel("请选择头像");
-        cellBeans.add(imageFormCell);
-
-        return cellBeans;
-    }
 }

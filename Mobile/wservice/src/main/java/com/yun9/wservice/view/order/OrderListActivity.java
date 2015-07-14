@@ -136,6 +136,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
+                adapter.notifyDataSetChanged();
                 ptrClassicFrameLayout.refreshComplete();
             }
         });

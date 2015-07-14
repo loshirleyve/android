@@ -57,11 +57,12 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/whites"
                 android:text="@string/app_ok"
+                android:textStyle="bold"
                 android:layout_marginRight="10dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:background="@color/title_color"/>
         </LinearLayout>
     </RelativeLayout>

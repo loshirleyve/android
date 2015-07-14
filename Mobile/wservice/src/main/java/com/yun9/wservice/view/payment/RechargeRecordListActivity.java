@@ -74,7 +74,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
         state = getIntent().getStringExtra("state");
         String stateName = getIntent().getStringExtra("stateName");
         if (AssertValue.isNotNullAndNotEmpty(stateName)) {
-            titleBarLayout.getTitleTv().setText(stateName+"记录");
+            titleBarLayout.getTitleTv().setText("充值记录("+stateName+")");
         }
         buildView();
     }

@@ -85,7 +85,7 @@ public class ClientListAdapter extends JupiterAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        return 4;
     }
 
     @Override
@@ -95,9 +95,17 @@ public class ClientListAdapter extends JupiterAdapter {
             CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
             if (client.getId().equals(proxy.getUserId())
                     && proxy.getInstId().equals(client.getClientinstid())){
-                return ClientActivity.VIEW_TYPE_PROXY;
+                if (AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
+                    return ClientActivity.VIEW_TYPE_INITED_PROXY;
+                } else {
+                    return ClientActivity.VIEW_TYPE_PROXY;
+                }
             }
         }
-        return ClientActivity.VIEW_TYPE_NORMAL;
+        if (AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
+            return ClientActivity.VIEW_TYPE_INITED_NORMAL;
+        } else {
+            return ClientActivity.VIEW_TYPE_NORMAL;
+        }
     }
 }

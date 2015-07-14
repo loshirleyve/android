@@ -108,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:text="@string/pay_now"
+            android:text="@string/buy_right_now"
             android:layout_gravity="center"
             android:textColor="@color/whites"/>
     </LinearLayout>
