@@ -323,14 +323,14 @@ public class StoreFragment extends JupiterFragment {
         });
     }
 
-    private void refreshProductTop(final LinkedList<Product> topProducts){
+  /*  private void refreshProductTop(final LinkedList<Product> topProducts){
         final Resource resource = resourceFactory.create("QueryProducts");
         resource.param("top", 1).param("groupid", "1");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 Product product = (Product) response.getPayload();
-                topProducts.addLast(product);
+                topProducts.addFirst(product);
             }
 
             @Override
@@ -343,7 +343,7 @@ public class StoreFragment extends JupiterFragment {
 
             }
         });
-    }
+    }*/
     private void refreshProduct(ProductGroup productGroup, String rowid, final String dir) {
         if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
@@ -372,14 +372,14 @@ public class StoreFragment extends JupiterFragment {
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     for (Product product : tempProducts) {
                         products.addLast(product);
-                        /*if (product.istop()) {
+                        if (product.istop()) {
                             topProducts.addLast(product);
-                        }*/
+                        }
                     }
                 }
 
                 if (!AssertValue.isNotNullAndNotEmpty(tempProducts) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
                     productLV.onFinishLoading(false);
                 }
 
@@ -397,7 +397,7 @@ public class StoreFragment extends JupiterFragment {
             public void onFinally(Response response) {
                 mPtrFrame.refreshComplete();
                 productLV.onFinishLoading(true);
-                refreshProductTop(topProducts);
+                //refreshProductTop(topProducts);
             }
         });
     }
