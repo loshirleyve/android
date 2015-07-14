@@ -324,7 +324,7 @@ public class StoreFragment extends JupiterFragment {
     }
 
     private void refreshProductTop(final LinkedList<Product> topProducts){
-        Resource resource = resourceFactory.create("QueryProducts");
+        final Resource resource = resourceFactory.create("QueryProducts");
         resource.param("top", 1).param("groupid", "1");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -335,7 +335,7 @@ public class StoreFragment extends JupiterFragment {
 
             @Override
             public void onFailure(Response response) {
-
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
