@@ -83,7 +83,6 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
         PhoneUser user = users.get(position);
         JupiterRowStyleSutitleLayout item = null;
-
         if (!AssertValue.isNotNull(convertView)) {
             item = new JupiterRowStyleSutitleLayout(mContext);
             item.setShowTime(false);

@@ -332,15 +332,11 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         orgUserOperateLayout.getDelete_orguser().setText("删除成员" + user.getName());
         orgUserOperateLayout.getCancle().setOnClickListener(onOrgUserCancelClickListener);
         orgUserOperatePopupW = new PopupWindow(orgUserOperateLayout, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        orgUserOperatePopupW.setOnDismissListener(onDismissListener);
+        orgUserOperatePopupW.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         orgUserOperatePopupW.setOutsideTouchable(true);
         orgUserOperatePopupW.setFocusable(true);
-        orgUserOperatePopupW.setTouchable(true);
-        orgUserOperatePopupW.setBackgroundDrawable(new ColorDrawable(Color
-                .parseColor("#b0000000")));
-        orgUserOperatePopupW.showAtLocation(sendMsgCardButton, Gravity.BOTTOM, 0,
-                0);
-        orgUserOperatePopupW.setAnimationStyle(R.style.bottom2top_top2bottom);
         orgUserOperateLayout.getDelete_orguser().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -353,6 +349,11 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 updateOrgUserRole(item);
             }
         });
+        orgUserOperatePopupW.setAnimationStyle(R.style.bottom2top_top2bottom);
+        WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+        lp.alpha = 0.4f;
+        this.getWindow().setAttributes(lp);
+        orgUserOperatePopupW.showAtLocation(sendMsgCardButton, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         orgUserOperatePopupW.update();
     }
 
@@ -547,6 +548,15 @@ public class OrgEditActivity extends JupiterFragmentActivity {
             if (requestcode == OrgEditCommand.RESULT_CODE_OK)
                 setResult(requestcode);
             finish();
+        }
+    };
+
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams lp = OrgEditActivity.this.getWindow().getAttributes();
+            lp.alpha = 1f;
+            OrgEditActivity.this.getWindow().setAttributes(lp);
         }
     };
 }
