@@ -323,14 +323,24 @@ public class StoreFragment extends JupiterFragment {
         });
     }
 
-  /*  private void refreshProductTop(final LinkedList<Product> topProducts){
+    private void refreshProductTop(final ProductGroup productGroup){
+        if (!AssertValue.isNotNull(productGroup)) {
+            mPtrFrame.refreshComplete();
+            return;
+        }
         final Resource resource = resourceFactory.create("QueryProducts");
-        resource.param("top", 1).param("groupid", "1");
+        resource.param("top", 1).param("groupid", productGroup.getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                Product product = (Product) response.getPayload();
-                topProducts.addFirst(product);
+                List<Product> tempProducts = (List<Product>) response.getPayload();
+                if (AssertValue.isNotNullAndNotEmpty(tempProducts)) {
+                    for (Product product : tempProducts) {
+                        topProducts.addLast(product);
+                    }
+                }
+                topProductViewPageAdapter.notifyDataSetChanged();
+                circlePageIndicator.notifyDataSetChanged();
             }
 
             @Override
@@ -343,8 +353,8 @@ public class StoreFragment extends JupiterFragment {
 
             }
         });
-    }*/
-    private void refreshProduct(ProductGroup productGroup, String rowid, final String dir) {
+    }
+    private void refreshProduct(final ProductGroup productGroup, final String rowid, final String dir) {
         if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
             return;
@@ -363,18 +373,12 @@ public class StoreFragment extends JupiterFragment {
                     for (int i = tempProducts.size(); i > 0; i--) {
                         Product tempProduct = tempProducts.get(i - 1);
                         products.addFirst(tempProduct);
-                        if (tempProduct.istop()) {
-                            topProducts.addFirst(tempProduct);
-                        }
                     }
                 }
 
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     for (Product product : tempProducts) {
                         products.addLast(product);
-                        if (product.istop()) {
-                            topProducts.addLast(product);
-                        }
                     }
                 }
 
@@ -384,7 +388,6 @@ public class StoreFragment extends JupiterFragment {
                 }
 
                 productListViewAdapter.notifyDataSetChanged();
-                topProductViewPageAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
             }
 
@@ -397,7 +400,7 @@ public class StoreFragment extends JupiterFragment {
             public void onFinally(Response response) {
                 mPtrFrame.refreshComplete();
                 productLV.onFinishLoading(true);
-                //refreshProductTop(topProducts);
+                refreshProductTop(productGroup);
             }
         });
     }
