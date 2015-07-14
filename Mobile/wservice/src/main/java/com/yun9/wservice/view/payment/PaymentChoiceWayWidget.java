@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
@@ -24,7 +25,7 @@ import com.yun9.wservice.model.Payinfo;
  * 选择付款方式的某一项
  * Created by huangbinglong on 15/6/24.
  */
-public class PaymentChoiceWayWidget extends JupiterRelativeLayout{
+public class PaymentChoiceWayWidget extends JupiterRelativeLayout implements ISelectable{
 
     private JupiterRowStyleSutitleLayout sutitleLayout;
 
@@ -209,5 +210,19 @@ public class PaymentChoiceWayWidget extends JupiterRelativeLayout{
 
     public int getSelectedOptionIndex() {
         return selectedOptionIndex;
+    }
+
+    @Override
+    public boolean isSelected() {
+        return sutitleLayout.isSelected();
+    }
+
+    @Override
+    public void select(boolean isSelect) {
+        if (isSelect){
+            showDetail();
+        } else {
+            hideDetail();
+        }
     }
 }

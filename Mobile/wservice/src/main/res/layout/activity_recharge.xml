@@ -69,9 +69,10 @@
                         android:imeOptions="actionDone"
                         android:inputType="numberDecimal"
                         android:textSize="16dp"
+                        android:selectAllOnFocus="true"
                         android:textColor="@color/red"
                         android:background="@null"
-                        android:gravity="center"
+                        android:gravity="left"
                         android:layout_alignParentRight="true"/>
                 </RelativeLayout>
             </LinearLayout>

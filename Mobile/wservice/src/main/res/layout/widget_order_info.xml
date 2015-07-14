@@ -43,8 +43,7 @@
                 android:id="@+id/order_fee_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
-                android:text="199元"/>
+                android:textColor="@color/red"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/pay_now_ll"

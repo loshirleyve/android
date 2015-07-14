@@ -78,18 +78,17 @@ public class SimpleBrowserActivity extends JupiterFragmentActivity{
     //改写物理按键——返回的逻辑
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        // TODO Auto-generated method stub
         if(keyCode== KeyEvent.KEYCODE_BACK)
         {
-            if(webView.canGoBack())
-            {
-                webView.goBack();//返回上一页面
-                return true;
-            }
-            else
-            {
-                System.exit(0);//退出程序
-            }
+//            if(webView.canGoBack())
+//            {
+//                webView.goBack();//返回上一页面
+//                return true;
+//            }
+//            else
+//            {
+                SimpleBrowserActivity.this.fileList();
+//            }
         }
         return super.onKeyDown(keyCode, event);
     }
