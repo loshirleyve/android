@@ -16,11 +16,21 @@ public class PaymentChoiceWaysCommand extends JupiterCommand{
 
     private Payinfo.PaymodeCategory category;
 
+    private double surplusAmount;
+
     public Payinfo.PaymodeCategory getCategory() {
         return category;
     }
 
     public void setCategory(Payinfo.PaymodeCategory category) {
         this.category = category;
+    }
+
+    public double getSurplusAmount() {
+        return surplusAmount;
+    }
+
+    public void setSurplusAmount(double surplusAmount) {
+        this.surplusAmount = surplusAmount;
     }
 }

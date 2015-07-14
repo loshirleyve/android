@@ -660,7 +660,7 @@ public class StoreFragment extends JupiterFragment {
 
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
-            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
+            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImgid(), productItemLayout.getMainIV());
             productItemLayout.getHotnoticeTV().setText(product.getPricedescr());
             productItemLayout.setTag(product);
 

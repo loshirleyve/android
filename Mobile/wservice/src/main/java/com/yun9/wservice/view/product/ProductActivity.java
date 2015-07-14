@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,6 +114,9 @@ public class ProductActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
 
+    @ViewInject(id=R.id.main)
+    private RelativeLayout mainRl;
+
     private PopupWindow classifyWindow;
 
     private ProductClassifyPopLayout classifyPopLayout;
@@ -137,6 +141,7 @@ public class ProductActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainRl.setVisibility(View.GONE);
         command = (ProductCommand) getIntent().getSerializableExtra(ProductCommand.PARAM_COMMAND);
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getProductid())) {
@@ -225,6 +230,7 @@ public class ProductActivity extends JupiterFragmentActivity {
                 @Override
                 public void onFinally(Response response) {
                     progressDialog.dismiss();
+                    mainRl.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -294,7 +300,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             WindowManager.LayoutParams lp = this.getWindow().getAttributes();
             lp.alpha = 0.4f;
             this.getWindow().setAttributes(lp);
-            classifyWindow.showAtLocation(this.findViewById(R.id.main), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            classifyWindow.showAtLocation(mainRl, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
     }
 

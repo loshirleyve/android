@@ -119,18 +119,20 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             final PaymentChoiceWayWidget wayWidget;
-            List<Payinfo.PaymodeInfo> infos = command.getCategory().getPaymodeInfos();
+            Payinfo.PaymodeInfo paymodeInfo = command.getCategory().getPaymodeInfos()
+                                                        .get(position);
+            paymodeInfo.setUseAmount(command.getSurplusAmount());
             if (convertView == null) {
                 wayWidget = new PaymentChoiceWayWidget(PaymentChoiceWaysActivity.this);
-                wayWidget.buildWithData(infos.get(position));
+                wayWidget.buildWithData(paymodeInfo);
                 if (position != 0){
                     wayWidget.hideDetail();
                 } else {
-                    selectedPaymode = infos.get(position);
+                    selectedPaymode = paymodeInfo;
                     wayWidget.showDetail();
                 }
-                wayWidget.setTag(infos.get(position));
-                wayWidget.buildWithData(infos.get(position));
+                wayWidget.setTag(paymodeInfo);
+                wayWidget.buildWithData(paymodeInfo);
                 convertView = wayWidget;
             } else {
                 wayWidget = (PaymentChoiceWayWidget) convertView;

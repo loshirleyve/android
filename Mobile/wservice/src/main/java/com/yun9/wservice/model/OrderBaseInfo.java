@@ -22,6 +22,7 @@ public class OrderBaseInfo implements Serializable{
     private Long createdate;
     private String createby;
     private int paystate;
+    private String productimgid;
 
     public String getOrderid() {
         return orderid;
@@ -133,5 +134,13 @@ public class OrderBaseInfo implements Serializable{
 
     public void setPaystate(int paystate) {
         this.paystate = paystate;
+    }
+
+    public String getProductimgid() {
+        return productimgid;
+    }
+
+    public void setProductimgid(String productimgid) {
+        this.productimgid = productimgid;
     }
 }

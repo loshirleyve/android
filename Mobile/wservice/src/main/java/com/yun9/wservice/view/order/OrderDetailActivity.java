@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -56,6 +57,9 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.order_detail_work_order_list_widget)
     private OrderDetailWorkOrderListWidget orderDetailWorkOrderListWidget;
 
+    @ViewInject(id=R.id.main)
+    private RelativeLayout mainRl;
+
     @BeanInject
     private ResourceFactory resourceFactory;
     @BeanInject
@@ -74,6 +78,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainRl.setVisibility(View.GONE);
         orderId = getIntent().getStringExtra("orderid");
         this.buildView();
         reloadData();
@@ -127,6 +132,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             @Override
             public void onFinally(Response response) {
                 registerDialog.dismiss();
+                mainRl.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -151,27 +157,25 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNull(order.getOrder())
                 && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
             orderDetailPayinfoWidget.buildWithData(order);
+
+            if (order.getOrder().getPaystate() > 0){
+                orderDetailPayinfoWidget.getSutitleLayout()
+                        .getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
+                orderDetailPayinfoWidget.getSutitleLayout()
+                        .getHotNitoceTV().setText("查看付款详情");
+                orderDetailPayinfoWidget.getSutitleLayout()
+                        .getHotNitoceTV().getPaint().setFakeBoldText(false);
+                orderDetailPayinfoWidget.getSutitleLayout()
+                        .getTitleTV().setTextColor(getResources().getColor(R.color.black));
+                orderDetailPayinfoWidget.getSutitleLayout()
+                        .getTitleTV().setText(R.string.already_pay);
+            }
+
             orderDetailPayinfoWidget.getSutitleLayout().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (order.getOrder().getPaystate() > 0) {
-                        orderDetailPayinfoWidget.getSutitleLayout()
-                                .getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
-                        orderDetailPayinfoWidget.getSutitleLayout()
-                                .getHotNitoceTV().setText("查看付款详情");
-                        orderDetailPayinfoWidget.getSutitleLayout()
-                                .getHotNitoceTV().getPaint().setFakeBoldText(false);
-                        orderDetailPayinfoWidget.getSutitleLayout()
-                                .getTitleTV().setTextColor(getResources().getColor(R.color.black));
-                        orderDetailPayinfoWidget.getSutitleLayout()
-                                .getTitleTV().setText(R.string.already_pay);
-                        orderDetailPayinfoWidget.getSutitleLayout()
-                                .setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                PaymentResultActivity.start(OrderDetailActivity.this);
-                            }
-                        });
+                        PaymentResultActivity.start(OrderDetailActivity.this);
                     } else {
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);

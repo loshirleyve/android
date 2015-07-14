@@ -168,8 +168,8 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         resource.param("payInstId",sessionManager.getInst().getId());
         resource.param("source",command.getSource());
         resource.param("sourceValue",command.getSourceValue());
-        resource.param("userid",sessionManager.getUser().getId());
-        resource.param("payItems",choicePayItemMap.values());
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("payItems", choicePayItemMap.values());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -227,9 +227,9 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         titleTv.setText(payinfo.getTitle());
         subTitleTv.setText(payinfo.getSubtitle());
         rechargeWidget.buildWithData(payinfo.getBalance());
-        paymentMoneyTv.setText(payinfo.getPayableAmount()+"元");
-        totalMoneyTv.setText(payinfo.getFactpayAmount()+"元");
-        remainMoneyTv.setText(payinfo.getSurplusAmount()+"元");
+        paymentMoneyTv.setText(payinfo.getPayableAmount() + "元");
+        totalMoneyTv.setText(payinfo.getFactpayAmount() + "元");
+        remainMoneyTv.setText(payinfo.getSurplusAmount() + "元");
 
         if (payinfo.getSurplusAmount() != 0){
             confirmTv.setTextColor(getResources().getColor(R.color.devide_line));
@@ -238,7 +238,35 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             confirmTv.setTextColor(getResources().getColor(R.color.title_color));
             confirmLl.setClickable(true);
         }
+        rebuildChoicedPayItem();
         adapter.notifyDataSetChanged();
+    }
+
+    private void rebuildChoicedPayItem() {
+        choicePayItemMap.clear();
+        if (payinfo.getPaymodeCategorys() == null){
+            return;
+        }
+        for (Payinfo.PaymodeCategory paymodeCategory : payinfo.getPaymodeCategorys()) {
+            if (paymodeCategory.getPaymodeInfos() == null){
+                continue;
+            }
+            for (Payinfo.PaymodeInfo paymodeInfo : paymodeCategory.getPaymodeInfos()){
+                if (paymodeInfo.getUseAmount() > 0.0){
+                    PayItem payItem = new PayItem();
+                    payItem.setPayModeId(paymodeInfo.getPaymodeId());
+                    payItem.setAmount(paymodeInfo.getUseAmount() + "");
+                    // 设置默认选择的BizFinaceAccount
+                    if (paymodeInfo.getBizFinanceAccounts() != null
+                            && paymodeInfo.getBizFinanceAccounts().size() > 0){
+                        payItem.setAccountid(paymodeInfo.getBizFinanceAccounts().get(0).getId());
+                    }
+                    choicePayItemMap.put(paymodeCategory.getId(),payItem);
+                    categoryChoicePaymodeMap.put(paymodeCategory.getId(),paymodeInfo);
+                    break;
+                }
+            }
+        }
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
@@ -279,6 +307,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     public void onClick(View v) {
                         choiceWaysCommand = new PaymentChoiceWaysCommand();
                         choiceWaysCommand.setCategory(payinfo.getPaymodeCategorys().get(position));
+                        choiceWaysCommand.setSurplusAmount(payinfo.getSurplusAmount());
                         PaymentChoiceWaysActivity.start(PaymentOrderActivity.this,choiceWaysCommand);
                     }
                 });

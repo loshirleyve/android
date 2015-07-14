@@ -17,10 +17,10 @@ public class Product implements java.io.Serializable {
     private String introduce;
     private String introduceurl;
     private String type;
-    private String imageid;
     private int daynum;
     private String backgorundimgid;
     private boolean istop;
+    private String imgid;
 
     private List<ProductPhase> phases;
 
@@ -100,14 +100,6 @@ public class Product implements java.io.Serializable {
         this.type = type;
     }
 
-    public String getImageid() {
-        return imageid;
-    }
-
-    public void setImageid(String imageid) {
-        this.imageid = imageid;
-    }
-
     public int getDaynum() {
         return daynum;
     }
@@ -170,5 +162,13 @@ public class Product implements java.io.Serializable {
 
     public void setIntroduceurl(String introduceurl) {
         this.introduceurl = introduceurl;
+    }
+
+    public String getImgid() {
+        return imgid;
+    }
+
+    public void setImgid(String imgid) {
+        this.imgid = imgid;
     }
 }

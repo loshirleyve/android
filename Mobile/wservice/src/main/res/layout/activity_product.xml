@@ -34,8 +34,7 @@
                 <ImageView
                     android:id="@+id/product_iv"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/mapp6" />
+                    android:layout_height="50dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -47,15 +46,13 @@
                     <TextView
                         android:id="@+id/inst_name_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="由深圳市时代共赢服务有限公司提供" />
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/product_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="缴交社保/补交社保"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
 
@@ -63,15 +60,13 @@
                         android:id="@+id/product_desc_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="创建新企业注册必须要到国家工商管理部门及税务进行登记备案，领取工商执照等" />
+                        android:layout_marginTop="5dp"/>
 
                     <TextView
                         android:id="@+id/product_tips_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:text="自购买日起，3日内开始提供服务" />
+                        android:layout_marginTop="5dp"/>
 
                     <View
                         android:layout_width="match_parent"
@@ -89,7 +84,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="3200元/每年"
                             android:textColor="@color/title_color"
                             android:textSize="18dp" />
 
@@ -130,9 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     ext:rowStyleSutitleShowMainImage="false"
-                    ext:rowStyleSutitleShowTimeText="false"
-                    ext:rowStyleSutitleText="深圳市南山区"
-                    ext:rowStyleSutitleTitleText="已选分类:">
+                    ext:rowStyleSutitleShowTimeText="false">
 
 
                 </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
@@ -217,7 +209,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="(89)"
                         android:textSize="16dp" />
                 </LinearLayout>
 

@@ -102,7 +102,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
         ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshOrder();
+                refresh();
             }
 
             @Override
@@ -110,13 +110,33 @@ public class OrderListActivity extends JupiterFragmentActivity{
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
-        refreshOrder();
+        autoRefresh();
+    }
+
+    private void refresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshOrder();
+            }
+        }, 100);
+    }
+
+    private void autoRefresh(){
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh();
+            }
+        }, 100);
     }
 
     private void refreshOrder() {
         final Resource resource = resourceFactory.create("QueryOrdersService");
-        resource.param("userid",sessionManager.getUser().getId());
-        resource.param("state",state);
+        resource.param("userid", sessionManager.getUser().getId());
+        if (AssertValue.isNotNullAndNotEmpty(state)){
+            resource.param("states",new String[]{state});
+        }
         resource.header("lastupid",lastupid);
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
