@@ -3,89 +3,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+
     <LinearLayout
-        android:background="@drawable/user_info_background"
-        android:id="@+id/userHeadLL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="5dp"
-        >
-        <RelativeLayout
-            android:padding="10dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/userHeadLL"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:id="@+id/userHeadTV"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/user_photograph"
-            android:textSize="16dp"/>
-        <ImageView
-            android:id="@+id/userHeadIV"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/user_head"
-            android:layout_alignParentRight="true"/>
-        </RelativeLayout>
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/user_info_background"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/userHeadTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/user_photograph"
+                    android:textSize="16dp" />
+
+                <com.yun9.jupiter.widget.JupiterRoundImageView
+                    android:id="@+id/userHeadIV"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/user_head" />
+
+            </RelativeLayout>
         </LinearLayout>
 
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                android:id="@+id/user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rowStyleSutitleShowMainImage="false"
-                app:rowStyleSutitleTitleText="@string/user_name"
-                app:rowStyleSutitleShowSutitleText="false"
-                app:rowStyleSutitleShowTimeText="false"
-                app:rowStyleSutitleShowArrow="false"
-                />
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                android:background="@drawable/user_info_background"
-                android:id="@+id/agency"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rowStyleSutitleShowMainImage="false"
-                app:rowStyleSutitleTitleText="@string/agency"
-                app:rowStyleSutitleShowSutitleText="false"
-                app:rowStyleSutitleShowTimeText="false"
-                app:rowStyleSutitleShowArrow="false"
-                />
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                android:id="@+id/department"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rowStyleSutitleShowMainImage="false"
-                app:rowStyleSutitleTitleText="@string/department"
-                app:rowStyleSutitleShowSutitleText="false"
-                app:rowStyleSutitleShowTimeText="false"
-                app:rowStyleSutitleShowArrow="false"
-                />
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                android:background="@drawable/user_info_background"
-                android:id="@+id/user_signature"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rowStyleSutitleShowMainImage="false"
-                app:rowStyleSutitleTitleText="@string/user_signature"
-                app:rowStyleSutitleShowTimeText="false"
-                app:rowStyleSutitleText=""
-                />
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                android:background="@drawable/user_info_background"
-                android:id="@+id/user_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rowStyleSutitleShowMainImage="false"
-                app:rowStyleSutitleTitleText="@string/setting_change_password"
-                app:rowStyleSutitleShowTimeText="false"
-                app:rowStyleSutitleShowSutitleText="false"
-                />
-        </LinearLayout>
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rowStyleSutitleShowArrow="false"
+            app:rowStyleSutitleShowMainImage="false"
+            app:rowStyleSutitleShowSutitleText="false"
+            app:rowStyleSutitleShowTimeText="false"
+            app:rowStyleSutitleTitleText="@string/user_name" />
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            android:id="@+id/agency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_background"
+            app:rowStyleSutitleShowArrow="false"
+            app:rowStyleSutitleShowMainImage="false"
+            app:rowStyleSutitleShowSutitleText="false"
+            app:rowStyleSutitleShowTimeText="false"
+            app:rowStyleSutitleTitleText="@string/agency" />
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            android:id="@+id/department"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rowStyleSutitleShowArrow="false"
+            app:rowStyleSutitleShowMainImage="false"
+            app:rowStyleSutitleShowSutitleText="false"
+            app:rowStyleSutitleShowTimeText="false"
+            app:rowStyleSutitleTitleText="@string/department" />
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            android:id="@+id/user_signature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_background"
+            app:rowStyleSutitleShowMainImage="false"
+            app:rowStyleSutitleShowTimeText="false"
+            app:rowStyleSutitleText=""
+            app:rowStyleSutitleTitleText="@string/user_signature" />
+
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            android:id="@+id/user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_background"
+            app:rowStyleSutitleShowMainImage="false"
+            app:rowStyleSutitleShowSutitleText="false"
+            app:rowStyleSutitleShowTimeText="false"
+            app:rowStyleSutitleTitleText="@string/setting_change_password" />
+    </LinearLayout>
 </RelativeLayout>
