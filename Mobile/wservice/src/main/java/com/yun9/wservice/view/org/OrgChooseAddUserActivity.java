@@ -155,11 +155,9 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNullAndNotEmpty(users)) {
                 String userstring = "";
                 for (User user : users) {
-                    userstring += user.getName() + ",";
+                    userstring += user.getName() + " ";
                 }
-                String userstring2 = userstring.substring(0, userstring.length() - 1);
-                String m = userstring2.length() > 20 ? userstring2.substring(0, 20) + "..." : userstring2;
-                adduseorg.getSutitleTv().setText(m);
+                adduseorg.getSutitleTv().setText(userstring);
             }
         }
     }
