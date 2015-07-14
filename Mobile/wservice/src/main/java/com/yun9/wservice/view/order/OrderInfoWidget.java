@@ -113,6 +113,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
     private void showOrder(String orderId) {
         OrderDetailActivity.start(this.mContext,orderId);
+        ((Activity) (getContext())).finish();
     }
 
     private List<String> getProductIds() {

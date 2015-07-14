@@ -55,7 +55,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
 
     private List<OrderBaseInfo> orderList;
 
-    private String lastupid = "";
+    private String rowid = "";
 
     public static void start(Activity activity,String state,String stateName) {
         Intent intent = new Intent(activity, OrderListActivity.class);
@@ -137,14 +137,16 @@ public class OrderListActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNullAndNotEmpty(state)){
             resource.param("states",new String[]{state});
         }
-        resource.header("lastupid",lastupid);
+        if (AssertValue.isNotNullAndNotEmpty(rowid)) {
+            resource.page().setRowid(rowid);
+        }
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 OrderBaseInfoWrapper wrapper = (OrderBaseInfoWrapper) response.getPayload();
                 List<OrderBaseInfo> orderBaseInfos = wrapper.getOrderList();
                 if (orderBaseInfos != null && orderBaseInfos.size() > 0){
-                    lastupid = orderBaseInfos.get(0).getOrderid();
+                    rowid = orderBaseInfos.get(0).getOrderid();
                     orderList.addAll(0,orderBaseInfos);
                 }
             }

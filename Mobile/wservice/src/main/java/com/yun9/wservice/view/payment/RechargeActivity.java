@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.payment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -25,37 +27,37 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.RechargeNo;
 import com.yun9.wservice.manager.AlipayManager;
 import com.yun9.wservice.model.AddRechargeResult;
 import com.yun9.wservice.model.Payinfo;
-import com.yun9.wservice.model.RechargeNo;
 import com.yun9.wservice.model.RechargeType;
 
 /**
  * 充值界面
  * Created by huangbinglong on 15/6/23.
  */
-public class RechargeActivity extends JupiterFragmentActivity{
+public class RechargeActivity extends JupiterFragmentActivity {
 
-    @ViewInject(id=R.id.title_bar)
+    @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.title_layout)
+    @ViewInject(id = R.id.title_layout)
     private JupiterRowStyleTitleLayout titleLayout;
 
-    @ViewInject(id=R.id.recharge_money_et)
+    @ViewInject(id = R.id.recharge_money_et)
     private EditText editText;
 
-    @ViewInject(id=R.id.confirm_recharge_ll)
+    @ViewInject(id = R.id.confirm_recharge_ll)
     private LinearLayout rechargeLL;
 
-    @ViewInject(id=R.id.choosed_recharge_type_ll)
+    @ViewInject(id = R.id.choosed_recharge_type_ll)
     private LinearLayout choosedRechargeTypeLL;
 
-    @ViewInject(id=R.id.recharge_way_tip_tv)
+    @ViewInject(id = R.id.recharge_way_tip_tv)
     private TextView rechargeTypeTipTV;
 
-    @ViewInject(id=R.id.recharge_way_desc_tv)
+    @ViewInject(id = R.id.recharge_way_desc_tv)
     private TextView rechargeTypeDescTV;
 
     @BeanInject
@@ -69,16 +71,24 @@ public class RechargeActivity extends JupiterFragmentActivity{
 
     private RechargeChoiceWaysCommand command;
 
+    private RechargeCommand rechargeCommand;
+
     private RechargeType rechargeType;
 
-    public static void start(Context context) {
-        Intent intent = new Intent(context,RechargeActivity.class);
-        context.startActivity(intent);
+    public static void start(Activity activity, RechargeCommand command) {
+        Intent intent = new Intent(activity, RechargeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(JupiterCommand.PARAM_COMMAND, command);
+        intent.putExtras(bundle);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        rechargeCommand =
+                (RechargeCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
+        setResult(JupiterCommand.RESULT_CODE_OK);
         buildView();
     }
 
@@ -107,6 +117,11 @@ public class RechargeActivity extends JupiterFragmentActivity{
             }
         });
 
+        if (rechargeCommand != null
+                && rechargeCommand.getAmount() > 0.0){
+            editText.setText(rechargeCommand.getAmount()+"");
+        }
+
         rechargeLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,8 +132,8 @@ public class RechargeActivity extends JupiterFragmentActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (command !=null && command.getRequestCode() == requestCode
-                && resultCode == command.RESULT_CODE_OK){
+        if (command != null && command.getRequestCode() == requestCode
+                && resultCode == command.RESULT_CODE_OK) {
             RechargeType type = (RechargeType) data.getSerializableExtra("type");
             if (type != null) {
                 showDesc(type);
@@ -130,11 +145,11 @@ public class RechargeActivity extends JupiterFragmentActivity{
 
     private void confirmRecharge() {
         String content = editText.getText().toString();
-        if (!AssertValue.isNotNullAndNotEmpty(content)){
+        if (!AssertValue.isNotNullAndNotEmpty(content)) {
             showToast("请输入充值金额。");
             return;
         }
-        if (rechargeType == null){
+        if (rechargeType == null) {
             showToast("请选择充值方式。");
             return;
         }
@@ -150,17 +165,17 @@ public class RechargeActivity extends JupiterFragmentActivity{
         }
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, "登记中，请稍候...", true);
         Resource resource = resourceFactory.create("AddRechargeService");
-        resource.param("own",sessionManager.getUser().getId());
+        resource.param("own", sessionManager.getUser().getId());
         resource.param("accounttype", Payinfo.BizFinanceAccount.TYPE_BALANCE);
-        resource.param("amount",amount);
-        resource.param("typeid",rechargeType.getId());
-        resource.param("userid",sessionManager.getUser().getId());
+        resource.param("amount", amount);
+        resource.param("typeid", rechargeType.getId());
+        resource.param("userid", sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 registerDialog.dismiss();
                 AddRechargeResult result = (AddRechargeResult) response.getPayload();
-                if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getRechargeno())){
+                if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getRechargeno())) {
                     payByAlipay(result);
                 } else if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getRechargeno())) {
                 }
@@ -180,38 +195,48 @@ public class RechargeActivity extends JupiterFragmentActivity{
 
     /**
      * 使用支付宝支付
+     *
      * @param result
      */
     private void payByAlipay(final AddRechargeResult result) {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, "支付中，请稍候...", true);
         AlipayManager.OrderInfo orderInfo =
-                new AlipayManager.OrderInfo("余额充值",sessionManager.getUser().getName()
-                        +"于"+ DateUtil.getStringToday()+"充值"+result.getAmount()+"元",result.getCallbackid(),result.getAmount());
-       Handler handler = new Handler() {
+                new AlipayManager.OrderInfo("余额充值", sessionManager.getUser().getName()
+                        + "于" + DateUtil.getStringToday() + "充值" + result.getAmount() + "元",
+                        result.getCallbackid(), result.getAmount() + "");
+        Handler handler = new Handler() {
             public void handleMessage(Message msg) {
+                RechargeResultCommand command =
+                        new RechargeResultCommand(result.getRechargeid(), result.getStateName(),
+                                result.getRecharegeTypeName(), result.getAmount());
                 switch (msg.what) {
                     case AlipayManager.SDK_PAY_FLAG: {
                         AlipayManager.PayResult payResult = new AlipayManager
-                                                                    .PayResult((String) msg.obj);
+                                .PayResult((String) msg.obj);
                         // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
                         String resultInfo = payResult.getResult();
                         String memo = payResult.getMemo();
                         String resultStatus = payResult.getResultStatus();
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                         if (TextUtils.equals(resultStatus, "9000")) {
-                            result.setStateName("支付成功");
-                            RechargeResultActivity.start(RechargeActivity.this,result);
+                            command.setStateName("支付成功");
+                            RechargeResultActivity.start(RechargeActivity.this, command);
+                            setResult(JupiterCommand.RESULT_CODE_CANCEL);
                             RechargeActivity.this.finish();
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败
                             // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                             if (TextUtils.equals(resultStatus, "8000")) {
-                                result.setStateName("支付结果确认中");
-                                RechargeResultActivity.start(RechargeActivity.this,result);
+                                command.setStateName("支付结果确认中");
+                                RechargeResultActivity.start(RechargeActivity.this, command);
+                                setResult(JupiterCommand.RESULT_CODE_CANCEL);
                                 RechargeActivity.this.finish();
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                                 showToast("支付失败\n" + memo);
+                                RechargeActivity.this.finish();
+                                setResult(JupiterCommand.RESULT_CODE_CANCEL);
+                                RechargeRecordListActivity.start(RechargeActivity.this, null, null);
                             }
                         }
                         break;
@@ -222,7 +247,7 @@ public class RechargeActivity extends JupiterFragmentActivity{
                 registerDialog.dismiss();
             }
         };
-        alipayManager.pay(this,orderInfo,handler);
+        alipayManager.pay(this, orderInfo, handler);
     }
 
     private void showDesc(RechargeType type) {

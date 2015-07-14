@@ -20,6 +20,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
 import com.yun9.wservice.view.msgcard.MsgCardDetailActivity;
@@ -27,6 +28,7 @@ import com.yun9.wservice.view.msgcard.MsgCardDetailCommand;
 import com.yun9.wservice.view.payment.PaymentOrderActivity;
 import com.yun9.wservice.view.payment.PaymentOrderCommand;
 import com.yun9.wservice.view.payment.PaymentResultActivity;
+import com.yun9.wservice.view.payment.PaymentResultCommand;
 
 /**
  * Created by huangbinglong on 15/6/15.
@@ -175,7 +177,10 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                 @Override
                 public void onClick(View v) {
                     if (order.getOrder().getPaystate() > 0) {
-                        PaymentResultActivity.start(OrderDetailActivity.this);
+                        PaymentResultActivity.start(OrderDetailActivity.this,
+                                new PaymentResultCommand(
+                                        SourceType.TYPE_ORDER,orderId
+                                ));
                     } else {
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);

@@ -9,7 +9,7 @@ public class AddRechargeResult implements Serializable{
 
     private String rechargeid;
     private String rechargetypeid;
-    private String amount;
+    private Double amount;
     private String callbackid;
 
     // 逻辑字段，非DB
@@ -32,11 +32,11 @@ public class AddRechargeResult implements Serializable{
         this.rechargetypeid = rechargetypeid;
     }
 
-    public String getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
