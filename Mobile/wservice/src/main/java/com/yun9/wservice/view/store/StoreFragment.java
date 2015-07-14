@@ -358,7 +358,7 @@ public class StoreFragment extends JupiterFragment {
                 }
 
                 if (!AssertValue.isNotNullAndNotEmpty(tempProducts) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
                     productLV.onFinishLoading(false);
                 }
 
