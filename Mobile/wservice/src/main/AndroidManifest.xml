@@ -245,7 +245,7 @@
 
         <activity
             android:name=".view.doc.FileInfoActivity"
-            android:label="@string/doc_file_name"
+            android:label="@string/doc_file_info"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
