@@ -330,7 +330,7 @@ public class StoreFragment extends JupiterFragment {
             @Override
             public void onSuccess(Response response) {
                 Product product = (Product) response.getPayload();
-                topProducts.addLast(product);
+                topProducts.addFirst(product);
             }
 
             @Override
@@ -363,9 +363,9 @@ public class StoreFragment extends JupiterFragment {
                     for (int i = tempProducts.size(); i > 0; i--) {
                         Product tempProduct = tempProducts.get(i - 1);
                         products.addFirst(tempProduct);
-                        if (tempProduct.istop()) {
+                       /* if (tempProduct.istop()) {
                             topProducts.addFirst(tempProduct);
-                        }
+                        }*/
                     }
                 }
 
