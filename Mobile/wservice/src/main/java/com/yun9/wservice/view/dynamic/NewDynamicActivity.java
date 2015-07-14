@@ -603,12 +603,33 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
     private View.OnClickListener onSendClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (!AssertValue.isNotNullAndNotEmpty(userid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!AssertValue.isNotNullAndNotEmpty(instid)) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notinst, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
+                Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers))
                 showDialog();
             else
-                sendMsg();
+                uploadFiles();
+
+//            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
+//            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
+//                //未获取到地理位置信息，暂时允许继续发送
+//            }
         }
     };
+
 
     public void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(NewDynamicActivity.this);
@@ -628,43 +649,11 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                sendMsg();
+                uploadFiles();
             }
         });
 
         builder.create().show();
-    }
-
-    public void sendMsg() {
-        if (!AssertValue.isNotNullAndNotEmpty(userid)) {
-            Toast.makeText(mContext, R.string.new_dynamic_send_notuser, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!AssertValue.isNotNullAndNotEmpty(instid)) {
-            Toast.makeText(mContext, R.string.new_dynamic_send_notinst, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
-            Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-//            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
-//            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
-//                //未选择任何分享范围
-//                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
-//            }
-//
-//            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
-//            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
-//                //未获取到地理位置信息，暂时允许继续发送
-//            }
-
-        //上传文件以及图片
-        uploadFiles();
     }
 
 
@@ -712,11 +701,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 }
             });
 
-//            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
-//            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
-//                //未选择任何分享范围
-//                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
-//            }
 //
 //            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
 //            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
@@ -770,12 +754,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 }
             });
 
-//            //检查是否选择了分享范围。如果没有选择提示（继续发送、取消、选择范围）
-//            if (!AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
-//                //未选择任何分享范围
-//                //TODO 弹出提示窗口，用户可以选择继续发送，或者打开选择发送范围选择界面
-//            }
-//
+
 //            //检查地理位置获取情况。如果没有获取到地理位置允许继续发送
 //            if (!AssertValue.isNotNull(lastPoiInfoBean)) {
 //                //未获取到地理位置信息，暂时允许继续发送
