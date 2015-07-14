@@ -9,12 +9,14 @@
         android:layout_height="wrap_content"
         android:background="@color/title_color">
 
-        <ImageView
+        <com.yun9.jupiter.widget.JupiterRoundImageView
             android:id="@+id/user_head_iv"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="12dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:src="@drawable/user_head" />
 
         <LinearLayout
@@ -58,14 +60,14 @@
                 android:textColor="@color/whites"
                 android:textSize="15dp" />
         </LinearLayout>
+
         <ImageView
             android:id="@+id/arrow_right"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/arrow_right"
-            android:visibility="visible"
-            />
+            android:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout
@@ -124,8 +126,8 @@
 
         <LinearLayout
             android:id="@+id/todoUserOrg"
-            android:visibility="gone"
-            style="@style/user_hader_btnbar">
+            style="@style/user_hader_btnbar"
+            android:visibility="gone">
 
             <ImageView
                 style="@style/user_hader_btnbar_img"
