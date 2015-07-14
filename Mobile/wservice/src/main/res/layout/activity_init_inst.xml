@@ -30,7 +30,7 @@
             android:textSize="14dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/inst_no"/>
+            android:text="@string/inst_no_and_notice"/>
         <EditText
             android:textSize="16dp"
             android:paddingTop="20dp"
