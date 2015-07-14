@@ -30,7 +30,7 @@ public class OnLoginNoticeBindListener implements SessionManager.OnLoginListener
         if (AssertValue.isNotNull(deviceid) && AssertValue.isNotNull(regid)) {
             Resource resource = resourceFactory.create("NoticeUserPushBind");
             resource.param("userId", user.getId()).param("pushType", "xiaomi").param("deviceType", "android")
-                    .param("deviceId", deviceid).param("params", regid);
+                    .param("deviceId", deviceid).param("targetId", regid);
 
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override
