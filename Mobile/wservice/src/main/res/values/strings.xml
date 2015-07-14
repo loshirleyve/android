@@ -267,4 +267,5 @@
     <string name="score">评分</string>
     <string name="buy_right_now">立即购买</string>
     <string name="detail">详情</string>
+    <string name="exit_twice_toast">再按一次退出程序</string>
 </resources>
