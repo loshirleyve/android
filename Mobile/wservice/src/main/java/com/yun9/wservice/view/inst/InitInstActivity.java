@@ -82,10 +82,10 @@ public class InitInstActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
 
         command = (InstCommand) this.getIntent().getSerializableExtra(InstCommand.PARAM_COMMAND);
-        if(!AssertValue.isNotNull(command) || !AssertValue.isNotNullAndNotEmpty(command.getUserid())){
-            userid = sessionManager.getUser().getId();
-        }else {
+        if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getUserid())){
             userid = command.getUserid();
+        }else {
+            userid = sessionManager.getUser().getId();
         }
         queryUserByIdAndSetName(userid);
         initInstTitle.getTitleLeft().setOnClickListener(onBackClickListener);
@@ -209,7 +209,7 @@ public class InitInstActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 MdInstScales mdInstScales = (MdInstScales) response.getPayload();
-                if(AssertValue.isNotNull(mdInstScales) && mdInstScales.getBizMdInstScales().size() != 0) {
+                if(AssertValue.isNotNull(mdInstScales) && AssertValue.isNotNullAndNotEmpty(mdInstScales.getBizMdInstScales())) {
                     optionMap = new ArrayList<SerialableEntry<String, String>>();
                     for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
                         optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
