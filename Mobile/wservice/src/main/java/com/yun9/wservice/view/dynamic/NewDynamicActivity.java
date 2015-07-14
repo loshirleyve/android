@@ -671,10 +671,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 return;
             }
 
-            if (!AssertValue.isNotNullAndNotEmpty(dynamicContentET.getText().toString())) {
-                Toast.makeText(mContext, R.string.new_dynamic_send_notcontent, Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             final ProgressDialog progressDialog = ProgressDialog.show(NewDynamicActivity.this, null, mContext.getResources().getString(R.string.app_wating), true);
             Resource resource = resourceFactory.create("AddMsgCardShare");

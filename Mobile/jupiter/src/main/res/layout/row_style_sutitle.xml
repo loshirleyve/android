@@ -19,7 +19,7 @@
             android:layout_marginRight="26dp"
             android:visibility="visible">
 
-            <com.yun9.jupiter.widget.JupiterRoundImageView
+            <com.yun9.jupiter.widget.SelectableRoundedImageView
                 android:id="@+id/main_iv"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

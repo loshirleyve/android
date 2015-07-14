@@ -107,10 +107,14 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private List<View> segmentListViews;
 
+    private NewDynamicCommand newDynamicCommand;
+
 
     private MsgCardDetailCommentWidget commentView;
     private MsgCardDetailPraiseWidget praiseView;
     private MsgCardDetailShareWidget shareView;
+
+    private int currentItem;
 
     public static void start(Activity activity, MsgCardDetailCommand command) {
         Intent intent = new Intent(activity, MsgCardDetailActivity.class);
@@ -268,6 +272,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             //只是滚动一次
             command.setScrollComment(false);
         }
+        segmentedGroup.selectItem(currentItem);
+        viewPager.setCurrentItem(currentItem);
     }
 
 
@@ -348,7 +354,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
         itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardShare.getCreatedate()));
         if (AssertValue.isNotNull(cacheToUser) && AssertValue.isNotNullAndNotEmpty(cacheToUser.getName())) {
-            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to) + "" + cacheToUser.getName() + ":" + msgCardShare.getContent());
+            itemWidget.getSutitleTv().setText(getResources().getString(R.string.msg_card_fw_to) + "@" + cacheToUser.getName() + " " + msgCardShare.getContent());
         }
         itemWidget.setShowArrow(false);
 
@@ -361,7 +367,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 if (msg.what == 0) {
-                    scrollView.scrollTo(0, segmentedGroup.getTop());
+                    scrollView.scrollTo(currentItem, segmentedGroup.getTop());
                 }
             }
         };
@@ -441,14 +447,17 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCommentClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            scrollView.scrollTo(0, segmentedGroup.getTop());
-            NewDynamicActivity.start(MsgCardDetailActivity.this, new NewDynamicCommand().setMsgCardId(command.getMsgCardId()).setType(NewDynamicCommand.MSG_COMMENT));
+            currentItem = 0;
+            newDynamicCommand =
+                    new NewDynamicCommand().setMsgCardId(command.getMsgCardId()).setType(NewDynamicCommand.MSG_COMMENT);
+            NewDynamicActivity.start(MsgCardDetailActivity.this, newDynamicCommand);
         }
     };
 
     private View.OnClickListener onForwardClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            currentItem = 1;
             OrgCompositeActivity.start(MsgCardDetailActivity.this, new OrgCompositeCommand().setEdit(true).setOnlyUsers(true).setSingleSelect(true).setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK));
         }
     };
@@ -463,25 +472,32 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())) {
+                currentItem = 2;
                 cardPraiseLikeByMsgCardId(command.getMsgCardId(), toolbarTabWidget);
+                refresh(command.getMsgCardId(), currUserid);
             }
         }
-    };
+    }
+
+    ;
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == NewDynamicCommand.RESULT_CODE_OK) {
+        if (newDynamicCommand != null
+                && requestCode == newDynamicCommand.getRequestCode() && resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             setResult(MsgCardDetailCommand.RESULT_CODE_OK);
-            scrollView.scrollTo(0, segmentedGroup.getTop());
             refresh(command.getMsgCardId(), currUserid);
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
             if (AssertValue.isNotNullAndNotEmpty(users) || AssertValue.isNotNullAndNotEmpty(orgs)) {
-                NewDynamicActivity.start(MsgCardDetailActivity.this, new NewDynamicCommand().setMsgCardId(command.getMsgCardId()).setSelectUsers(users).setSelectOrgs(orgs).setType(NewDynamicCommand.MSG_FORWARD));
+                newDynamicCommand = new NewDynamicCommand().setMsgCardId(command.getMsgCardId())
+                        .setSelectUsers(users).setSelectOrgs(orgs)
+                        .setType(NewDynamicCommand.MSG_FORWARD);
+                NewDynamicActivity.start(MsgCardDetailActivity.this, newDynamicCommand);
             }
         }
     }

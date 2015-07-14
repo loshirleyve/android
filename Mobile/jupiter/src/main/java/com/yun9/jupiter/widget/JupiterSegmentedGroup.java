@@ -114,6 +114,10 @@ public class JupiterSegmentedGroup extends LinearLayout {
         }
     }
 
+    public JupiterSegmentedItem getCurrItem() {
+        return currItem;
+    }
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }

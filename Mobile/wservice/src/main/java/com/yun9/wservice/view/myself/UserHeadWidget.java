@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
-import com.yun9.jupiter.widget.JupiterRoundImageView;
+import com.yun9.jupiter.widget.SelectableRoundedImageView;
 import com.yun9.wservice.R;
 
 /**
@@ -31,7 +31,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     private TextView signTV;
 
-    private JupiterRoundImageView userHeaderIV;
+    private SelectableRoundedImageView userHeaderIV;
 
     public UserHeadWidget(Context context) {
         super(context);
@@ -61,7 +61,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
         this.companyTV = (TextView) this.findViewById(R.id.user_head_company);
         this.orgTV = (TextView) this.findViewById(R.id.user_head_dept);
         this.signTV = (TextView) this.findViewById(R.id.user_head_sign);
-        this.userHeaderIV = (JupiterRoundImageView) this.findViewById(R.id.user_head_iv);
+        this.userHeaderIV = (SelectableRoundedImageView) this.findViewById(R.id.user_head_iv);
     }
 
     public LinearLayout getHeaderLL() {

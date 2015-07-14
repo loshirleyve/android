@@ -65,6 +65,8 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
 
+    private NewDynamicCommand newDynamicCommand;
+
     private String forwardMsgCardId;
 
     public static void start(Activity activity, MsgCardListCommand command) {
@@ -212,14 +214,18 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == MsgCardDetailCommand.RESULT_CODE_OK || resultCode == NewDynamicCommand.RESULT_CODE_OK) {
+        if (newDynamicCommand != null
+                && requestCode == newDynamicCommand.getRequestCode() && resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             mPtrFrame.autoRefresh();
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
             if ((AssertValue.isNotNullAndNotEmpty(users) || AssertValue.isNotNullAndNotEmpty(orgs)) && AssertValue.isNotNullAndNotEmpty(forwardMsgCardId)) {
-                NewDynamicActivity.start(MsgCardListActivity.this, new NewDynamicCommand().setMsgCardId(forwardMsgCardId).setSelectUsers(users).setSelectOrgs(orgs).setType(NewDynamicCommand.MSG_FORWARD));
+                newDynamicCommand = new NewDynamicCommand().setMsgCardId(forwardMsgCardId)
+                        .setSelectUsers(users).setSelectOrgs(orgs)
+                        .setType(NewDynamicCommand.MSG_FORWARD);
+                NewDynamicActivity.start(MsgCardListActivity.this, newDynamicCommand);
             }
         }
     }

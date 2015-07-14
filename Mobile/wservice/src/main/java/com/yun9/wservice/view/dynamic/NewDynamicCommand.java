@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class NewDynamicCommand extends JupiterCommand {
 
+    public static final int REQUEST_CODE = 1008;
+
     public static final String NEW_MSG="sendmsg";//发送消息
 
     public static final String MSG_FORWARD="forward";//转发
