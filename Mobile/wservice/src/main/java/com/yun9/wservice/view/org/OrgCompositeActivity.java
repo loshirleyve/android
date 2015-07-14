@@ -13,16 +13,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.Dim;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -209,6 +212,10 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
 
     private void onRefreshComplete(OrgCompositeInfoBean orgCompositeInfoBean) {
         if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNull(orgCompositeInfoBean.getMyself())) {
+            CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeInfoBean.getMyself().getId());
+            if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
+                ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), orgCompositeTopWidget.getMyselfLL().getMainIV());
+            }
             orgCompositeTopWidget.getMyselfLL().getSutitleTv().setText(orgCompositeInfoBean.getMyself().getSignature());
         }
 
@@ -331,7 +338,7 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onSelect(View view, boolean mode) {
             OrgCompositeUserListBean tempOrgCompositeUserListBean = (OrgCompositeUserListBean) view.getTag();
-            if(singleSelect) {
+            if (singleSelect) {
                 for (OrgCompositeUserListBean orguser : orgCompositeUserListBeans) {
                     orguser.setSelected(false);
                 }

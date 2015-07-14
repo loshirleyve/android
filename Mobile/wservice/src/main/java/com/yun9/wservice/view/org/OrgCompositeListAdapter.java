@@ -5,8 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.listener.OnSelectListener;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 
 import java.util.List;
@@ -93,7 +96,10 @@ public class OrgCompositeListAdapter extends BaseAdapter {
             tempView.setSelectMode(false);
             tempView.setOnClickListener(onClickForDetail);
         }
-
+        CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeUserListBean.getUser().getId());
+        if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), tempView.getMainIV());
+        }
         tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
         tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
         tempView.getTimeTv().setVisibility(View.GONE);
