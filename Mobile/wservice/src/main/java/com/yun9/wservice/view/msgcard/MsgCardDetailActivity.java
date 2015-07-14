@@ -466,9 +466,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 cardPraiseLikeByMsgCardId(command.getMsgCardId(), toolbarTabWidget);
             }
         }
-    }
-
-    ;
+    };
 
 
     @Override
@@ -476,8 +474,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == NewDynamicCommand.RESULT_CODE_OK) {
             setResult(MsgCardDetailCommand.RESULT_CODE_OK);
+            scrollView.scrollTo(0, segmentedGroup.getTop());
             refresh(command.getMsgCardId(), currUserid);
-           // scrollView.scrollTo(0, segmentedGroup.getTop());
         }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
