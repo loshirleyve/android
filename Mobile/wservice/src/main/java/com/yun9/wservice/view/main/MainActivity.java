@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
@@ -39,6 +41,7 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
 
     private static final Logger logger = Logger.getLogger(MainActivity.class);
 
+    private long exitTime = 0;
 
     @ViewInject(id = R.id.button_bar_main_btn_store)
     private ImageButton storeBtn;
@@ -263,5 +266,20 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
     @Override
     public void sendMessage(Context context, String pushContent) {
         processMessage(pushContent);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
+            if((System.currentTimeMillis()-exitTime) > 2000){
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }
