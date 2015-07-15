@@ -33,4 +33,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 登记充值服务 -->
+    <repository>
+        <name>QueryCollectsByRequestService</name>
+        <action>com.yun9.ws.biz.service.QueryCollectsByRequestService</action>
+        <output>
+            <classname>com.yun9.wservice.model.FinanceCollects</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

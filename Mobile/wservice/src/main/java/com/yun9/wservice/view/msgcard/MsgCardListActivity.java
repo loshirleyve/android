@@ -228,6 +228,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 NewDynamicActivity.start(MsgCardListActivity.this, newDynamicCommand);
             }
         }
+        if(resultCode == MsgCardDetailCommand.RESULT_CODE_OK){
+            mPtrFrame.autoRefresh();
+        }
     }
 
     private JupiterAdapter msgCardListAdapter = new JupiterAdapter() {

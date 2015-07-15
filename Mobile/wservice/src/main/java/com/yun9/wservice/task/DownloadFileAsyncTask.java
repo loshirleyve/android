@@ -1,5 +1,7 @@
 package com.yun9.wservice.task;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Environment;
 
@@ -7,6 +9,7 @@ import com.yun9.jupiter.afinal.AjaxCallBack;
 import com.yun9.jupiter.afinal.FinalHttp;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.wservice.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,9 +27,15 @@ public class DownloadFileAsyncTask extends AsyncTask<FileBean, FileBean, List<Fi
 
     private OnFileDownloadCallback onFileDownloadCallback;
 
+    private Activity mActivity;
+
     private List<FileBean> fileBeanList = new ArrayList<>();
 
-    public DownloadFileAsyncTask() {
+    private ProgressDialog progressDialog = null;
+
+    public DownloadFileAsyncTask(Activity activity) {
+
+        this.mActivity = activity;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             downLoadDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separatorChar + "Download" + File.separatorChar + "Yun9" + File.separatorChar;
             File downfile = new File(downLoadDir);
@@ -38,6 +47,13 @@ public class DownloadFileAsyncTask extends AsyncTask<FileBean, FileBean, List<Fi
 
     public void setOnFileDownloadCallback(OnFileDownloadCallback onFileDownloadCallback) {
         this.onFileDownloadCallback = onFileDownloadCallback;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progressDialog = ProgressDialog.show(mActivity, null, mActivity.getResources().getString(R.string.app_wating), true);
+
     }
 
     @Override
@@ -95,6 +111,10 @@ public class DownloadFileAsyncTask extends AsyncTask<FileBean, FileBean, List<Fi
     protected void onPostExecute(List<FileBean> fileBeans) {
         if (AssertValue.isNotNull(onFileDownloadCallback)) {
             onFileDownloadCallback.onPostExecute(fileBeans);
+        }
+
+        if (AssertValue.isNotNull(progressDialog)) {
+            progressDialog.dismiss();
         }
     }
 

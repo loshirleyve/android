@@ -143,7 +143,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (AssertValue.isNotNull(fileBean) && FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
-                DownloadFileAsyncTask downloadFileAsyncTask = new DownloadFileAsyncTask();
+                DownloadFileAsyncTask downloadFileAsyncTask = new DownloadFileAsyncTask(FileInfoActivity.this);
                 downloadFileAsyncTask.execute(fileBean);
                 downloadFileAsyncTask.setOnFileDownloadCallback(new DownloadFileAsyncTask.OnFileDownloadCallback() {
                     @Override

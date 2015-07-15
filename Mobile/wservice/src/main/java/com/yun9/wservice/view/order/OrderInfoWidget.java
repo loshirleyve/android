@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -16,6 +17,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -100,7 +102,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
             @Override
             public void onFailure(Response response) {
-
+                Toast.makeText(getContext(),response.getCause(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -112,6 +114,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
     private void showOrder(String orderId) {
         OrderDetailActivity.start(this.mContext,orderId);
+        ((Activity) (getContext())).finish();
     }
 
     private List<String> getProductIds() {
@@ -126,8 +129,12 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     }
 
     private void reload() {
-        orderFeeTV.setText(order.getOrderamount()+"元");
-        providerWidget.buildWithData(order.getProvideinstid());
+        orderFeeTV.setText(order.getOrderamount() + "元");
+        if (AssertValue.isNotNullAndNotEmpty(order.getInstid())){
+            providerWidget.buildWithData(order.getInstid());
+        } else {
+            providerWidget.setVisibility(GONE);
+        }
         productLV.setAdapter(adapter);
     }
 

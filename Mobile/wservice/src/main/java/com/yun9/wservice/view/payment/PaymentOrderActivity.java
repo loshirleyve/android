@@ -23,6 +23,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.Payinfo;
 import com.yun9.wservice.view.order.OrderRechargeWidget;
 
@@ -89,7 +90,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         Bundle bundle = new Bundle();
         bundle.putSerializable(JupiterCommand.PARAM_COMMAND,command);
         intent.putExtras(bundle);
-        activity.startActivityForResult(intent,command.getRequestCode());
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override
@@ -99,6 +100,11 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         categoryChoicePaymodeMap = new HashMap<>();
         choicePayItemMap = new HashMap<>();
         buildView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadData();
     }
 
@@ -116,11 +122,18 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             Payinfo.PaymodeInfo paymodeInfo = (Payinfo.PaymodeInfo) data
                                         .getSerializableExtra(
                                                 PaymentChoiceWaysCommand.RETURN_PARAM_PAYMODE);
+            if (paymodeInfo == null){ // 用户选择了不使用
+                paymodeInfo = categoryChoicePaymodeMap.get(choiceWaysCommand.getCategory().getId());
+                if (paymodeInfo != null){
+                    paymodeInfo.setUseAmount(0.0);
+                } else {
+                    return;
+                }
+            }
             // 如果选择的值不大于0
             if (!(paymodeInfo.getUseAmount() >= 0.0)){
                 choicePayItemMap.remove(choiceWaysCommand.getCategory().getId());
                 categoryChoicePaymodeMap.remove(choiceWaysCommand.getCategory().getId());
-                loadData();
                 return;
             }
             PayItem payItem = new PayItem();
@@ -139,7 +152,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             }
             choicePayItemMap.put(choiceWaysCommand.getCategory().getId(),payItem);
             categoryChoicePaymodeMap.put(choiceWaysCommand.getCategory().getId(),paymodeInfo);
-            loadData();
         }
     }
 
@@ -168,14 +180,18 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         resource.param("payInstId",sessionManager.getInst().getId());
         resource.param("source",command.getSource());
         resource.param("sourceValue",command.getSourceValue());
-        resource.param("userid",sessionManager.getUser().getId());
-        resource.param("payItems",choicePayItemMap.values());
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.param("payItems", choicePayItemMap.values());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 showToast(R.string.pay_success_be_wait);
                 setResult(JupiterCommand.RESULT_CODE_OK);
                 PaymentOrderActivity.this.finish();
+                PaymentResultActivity.start(PaymentOrderActivity.this,
+                        new PaymentResultCommand(
+                                SourceType.TYPE_ORDER, payinfo.getSourceValue()
+                        ).setPaymentDone(true));
             }
 
             @Override
@@ -188,12 +204,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 registerDialog.dismiss();
             }
         });
-    }
-
-    private void buildWithData(Payinfo payinfo) {
-        this.payinfo = payinfo;
-        // 进行一系列界面值的改动
-        adapter.notifyDataSetChanged();
     }
 
     private void loadData() {
@@ -227,9 +237,9 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         titleTv.setText(payinfo.getTitle());
         subTitleTv.setText(payinfo.getSubtitle());
         rechargeWidget.buildWithData(payinfo.getBalance());
-        paymentMoneyTv.setText(payinfo.getPayableAmount()+"元");
-        totalMoneyTv.setText(payinfo.getFactpayAmount()+"元");
-        remainMoneyTv.setText(payinfo.getSurplusAmount()+"元");
+        paymentMoneyTv.setText(payinfo.getPayableAmount() + "元");
+        totalMoneyTv.setText(payinfo.getFactpayAmount() + "元");
+        remainMoneyTv.setText(payinfo.getSurplusAmount() + "元");
 
         if (payinfo.getSurplusAmount() != 0){
             confirmTv.setTextColor(getResources().getColor(R.color.devide_line));
@@ -238,7 +248,36 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             confirmTv.setTextColor(getResources().getColor(R.color.title_color));
             confirmLl.setClickable(true);
         }
+        rechargeWidget.getRechargeIV().setOnClickListener(rechargeClickListener);
+        rebuildChoicedPayItem();
         adapter.notifyDataSetChanged();
+    }
+
+    private void rebuildChoicedPayItem() {
+        choicePayItemMap.clear();
+        if (payinfo.getPaymodeCategorys() == null){
+            return;
+        }
+        for (Payinfo.PaymodeCategory paymodeCategory : payinfo.getPaymodeCategorys()) {
+            if (paymodeCategory.getPaymodeInfos() == null){
+                continue;
+            }
+            for (Payinfo.PaymodeInfo paymodeInfo : paymodeCategory.getPaymodeInfos()){
+                if (paymodeInfo.getUseAmount() > 0.0){
+                    PayItem payItem = new PayItem();
+                    payItem.setPayModeId(paymodeInfo.getPaymodeId());
+                    payItem.setAmount(paymodeInfo.getUseAmount() + "");
+                    // 设置默认选择的BizFinaceAccount
+                    if (paymodeInfo.getBizFinanceAccounts() != null
+                            && paymodeInfo.getBizFinanceAccounts().size() > 0){
+                        payItem.setAccountid(paymodeInfo.getBizFinanceAccounts().get(0).getId());
+                    }
+                    choicePayItemMap.put(paymodeCategory.getId(),payItem);
+                    categoryChoicePaymodeMap.put(paymodeCategory.getId(),paymodeInfo);
+                    break;
+                }
+            }
+        }
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
@@ -279,6 +318,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     public void onClick(View v) {
                         choiceWaysCommand = new PaymentChoiceWaysCommand();
                         choiceWaysCommand.setCategory(payinfo.getPaymodeCategorys().get(position));
+                        choiceWaysCommand.setSurplusAmount(payinfo.getSurplusAmount());
                         PaymentChoiceWaysActivity.start(PaymentOrderActivity.this,choiceWaysCommand);
                     }
                 });
@@ -306,6 +346,18 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             return 0;
         }
 
+    };
+
+    private View.OnClickListener rechargeClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RechargeCommand rechargeCommand = new RechargeCommand();
+            double amount = payinfo.getPayableAmount() - payinfo.getBalance();
+            if (amount > 0.0){
+                rechargeCommand.setAmount(amount);
+            }
+            RechargeActivity.start(PaymentOrderActivity.this,rechargeCommand);
+        }
     };
 
     private class PayItem{

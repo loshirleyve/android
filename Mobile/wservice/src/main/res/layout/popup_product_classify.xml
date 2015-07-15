@@ -54,8 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:textColor="@color/purple_font"
-                        android:text="深蓝色"/>
+                        android:textColor="@color/purple_font"/>
                 </LinearLayout>
             </LinearLayout>
             <ImageView

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,11 +108,20 @@ public class ProductActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.comment_ll)
     private LinearLayout commentLl;
 
+    @ViewInject(id=R.id.product_detail_content_ll)
+    private LinearLayout productDetailContentLl;
+
+    @ViewInject(id=R.id.product_detail_phases_ll)
+    private LinearLayout productDetailPhasesLl;
+
     @BeanInject
     private ResourceFactory resourceFactory;
 
     @BeanInject
     private SessionManager sessionManager;
+
+    @ViewInject(id=R.id.main)
+    private RelativeLayout mainRl;
 
     private PopupWindow classifyWindow;
 
@@ -137,6 +147,7 @@ public class ProductActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainRl.setVisibility(View.GONE);
         command = (ProductCommand) getIntent().getSerializableExtra(ProductCommand.PARAM_COMMAND);
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getProductid())) {
@@ -171,7 +182,13 @@ public class ProductActivity extends JupiterFragmentActivity {
         classifyPopLayout.getConfirmLl().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gonnaBuy();
+                if (selectedClassify == null
+                        && product.getBizProductClassifies() != null
+                        && product.getBizProductClassifies().size() > 0) {
+                    showToast("请选择产品分类");
+                } else {
+                    buyNow();
+                }
             }
         });
         classifyPopLayout.getCloseIv().setOnClickListener(new View.OnClickListener() {
@@ -187,10 +204,12 @@ public class ProductActivity extends JupiterFragmentActivity {
 
     private void refreshSelectedClassify() {
         if (selectedClassify != null) {
+            selectCategoryLayout.getTitleTV().setText(R.string.selected_classify);
             selectCategoryLayout.getSutitleTv().setVisibility(View.VISIBLE);
             selectCategoryLayout.getSutitleTv().setText(selectedClassify.getClassifyname());
         } else {
-            selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select));
+            productPriceTV.setText(product.getProduct().getPricedescr());
+            selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select_product_classify));
             selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
             return;
         }
@@ -225,6 +244,7 @@ public class ProductActivity extends JupiterFragmentActivity {
                 @Override
                 public void onFinally(Response response) {
                     progressDialog.dismiss();
+                    mainRl.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -233,10 +253,8 @@ public class ProductActivity extends JupiterFragmentActivity {
 
     private void builder(CompositeProduct tempProduct) {
         this.product = tempProduct;
-        if (product.getBizProductClassifies() != null
-                && product.getBizProductClassifies().size() > 0) {
-            selectedClassify = product.getBizProductClassifies().get(0);
-        } else {
+        if (product.getBizProductClassifies() == null
+                || product.getBizProductClassifies().size() == 0) {
             selectCategoryLayout.setVisibility(View.GONE);
         }
         String imageURL = FileCache.getInstance().getFileUrl(product.getProduct().getImgid());
@@ -271,6 +289,16 @@ public class ProductActivity extends JupiterFragmentActivity {
             detailPageLayout.setVisibility(View.GONE);
         }
 
+        if (!AssertValue.isNotNullAndNotEmpty(product.getBizProductProfiles())){
+            productDetailContentLl.setVisibility(View.GONE);
+        }
+
+        if (!AssertValue.isNotNullAndNotEmpty(product.getProductPhases())){
+            productDetailPhasesLl.setVisibility(View.GONE);
+        }
+
+        commentNum.setText("("+product.getProduct().getCommentnums()+")");
+
     }
 
     private View.OnClickListener onProductDetailClickListener = new View.OnClickListener() {
@@ -294,7 +322,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             WindowManager.LayoutParams lp = this.getWindow().getAttributes();
             lp.alpha = 0.4f;
             this.getWindow().setAttributes(lp);
-            classifyWindow.showAtLocation(this.findViewById(R.id.main), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            classifyWindow.showAtLocation(mainRl, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         }
     }
 
@@ -314,7 +342,6 @@ public class ProductActivity extends JupiterFragmentActivity {
         if (selectedClassify == null
                 && product.getBizProductClassifies() != null
                 && product.getBizProductClassifies().size() > 0) {
-            showToast("请选择产品分类");
             showClassifyWindow();
         } else {
             buyNow();
@@ -415,7 +442,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             }
 
             productPhaseItemWidget.setTag(productPhase);
-            productPhaseItemWidget.getPhaseTV().setText(productPhase.getPhasedescr());
+            productPhaseItemWidget.getPhaseTV().setText(productPhase.getName()+": "+productPhase.getPhasedescr());
 
             return productPhaseItemWidget;
         }
@@ -468,10 +495,15 @@ public class ProductActivity extends JupiterFragmentActivity {
                     public void onClick(View v) {
                         CompositeProduct.ProductClassify tag =
                                 (CompositeProduct.ProductClassify) v.getTag();
+                        // 如果点击了选中项
                         if (selectedClassify != null
                                 && selectedClassify.getId().equals(tag.getId())) {
+                            ((JupiterRowStyleTitleLayout)v).select(false);
+                            selectedClassify = null;
+                            refreshSelectedClassify();
                             return;
                         }
+                        // 点击了非选中项
                         int count = classifyAdapter.getCount();
                         for (int i = 0; i < count; i++) {
                             JupiterRowStyleTitleLayout view =

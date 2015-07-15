@@ -335,10 +335,12 @@ public class StoreFragment extends JupiterFragment {
             public void onSuccess(Response response) {
                 topProducts.clear();
                 List<Product> tempProducts = (List<Product>) response.getPayload();
+                productLV.removeHeaderView(pageView);
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts)) {
                     for (Product product : tempProducts) {
                         topProducts.addLast(product);
                     }
+                    productLV.addHeaderView(pageView);
                 }
                 topProductViewPageAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
@@ -399,9 +401,9 @@ public class StoreFragment extends JupiterFragment {
 
             @Override
             public void onFinally(Response response) {
+                refreshTopProduct(productGroup);
                 mPtrFrame.refreshComplete();
                 productLV.onFinishLoading(true);
-                refreshTopProduct(productGroup);
             }
         });
     }
@@ -520,7 +522,6 @@ public class StoreFragment extends JupiterFragment {
                         mPtrFrame.autoRefresh();
                     }
                 }, 100);
-
             }
         }
     };
@@ -686,7 +687,7 @@ public class StoreFragment extends JupiterFragment {
 
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
-            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
+            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImgid(), productItemLayout.getMainIV());
             productItemLayout.getHotnoticeTV().setText(product.getPricedescr());
             productItemLayout.setTag(product);
 
@@ -797,7 +798,7 @@ public class StoreFragment extends JupiterFragment {
             productScrollItemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (AssertValue.isNotNull(product)) {
+                    if (AssertValue.isNotNull(product) && AssertValue.isNotNullAndNotEmpty(product.getId())) {
                         ProductActivity.start(getActivity(), new ProductCommand().setProductid(product.getId()));
                     }
                 }

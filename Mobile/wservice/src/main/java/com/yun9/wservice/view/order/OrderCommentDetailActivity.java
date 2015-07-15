@@ -135,7 +135,11 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
             showCommentWidget.setTime(comment.getCreatedate());
         }
         showCommentWidget.setRating((float) comment.getScore());
-        orderProviderWidget.buildWithData(comment.getBuyerinstid());
+        if (AssertValue.isNotNullAndNotEmpty(comment.getBuyerinstid())){
+            orderProviderWidget.buildWithData(comment.getBuyerinstid());
+        } else {
+            orderProviderWidget.setVisibility(View.GONE);
+        }
         adapter.notifyDataSetChanged();
     }
 

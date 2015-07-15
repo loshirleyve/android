@@ -33,8 +33,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/red"
                     android:textSize="17dp"
-                    android:textStyle="normal"
-                    android:text="0元"/>
+                    android:textStyle="normal"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -16,7 +16,6 @@ public class OrderCartInfo implements Serializable{
     private String commitattachment;
     private String instid;
     private String buyerinstid;
-    private String provideinstid;
     private String salesmanid;
     private String adviseruserid;
     private Long createdate;
@@ -79,14 +78,6 @@ public class OrderCartInfo implements Serializable{
 
     public void setBuyerinstid(String buyerinstid) {
         this.buyerinstid = buyerinstid;
-    }
-
-    public String getProvideinstid() {
-        return provideinstid;
-    }
-
-    public void setProvideinstid(String provideinstid) {
-        this.provideinstid = provideinstid;
     }
 
     public String getSalesmanid() {

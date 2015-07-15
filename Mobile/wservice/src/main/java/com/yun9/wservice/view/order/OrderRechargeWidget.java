@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.order;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.payment.RechargeActivity;
+import com.yun9.wservice.view.payment.RechargeCommand;
 
 /**
  * Created by huangbinglong on 15/6/12.
@@ -53,9 +55,21 @@ public class OrderRechargeWidget extends JupiterRelativeLayout{
         rechargeIV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RechargeActivity.start(OrderRechargeWidget.this.getContext());
+                RechargeActivity.start((Activity) OrderRechargeWidget.this.getContext(),
+                        new RechargeCommand());
             }
         });
     }
 
+    public TextView getTitleTV() {
+        return titleTV;
+    }
+
+    public TextView getAccountTV() {
+        return accountTV;
+    }
+
+    public ImageView getRechargeIV() {
+        return rechargeIV;
+    }
 }
