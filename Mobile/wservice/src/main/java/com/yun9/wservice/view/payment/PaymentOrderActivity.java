@@ -191,7 +191,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 PaymentResultActivity.start(PaymentOrderActivity.this,
                         new PaymentResultCommand(
                                 SourceType.TYPE_ORDER, payinfo.getSourceValue()
-                        ));
+                        ).setPaymentDone(true));
             }
 
             @Override

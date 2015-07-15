@@ -133,8 +133,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-                registerDialog.dismiss();
                 mainRl.setVisibility(View.VISIBLE);
+                registerDialog.dismiss();
             }
         });
     }

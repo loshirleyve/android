@@ -10,10 +10,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.model.CacheInst;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -77,6 +79,9 @@ public class OrderProviderWidget extends JupiterRelativeLayout {
     }
 
     private void dialog() {
+        if (!AssertValue.isNotNullAndNotEmpty(phone)){
+            Toast.makeText(this.mContext,"无法获取机构电话号码",Toast.LENGTH_SHORT).show();
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
         builder.setMessage("打电话给："+phone);
         builder.setTitle("提示");

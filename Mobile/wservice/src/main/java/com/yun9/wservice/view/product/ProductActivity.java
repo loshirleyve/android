@@ -208,6 +208,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             selectCategoryLayout.getSutitleTv().setVisibility(View.VISIBLE);
             selectCategoryLayout.getSutitleTv().setText(selectedClassify.getClassifyname());
         } else {
+            productPriceTV.setText(product.getProduct().getPricedescr());
             selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select_product_classify));
             selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
             return;
