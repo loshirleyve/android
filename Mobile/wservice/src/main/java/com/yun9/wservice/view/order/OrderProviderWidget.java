@@ -1,8 +1,11 @@
 package com.yun9.wservice.view.order;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.renderscript.Script;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,7 +21,7 @@ import com.yun9.wservice.model.Order;
 /**
  * Created by huangbinglong on 15/6/16.
  */
-public class OrderProviderWidget extends JupiterRelativeLayout{
+public class OrderProviderWidget extends JupiterRelativeLayout {
 
     private TextView instNameTV;
     private TextView instPhoneTV;
@@ -49,10 +52,10 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
 
     public void buildWithData(String instId) {
         CacheInst inst = InstCache.getInstance().getInst(instId);
-        if (inst != null){
+        if (inst != null) {
             this.phone = inst.getTel();
             instNameTV.setText(inst.getInstname());
-            instPhoneTV.setText("电话 "+ inst.getTel());// 电话号码
+            instPhoneTV.setText("电话 " + inst.getTel());// 电话号码
         }
     }
 
@@ -68,11 +71,33 @@ public class OrderProviderWidget extends JupiterRelativeLayout{
         contactUsLL.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                String number = phone;
-                //用intent启动拨打电话
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + number));
-                OrderProviderWidget.this.getContext().startActivity(intent);
+                dialog();
             }
         });
+    }
+
+    private void dialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
+        builder.setMessage("打电话给："+phone);
+        builder.setTitle("提示");
+        builder.setPositiveButton("确认", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                call();
+            }
+        });
+        builder.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void call() {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
+        OrderProviderWidget.this.getContext().startActivity(intent);
     }
 }

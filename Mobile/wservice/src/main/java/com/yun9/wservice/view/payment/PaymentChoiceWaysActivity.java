@@ -10,8 +10,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yun9.jupiter.command.JupiterCommand;
+import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -84,14 +86,15 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
     }
 
     private void confirm() {
+        Intent intent = new Intent();
         if (selectedPaymode != null) {
             PaymentChoiceWayWidget widget = (PaymentChoiceWayWidget) listView.getChildAt(selectedPosition);
             selectedPaymode.setUseAmount(widget.getUserAmount());
-            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_HAS_TICKET, widget.hasTicket());
-            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_SELECTED_TICKET_INDEX, widget.getSelectedOptionIndex());
-            getIntent().putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_PAYMODE, (Serializable) selectedPaymode);
+            intent.putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_HAS_TICKET, widget.hasTicket());
+            intent.putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_SELECTED_TICKET_INDEX, widget.getSelectedOptionIndex());
+            intent.putExtra(PaymentChoiceWaysCommand.RETURN_PARAM_PAYMODE, (Serializable) selectedPaymode);
         }
-        setResult(JupiterCommand.RESULT_CODE_OK, getIntent());
+        setResult(JupiterCommand.RESULT_CODE_OK, intent);
         this.finish();
     }
 
@@ -100,8 +103,9 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
         public int getCount() {
             if (command != null
                     && command.getCategory() != null
-                    && command.getCategory().getPaymodeInfos() != null){
-                return command.getCategory().getPaymodeInfos().size();
+                    && command.getCategory().getPaymodeInfos() != null
+                    && command.getCategory().getPaymodeInfos().size() > 0){
+                return command.getCategory().getPaymodeInfos().size() + 1;
             }
             return 0;
         }
@@ -118,35 +122,52 @@ public class PaymentChoiceWaysActivity extends JupiterFragmentActivity{
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            final PaymentChoiceWayWidget wayWidget;
-            List<Payinfo.PaymodeInfo> infos = command.getCategory().getPaymodeInfos();
-            if (convertView == null) {
-                wayWidget = new PaymentChoiceWayWidget(PaymentChoiceWaysActivity.this);
-                wayWidget.buildWithData(infos.get(position));
-                if (position != 0){
-                    wayWidget.hideDetail();
-                } else {
-                    selectedPaymode = infos.get(position);
-                    wayWidget.showDetail();
+
+            // 如果是最后一个
+            if (position == command.getCategory().getPaymodeInfos().size()){
+                if (convertView == null){
+                    JupiterRowStyleTitleLayout titleLayout
+                              = new JupiterRowStyleTitleLayout(PaymentChoiceWaysActivity.this);
+                    titleLayout.getMainIV().setVisibility(View.GONE);
+                    titleLayout.getArrowRightIV().setVisibility(View.GONE);
+                    titleLayout.setSelectMode(true);
+                    titleLayout.getTitleTV().setText("不使用");
+                    convertView = titleLayout;
                 }
-                wayWidget.setTag(infos.get(position));
-                wayWidget.buildWithData(infos.get(position));
-                convertView = wayWidget;
             } else {
-                wayWidget = (PaymentChoiceWayWidget) convertView;
+                final PaymentChoiceWayWidget wayWidget;
+                Payinfo.PaymodeInfo paymodeInfo = command.getCategory().getPaymodeInfos()
+                        .get(position);
+                if (!(paymodeInfo.getUseAmount() > 0.0)){
+                    paymodeInfo.setUseAmount(command.getSurplusAmount());
+                }
+                if (convertView == null) {
+                    wayWidget = new PaymentChoiceWayWidget(PaymentChoiceWaysActivity.this);
+                    wayWidget.buildWithData(paymodeInfo);
+                    if (position != 0){
+                        wayWidget.hideDetail();
+                    } else {
+                        selectedPaymode = paymodeInfo;
+                        wayWidget.showDetail();
+                    }
+                    wayWidget.setTag(paymodeInfo);
+                    wayWidget.buildWithData(paymodeInfo);
+                    convertView = wayWidget;
+                }
             }
-            wayWidget.setOnClickListener(new View.OnClickListener() {
+
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     selectedPosition = position;
                     int count = adapter.getCount();
                     for (int i = 0; i < count; i++) {
-                        PaymentChoiceWayWidget widget = (PaymentChoiceWayWidget) listView.getChildAt(i);
+                        View widget =  listView.getChildAt(i);
                         if (position == i) {
                             selectedPaymode = (Payinfo.PaymodeInfo) widget.getTag();
-                            widget.showDetail();
+                            ((ISelectable)widget).select(true);
                         } else {
-                            widget.hideDetail();
+                            ((ISelectable)widget).select(false);
                         }
                     }
                 }

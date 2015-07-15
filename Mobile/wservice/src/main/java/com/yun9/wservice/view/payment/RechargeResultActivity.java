@@ -1,11 +1,13 @@
 package com.yun9.wservice.view.payment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.ViewInject;
@@ -16,8 +18,6 @@ import com.yun9.wservice.model.AddRechargeResult;
  * Created by huangbinglong on 7/2/15.
  */
 public class RechargeResultActivity extends JupiterFragmentActivity{
-
-    public static final String PARAM_KEY_RESULT = "result";
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -34,33 +34,34 @@ public class RechargeResultActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.recharge_id_tv)
     private TextView rechargeIdTv;
 
-    public static void start(Context context,AddRechargeResult result) {
-        Intent intent = new Intent(context,RechargeResultActivity.class);
+    public static void start(Activity activity,RechargeResultCommand command) {
+        Intent intent = new Intent(activity,RechargeResultActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(PARAM_KEY_RESULT,result);
+        bundle.putSerializable(JupiterCommand.PARAM_COMMAND,command);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent,command.getRequestCode());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AddRechargeResult result = (AddRechargeResult) getIntent()
-                                                            .getSerializableExtra(PARAM_KEY_RESULT);
-        buildView(result);
+        RechargeResultCommand command = (RechargeResultCommand) getIntent()
+                .getSerializableExtra(JupiterCommand.PARAM_COMMAND);
+        setResult(JupiterCommand.RESULT_CODE_OK);
+        buildView(command);
     }
 
-    private void buildView(AddRechargeResult result) {
+    private void buildView(RechargeResultCommand command) {
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RechargeResultActivity.this.finish();
             }
         });
-        stateTv.setText(result.getStateName());
-        rechargeTypeTv.setText(result.getRecharegeTypeName());
-        rechargeAmountTv.setText(result.getAmount()+"元");
-        rechargeIdTv.setText(result.getRechargeid());
+        stateTv.setText(command.getStateName());
+        rechargeTypeTv.setText(command.getRechargeTypeName());
+        rechargeAmountTv.setText(command.getAmount()+"元");
+        rechargeIdTv.setText(command.getId());
     }
 
     @Override

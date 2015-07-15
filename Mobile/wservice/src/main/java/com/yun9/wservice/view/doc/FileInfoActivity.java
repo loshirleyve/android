@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.doc;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -234,8 +235,6 @@ public class FileInfoActivity extends JupiterFragmentActivity {
 
                 if (!upload) {
                     Toast.makeText(mContext, R.string.new_dynamic_upload_error, Toast.LENGTH_SHORT);
-                } else {
-                    Toast.makeText(mContext, "上传成功！", Toast.LENGTH_SHORT);
                 }
             }
         });
@@ -253,8 +252,6 @@ public class FileInfoActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(intent)) {
             startActivity(intent);
         }
-
-
     }
 
 

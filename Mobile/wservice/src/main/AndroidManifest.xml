@@ -245,7 +245,7 @@
 
         <activity
             android:name=".view.doc.FileInfoActivity"
-            android:label="@string/doc_file_name"
+            android:label="@string/doc_file_info"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
@@ -361,25 +361,29 @@
             android:name=".view.order.OrderAttachmentActivity"
             android:label="@string/attach_submit"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
             android:name=".view.order.OrderAttachmentChoiceWayActivity"
             android:label="@string/attach_submit_ways"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
             android:name=".view.payment.RechargeActivity"
             android:label="@string/recharge"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
             android:name=".view.payment.RechargeChoiceWaysActivity"
             android:label="@string/payment_ways"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
             android:name=".view.payment.PaymentOrderActivity"

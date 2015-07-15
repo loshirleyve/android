@@ -11,7 +11,7 @@
         tb:titleCenterIcoVisibility="false"
         tb:titleLeftIcoVisibility="true"
         tb:titleRightTextVisibility="false"
-        tb:titleText="@string/doc_file_name"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+        tb:titleText="@string/doc_file_info"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

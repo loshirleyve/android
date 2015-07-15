@@ -89,6 +89,7 @@ public class CompositeProduct implements Serializable{
         private String introduceurl;
         private String imgid;
         private Long createdate;
+        private int commentnums;
 
         public String getProductdescr() {
             return productdescr;
@@ -216,6 +217,14 @@ public class CompositeProduct implements Serializable{
 
         public void setCreatedate(Long createdate) {
             this.createdate = createdate;
+        }
+
+        public int getCommentnums() {
+            return commentnums;
+        }
+
+        public void setCommentnums(int commentnums) {
+            this.commentnums = commentnums;
         }
     }
 

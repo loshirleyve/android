@@ -119,7 +119,7 @@
     <string name="doc_select_num_max">最多允许选择%1$d个文件</string>
     <string name="select_num_max">最多选择%1$d个</string>
     <string name="please_select">请选择</string>
-    <string name="doc_file_name">文件名称</string>
+    <string name="doc_file_info">文件信息</string>
     <string name="doc_file_tip">未知</string>
     <string name="doc_file_from">来自：</string>
     <string name="doc_file_uploaddate">上传时间：</string>
@@ -167,7 +167,7 @@
     <string name="recharge">充值</string>
     <string name="confirm_recharge">确认充值</string>
     <string name="recharge_money">充值金额</string>
-    <string name="recharge_hint">建议转入100元以上金额</string>
+    <string name="recharge_hint">请输入你要充值的金额</string>
     <string name="payment_ways">支付方式</string>
     <string name="payment_ways_hint">请选择支付方式</string>
     <string name="recharge_type_hint">实时支付，无需审核</string>
@@ -269,4 +269,6 @@
     <string name="detail">详情</string>
     <string name="exit_twice_toast">再按一次退出程序</string>
     <string name="inst_no_and_notice">机构编号(4-8位字母或数字组成)</string>
+    <string name="please_select_product_classify">请选择产品分类</string>
+    <string name="selected_classify">已选分类</string>
 </resources>

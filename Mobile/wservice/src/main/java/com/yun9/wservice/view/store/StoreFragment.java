@@ -323,7 +323,7 @@ public class StoreFragment extends JupiterFragment {
         });
     }
 
-    private void refreshProductTop(final ProductGroup productGroup){
+    private void refreshTopProduct(final ProductGroup productGroup){
         if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
             return;
@@ -333,6 +333,7 @@ public class StoreFragment extends JupiterFragment {
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
+                topProducts.clear();
                 List<Product> tempProducts = (List<Product>) response.getPayload();
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts)) {
                     for (Product product : tempProducts) {
@@ -400,7 +401,7 @@ public class StoreFragment extends JupiterFragment {
             public void onFinally(Response response) {
                 mPtrFrame.refreshComplete();
                 productLV.onFinishLoading(true);
-                refreshProductTop(productGroup);
+                refreshTopProduct(productGroup);
             }
         });
     }
@@ -685,7 +686,7 @@ public class StoreFragment extends JupiterFragment {
 
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
-            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImageid(), productItemLayout.getMainIV());
+            ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImgid(), productItemLayout.getMainIV());
             productItemLayout.getHotnoticeTV().setText(product.getPricedescr());
             productItemLayout.setTag(product);
 
@@ -782,7 +783,7 @@ public class StoreFragment extends JupiterFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Product product = topProducts.get(position);
+            final Product product = topProducts.get(position);
             ProductScrollItemView productScrollItemView = new ProductScrollItemView(mContext);
             productScrollItemView.setTag(product);
             productScrollItemView.getProductTV().setText(product.getName());
@@ -793,8 +794,14 @@ public class StoreFragment extends JupiterFragment {
             if (AssertValue.isNotNull(cacheInst)) {
                 productScrollItemView.getInstTV().setText(cacheInst.getInstname());
             }
-
-
+            productScrollItemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (AssertValue.isNotNull(product)) {
+                        ProductActivity.start(getActivity(), new ProductCommand().setProductid(product.getId()));
+                    }
+                }
+            });
             container.addView(productScrollItemView);
             return productScrollItemView;
 

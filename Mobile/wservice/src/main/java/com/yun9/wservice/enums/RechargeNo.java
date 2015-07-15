@@ -1,9 +1,9 @@
-package com.yun9.wservice.model;
+package com.yun9.wservice.enums;
 
 /**
  * Created by huangbinglong on 15/6/30.
  */
-public class RechargeNo {
+public interface RechargeNo {
 
     public static final String TYPE_ALIPAY = "alipay";
     public static final String TYPE_WEIXIN = "wxpay";

@@ -55,7 +55,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
 
     private List<OrderBaseInfo> orderList;
 
-    private String lastupid = "";
+    private String rowid = "";
 
     public static void start(Activity activity,String state,String stateName) {
         Intent intent = new Intent(activity, OrderListActivity.class);
@@ -102,7 +102,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
         ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refreshOrder();
+                refresh();
             }
 
             @Override
@@ -110,21 +110,43 @@ public class OrderListActivity extends JupiterFragmentActivity{
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
-        refreshOrder();
+        autoRefresh();
+    }
+
+    private void refresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshOrder();
+            }
+        }, 100);
+    }
+
+    private void autoRefresh(){
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh();
+            }
+        }, 100);
     }
 
     private void refreshOrder() {
         final Resource resource = resourceFactory.create("QueryOrdersService");
-        resource.param("userid",sessionManager.getUser().getId());
-        resource.param("state",state);
-        resource.header("lastupid",lastupid);
+        resource.param("userid", sessionManager.getUser().getId());
+        if (AssertValue.isNotNullAndNotEmpty(state)){
+            resource.param("states",new String[]{state});
+        }
+        if (AssertValue.isNotNullAndNotEmpty(rowid)) {
+            resource.page().setRowid(rowid);
+        }
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 OrderBaseInfoWrapper wrapper = (OrderBaseInfoWrapper) response.getPayload();
                 List<OrderBaseInfo> orderBaseInfos = wrapper.getOrderList();
                 if (orderBaseInfos != null && orderBaseInfos.size() > 0){
-                    lastupid = orderBaseInfos.get(0).getOrderid();
+                    rowid = orderBaseInfos.get(0).getOrderid();
                     orderList.addAll(0,orderBaseInfos);
                 }
             }
