@@ -19,14 +19,9 @@ import com.yun9.wservice.view.myself.AppAboutActivity;
  */
 public class SettingActivity extends JupiterFragmentActivity {
 
-    @ViewInject(id = R.id.signature)
-    private JupiterRowStyleSutitleLayout signatureLayout;
 
-    @ViewInject(id = R.id.changepassword)
-    private JupiterRowStyleSutitleLayout changePasswordLayout;
-
-    @ViewInject(id = R.id.clean)
-    private JupiterRowStyleSutitleLayout cleanLayout;
+//    @ViewInject(id = R.id.clean)
+//    private JupiterRowStyleSutitleLayout cleanLayout;
 
     @ViewInject(id = R.id.about)
     private JupiterRowStyleSutitleLayout aboutLayout;
