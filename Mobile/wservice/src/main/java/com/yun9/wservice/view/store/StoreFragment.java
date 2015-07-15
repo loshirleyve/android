@@ -324,6 +324,7 @@ public class StoreFragment extends JupiterFragment {
     }
 
     private void refreshTopProduct(final ProductGroup productGroup){
+        topProducts.clear();
         if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
             return;
@@ -333,12 +334,14 @@ public class StoreFragment extends JupiterFragment {
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                topProducts.clear();
                 List<Product> tempProducts = (List<Product>) response.getPayload();
                 if (AssertValue.isNotNullAndNotEmpty(tempProducts)) {
                     for (Product product : tempProducts) {
                         topProducts.addLast(product);
                     }
+                }
+                if (!AssertValue.isNotNullAndNotEmpty(tempProducts)) {
+                    productLV.onFinishLoading(false);
                 }
                 topProductViewPageAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
@@ -399,9 +402,9 @@ public class StoreFragment extends JupiterFragment {
 
             @Override
             public void onFinally(Response response) {
+                refreshTopProduct(productGroup);
                 mPtrFrame.refreshComplete();
                 productLV.onFinishLoading(true);
-                refreshTopProduct(productGroup);
             }
         });
     }
