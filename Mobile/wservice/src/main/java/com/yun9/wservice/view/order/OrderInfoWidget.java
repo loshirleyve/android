@@ -17,6 +17,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -128,8 +129,12 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     }
 
     private void reload() {
-        orderFeeTV.setText(order.getOrderamount()+"元");
-        providerWidget.buildWithData(order.getProvideinstid());
+        orderFeeTV.setText(order.getOrderamount() + "元");
+        if (AssertValue.isNotNullAndNotEmpty(order.getInstid())){
+            providerWidget.buildWithData(order.getInstid());
+        } else {
+            providerWidget.setVisibility(GONE);
+        }
         productLV.setAdapter(adapter);
     }
 

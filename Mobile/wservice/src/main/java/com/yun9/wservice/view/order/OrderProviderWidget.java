@@ -81,6 +81,7 @@ public class OrderProviderWidget extends JupiterRelativeLayout {
     private void dialog() {
         if (!AssertValue.isNotNullAndNotEmpty(phone)){
             Toast.makeText(this.mContext,"无法获取机构电话号码",Toast.LENGTH_SHORT).show();
+            return;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
         builder.setMessage("打电话给："+phone);
