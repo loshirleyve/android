@@ -2,6 +2,9 @@ package com.yun9.wservice.view.payment;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -19,6 +22,14 @@ public class PaymentResultItemWidget extends JupiterRelativeLayout{
     private TextView payAmountTv;
 
     private TextView payStateNameTv;
+
+    private RelativeLayout extraInfoLl;
+
+    private ImageView userUploadImageIv;
+
+    private TextView userConfirmContentTv;
+
+    private TextView confirmPayTv;
 
     public PaymentResultItemWidget(Context context) {
         super(context);
@@ -43,6 +54,10 @@ public class PaymentResultItemWidget extends JupiterRelativeLayout{
         payTimeTv = (TextView) this.findViewById(R.id.pay_time_tv);
         payStateNameTv = (TextView) this.findViewById(R.id.pay_state_name_tv);
         payAmountTv = (TextView) this.findViewById(R.id.pay_amount_tv);
+        extraInfoLl = (RelativeLayout) this.findViewById(R.id.extra_info_ll);
+        userUploadImageIv = (ImageView) this.findViewById(R.id.user_upload_image_iv);
+        userConfirmContentTv = (TextView) this.findViewById(R.id.user_confirm_content_tv);
+        confirmPayTv = (TextView) this.findViewById(R.id.confirm_pay_tv);
     }
 
     public TextView getPayWayNameTv() {
@@ -59,5 +74,21 @@ public class PaymentResultItemWidget extends JupiterRelativeLayout{
 
     public TextView getPayStateNameTv() {
         return payStateNameTv;
+    }
+
+    public RelativeLayout getExtraInfoLl() {
+        return extraInfoLl;
+    }
+
+    public ImageView getUserUploadImageIv() {
+        return userUploadImageIv;
+    }
+
+    public TextView getUserConfirmContentTv() {
+        return userConfirmContentTv;
+    }
+
+    public TextView getConfirmPayTv() {
+        return confirmPayTv;
     }
 }

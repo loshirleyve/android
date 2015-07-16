@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/groupbackground">
 
     <com.yun9.jupiter.widget.JupiterTitleBarLayout xmlns:tb="http://schemas.android.com/apk/res-auto"
@@ -24,38 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:visibility="gone"
-            android:text="@string/setting_account" />
-
-        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/signature"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:visibility="gone"
-            row:rowStyleSutitleShowMainImage="false"
-            row:rowStyleSutitleShowTimeText="false"
-            row:rowStyleSutitleText="@string/app_name"
-            row:rowStyleSutitleTitleText="@string/user_signature">
-
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
-
-        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/changepassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            row:rowStyleSutitleShowMainImage="false"
-            row:rowStyleSutitleShowTimeText="false"
-            row:rowStyleSutitleShowSutitleText="false"
-            row:rowStyleSutitleTitleText="@string/setting_change_password">
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
             android:text="@string/setting_general" />
 
         <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
@@ -64,10 +32,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             row:rowStyleSutitleShowMainImage="false"
-            row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleShowSutitleText="false"
+            row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleTitleText="@string/setting_clean">
-
         </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
@@ -75,10 +42,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             row:rowStyleSutitleShowMainImage="false"
-            row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleShowSutitleText="false"
-            row:rowStyleSutitleTitleText="@string/setting_about">
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+            row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleTitleText="@string/setting_about"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
             android:id="@+id/logout"
@@ -86,10 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             row:rowStyleSutitleShowMainImage="false"
-            row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleShowSutitleText="false"
-            row:rowStyleSutitleTitleText="@string/setting_logout">
-        </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+            row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleTitleText="@string/setting_logout"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
 
     </LinearLayout>
