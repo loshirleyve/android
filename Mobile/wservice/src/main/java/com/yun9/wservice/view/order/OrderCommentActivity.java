@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -21,8 +22,6 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
-
-import java.io.Serializable;
 
 /**
  * Created by huangbinglong on 15/6/17.
@@ -55,24 +54,21 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
     @BeanInject
     private SessionManager sessionManager;
 
-    private String orderId;
+    private OrderCommentCommand commentCommand;
 
-    private Order.OrderWorkOrder workOrder;
-
-    public static void start(Activity activity,String orderId,Order.OrderWorkOrder workOrder) {
+    public static void start(Activity activity,OrderCommentCommand commentCommand) {
         Intent intent = new Intent(activity,OrderCommentActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("orderid",orderId);
-        bundle.putSerializable("workorder", (Serializable) workOrder);
+        bundle.putSerializable(JupiterCommand.PARAM_COMMAND,commentCommand);
         intent.putExtras(bundle);
-        activity.startActivity(intent);
+        activity.startActivityForResult(intent,commentCommand.getRequestCode());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.orderId = getIntent().getStringExtra("orderid");
-        this.workOrder = (Order.OrderWorkOrder) getIntent().getSerializableExtra("workorder");
+        commentCommand =
+                (OrderCommentCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
         buildView();
         loadData();
     }
@@ -96,14 +92,14 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             }
         });
         // 设置工单信息
-        workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
-        workOrderNameTV.setText(workOrder.getOrderworkname());
+        workOrderIdTV.setText("工单号 " + commentCommand.getWorkOrder().getOrderworkid());
+        workOrderNameTV.setText(commentCommand.getWorkOrder().getOrderworkname());
     }
 
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
-        resource.param("orderid", orderId);
+        resource.param("orderid", commentCommand.getOrderId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -139,7 +135,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
         }
         // 调用服务提交评论
         Resource resource = resourceFactory.create("AddWorkOrderCommentService");
-        resource.param("workorderid",workOrder.getOrderworkid());
+        resource.param("workorderid",commentCommand.getWorkOrder().getOrderworkid());
         resource.param("senderid",sessionManager.getUser().getId());
         resource.param("commenttype","comment");
         resource.param("commenttext",content);
@@ -148,6 +144,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             @Override
             public void onSuccess(Response response) {
                 showToast("评论成功！");
+                setResult(JupiterCommand.RESULT_CODE_OK);
                 OrderCommentActivity.this.finish();
             }
 

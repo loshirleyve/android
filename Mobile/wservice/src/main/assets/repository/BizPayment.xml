@@ -44,4 +44,11 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 提交支付凭证 -->
+    <repository>
+        <name>UpdateCollectByArriveInfoService</name>
+        <action>com.yun9.ws.biz.service.UpdateCollectByArriveInfoService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

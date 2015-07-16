@@ -86,4 +86,11 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 掷骰子 -->
+    <repository>
+        <name>AddRandomNumber</name>
+        <action>com.yun9.ws.biz.service.AddRandomNumberService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>
