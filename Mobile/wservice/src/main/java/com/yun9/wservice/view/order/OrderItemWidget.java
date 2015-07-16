@@ -28,6 +28,7 @@ public class OrderItemWidget extends JupiterRelativeLayout{
     private TextView orderTimeTV;
     private ImageView productImgeIV;
     private TextView orderStateTV;
+    private TextView productDescTv;
 
     public OrderItemWidget(Context context) {
         super(context);
@@ -66,5 +67,6 @@ public class OrderItemWidget extends JupiterRelativeLayout{
         orderTimeTV = (TextView) this.findViewById(R.id.order_time_tv);
         productImgeIV = (ImageView) this.findViewById(R.id.product_image_iv);
         orderStateTV = (TextView) this.findViewById(R.id.order_state_tv);
+        productDescTv = (TextView) this.findViewById(R.id.product_desc_tv);
     }
 }

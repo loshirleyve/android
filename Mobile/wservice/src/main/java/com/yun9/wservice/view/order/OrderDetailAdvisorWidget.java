@@ -20,6 +20,7 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
     private ImageView userHeadIV;
     private TextView userNameTV;
     private TextView contactUsIV;
+    private ImageView callUsIv;
 
     private Order order;
 
@@ -54,6 +55,7 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
         userHeadIV  = (ImageView) this.findViewById(R.id.user_head_iv);
         userNameTV = (TextView) this.findViewById(R.id.user_name_tv);
         contactUsIV = (TextView) this.findViewById(R.id.contact_us_iv);
+        callUsIv = (ImageView) this.findViewById(R.id.call_us_iv);
         buildView();
     }
 
@@ -71,5 +73,9 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
 
     public TextView getContactUsIV() {
         return contactUsIV;
+    }
+
+    public ImageView getCallUsIv() {
+        return callUsIv;
     }
 }

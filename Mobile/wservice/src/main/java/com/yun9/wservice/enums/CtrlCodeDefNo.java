@@ -12,4 +12,6 @@ public class CtrlCodeDefNo {
     public static final String ACCOUNT_TYPE = "accounttype";
 
     public static final String COLLECT_STATE = "collectstate";
+
+    public static final String WORK_STATE = "workstate";
 }
