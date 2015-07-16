@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -268,7 +269,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private void refreshComplete() {
         //TODO 由于还没有返回流程数据，暂时使用假数据
         //fakeDataProcessAction(mMsgCard);
-        buildDataProcessAction(mMsgCard);
         builderView(mMsgCard);
 
         if (AssertValue.isNotNull(command) && command.isScrollComment()) {
@@ -413,22 +413,24 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         zhishaizi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("BigBang");
+                addRandomNumber();
             }
         });
 
+        //添加“业务单据”功能
+        if(AssertValue.isNotNullAndNotEmpty(msgCard.getSource()) && AssertValue.isNotNullAndNotEmpty(msgCard.getSourceid())) {
+            MsgCardPanelActionItem bizDoc =
+                    new MsgCardPanelActionItem(getResources().getString(R.string.business_documents),
+                            R.drawable.save_fill, MsgCardPanelActionItem.ActionType.TYPE_PROCESS);
+            bizDoc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
+                }
+            });
+            panelActionItems.add(bizDoc);
+        }
 
-//        switch (tempActionItems.get(position).getTitle()){
-//            case "掷筛子":
-//                Toast.makeText(mContext, "掷筛子", Toast.LENGTH_SHORT).show();
-//                break;
-//            case "业务单据":
-//                Toast.makeText(mContext, "业务单据", Toast.LENGTH_SHORT).show();
-//                OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
-//                //OrderDetailActivity.start(MsgCardDetailActivity.this, "10000001121025");
-//                break;
-//        }
-//
         panelActionItems.add(zhishaizi);
 
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getProcess())) {
@@ -515,9 +517,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     }
 
-    ;
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -535,13 +534,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                         .setType(NewDynamicCommand.MSG_FORWARD);
                 NewDynamicActivity.start(MsgCardDetailActivity.this, newDynamicCommand);
             }
-        }
-    }
-
-    private void buildDataProcessAction(MsgCard msgCard){
-        msgCard.setProcess(new ArrayList<MsgCardProcessAction>());
-        if(AssertValue.isNotNullAndNotEmpty(msgCard.getSource()) && AssertValue.isNotNullAndNotEmpty(msgCard.getSourceid())) {
-            msgCard.getProcess().add(new MsgCardProcessAction(getString(R.string.business_documents), "save"));
         }
     }
 
@@ -591,5 +583,29 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 }
             });
         }
+    }
+
+    private void addRandomNumber(){
+        Resource resource = resourceFactory.create("AddRandomNumber");
+        resource.param("devicemodel", "100000").param("locationx", "20").param("locationy", "20")
+                .param("locationlabel", "20").param("locationscale", "xx").param("userid", currUserid)
+                .param("msgcardid", mMsgCard.getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Toast.makeText(mContext, getString(R.string.add_random_num_success), Toast.LENGTH_SHORT).show();
+                refresh(mMsgCard.getId(), currUserid);
+                setResult(MsgCardDetailCommand.RESULT_CODE_OK);
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+            }
+        });
     }
 }

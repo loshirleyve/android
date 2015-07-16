@@ -89,6 +89,7 @@ public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
 
                 if (convertView == null) {
                     itemWidget = new MsgCardDetailToolbarPanelPageItemWidget(getContext());
+                    convertView = itemWidget;
                 } else {
                     itemWidget = (MsgCardDetailToolbarPanelPageItemWidget) convertView;
                 }
