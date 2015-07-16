@@ -15,6 +15,7 @@ import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
 import com.yun9.wservice.model.WorkOrderComment;
@@ -26,12 +27,9 @@ import org.w3c.dom.Text;
  */
 public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
 
-    private static final String CTRL_CODE_DEF_NO_WORK_ORDER_STATE = "workstate";
-
     private TextView workOrderIdTV;
     private TextView workOrderNameTV;
     private TextView workOrderStateTV;
-    private TextView commentWorkOrderTV;
     private TextView checkoutWorkOrderCommentTV;
 
     private String orderId;
@@ -56,10 +54,9 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderNameTV.setText(workOrder.getOrderworkname());
         workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
         workOrderStateTV.setText(CtrlCodeCache.getInstance()
-                .getCtrlcodeName(CTRL_CODE_DEF_NO_WORK_ORDER_STATE, workOrder.getOrderworkstate()));
+                .getCtrlcodeName(CtrlCodeDefNo.WORK_STATE, workOrder.getOrderworkstate()));
         // 没有完成不能评论
         if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
-            commentWorkOrderTV.setVisibility(GONE);
             checkoutWorkOrderCommentTV.setVisibility(GONE);
         } else {
             checkoutComment();
@@ -76,28 +73,11 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderIdTV = (TextView) this.findViewById(R.id.work_order_id_tv);
         workOrderNameTV = (TextView) this.findViewById(R.id.work_order_name_tv);
         workOrderStateTV = (TextView) this.findViewById(R.id.work_order_state_tv);
-        commentWorkOrderTV = (TextView) this.findViewById(R.id.comment_work_order_tv);
         checkoutWorkOrderCommentTV = (TextView) this.findViewById(R.id.checkout_work_order_comment_tv);
         buildView();
     }
 
     private void buildView() {
-        commentWorkOrderTV.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderCommentActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
-                                                            orderId,workOrder);
-            }
-        });
-        checkoutWorkOrderCommentTV.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
-                        orderId, workOrder);
-            }
-        });
-        commentWorkOrderTV.setVisibility(INVISIBLE);
-        checkoutWorkOrderCommentTV.setVisibility(INVISIBLE);
     }
 
     private void checkoutComment() {
@@ -111,16 +91,17 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
                 WorkOrderComment comment = (WorkOrderComment) response.getPayload();
                 if (comment != null
                         && AssertValue.isNotNullAndNotEmpty(comment.getId())) {
-                    checkoutWorkOrderCommentTV.setVisibility(VISIBLE);
+                    checkoutWorkOrderCommentTV.setText("查看评论");
+                    checkoutWorkOrderCommentTV.setOnClickListener(showComment);
                 } else {
-                    commentWorkOrderTV.setVisibility(VISIBLE);
+                    checkoutWorkOrderCommentTV.setOnClickListener(commentWorkOrder);
+                    checkoutWorkOrderCommentTV.setText("评论工单");
                 }
             }
 
             @Override
             public void onFailure(Response response) {
-                commentWorkOrderTV.setVisibility(INVISIBLE);
-                checkoutWorkOrderCommentTV.setVisibility(INVISIBLE);
+                checkoutWorkOrderCommentTV.setVisibility(GONE);
             }
 
             @Override
@@ -128,4 +109,24 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
             }
         });
     }
+
+    private OnClickListener commentWorkOrder = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrderCommentCommand commentCommand = new OrderCommentCommand();
+            commentCommand.setOrderId(orderId).setWorkOrder(workOrder);
+            OrderCommentActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
+                    commentCommand);
+        }
+    };
+
+    private OnClickListener showComment = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrderCommentCommand commentCommand = new OrderCommentCommand();
+            commentCommand.setOrderId(orderId).setWorkOrder(workOrder);
+            OrderCommentDetailActivity.start((Activity) OrderDetailWorkOrderWidget.this.getContext(),
+                    commentCommand);
+        }
+    };
 }

@@ -1,17 +1,23 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -68,6 +74,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     private SessionManager sessionManager;
 
     private String orderId;
+
+    private Order order;
 
     public static void start(Context context,String orderId) {
         Intent intent = new Intent(context,OrderDetailActivity.class);
@@ -140,6 +148,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData(final Order order) {
+        this.order =order;
         if (!AssertValue.isNotNull(order.getOrder())
                         || !State.Order.COMPLETE.equals(order.getOrder().getState())){
             titleBarLayout.getTitleRight().setVisibility(View.GONE);
@@ -203,6 +212,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                 && AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviseruserid())){
             orderDetailAdvisorWidget.buildWitdhData(order);
             orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
+            orderDetailAdvisorWidget.getCallUsIv().setOnClickListener(onCallUsClick);
         } else {
             orderDetailAdvisorWidget.setVisibility(View.GONE);
         }
@@ -224,8 +234,53 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     private View.OnClickListener onContactUsClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            MsgCardDetailCommand msgCardDetailCommand =
+                    new MsgCardDetailCommand().setOrderId(orderId);
+            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviseruserid());
+            if (user != null){
+                msgCardDetailCommand.setTitle(user.getName());
+            }
             MsgCardDetailActivity.start(OrderDetailActivity.this,
-                    new MsgCardDetailCommand().setOrderId(orderId));
+                    msgCardDetailCommand);
+        }
+    };
+
+    private View.OnClickListener onCallUsClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviseruserid());
+            if (user == null){
+                showToast("无法获取用户电话号码");
+                return;
+            }
+            final String phone = "10086";
+            if (!AssertValue.isNotNullAndNotEmpty(phone)){
+                Toast.makeText(OrderDetailActivity.this, "无法获取机构电话号码", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
+            builder.setMessage("打电话给："+phone);
+            builder.setTitle("提示");
+            builder.setPositiveButton("确认", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    call(phone);
+                }
+            });
+            builder.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
+        }
+
+        private void call(String phone) {
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
+                    phone.replace("-", "")));
+            OrderDetailActivity.this.startActivity(intent);
         }
     };
 }

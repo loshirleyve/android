@@ -80,6 +80,8 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
 
     private String selectedImageId;
 
+    private String collectId;
+
     public static void start(Activity activity, PaymentResultCommand command) {
         Intent intent = new Intent(activity, PaymentResultActivity.class);
         Bundle bundle = new Bundle();
@@ -123,7 +125,32 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         popWidget.getConfirmTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmWindow.dismiss();
+                confirmPayArrive();
+            }
+        });
+    }
+
+    private void confirmPayArrive() {
+        String content = popWidget.getConfirmContentEt().getText().toString();
+        Resource resource = resourceFactory.create("UpdateCollectByArriveInfoService");
+        resource.param("collectid",collectId);
+        resource.param("arriveimgid",selectedImageId);
+        resource.param("arrivetext",content);
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                showToast("提交成功");
+                loadData();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
             }
         });
     }
@@ -154,6 +181,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     }
 
     private void buildWithData(FinanceCollects financeCollects) {
+        payWayLl.removeAllViews();
         if (financeCollects == null) {
             return;
         }
@@ -164,7 +192,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         productAmountTv.setText(financeCollects.getSourceInfo().getOrderamount()+"元");
         if (financeCollects.getFinanceCollectList() != null){
             PaymentResultItemWidget widget;
-            for (FinanceCollects.FinanceCollect collect : financeCollects.getFinanceCollectList()){
+            for (final FinanceCollects.FinanceCollect collect : financeCollects.getFinanceCollectList()){
                 widget = new PaymentResultItemWidget(this);
                 widget.getPayWayNameTv().setText(collect.getPaymodeName());
                 widget.getPayTimeTv().setText(DateFormatUtil.format(
@@ -178,6 +206,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                 widget.getConfirmPayTv().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        collectId = collect.getId();
                         if (confirmWindow != null) {
                             WindowManager.LayoutParams lp = PaymentResultActivity.this.getWindow().getAttributes();
                             lp.alpha = 0.4f;

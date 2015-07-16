@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -23,11 +24,8 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.WorkOrderComment;
 import com.yun9.wservice.widget.ShowCommentWidget;
-
-import java.io.Serializable;
 
 /**
  * Created by huangbinglong on 15/6/17.
@@ -54,17 +52,14 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     @BeanInject
     private SessionManager sessionManager;
 
-    private String orderId;
-
-    private Order.OrderWorkOrder workOrder;
+    private OrderCommentCommand commentCommand;
 
     private WorkOrderComment workOrderComment;
 
-    public static void start(Activity activity,String orderId,Order.OrderWorkOrder workOrder) {
+    public static void start(Activity activity,OrderCommentCommand commentCommand) {
         Intent intent = new Intent(activity,OrderCommentDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("orderid", orderId);
-        bundle.putSerializable("workorder", (Serializable) workOrder);
+        bundle.putSerializable(JupiterCommand.PARAM_COMMAND, commentCommand);
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }
@@ -72,8 +67,8 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.orderId = getIntent().getStringExtra("orderid");
-        this.workOrder = (Order.OrderWorkOrder) getIntent().getSerializableExtra("workorder");
+        this.commentCommand =
+                (OrderCommentCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
         buildView();
         loadData();
     }
@@ -104,7 +99,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryWorkCommentsByWorkOrderIdService");
-        resource.param("workorderid", workOrder.getOrderworkid());
+        resource.param("workorderid", commentCommand.getWorkOrder().getOrderworkid());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -152,7 +147,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
         // 调用服务提交评论
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddWorkOrderCommentService");
-        resource.param("workorderid",workOrder.getOrderworkid());
+        resource.param("workorderid", commentCommand.getWorkOrder().getOrderworkid());
         resource.param("senderid",sessionManager.getUser().getId());
         resource.param("commenttype",WorkOrderComment.TYPE_ADD_COMMENT);
         resource.param("commenttext",content);
@@ -161,6 +156,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
             @Override
             public void onSuccess(Response response) {
                 showToast("评论成功！");
+                setResult(JupiterCommand.RESULT_CODE_OK);
                 OrderCommentDetailActivity.this.finish();
             }
 
