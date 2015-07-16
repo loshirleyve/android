@@ -84,12 +84,18 @@ public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 MsgCardPanelActionItem item = items.get(position);
-                MsgCardDetailToolbarPanelPageItemWidget itemWidget;
+
+                MsgCardDetailToolbarPanelPageItemWidget itemWidget = null;
+
                 if (convertView == null) {
                     itemWidget = new MsgCardDetailToolbarPanelPageItemWidget(getContext());
-                    itemWidget.buildWithData(item);
-                    convertView = itemWidget;
+                } else {
+                    itemWidget = (MsgCardDetailToolbarPanelPageItemWidget) convertView;
                 }
+
+                itemWidget.buildWithData(item);
+                itemWidget.setTag(item);
+
                 return convertView;
             }
         });

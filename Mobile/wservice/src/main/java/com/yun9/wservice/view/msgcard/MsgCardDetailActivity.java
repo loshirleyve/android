@@ -416,6 +416,19 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 showToast("BigBang");
             }
         });
+
+
+//        switch (tempActionItems.get(position).getTitle()){
+//            case "掷筛子":
+//                Toast.makeText(mContext, "掷筛子", Toast.LENGTH_SHORT).show();
+//                break;
+//            case "业务单据":
+//                Toast.makeText(mContext, "业务单据", Toast.LENGTH_SHORT).show();
+//                OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
+//                //OrderDetailActivity.start(MsgCardDetailActivity.this, "10000001121025");
+//                break;
+//        }
+//
         panelActionItems.add(zhishaizi);
 
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getProcess())) {
@@ -440,18 +453,13 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                     }
                 }
                 page.buildView(tempActionItems);
+
                 page.getActionGridView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        switch (tempActionItems.get(position).getTitle()){
-                            case "掷筛子":
-                                Toast.makeText(mContext, "掷筛子", Toast.LENGTH_SHORT).show();
-                                break;
-                            case "业务单据":
-                                Toast.makeText(mContext, "业务单据", Toast.LENGTH_SHORT).show();
-                                OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
-                                //OrderDetailActivity.start(MsgCardDetailActivity.this, "10000001121025");
-                                break;
+                        MsgCardPanelActionItem item = (MsgCardPanelActionItem) view.getTag();
+                        if (AssertValue.isNotNull(item.getOnClickListener())){
+                            item.getOnClickListener().onClick(view);
                         }
                     }
                 });
