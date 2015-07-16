@@ -19,14 +19,17 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.WorkOrderComment;
 import com.yun9.wservice.view.order.OrderWorkOrderSubCommentWidget;
 import com.yun9.wservice.widget.ShowCommentWidget;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -46,16 +49,15 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
     @ViewInject(id = R.id.product_comment_list)
-    private ListView productCommentList;
+    private PagingListView productCommentList;
 
     @BeanInject
     private ResourceFactory resourceFactory;
 
-    private List<WorkOrderComment> productComments;
+    private LinkedList<WorkOrderComment> productComments;
 
     private String prodctid;
 
-    private String rowid = "";
 
     public static void start(Activity activity, String prodctid) {
         Intent intent = new Intent(activity, ProductCommentListActivity.class);
@@ -78,7 +80,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
 
     private void buildView() {
         prodctid = getIntent().getStringExtra("prodctid");
-        productComments = new ArrayList<>();
+        productComments = new LinkedList<>();
         productCommentList.setAdapter(adapter);
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +92,9 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
         ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                productComments.clear();
+                productCommentList.setHasMoreItems(true);
+                refreshProductCommet(null, Page.PAGE_DIR_PULL);
             }
 
             @Override
@@ -98,37 +102,55 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
-        autoRefresh();
-    }
 
-    private void refresh() {
-        ptrClassicFrameLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshProductCommet(Page.PAGE_DIR_PULL);
-            }
-        }, 100);
-    }
-
-    private void autoRefresh() {
         ptrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
                 ptrClassicFrameLayout.autoRefresh();
             }
         }, 100);
+
+        productCommentList.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(productComments)) {
+                    WorkOrderComment comment = productComments.get(productComments.size() - 1);
+                    refreshProductCommet(comment.getId(), Page.PAGE_DIR_PUSH);
+                } else {
+                    productCommentList.onFinishLoading(true);
+                }
+            }
+        });
     }
 
-    private void refreshProductCommet(final String dir) {
+
+    private void refreshProductCommet(String rowid, final String dir) {
         Resource resource = resourceFactory.create("QueryWorkCommentsByProductId");
         resource.param("productid", prodctid);
         resource.page().setDir(dir).setRowid(rowid);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                productComments = (List<WorkOrderComment>) response.getPayload();
-                if (AssertValue.isNotNullAndNotEmpty(productComments))
-                    rowid = productComments.get(0).getId();
+                List<WorkOrderComment> comments = (List<WorkOrderComment>) response.getPayload();
+                if (AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PULL.equals(dir)) {
+                    for (int i = comments.size(); i > 0; i--) {
+                        WorkOrderComment comment = comments.get(i - 1);
+                        productComments.addFirst(comment);
+                    }
+                }
+
+                if (AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PUSH.equals(dir)) {
+                    for (WorkOrderComment comment : comments) {
+                        productComments.addLast(comment);
+                    }
+                }
+
+                if (!AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PUSH.equals(dir)) {
+                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+                    productCommentList.onFinishLoading(false);
+                }
+
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -138,7 +160,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                adapter.notifyDataSetChanged();
+                productCommentList.onFinishLoading(true);
                 ptrClassicFrameLayout.refreshComplete();
             }
         });
@@ -155,7 +177,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return productComments.get(position);
         }
 
         @Override
@@ -178,7 +200,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
             pcw.getShowCommentWidget().getContentTv().setText(productComments.get(position).getCommenttext());
             pcw.getShowCommentWidget().setTime(productComments.get(position).getCreatedate());
             pcw.getShowCommentWidget().setRating((float) productComments.get(position).getScore());
-            Subadapter subadapter=new Subadapter(productComments.get(position).getAddcomments());
+            Subadapter subadapter = new Subadapter(productComments.get(position).getAddcomments());
             pcw.getSubCommentLv().setAdapter(subadapter);
             return convertView;
         }

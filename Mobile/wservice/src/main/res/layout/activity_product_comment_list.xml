@@ -26,7 +26,7 @@
         cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
         cube_ptr:ptr_resistance="1.7">
 
-        <ListView
+        <com.yun9.jupiter.widget.paging.listview.PagingListView
             android:id="@+id/product_comment_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,6 +35,6 @@
             android:layout_marginTop="8dp"
             android:background="@color/groupbackground"
             android:divider="@color/groupbackground"
-            android:dividerHeight="10dp"></ListView>
+            android:dividerHeight="10dp"/>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </RelativeLayout>
