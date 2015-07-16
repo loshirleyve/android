@@ -31,7 +31,7 @@ public class SelectImageBizExecutor implements BizExecutor{
             public void onActivityResult(int resultCode, Intent data) {
                 if (resultCode == JupiterCommand.RESULT_CODE_OK){
                     List<FileBean> docs = (List<FileBean>) data
-                            .getSerializableExtra(DocCompositeCommand.PARAM_FILE);
+                            .getSerializableExtra(DocCompositeCommand.PARAM_IMAGE);
                     if (docs != null){
                         List<String> ids =  new ArrayList<String>();
                         for (FileBean fileBean : docs){

@@ -1,10 +1,17 @@
 package com.yun9.wservice.view.payment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.yun9.jupiter.cache.CtrlCodeCache;
@@ -12,9 +19,12 @@ import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateFormatUtil;
+import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.StringPool;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -23,6 +33,13 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.model.FinanceCollects;
+import com.yun9.wservice.view.doc.DocCompositeActivity;
+import com.yun9.wservice.view.doc.DocCompositeCommand;
+import com.yun9.wservice.view.product.ProductClassifyPopLayout;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by huangbinglong on 7/3/15.
@@ -47,6 +64,10 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.product_amount_tv)
     private TextView productAmountTv;
 
+    private PopupWindow confirmWindow;
+
+    private PaymentResultPopWidget popWidget;
+
     @BeanInject
     private ResourceFactory resourceFactory;
 
@@ -54,6 +75,10 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     private SessionManager sessionManager;
 
     private PaymentResultCommand command;
+
+    private DocCompositeCommand compositeCommand;
+
+    private String selectedImageId;
 
     public static void start(Activity activity, PaymentResultCommand command) {
         Intent intent = new Intent(activity, PaymentResultActivity.class);
@@ -81,9 +106,30 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                 PaymentResultActivity.this.finish();
             }
         });
+        initPopWindow();
+    }
+
+    private void initPopWindow() {
+        popWidget = new PaymentResultPopWidget(this);
+        confirmWindow = new PopupWindow(popWidget, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        confirmWindow.setOnDismissListener(onDismissListener);
+        confirmWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        confirmWindow.setOutsideTouchable(true);
+        confirmWindow.setFocusable(true);
+        confirmWindow.setAnimationStyle(R.style.bottom2top_top2bottom);
+        popWidget.getUploadTv().setOnClickListener(openDocCompositeClickListener);
+        popWidget.getUploadImageIv().setOnClickListener(openDocCompositeClickListener);
+        popWidget.getConfirmTv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmWindow.dismiss();
+            }
+        });
     }
 
     private void loadData() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryCollectsByRequestService");
         resource.param("source", command.getSource());
         resource.param("sourcevalue", command.getSourceId());
@@ -102,7 +148,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
@@ -128,6 +174,18 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                 widget.getPayStateNameTv().setText(
                         CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.COLLECT_STATE,
                                 collect.getState()));
+                // 添加确定支付事件
+                widget.getConfirmPayTv().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (confirmWindow != null) {
+                            WindowManager.LayoutParams lp = PaymentResultActivity.this.getWindow().getAttributes();
+                            lp.alpha = 0.4f;
+                            PaymentResultActivity.this.getWindow().setAttributes(lp);
+                            confirmWindow.showAtLocation(findViewById(R.id.main), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                        }
+                    }
+                });
                 payWayLl.addView(widget);
             }
         }
@@ -137,4 +195,50 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     protected int getContentView() {
         return R.layout.activity_payment_result;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (compositeCommand != null
+                && compositeCommand.getRequestCode() ==  requestCode
+                && resultCode == JupiterCommand.RESULT_CODE_OK){
+            List<FileBean> images = (List<FileBean>) data
+                    .getSerializableExtra(DocCompositeCommand.PARAM_IMAGE);
+            if (images != null
+                    && images.size() > 0){
+                selectedImageId = images.get(0).getId();
+                ImageLoaderUtil.getInstance(PaymentResultActivity.this).displayImage(
+                        selectedImageId,popWidget.getUploadImageIv()
+                );
+            } else {
+                selectedImageId = null;
+                ImageLoaderUtil.getInstance(PaymentResultActivity.this).displayImage(
+                        "drawable://"+R.drawable.upload_icon,popWidget.getUploadImageIv()
+                );
+            }
+        }
+    }
+
+    private View.OnClickListener openDocCompositeClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            compositeCommand = new DocCompositeCommand();
+            if (AssertValue.isNotNullAndNotEmpty(selectedImageId)){
+                FileBean fileBean = new FileBean();
+                fileBean.setId(selectedImageId);
+                compositeCommand.setOnSelectImages(Collections.singletonList(fileBean));
+            }
+            compositeCommand.setEdit(true);
+            compositeCommand.setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK);
+            DocCompositeActivity.start(PaymentResultActivity.this, compositeCommand);
+        }
+    };
+
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams lp = PaymentResultActivity.this.getWindow().getAttributes();
+            lp.alpha = 1f;
+            PaymentResultActivity.this.getWindow().setAttributes(lp);
+        }
+    };
 }

@@ -52,6 +52,8 @@ public class MsgCardPanelActionItem {
      */
     private int type;
 
+    private View.OnClickListener onClickListener;
+
     private MsgCardProcessAction msgCardProcessAction;
 
     public MsgCardPanelActionItem(String title, int pic, int type) {
@@ -76,6 +78,14 @@ public class MsgCardPanelActionItem {
         } else {
             this.pic = R.drawable.save_fill;
         }
+    }
+
+    public View.OnClickListener getOnClickListener() {
+        return onClickListener;
+    }
+
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
     }
 
     public String getTitle() {

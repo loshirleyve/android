@@ -38,6 +38,8 @@ public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
     // 界面引用对象,动作容器GridView
     private GridView actionGridView;
 
+    private List<MsgCardPanelActionItem> items;
+
     public MsgCardDetailToolbarPanelPageWidget(Context context) {
         super(context);
     }
@@ -58,6 +60,7 @@ public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
      * @param items 实体数据列表
      */
     public void buildView(final List<MsgCardPanelActionItem> items) {
+        this.items = items;
         // 设置GridViewAdapter
         actionGridView.setAdapter(new BaseAdapter() {
             @Override
@@ -77,9 +80,14 @@ public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                MsgCardDetailToolbarPanelPageItemWidget itemWidget = new MsgCardDetailToolbarPanelPageItemWidget(getContext());
-                itemWidget.buildWithData(items.get(position));
-                return itemWidget;
+                MsgCardPanelActionItem item = items.get(position);
+                MsgCardDetailToolbarPanelPageItemWidget itemWidget;
+                if (convertView == null) {
+                    itemWidget = new MsgCardDetailToolbarPanelPageItemWidget(getContext());
+                    itemWidget.buildWithData(item);
+                    convertView = itemWidget;
+                }
+                return convertView;
             }
         });
     }
@@ -92,6 +100,15 @@ public class MsgCardDetailToolbarPanelPageWidget extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         actionGridView = (GridView) this.findViewById(R.id.grid);
+        actionGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MsgCardPanelActionItem item = items.get(position);
+                if (item.getOnClickListener() != null){
+                    item.getOnClickListener().onClick(view);
+                }
+            }
+        });
     }
 
     public GridView getActionGridView() {

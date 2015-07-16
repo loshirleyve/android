@@ -403,7 +403,16 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         List<MsgCardDetailToolbarPanelPageWidget> msgCardDetailToolbarPanelPageWidgets = new ArrayList<>();
 
         //默认添加掷筛子功能
-        panelActionItems.add(new MsgCardPanelActionItem(getResources().getString(R.string.msg_card_sieve), R.drawable.turns, MsgCardPanelActionItem.ActionType.TYPE_TURNS));
+        MsgCardPanelActionItem zhishaizi =
+                new MsgCardPanelActionItem(getResources().getString(R.string.msg_card_sieve),
+                        R.drawable.turns, MsgCardPanelActionItem.ActionType.TYPE_TURNS);
+        zhishaizi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("BigBang");
+            }
+        });
+        panelActionItems.add(zhishaizi);
 
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getProcess())) {
             for (MsgCardProcessAction msgCardProcessAction : msgCard.getProcess()) {

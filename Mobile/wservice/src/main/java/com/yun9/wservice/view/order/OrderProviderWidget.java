@@ -103,7 +103,8 @@ public class OrderProviderWidget extends JupiterRelativeLayout {
     }
 
     private void call() {
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
+                phone.replace("-","")));
         OrderProviderWidget.this.getContext().startActivity(intent);
     }
 }
