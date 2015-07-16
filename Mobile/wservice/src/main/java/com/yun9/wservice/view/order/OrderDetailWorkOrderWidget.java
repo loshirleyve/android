@@ -96,6 +96,8 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
                         orderId, workOrder);
             }
         });
+        commentWorkOrderTV.setVisibility(INVISIBLE);
+        checkoutWorkOrderCommentTV.setVisibility(INVISIBLE);
     }
 
     private void checkoutComment() {
@@ -117,8 +119,8 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
 
             @Override
             public void onFailure(Response response) {
-                commentWorkOrderTV.setVisibility(GONE);
-                checkoutWorkOrderCommentTV.setVisibility(GONE);
+                commentWorkOrderTV.setVisibility(INVISIBLE);
+                checkoutWorkOrderCommentTV.setVisibility(INVISIBLE);
             }
 
             @Override
