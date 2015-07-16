@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ext="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    android:background="@color/groupbackground">
+
+    <com.yun9.wservice.widget.ShowCommentWidget
+        android:id="@+id/show_comment_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        ext:isIndicator="true"
+        ext:numsOfStar="5" />
+
+    <com.yun9.jupiter.widget.JupiterListView
+        android:id="@+id/sub_comment_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/show_comment_widget"
+        android:layout_marginBottom="10dp"
+        android:background="@color/whites"
+        android:dividerHeight="2dp"
+        android:divider="@color/groupbackground"
+        android:paddingLeft="20dp"></com.yun9.jupiter.widget.JupiterListView>
+</RelativeLayout>

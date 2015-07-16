@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -108,6 +109,9 @@ public class ProductActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.comment_ll)
     private LinearLayout commentLl;
 
+    @ViewInject(id=R.id.more_comment)
+    private Button moreComment;
+
     @ViewInject(id=R.id.product_detail_content_ll)
     private LinearLayout productDetailContentLl;
 
@@ -161,6 +165,7 @@ public class ProductActivity extends JupiterFragmentActivity {
         detailPageLayout.setOnClickListener(onProductDetailClickListener);
         selectCategoryLayout.setOnClickListener(onSelectCategoryClickListener);
         buyLl.setOnClickListener(onBuyClickListener);
+        moreComment.setOnClickListener(onMoreCommenClickListener);
     }
 
     /**
@@ -330,6 +335,13 @@ public class ProductActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             gonnaBuy();
+        }
+    };
+
+    private View.OnClickListener onMoreCommenClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ProductCommentListActivity.start(ProductActivity.this,command.getProductid());
         }
     };
 

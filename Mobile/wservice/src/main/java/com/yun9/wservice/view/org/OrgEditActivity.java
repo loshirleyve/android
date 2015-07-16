@@ -72,7 +72,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     private List<JupiterEditableView> useritemList;
     private List<JupiterEditableView> orgitemList;
-    private List<JupiterEditableView> textwatchorgitemList;
 
     @ViewInject(id = R.id.parentorgname)
     private EditText parentorgname;
@@ -158,7 +157,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         parentorgname.setText(command.getParentorgname() == null ? sessionManager.getInst().getName() : command.getParentorgname());
         useritemList = new ArrayList<JupiterEditableView>();
         orgitemList = new ArrayList<JupiterEditableView>();
-        textwatchorgitemList = new ArrayList<JupiterEditableView>();
         useradapter = new BasicJupiterEditAdapter(useritemList);
         orgadapter = new BasicJupiterEditAdapter(orgitemList);
         jupiterEdituserIco.setAdapter(useradapter);

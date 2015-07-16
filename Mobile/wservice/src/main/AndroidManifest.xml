@@ -421,6 +421,13 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
+        <activity
+            android:name=".view.product.ProductCommentListActivity"
+            android:label="@string/product_comment"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+
         <!-- 拍照 -->
         <activity
             android:name=".view.camera.CameraActivity"

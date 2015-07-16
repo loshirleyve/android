@@ -67,7 +67,7 @@
             android:background="@color/title_color"
             android:textColor="@color/whites"
             android:padding="5dp"
-            android:text="确认支付"/>
+            android:text="我已支付"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"

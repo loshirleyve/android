@@ -50,15 +50,6 @@
             android:layout_alignParentRight="true"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/comment_work_order_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/button_border"
-                android:padding="5dp"
-                android:textSize="14dp"
-                android:text="评价工单"/>
-            <TextView
                 android:id="@+id/checkout_work_order_comment_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
