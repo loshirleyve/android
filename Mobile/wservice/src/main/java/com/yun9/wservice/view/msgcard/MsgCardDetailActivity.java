@@ -10,6 +10,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
 import com.yun9.wservice.model.MsgCardProcessAction;
 import com.yun9.wservice.model.MsgCardShare;
+import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
@@ -49,6 +51,7 @@ import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelPageWidget
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarPanelWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailToolbarTabWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
+import com.yun9.wservice.view.order.OrderDetailActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
 import com.yun9.wservice.view.org.OrgEditCommand;
@@ -264,7 +267,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private void refreshComplete() {
         //TODO 由于还没有返回流程数据，暂时使用假数据
-        fakeDataProcessAction(mMsgCard);
+        //fakeDataProcessAction(mMsgCard);
+        buildDataProcessAction(mMsgCard);
         builderView(mMsgCard);
 
         if (AssertValue.isNotNull(command) && command.isScrollComment()) {
@@ -398,7 +402,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     };
 
-    private void builderPanelPage(MsgCard msgCard) {
+    private void builderPanelPage(final MsgCard msgCard) {
         List<MsgCardPanelActionItem> panelActionItems = new ArrayList<>();
         List<MsgCardDetailToolbarPanelPageWidget> msgCardDetailToolbarPanelPageWidgets = new ArrayList<>();
 
@@ -417,7 +421,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
             for (int i = 0; i < pageNum; i++) {
                 MsgCardDetailToolbarPanelPageWidget page = new MsgCardDetailToolbarPanelPageWidget(mContext);
-                List<MsgCardPanelActionItem> tempActionItems = new ArrayList<>();
+                final List<MsgCardPanelActionItem> tempActionItems = new ArrayList<>();
 
                 int beginIndex = i * 8;
                 int endIndex = beginIndex + 8;
@@ -427,6 +431,21 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                     }
                 }
                 page.buildView(tempActionItems);
+                page.getActionGridView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (tempActionItems.get(position).getTitle()){
+                            case "掷筛子":
+                                Toast.makeText(mContext, "掷筛子", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "业务单据":
+                                Toast.makeText(mContext, "业务单据", Toast.LENGTH_SHORT).show();
+                                OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
+                                //OrderDetailActivity.start(MsgCardDetailActivity.this, "10000001121025");
+                                break;
+                        }
+                    }
+                });
                 msgCardDetailToolbarPanelPageWidgets.add(page);
             }
         }
@@ -502,7 +521,14 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void fakeDataProcessAction(MsgCard msgCard) {
+    private void buildDataProcessAction(MsgCard msgCard){
+        msgCard.setProcess(new ArrayList<MsgCardProcessAction>());
+        if(AssertValue.isNotNullAndNotEmpty(msgCard.getSource()) && AssertValue.isNotNullAndNotEmpty(msgCard.getSourceid())) {
+            msgCard.getProcess().add(new MsgCardProcessAction(getString(R.string.business_documents), "save"));
+        }
+    }
+
+ /*   private void fakeDataProcessAction(MsgCard msgCard) {
         msgCard.setProcess(new ArrayList<MsgCardProcessAction>());
         msgCard.getProcess().add(new MsgCardProcessAction("保存表单", "save"));
         msgCard.getProcess().add(new MsgCardProcessAction("同意", "agreed"));
@@ -517,7 +543,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         msgCard.getProcess().add(new MsgCardProcessAction("撤销8", "rejected"));
         msgCard.getProcess().add(new MsgCardProcessAction("撤销9", "rejected"));
         msgCard.getProcess().add(new MsgCardProcessAction("撤销10", "rejected"));
-    }
+    }*/
 
     private void cardPraiseLikeByMsgCardId(String msgcardId, final MsgCardDetailToolbarTabWidget toolbarTabWidget) {
         if (AssertValue.isNotNull(sessionManager.getUser())) {
