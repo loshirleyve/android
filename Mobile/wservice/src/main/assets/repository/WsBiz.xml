@@ -44,4 +44,14 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询产品id查询产品评论 -->
+    <repository>
+        <name>QueryWorkCommentsByProductId</name>
+        <action>com.yun9.ws.biz.service.QueryWorkCommentsByProductIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.WorkOrderComment</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 </repositorys>
