@@ -234,7 +234,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //界面的+图片可以添加用户和组织的控件
     private void setupEditIco() {
-        JupiterTextIco useritem = new JupiterTextIcoWithoutCorner(getApplicationContext());
+        JupiterTextIco useritem = new JupiterTextIcoWithoutCorner(this);
         useritem.setTitle(getResources().getString(R.string.org_add_newuser));
         useritem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
         useritem.setOnClickListener(new View.OnClickListener() {
@@ -246,7 +246,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         useritemList.add(useritem);
         useradapter.edit(true);
         useradapter.notifyDataSetChanged();
-        JupiterTextIco orgitem = new JupiterTextIcoWithoutCorner(getApplicationContext());
+        JupiterTextIco orgitem = new JupiterTextIcoWithoutCorner(this);
         orgitem.setTitle(getResources().getString(R.string.org_add_neworg));
         orgitem.setImage("drawable://" + com.yun9.jupiter.R.drawable.add_user);
         orgitem.setOnClickListener(new View.OnClickListener() {
