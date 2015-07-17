@@ -88,7 +88,6 @@ public class RechargeActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         rechargeCommand =
                 (RechargeCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
-        setResult(JupiterCommand.RESULT_CODE_OK);
         buildView();
     }
 
@@ -221,7 +220,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
                         if (TextUtils.equals(resultStatus, "9000")) {
                             command.setStateName("支付成功");
                             RechargeResultActivity.start(RechargeActivity.this, command);
-                            setResult(JupiterCommand.RESULT_CODE_CANCEL);
+                            setResult(JupiterCommand.RESULT_CODE_OK);
                             RechargeActivity.this.finish();
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败

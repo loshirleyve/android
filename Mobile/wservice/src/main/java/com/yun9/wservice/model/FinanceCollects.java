@@ -195,6 +195,8 @@ public class FinanceCollects implements Serializable{
         private String state;
         private String clientName;
         private String clientarrivestate;
+        private String arriveimgid;
+        private String arrivetext;
 
         public String getId() {
             return id;
@@ -282,6 +284,22 @@ public class FinanceCollects implements Serializable{
 
         public void setClientarrivestate(String clientarrivestate) {
             this.clientarrivestate = clientarrivestate;
+        }
+
+        public String getArriveimgid() {
+            return arriveimgid;
+        }
+
+        public void setArriveimgid(String arriveimgid) {
+            this.arriveimgid = arriveimgid;
+        }
+
+        public String getArrivetext() {
+            return arrivetext;
+        }
+
+        public void setArrivetext(String arrivetext) {
+            this.arrivetext = arrivetext;
         }
     }
 }
