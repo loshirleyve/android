@@ -26,7 +26,7 @@ import java.util.Iterator;
 public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implements ISelectable{
     private TextView titleTV;
 
-    private SelectableRoundedImageView mainIV;
+    private ImageView mainIV;
 
     private TextView sutitleTv;
 
@@ -65,7 +65,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
     }
 
     protected void initViews(Context context, AttributeSet attrs, int defStyle){
-        this.mainIV = (SelectableRoundedImageView) this.findViewById(R.id.main_iv);
+        this.mainIV = (ImageView) this.findViewById(R.id.main_iv);
         this.setTitleTV((TextView) this.findViewById(R.id.title_tv));
         this.sutitleTv = (TextView) this.findViewById(R.id.sutitle_tv);
         this.arrowRightIV = (ImageView) this.findViewById(R.id.arrow_right_iv);
@@ -257,7 +257,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         return mainIV;
     }
 
-    public void setMainIV(SelectableRoundedImageView mainIV) {
+    public void setMainIV(ImageView mainIV) {
         this.mainIV = mainIV;
     }
 

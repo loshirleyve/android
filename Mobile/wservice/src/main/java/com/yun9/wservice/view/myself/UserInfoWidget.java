@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
-import com.yun9.jupiter.widget.SelectableRoundedImageView;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 
@@ -19,7 +18,7 @@ public class UserInfoWidget extends JupiterRelativeLayout {
 
     private LinearLayout userHeadLL;
     private TextView userHeadTV;
-    private SelectableRoundedImageView userHeadIV;
+    private ImageView userHeadIV;
 
     @ViewInject(id = R.id.user_name)
     private JupiterRowStyleSutitleLayout userName;
@@ -57,7 +56,7 @@ public class UserInfoWidget extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         userHeadLL = (LinearLayout) this.findViewById(R.id.userHeadLL);
         userHeadTV = (TextView) this.findViewById(R.id.userHeadTV);
-        userHeadIV = (SelectableRoundedImageView) this.findViewById(R.id.userHeadIV);
+        userHeadIV = (ImageView) this.findViewById(R.id.userHeadIV);
     }
 
     public JupiterRowStyleSutitleLayout getPassword() {
@@ -121,7 +120,7 @@ public class UserInfoWidget extends JupiterRelativeLayout {
         return userHeadIV;
     }
 
-    public void setUserHeadIV(SelectableRoundedImageView userHeadIV) {
+    public void setUserHeadIV(ImageView userHeadIV) {
         this.userHeadIV = userHeadIV;
     }
 }
