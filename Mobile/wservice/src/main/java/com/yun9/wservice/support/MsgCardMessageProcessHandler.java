@@ -11,25 +11,23 @@ import com.yun9.wservice.view.msgcard.MsgCardDetailCommand;
 
 /**
  * Created by Leon on 15/7/6.
- *
+ * <p/>
  * 消息格式
  * {
- *  "type": "msgcard",
- *  "data": {
- *      "msgcardid": "10000000594150"
- *  }
- *}
+ * "type": "msgcard",
+ * "data": {
+ * "msgcardid": "10000000594150"
+ * }
+ * }
  */
 public class MsgCardMessageProcessHandler implements MessageProcessHandler {
     @Override
     public void process(Activity activity, PushMessageBean pushMessageBean) {
+        String targetId = pushMessageBean.getExtra("targetId");
 
-        //获取消息卡片id
-        if (AssertValue.isNotNull(pushMessageBean) && AssertValue.isNotNull(pushMessageBean.getData()) && AssertValue.isNotNull(pushMessageBean.getData().get("msgcardid"))) {
-            String msgCardid = pushMessageBean.getData().get("msgcardid").getAsString();
-
+        if (AssertValue.isNotNullAndNotEmpty(targetId)) {
             MsgCardDetailCommand msgCardDetailCommand = new MsgCardDetailCommand();
-            msgCardDetailCommand.setMsgCardId(msgCardid);
+            msgCardDetailCommand.setMsgCardId(targetId);
             MsgCardDetailActivity.start(activity, msgCardDetailCommand);
         }
     }

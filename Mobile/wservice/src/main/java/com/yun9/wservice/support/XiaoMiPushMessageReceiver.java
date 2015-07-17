@@ -10,6 +10,8 @@ import com.xiaomi.mipush.sdk.PushMessageReceiver;
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.manager.DeviceManager;
 import com.yun9.jupiter.util.AppUtil;
+import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.wservice.MainApplication;
 
@@ -42,16 +44,24 @@ public class XiaoMiPushMessageReceiver extends PushMessageReceiver {
             //如果应用改程序打开了，则切换到前台
             if (AppUtil.moveTaskToFront(context, context.getPackageName())) {
                 MessageReceiverFactory messageReceiverFactory = MainApplication.getBeanManager().get(MessageReceiverFactory.class);
-                messageReceiverFactory.sendMsg(context, miPushMessage.getContent());
+                messageReceiverFactory.sendMsg(context, miPushMessage.getContent(), miPushMessage.getExtra());
             } else {
                 //打开应用
+                logger.d("打开应用");
                 Map<String, String> params = new HashMap<>();
                 params.put("push", miPushMessage.getContent());
+                if (AssertValue.isNotNullAndNotEmpty(miPushMessage.getExtra())) {
+                    String extarjson = JsonUtil.beanToJson(miPushMessage.getExtra());
+                    logger.d("设置扩展参数:" + extarjson);
+                    params.put("extra", extarjson);
+                }
+
+
                 AppUtil.startApp(context, context.getPackageName(), params);
             }
         } else {
             MessageReceiverFactory messageReceiverFactory = MainApplication.getBeanManager().get(MessageReceiverFactory.class);
-            messageReceiverFactory.sendMsg(context, miPushMessage.getContent());
+            messageReceiverFactory.sendMsg(context, miPushMessage.getContent(), miPushMessage.getExtra());
         }
     }
 

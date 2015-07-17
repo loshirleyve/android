@@ -15,6 +15,7 @@ import com.yun9.wservice.model.PushMessageBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Leon on 15/5/27.
@@ -37,17 +38,22 @@ public class MessageReceiverFactory implements Bean, Initialization {
         this.messageProcessHandlers.add(handler);
     }
 
-    public void sendMsg(Context context, String pushContent) {
+    public void sendMsg(Context context, String pushContent, Map<String, String> extra) {
         if (AssertValue.isNotNull(messageReceiverHandlerList)) {
-            messageReceiverHandlerList.sendMessage(context, pushContent);
+            messageReceiverHandlerList.sendMessage(context, pushContent, extra);
         }
     }
 
-    public void processMsg(Activity activity, String pushMsg) {
-        PushMessageBean pushMessageBean = this.createMsgBean(pushMsg);
+    public void processMsg(Activity activity, String pushMsg, Map<String, String> extra) {
+        PushMessageBean pushMessageBean = this.createMsgBean(pushMsg, extra);
+        String targetType = "";
+
+        if (AssertValue.isNotNullAndNotEmpty(extra)) {
+            targetType = extra.get("targetType");
+        }
 
         if (AssertValue.isNotNull(pushMessageBean)) {
-            MessageProcessHandler messageProcessHandler = this.findMessageProcessHandler(pushMessageBean.getType());
+            MessageProcessHandler messageProcessHandler = this.findMessageProcessHandler(targetType);
 
             if (AssertValue.isNotNull(messageProcessHandler)) {
                 messageProcessHandler.process(activity, pushMessageBean);
@@ -70,27 +76,12 @@ public class MessageReceiverFactory implements Bean, Initialization {
         return messageProcessHandler;
     }
 
-    private PushMessageBean createMsgBean(String pushContent) {
-        JsonObject obj = null;
-        JsonObject data = null;
-        String type = null;
-        try {
-            obj = JsonUtil.fromString(pushContent);
-            type = obj.get("type").getAsString();
-            data = obj.getAsJsonObject("data");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private PushMessageBean createMsgBean(String pushContent, Map<String, String> extra) {
 
-        if (AssertValue.isNotNull(obj) && AssertValue.isNotNullAndNotEmpty(type)) {
-            PushMessageBean messageBean = new PushMessageBean();
-            messageBean.setContent(obj);
-            messageBean.setType(type.trim());
-            messageBean.setData(data);
-            return messageBean;
-        } else {
-            return null;
-        }
+        PushMessageBean messageBean = new PushMessageBean();
+        messageBean.setDesc(pushContent);
+        messageBean.setExtra(extra);
+        return messageBean;
     }
 
     @Override
