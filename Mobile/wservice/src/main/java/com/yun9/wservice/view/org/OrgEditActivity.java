@@ -290,9 +290,17 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         }
         if (AssertValue.isNotNullAndNotEmpty(bean.getChildren())) {
             for (Org org : bean.getChildren()) {
-                JupiterTextIcoWithoutCorner orgitem = new JupiterTextIcoWithoutCorner(getApplicationContext());
+                JupiterTextIco orgitem = new JupiterTextIcoWithoutCorner(this);
                 orgitem.setTitle(org.getName());
                 orgitem.setImage("drawable://" + R.drawable.user_group);
+                final String orgid = org.getId();
+                orgitem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (edit == false)
+                            OrgEditActivity.start(OrgEditActivity.this, new OrgEditCommand().setEdit(edit).setOrgid(orgid));
+                    }
+                });
                 orgitemList.add(orgitem);
                 orgadapter.edit(true);
             }
