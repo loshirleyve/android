@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,7 +148,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //初始化控件，判断是否存在orgid有的话就查询出org的信息，没有就是新增组织的页面
     public void initView() {
-        registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
         jupiterEdituserIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.org_user_list);
         jupiterEditorgIco.getRowStyleSutitleLayout().getTitleTV().setText(R.string.children_org);
         titleBarLayout.getTitleTv().setText("");
@@ -230,8 +230,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 }
             });
         }
-        if (registerDialog != null)
-            registerDialog.dismiss();
     }
 
     //界面的+图片可以添加用户和组织的控件
@@ -364,6 +362,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //获取组织的详细信息
     private void getOrgDetails() {
+        registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getOrgid())) {
             Resource resource = resourceFactory.create("QueryOrgDetailsByOrgid");
             resource.param("orgid", command.getOrgid());
@@ -384,7 +383,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
                 @Override
                 public void onFinally(Response response) {
-
+                    registerDialog.dismiss();
                 }
             });
         }
@@ -416,7 +415,6 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-
             }
         });
     }
@@ -424,6 +422,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //删除用户的一项的方法
     private void deleteUserItem(final JupiterTextIco item) {
+        registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
         User user = (User) item.getTag();
         Resource resource = resourceFactory.create("RemoveOrgCardByUserId");
         resource.param("userid", userid);
@@ -444,6 +443,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
+                registerDialog.dismiss();
                 orgUserOperatePopupW.dismiss();
             }
         });
@@ -451,6 +451,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
     //修改组织名称的方法
     private void updateOrgName(final String orgname) {
+        registerDialog = ProgressDialog.show(OrgEditActivity.this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("UpdateOrg");
         resource.param("orgid", command.getOrgid());
         resource.param("userid", userid);
@@ -471,7 +472,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-
+               registerDialog.dismiss();
             }
         });
     }
