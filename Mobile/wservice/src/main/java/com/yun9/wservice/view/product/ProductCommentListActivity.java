@@ -204,6 +204,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
             pcw.getShowCommentWidget().setRating((float) productComments.get(position).getScore());
             Subadapter subadapter = new Subadapter(productComments.get(position).getAddcomments());
             pcw.getSubCommentLv().setAdapter(subadapter);
+
             return convertView;
         }
     };
