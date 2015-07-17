@@ -276,6 +276,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                     useritem = new JupiterTextIcoWithoutCorner(this);
                     useritem.setOnLongClickListener(onLongOrgUserClick);
                 }
+                useritem.setErrorImage(R.drawable.user_head);
                 useritem.setTag(user);
                 useritem.setTitle(user.getName());
                 CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
