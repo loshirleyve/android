@@ -9,9 +9,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.InstCache;
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.model.CacheInst;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -189,14 +191,14 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             ProductCommentWidget pcw = null;
             if (convertView == null) {
-                pcw = new ProductCommentWidget(mContext);
+                pcw = new ProductCommentWidget(ProductCommentListActivity.this);
                 convertView = pcw;
             } else {
                 pcw = (ProductCommentWidget) convertView;
             }
-            CacheInst cacheInst = InstCache.getInstance().getInst(productComments.get(position).getBuyerinstid());
-            if (AssertValue.isNotNull(cacheInst))
-                pcw.getShowCommentWidget().getTitleTv().setText(cacheInst.getInstname());
+            CacheUser cacheUser = UserCache.getInstance().getUser(productComments.get(position).getSenderid());
+            if (AssertValue.isNotNull(cacheUser))
+                pcw.getShowCommentWidget().getTitleTv().setText(cacheUser.getName());
             pcw.getShowCommentWidget().getContentTv().setText(productComments.get(position).getCommenttext());
             pcw.getShowCommentWidget().setTime(productComments.get(position).getCreatedate());
             pcw.getShowCommentWidget().setRating((float) productComments.get(position).getScore());
@@ -237,7 +239,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             OrderWorkOrderSubCommentWidget subCommentWidget = null;
             if (convertView == null) {
-                subCommentWidget = new OrderWorkOrderSubCommentWidget(mContext);
+                subCommentWidget = new OrderWorkOrderSubCommentWidget(ProductCommentListActivity.this);
                 convertView = subCommentWidget;
             } else {
                 subCommentWidget = (OrderWorkOrderSubCommentWidget) convertView;
