@@ -62,12 +62,14 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.buildView();
+        reLoadData();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        reLoadData();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == JupiterCommand.RESULT_CODE_OK){
+            reLoadData();
+        }
     }
 
     @Override

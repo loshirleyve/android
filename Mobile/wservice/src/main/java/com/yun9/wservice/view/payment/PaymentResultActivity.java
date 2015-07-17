@@ -32,6 +32,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.CtrlCodeDefNo;
+import com.yun9.wservice.enums.RechargeState;
 import com.yun9.wservice.model.FinanceCollects;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
@@ -141,6 +142,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 showToast("提交成功");
                 loadData();
+                confirmWindow.dismiss();
             }
 
             @Override
@@ -202,11 +204,31 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                 widget.getPayStateNameTv().setText(
                         CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.COLLECT_STATE,
                                 collect.getState()));
+                widget.getUserConfirmContentTv().setText(collect.getArrivetext());
+                ImageLoaderUtil.getInstance(PaymentResultActivity.this)
+                        .displayImage(collect.getArriveimgid(), widget.getUserUploadImageIv());
+                if (AssertValue.isNotNullAndNotEmpty(collect.getClientarrivestate())){
+                    widget.getConfirmPayTv().setText("修改凭据");
+                }
+
+                if (RechargeState.ARRIVE.equals(collect.getState())){
+                    widget.getConfirmPayTv().setVisibility(View.GONE);
+                }
+
+                if (RechargeState.ARRIVE.equals(collect.getState())
+                        && !AssertValue.isNotNullAndNotEmpty(collect.getArrivetext())
+                        && !AssertValue.isNotNullAndNotEmpty(collect.getArriveimgid())){
+                    widget.getExtraInfoLl().setVisibility(View.GONE);
+                }
                 // 添加确定支付事件
                 widget.getConfirmPayTv().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         collectId = collect.getId();
+                        selectedImageId = collect.getArriveimgid();
+                        ImageLoaderUtil.getInstance(PaymentResultActivity.this)
+                                .displayImage(collect.getArriveimgid(), popWidget.getUploadImageIv());
+                        popWidget.getConfirmContentEt().setText(collect.getArrivetext());
                         if (confirmWindow != null) {
                             WindowManager.LayoutParams lp = PaymentResultActivity.this.getWindow().getAttributes();
                             lp.alpha = 0.4f;
