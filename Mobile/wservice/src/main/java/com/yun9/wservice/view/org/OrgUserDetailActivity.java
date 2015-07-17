@@ -49,7 +49,7 @@ public class OrgUserDetailActivity extends JupiterFragmentActivity{
     private JupiterTitleBarLayout titleBarLayout;
 
     @ViewInject(id=R.id.user_head)
-    private SelectableRoundedImageView userHead;
+    private ImageView userHead;
 
     @ViewInject(id=R.id.user_name_tv)
     private TextView userNameTv;

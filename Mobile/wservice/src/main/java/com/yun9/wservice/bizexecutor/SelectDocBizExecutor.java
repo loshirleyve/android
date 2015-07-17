@@ -28,15 +28,22 @@ public class SelectDocBizExecutor implements FormUtilFactory.BizExecutor{
             @Override
             public void onActivityResult(int resultCode, Intent data) {
                 if (resultCode == JupiterCommand.RESULT_CODE_OK){
+                    List<String> ids =  new ArrayList<String>();
                     List<FileBean> docs = (List<FileBean>) data
-                            .getSerializableExtra(DocCompositeCommand.PARAM_FILE);
+                                .getSerializableExtra(DocCompositeCommand.PARAM_FILE);
+                        if (docs != null){
+                            for (FileBean fileBean : docs){
+                                ids.add(fileBean.getId());
+                            }
+                    }
+                    docs = (List<FileBean>) data
+                            .getSerializableExtra(DocCompositeCommand.PARAM_IMAGE);
                     if (docs != null){
-                        List<String> ids =  new ArrayList<String>();
                         for (FileBean fileBean : docs){
                             ids.add(fileBean.getId());
                         }
-                        formCell.restore(ids.toArray(new String[0]));
                     }
+                    formCell.restore(ids.toArray(new String[0]));
                 }
             }
         });
