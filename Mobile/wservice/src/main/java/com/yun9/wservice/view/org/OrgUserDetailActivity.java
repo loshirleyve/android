@@ -15,14 +15,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.model.UserContact;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -128,7 +131,10 @@ public class OrgUserDetailActivity extends JupiterFragmentActivity{
             return;
         }
         this.user = user;
-        ImageLoaderUtil.getInstance(this).displayImage(user.getHeaderfileid(),userHead);
+        CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
+        if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userHead);
+        }
         userNameTv.setText(user.getName());
         userOrgNameTv.setText(user.getOrgNames());
         signature.setText(user.getSignature());

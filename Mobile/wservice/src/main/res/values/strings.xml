@@ -256,7 +256,6 @@
     <string name="confirm_order">确认订单</string>
     <string name="user_detail">用户详情</string>
     <string name="checkou_msg_card">查看动态</string>
-    <string name="send_msg_to_him">给他发动态</string>
     <string name="inst_no_right_input_notice">请输入由4-8位字母或数字组成的机构编号！</string>
     <string name="init_inst_success">初始化机构成功</string>
     <string name="init_inst_notice">没有检测到您的机构信息，是否要初始化机构信息？</string>

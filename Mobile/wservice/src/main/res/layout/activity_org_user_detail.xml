@@ -28,7 +28,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginLeft="5dp"
             android:textSize="18dp"
-            android:text="@string/send_msg_to_him"
+            android:text="@string/app_send_msgcard"
             android:layout_gravity="center"
             android:textColor="@color/title_color"/>
     </LinearLayout>
