@@ -179,7 +179,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
         titleBarLayout.getTitleTv().setText(bean.getName());
         String sutitle = "";
         getCurrentUserOrgRole(bean.getUsers());
-        sutitle = "成员：" + bean.getUsers().size() + " 管理员：" + bean.getOwnerName();
+        sutitle = "成员:" + bean.getUsers().size() + " 管理员:" + bean.getOwnerName();
         titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
         this.titleBarLayout.getTitleSutitleTv().setText(sutitle);
         setEdit(command.isEdit());
@@ -473,7 +473,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-               registerDialog.dismiss();
+                registerDialog.dismiss();
             }
         });
     }
