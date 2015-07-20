@@ -43,6 +43,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingTop="20dp">
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -51,13 +52,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_margin="20dp"
                     android:orientation="horizontal">
                     <ImageView
                         android:id="@+id/user_head"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/upload_icon"/>
+                        android:src="@drawable/user_head"/>
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -112,8 +113,7 @@
                 android:orientation="vertical"
                 android:divider="@drawable/spacer_medium"
                 android:showDividers="beginning|middle"
-                android:layout_marginLeft="60dp"
-                android:layout_marginRight="10dp">
+                android:layout_margin="20dp">
 
             </LinearLayout>
         </LinearLayout>
