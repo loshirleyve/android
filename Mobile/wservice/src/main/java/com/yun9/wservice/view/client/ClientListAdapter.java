@@ -1,8 +1,13 @@
 package com.yun9.wservice.view.client;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateFormatUtil;
@@ -12,6 +17,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.cache.CacheClientProxy;
 import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.Client;
+import com.yun9.wservice.view.order.OrderProviderWidget;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -47,7 +53,7 @@ public class ClientListAdapter extends JupiterAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ClientItemLayout clientItemLayout = null;
-        Client client = clients.get(position);
+        final Client client = clients.get(position);
 
         if (AssertValue.isNotNull(convertView)) {
             clientItemLayout = (ClientItemLayout) convertView;
@@ -71,18 +77,23 @@ public class ClientListAdapter extends JupiterAdapter {
                 CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
                 if (client.getId().equals(proxy.getUserId())
                         && proxy.getInstId().equals(client.getClientinstid())){
-                    clientItemLayout.getTitle_TV().setText(client.getName()+"  (正在代理)");
+                    clientItemLayout.getTitle_TV().setText(client.getName()+R.string.is_proxy);
                     clientItemLayout.getTitle_TV().setTextColor(clientItemLayout.getResources()
                             .getColor(R.color.title_color));
                     clientItemLayout.getTitle_TV().getPaint().setFakeBoldText(true);
                 }
             }
+            clientItemLayout.getPhone_LL().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog(client.getContactphone());
+                }
+            });
         }
 
         return clientItemLayout;
 
     }
-
     @Override
     public int getViewTypeCount() {
         return 4;
@@ -107,5 +118,34 @@ public class ClientListAdapter extends JupiterAdapter {
         } else {
             return ClientActivity.VIEW_TYPE_NORMAL;
         }
+    }
+    private void dialog(final String phone) {
+        if (!AssertValue.isNotNullAndNotEmpty(phone)){
+            Toast.makeText(context, R.string.can_not_get_phone, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        builder.setMessage("打电话给："+phone);
+        builder.setTitle(R.string.app_notice);
+        builder.setPositiveButton(R.string.sure, new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                call(phone);
+            }
+        });
+        builder.setNegativeButton(R.string.app_cancel, new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void call(String phone) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(R.string.tel +
+                phone.replace("-", "")));
+        context.startActivity(intent);
     }
 }
