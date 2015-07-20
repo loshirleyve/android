@@ -14,4 +14,6 @@ public class CtrlCodeDefNo {
     public static final String COLLECT_STATE = "collectstate";
 
     public static final String WORK_STATE = "workstate";
+
+    public static final String ORDER_PAY_STATE = "orderpaystate";
 }

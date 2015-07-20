@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -26,6 +27,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
@@ -169,7 +171,11 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                 && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
             orderDetailPayinfoWidget.buildWithData(order);
 
-            if (order.getOrder().getPaystate() > 0){
+            orderDetailPayinfoWidget.getSutitleLayout()
+                    .getTitleTV().setText(CtrlCodeCache.getInstance()
+            .getCtrlcodeName(CtrlCodeDefNo.ORDER_PAY_STATE,order.getOrder().getPaystate()));
+
+            if (!State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())){
                 orderDetailPayinfoWidget.getSutitleLayout()
                         .getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
                 orderDetailPayinfoWidget.getSutitleLayout()
@@ -178,14 +184,12 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                         .getHotNitoceTV().getPaint().setFakeBoldText(false);
                 orderDetailPayinfoWidget.getSutitleLayout()
                         .getTitleTV().setTextColor(getResources().getColor(R.color.black));
-                orderDetailPayinfoWidget.getSutitleLayout()
-                        .getTitleTV().setText(R.string.already_pay);
             }
 
             orderDetailPayinfoWidget.getSutitleLayout().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (order.getOrder().getPaystate() > 0) {
+                    if (!State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())) {
                         PaymentResultActivity.start(OrderDetailActivity.this,
                                 new PaymentResultCommand(
                                         SourceType.TYPE_ORDER,orderId

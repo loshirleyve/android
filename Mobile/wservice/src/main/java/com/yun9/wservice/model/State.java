@@ -8,7 +8,13 @@ import java.io.Serializable;
 public final class State implements Serializable{
 
     public class Order {
-        public static final String BUY = "buy";
+        public static final String WAITING_PAY = "buy";
+        public static final String IN_SERVICE = "inservice";
+        public static final String COMPLETE = "complete";
+    }
+
+    public class OrderPayState {
+        public static final String WAITING_PAY = "waitingpay";
         public static final String IN_SERVICE = "inservice";
         public static final String COMPLETE = "complete";
     }
