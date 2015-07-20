@@ -2,6 +2,8 @@ package com.yun9.jupiter.widget.paging.listview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
@@ -16,6 +18,7 @@ import java.util.List;
 public class PagingListView extends ListView {
 
     private boolean isLoading;
+    private boolean isFling;
     private boolean hasMoreItems = true;
     private Pagingable pagingableListener;
     private LoadingView loadingView;
@@ -79,6 +82,7 @@ public class PagingListView extends ListView {
                 if (onScrollListener != null) {
                     onScrollListener.onScrollStateChanged(view, scrollState);
                 }
+
             }
 
             @Override
@@ -90,7 +94,11 @@ public class PagingListView extends ListView {
                 }
 
                 int lastVisibleItem = firstVisibleItem + visibleItemCount;
-                if (!isLoading && hasMoreItems && (lastVisibleItem == totalItemCount)) {
+                System.out.println("lastVisibleItem: "+lastVisibleItem);
+                System.out.println("totalItemCount: "+totalItemCount);
+                System.out.println("visibleItemCount: "+visibleItemCount);
+                System.out.println("firstVisibleItem: "+firstVisibleItem);
+                if (!isLoading && hasMoreItems && (lastVisibleItem == totalItemCount) && isFling) {
                     if (pagingableListener != null) {
                         isLoading = true;
                         loadingView.showLoading(true);
@@ -98,6 +106,19 @@ public class PagingListView extends ListView {
                     }
 
                 }
+            }
+        });
+
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    isFling = true;
+                } else {
+                    isFling = false;
+                }
+                System.out.println("isFling: "+isFling);
+                return false;
             }
         });
     }
