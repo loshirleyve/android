@@ -282,6 +282,8 @@ public class OrgEditActivity extends JupiterFragmentActivity {
                 CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
                 if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
                     useritem.setImage(cacheUser.getUrl());
+                } else {
+                    useritem.setImage("drawable://" + R.drawable.user_head);
                 }
                 useritemList.add(useritem);
                 useradapter.edit(true);
