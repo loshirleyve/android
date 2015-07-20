@@ -11,6 +11,7 @@ import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.wservice.R;
 
 import java.util.List;
 
@@ -99,6 +100,8 @@ public class OrgCompositeListAdapter extends BaseAdapter {
         CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeUserListBean.getUser().getId());
         if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), tempView.getMainIV());
+        }else{
+            tempView.getMainIV().setImageResource(R.drawable.user_head);
         }
         tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
         tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
