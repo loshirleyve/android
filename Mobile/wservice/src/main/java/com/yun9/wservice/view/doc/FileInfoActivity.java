@@ -146,7 +146,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onDownLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (PublicHelp.getConnectedType(mContext) != ConnectivityManager.TYPE_MOBILE) {
+            if (PublicHelp.getConnectedType(mContext) == ConnectivityManager.TYPE_MOBILE) {
                 showDownLoadTipDialog();
             } else
                 downLoad();
@@ -156,7 +156,7 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onUpLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (PublicHelp.getConnectedType(mContext) != ConnectivityManager.TYPE_MOBILE) {
+            if (PublicHelp.getConnectedType(mContext) == ConnectivityManager.TYPE_MOBILE) {
                 showUpLoadTipDialog();
             } else
                 uploadFiles();
