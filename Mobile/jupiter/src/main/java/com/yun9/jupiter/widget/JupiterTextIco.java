@@ -27,6 +27,7 @@ public class JupiterTextIco extends JupiterEditableView{
     private ImageView itemImage;
     private TextView itemName;
     private JupiterBadgeView badgeView;
+    private int errorImage = -1;
 
     public JupiterTextIco(Context context) {
         super(context);
@@ -100,7 +101,11 @@ public class JupiterTextIco extends JupiterEditableView{
         // 设置图片
         if (AssertValue.isNotNullAndNotEmpty(image)) {
             itemImage.setVisibility(VISIBLE);
-            ImageLoaderUtil.getInstance(this.getContext()).displayImage(image, itemImage);
+            if (errorImage != -1){
+                ImageLoaderUtil.getInstance(this.getContext()).displayImage(image, itemImage,errorImage);
+            } else {
+                ImageLoaderUtil.getInstance(this.getContext()).displayImage(image, itemImage);
+            }
         } else {
             itemImage.setVisibility(GONE);
         }
@@ -175,4 +180,12 @@ public class JupiterTextIco extends JupiterEditableView{
         return this;
     }
 
+    public int getErrorImage() {
+        return errorImage;
+    }
+
+    public JupiterTextIco setErrorImage(int errorImage) {
+        this.errorImage = errorImage;
+        return this;
+    }
 }

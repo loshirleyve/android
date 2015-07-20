@@ -103,7 +103,7 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
                 cellBean.setLabel(attachment.getAttachname());
                 cellBean.setMaxNum(3);
                 cellBeans.add(cellBean);
-            } else if (AttachmentInputType.FILE.equals(attachment.getInputtype())){
+            } else if (AttachmentInputType.TEXT.equals(attachment.getInputtype())){
                 TextFormCellBean cellBean = new TextFormCellBean();
                 cellBean.setType(TextFormCell.class.getSimpleName());
                 cellBean.setKey(attachment.getAttachkey());

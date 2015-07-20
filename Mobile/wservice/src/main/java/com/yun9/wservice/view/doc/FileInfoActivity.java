@@ -1,8 +1,11 @@
 package com.yun9.wservice.view.doc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AndroidFileUtil;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
@@ -142,28 +146,20 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     private View.OnClickListener onDownLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (AssertValue.isNotNull(fileBean) && FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
-                DownloadFileAsyncTask downloadFileAsyncTask = new DownloadFileAsyncTask(FileInfoActivity.this);
-                downloadFileAsyncTask.execute(fileBean);
-                downloadFileAsyncTask.setOnFileDownloadCallback(new DownloadFileAsyncTask.OnFileDownloadCallback() {
-                    @Override
-                    public void onPostExecute(List<FileBean> fileBeans) {
-                        //检查文件是否已经为本地文件。如果是表示成功
-                        if (AssertValue.isNotNullAndNotEmpty(fileBeans) && fileBeans.get(0).getStorageType().equals(FileBean.FILE_STORAGE_TYPE_LOCAL)) {
-                            fileBean = fileBeans.get(0);
-                            command.setFileBean(fileBean);
-                            initView();
-                        }
-                    }
-                });
-            }
+            if (PublicHelp.getConnectedType(mContext) != ConnectivityManager.TYPE_MOBILE) {
+                showDownLoadTipDialog();
+            } else
+                downLoad();
         }
     };
 
     private View.OnClickListener onUpLoadlClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            uploadFiles(fileBean);
+            if (PublicHelp.getConnectedType(mContext) != ConnectivityManager.TYPE_MOBILE) {
+                showUpLoadTipDialog();
+            } else
+                uploadFiles();
         }
     };
 
@@ -174,6 +170,73 @@ public class FileInfoActivity extends JupiterFragmentActivity {
             OrgCompositeActivity.start(FileInfoActivity.this, orgCompositeCommand);
         }
     };
+
+    public void showDownLoadTipDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FileInfoActivity.this);
+        builder.setTitle(R.string.app_notice);
+        builder.setMessage(R.string.doc_file_download_tip);
+        builder.setPositiveButton(R.string.app_continue, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                downLoad();
+            }
+        });
+
+        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
+
+    public void downLoad() {
+        if (AssertValue.isNotNull(fileBean) && FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())) {
+            DownloadFileAsyncTask downloadFileAsyncTask = new DownloadFileAsyncTask(FileInfoActivity.this);
+            downloadFileAsyncTask.execute(fileBean);
+            downloadFileAsyncTask.setOnFileDownloadCallback(new DownloadFileAsyncTask.OnFileDownloadCallback() {
+                @Override
+                public void onPostExecute(List<FileBean> fileBeans) {
+                    //检查文件是否已经为本地文件。如果是表示成功
+                    if (AssertValue.isNotNullAndNotEmpty(fileBeans) && fileBeans.get(0).getStorageType().equals(FileBean.FILE_STORAGE_TYPE_LOCAL)) {
+                        fileBean = fileBeans.get(0);
+                        command.setFileBean(fileBean);
+                        initView();
+                    } else
+                        Toast.makeText(FileInfoActivity.this, R.string.doc_file_download_error_tip, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    public void showUpLoadTipDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(FileInfoActivity.this);
+        builder.setTitle(R.string.app_notice);
+        builder.setMessage(R.string.doc_file_upload_tip);
+        builder.setPositiveButton(R.string.app_continue, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                uploadFiles();
+            }
+        });
+
+        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -210,13 +273,13 @@ public class FileInfoActivity extends JupiterFragmentActivity {
     }
 
 
-    private void uploadFiles(FileBean filebean) {
+    private void uploadFiles() {
 
         //合并发送的图片和文件，并执行上传任务（任务中只处理存储类型为本地的文件）
         List<FileBean> fileBeans = new ArrayList<>();
-        filebean.setInstid(sessionManager.getInst().getId());
-        filebean.setUserid(sessionManager.getUser().getId());
-        fileBeans.add(filebean);
+        fileBean.setInstid(sessionManager.getInst().getId());
+        fileBean.setUserid(sessionManager.getUser().getId());
+        fileBeans.add(fileBean);
         UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(FileInfoActivity.this, fileBeans);
         uploadFileAsyncTask.setCompImage(true);
         uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {

@@ -1,29 +1,20 @@
 package com.yun9.wservice.model;
 
 import com.google.gson.JsonObject;
+import com.yun9.jupiter.util.AssertValue;
+
+import java.util.Map;
 
 /**
  * Created by Leon on 15/5/27.
  */
-public class PushMessageBean implements java.io.Serializable{
+public class PushMessageBean implements java.io.Serializable {
 
-    private String title;
 
     private String desc;
 
-    private JsonObject content;
+    private Map<String, String> extra;
 
-    private JsonObject data;
-
-    private String type;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getDesc() {
         return desc;
@@ -33,27 +24,19 @@ public class PushMessageBean implements java.io.Serializable{
         this.desc = desc;
     }
 
-    public JsonObject getContent() {
-        return content;
+    public Map<String, String> getExtra() {
+        return extra;
     }
 
-    public void setContent(JsonObject content) {
-        this.content = content;
+    public void setExtra(Map<String, String> extra) {
+        this.extra = extra;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public JsonObject getData() {
-        return data;
-    }
-
-    public void setData(JsonObject data) {
-        this.data = data;
+    public String getExtra(String key) {
+        if (AssertValue.isNotNullAndNotEmpty(this.extra)) {
+            return this.extra.get(key);
+        } else {
+            return null;
+        }
     }
 }

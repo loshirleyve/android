@@ -129,6 +129,9 @@
     <string name="doc_file_upload">上传</string>
     <string name="doc_file_share_success_tip">分享成功！</string>
     <string name="doc_file_share_tip">你没有选择分享人哦！</string>
+    <string name="doc_file_download_error_tip">下载失败！</string>
+    <string name="doc_file_download_tip">你的手机连使用数据流量下载将会消耗流量，是否继续？</string>
+    <string name="doc_file_upload_tip">你的手机连使用数据流量上传将会消耗流量，是否继续？</string>
 
     <string name="register_user">注册用户</string>
     <string name="register_user_welcome">欢迎加入移办通，请输入您的邮箱地址</string>

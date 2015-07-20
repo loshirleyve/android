@@ -207,6 +207,19 @@ public class ImageFormCell extends FormCell {
     }
 
     @Override
+    public String getStringValue() {
+        String[] ids = (String[]) getValue();
+        StringBuffer sb = new StringBuffer();
+        for (String id : ids) {
+            sb.append(",").append(id);
+        }
+        if (sb.length() > 0){
+            return sb.substring(1);
+        }
+        return "";
+    }
+
+    @Override
     public FormCellBean getFormCellBean() {
         return cellBean;
     }

@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.other;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,42 +14,29 @@ import com.yun9.wservice.view.main.MainActivity;
 
 
 public class WelcomeActivity extends JupiterActivity {
-    @ViewInject(id = R.id.iv_welcome,click = "btnClick")
-	private ImageView mImageView;
+    @ViewInject(id = R.id.iv_welcome, click = "btnClick")
+    private ImageView mImageView;
 
     @BeanInject
     private RepositoryManager repositoryManager;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_welcome);
         super.onCreate(savedInstanceState);
-		init();
-		enterAPP();
-	}
+        Intent intent = getIntent();
+        final String pushMsg = intent.getStringExtra("push");
+        final String extra = intent.getStringExtra("extra");
 
-	private void init() {
+        mImageView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Bundle bundle = new Bundle();
+                bundle.putString("push", pushMsg);
+                bundle.putString("extra", extra);
+                MainActivity.start(WelcomeActivity.this, bundle);
+                finish();
+            }
+        }, 1000);
     }
-
-    public void btnClick(View v){
-        this.showToast("点击了图片！");
-    }
-
-	private void enterAPP(){
-		mImageView.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-                MainActivity.start(WelcomeActivity.this, null);
-				finish();
-			}
-		}, 1000);
-	}
-	
-
-	@Override
-	public void showToast(String msg) {
-		super.showToast(msg);
-	}
-
-
 }

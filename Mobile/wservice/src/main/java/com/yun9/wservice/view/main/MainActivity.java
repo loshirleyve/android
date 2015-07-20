@@ -17,7 +17,9 @@ import com.yun9.jupiter.push.PushFactory;
 import com.yun9.jupiter.repository.RepositoryManager;
 import com.yun9.jupiter.util.AppUtil;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
+import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -35,6 +37,7 @@ import com.yun9.wservice.view.main.support.UserFuncFragmentHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends JupiterFragmentActivity implements MessageReceiverHandler {
@@ -99,13 +102,20 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
 
         Intent intent = getIntent();
         final String pushMsg = intent.getStringExtra("push");
+        final String extra = intent.getStringExtra("extra");
+
+        logger.d("进入应用程序，扩展参数:" + extra + ";Push:" + pushMsg);
 
         Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 0) {
                     if (AssertValue.isNotNullAndNotEmpty(pushMsg)) {
-                        processMessage(pushMsg);
+                        Map<String, String> extraMap = null;
+                        if (AssertValue.isNotNullAndNotEmpty(extra)) {
+                            extraMap = JsonUtil.jsonToBean(extra, Map.class);
+                        }
+                        processMessage(pushMsg, extraMap);
                     }
                 }
             }
@@ -257,21 +267,21 @@ public class MainActivity extends JupiterFragmentActivity implements MessageRece
 
     }
 
-    public void processMessage(String pushContent) {
+    public void processMessage(String pushContent, Map<String, String> extra) {
         if (AssertValue.isNotNullAndNotEmpty(pushContent)) {
-            messageReceiverFactory.processMsg(MainActivity.this, pushContent);
+            messageReceiverFactory.processMsg(MainActivity.this, pushContent, extra);
         }
     }
 
     @Override
-    public void sendMessage(Context context, String pushContent) {
-        processMessage(pushContent);
+    public void sendMessage(Context context, String pushContent, Map<String, String> extra) {
+        processMessage(pushContent, extra);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
-            if((System.currentTimeMillis()-exitTime) > 2000){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(getApplicationContext(), getString(R.string.exit_twice_toast), Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
