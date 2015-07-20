@@ -62,7 +62,7 @@ public class Order implements Serializable{
         private String adviseruserid;
         private Long createdate;
         private String createby;
-        private int paystate;
+        private String paystate;
 
         public String getOrderid() {
             return orderid;
@@ -160,11 +160,11 @@ public class Order implements Serializable{
             this.createby = createby;
         }
 
-        public int getPaystate() {
+        public String getPaystate() {
             return paystate;
         }
 
-        public void setPaystate(int paystate) {
+        public void setPaystate(String paystate) {
             this.paystate = paystate;
         }
     }

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
@@ -92,19 +93,26 @@ public class OrderDetailProcessWidget extends JupiterRelativeLayout{
         return item;
     }
 
-    private void addLine(LinearLayout preItem,LinearLayout currItem) {
+    private void addLine(final LinearLayout preItem,final LinearLayout currItem) {
         final int lineHeith = 4;
-        final ImageView preCircle = (ImageView) preItem.findViewById(R.id.circle_iv);
-        ImageView currCircle = (ImageView) currItem.findViewById(R.id.circle_iv);
-        final View line = new View(this.getContext());
-        line.setBackgroundColor(this.getResources().getColor(R.color.groupbackground));
-        preItem.addView(line);
-        preItem.postDelayed(new Runnable() {
+        final int circleWidth = PublicHelp.dip2px(this.mContext,30);
+        currItem.postDelayed(new Runnable() {
             public void run() {
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(400, lineHeith);
-                params.setMargins(preCircle.getWidth(),0, 0,0);
-                line.setLayoutParams(params);
+                View line = new View(mContext);
+                int[] loc = new int[2];
+                currItem.getLocationOnScreen(loc);
+                int radio = (int)(currItem.getX() - preItem.getX() - circleWidth)/2;
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        radio * 2,lineHeith
+                );
+                layoutParams.setMargins((int) (currItem.getX() - radio),
+                        (int) currItem.getY()+circleWidth/2,
+                        0,
+                        0);
+                line.setLayoutParams(layoutParams);
+                line.setBackgroundColor(getResources().getColor(R.color.groupbackground));
+                OrderDetailProcessWidget.this.addView(line);
             }
-        }, 10);
+        }, 100);
     }
 }

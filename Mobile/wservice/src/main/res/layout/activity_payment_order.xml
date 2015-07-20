@@ -58,14 +58,16 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:visibility="gone"
                 android:textColor="@color/devide_line"
                 android:text="支付给深圳市顶聚科技有限公司"
                 />
             <com.yun9.jupiter.widget.JupiterListView
                 android:id="@+id/payment_ways_lv"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dividerHeight="8dp">
+                android:divider="@drawable/spacer_min">
             </com.yun9.jupiter.widget.JupiterListView>
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
