@@ -6,21 +6,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderBaseInfo;
 import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 
@@ -44,7 +44,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
     @ViewInject(id=R.id.order_list_ptr)
-    private ListView orderLV;
+    private PagingListView orderLV;
 
     @BeanInject
     private ResourceFactory resourceFactory;
@@ -55,7 +55,9 @@ public class OrderListActivity extends JupiterFragmentActivity{
 
     private List<OrderBaseInfo> orderList;
 
-    private String rowid = "";
+    private String pullRowid = null;
+
+    private String pushRowid = null;
 
     public static void start(Activity activity,String state,String stateName) {
         Intent intent = new Intent(activity, OrderListActivity.class);
@@ -89,7 +91,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                OrderDetailActivity.start(OrderListActivity.this,orderList.get(position).getOrderid());
+                OrderDetailActivity.start(OrderListActivity.this, orderList.get(position).getOrderid());
             }
         });
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
@@ -102,7 +104,8 @@ public class OrderListActivity extends JupiterFragmentActivity{
         ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                orderLV.setHasMoreItems(true);
+                refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
             @Override
@@ -110,14 +113,24 @@ public class OrderListActivity extends JupiterFragmentActivity{
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
             }
         });
+        orderLV.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                    refresh(pushRowid,Page.PAGE_DIR_PUSH);
+                } else {
+                    orderLV.onFinishLoading(true);
+                }
+            }
+        });
         autoRefresh();
     }
 
-    private void refresh() {
+    private void refresh(final String rowid, final String dir) {
         ptrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                refreshOrder();
+                refreshOrder(rowid,dir);
             }
         }, 100);
     }
@@ -131,23 +144,33 @@ public class OrderListActivity extends JupiterFragmentActivity{
         }, 100);
     }
 
-    private void refreshOrder() {
+    private void refreshOrder(String rowid, final String dir) {
         final Resource resource = resourceFactory.create("QueryOrdersService");
         resource.param("userid", sessionManager.getUser().getId());
         if (AssertValue.isNotNullAndNotEmpty(state)){
             resource.param("states",new String[]{state});
         }
-        if (AssertValue.isNotNullAndNotEmpty(rowid)) {
-            resource.page().setRowid(rowid);
-        }
+        resource.page().setRowid(rowid).setDir(dir);
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 OrderBaseInfoWrapper wrapper = (OrderBaseInfoWrapper) response.getPayload();
                 List<OrderBaseInfo> orderBaseInfos = wrapper.getOrderList();
                 if (orderBaseInfos != null && orderBaseInfos.size() > 0){
-                    rowid = orderBaseInfos.get(0).getOrderid();
-                    orderList.addAll(0,orderBaseInfos);
+                    if (Page.PAGE_DIR_PULL.equals(dir)){
+                        pullRowid = orderBaseInfos.get(0).getOrderid();
+                        orderList.addAll(0,orderBaseInfos);
+                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                            pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getOrderid();
+                        }
+                    } else {
+                        pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getOrderid();
+                        orderList.addAll(orderBaseInfos);
+                    }
+                } else if (Page.PAGE_DIR_PULL.equals(dir)) {
+                    showToast("没有新数据");
+                } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
+                    showToast(R.string.app_no_more_data);
                 }
             }
 
@@ -160,6 +183,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
             public void onFinally(Response response) {
                 adapter.notifyDataSetChanged();
                 ptrClassicFrameLayout.refreshComplete();
+                orderLV.onFinishLoading(true);
             }
         });
 

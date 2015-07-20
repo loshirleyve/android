@@ -19,6 +19,7 @@ import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -28,6 +29,7 @@ import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -67,7 +69,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
     @ViewInject(id=R.id.record_list_ptr)
-    private ListView recordLV;
+    private PagingListView recordLV;
 
     @BeanInject
     private ResourceFactory resourceFactory;
@@ -80,7 +82,9 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
 
     private List<RechargeRecord> records;
 
-    private String rowid;
+    private String pullRowid = null;
+
+    private String pushRowid = null;
 
     private String state;
 
@@ -117,12 +121,23 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
         ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                recordLV.setHasMoreItems(true);
+                refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        recordLV.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(pushRowid)) {
+                    refresh(pushRowid, Page.PAGE_DIR_PUSH);
+                } else {
+                    recordLV.onFinishLoading(true);
+                }
             }
         });
 
@@ -139,30 +154,40 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
         }, 100);
     }
 
-    private void refresh() {
+    private void refresh(final String rowid, final String dir) {
         ptrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                completeRefresh();
+                completeRefresh(rowid, dir);
             }
         }, 100);
     }
 
-    private void completeRefresh() {
+    private void completeRefresh(String rowid, final String dir) {
         Resource resource = resourceFactory.create("QueryRechargeService");
         resource.param("state", state);
         resource.param("userid", sessionManager.getUser().getId());
-        if (AssertValue.isNotNullAndNotEmpty(rowid)){
-            resource.page().setRowid(rowid);
-        }
+        resource.page().setDir(dir).setRowid(rowid);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 List<RechargeRecord> tempList = (List<RechargeRecord>) response.getPayload();
                 if (tempList != null
                         && tempList.size() > 0) {
-                    rowid = tempList.get(0).getId();
-                    records.addAll(0, tempList);
+                    if (Page.PAGE_DIR_PULL.equals(dir)) {
+                        pullRowid = tempList.get(0).getId();
+                        records.addAll(0, tempList);
+                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                            pushRowid = tempList.get(tempList.size() - 1).getId();
+                        }
+                    } else {
+                        pushRowid = tempList.get(tempList.size() - 1).getId();
+                        records.addAll(tempList);
+                    }
+                } else if (Page.PAGE_DIR_PULL.equals(dir)) {
+                    showToast("没有新数据");
+                } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
+                    showToast(R.string.app_no_more_data);
                 }
             }
 
@@ -175,6 +200,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
             public void onFinally(Response response) {
                 adapter.notifyDataSetChanged();
                 ptrClassicFrameLayout.refreshComplete();
+                recordLV.onFinishLoading(true);
             }
         });
     }
@@ -253,7 +279,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == JupiterCommand.RESULT_CODE_OK) {
             records.clear();
-            rowid = null;
+            pullRowid = null;
             autoRefresh();
         }
     }
