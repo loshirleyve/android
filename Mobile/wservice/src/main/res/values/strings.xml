@@ -276,4 +276,9 @@
     <string name="selected_classify">已选分类</string>
     <string name="business_documents">业务单据</string>
     <string name="add_random_num_success">掷骰子成功</string>
+    <string name="sure">确定</string>
+    <string name="give_call">打电话给：</string>
+    <string name="can_not_get_phone">无法获取机构电话号码</string>
+    <string name="tel">tel:</string>
+    <string name="is_proxy">(正在代理)</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.yun9.wservice.view.client;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -67,12 +68,12 @@ public class EditClientActivity extends CustomCallbackActivity{
 
     private int baseRequestCode = 10000;
 
-    public static void start(Context context,EditClientCommand command) {
-        Intent intent = new Intent(context,EditClientActivity.class);
+    public static void start(Activity activity,EditClientCommand command) {
+        Intent intent = new Intent(activity,EditClientActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(JupiterCommand.PARAM_COMMAND,command);
         intent.putExtras(bundle);
-        context.startActivity(intent);
+        activity.startActivityForResult(intent, command.getRequestCode());
     }
 
     @Override

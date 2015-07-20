@@ -1,11 +1,14 @@
 package com.yun9.wservice.view.client;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +57,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.cache.CacheClientProxy;
 import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.Client;
+import com.yun9.wservice.view.order.OrderProviderWidget;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,6 +108,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     private List<Client> showClients;
 
     private EditClientCommand command;
+    private ClientItemLayout clientItemLayout;
 
 
     public static void start(Activity activity,ClientCommand command) {
@@ -139,6 +144,7 @@ public class ClientActivity extends JupiterFragmentActivity {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 refresh();
             }
+
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
@@ -305,7 +311,7 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private void completeRefresh() {
         Resource resource = resourceFactory.create("QueryInstClients");
-        resource.param("instid", sessionManager.getInst().getId());
+        resource.param("instid", sessionManager.getInst().getId()).param("createby", sessionManager.getUser().getId());
         showClients.clear();
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
@@ -339,7 +345,6 @@ public class ClientActivity extends JupiterFragmentActivity {
                     && resultCode == JupiterCommand.RESULT_CODE_OK){
                 refresh();
             }
-
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -394,5 +399,4 @@ public class ClientActivity extends JupiterFragmentActivity {
             clientListView.smoothOpenMenu(position);
         }
     };
-
 }

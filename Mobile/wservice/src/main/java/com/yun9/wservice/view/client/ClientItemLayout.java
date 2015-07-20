@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -20,6 +21,7 @@ public class ClientItemLayout extends JupiterRelativeLayout{
     private ImageView phone_IV;
     private TextView phone_TV;
     private TextView createTimeTv;
+    private LinearLayout phone_LL;
 
     @Override
     protected int getContextView() {
@@ -32,7 +34,17 @@ public class ClientItemLayout extends JupiterRelativeLayout{
         contact_TV = (TextView)findViewById(R.id.contact_tv);
         phone_TV = (TextView)findViewById(R.id.phone_tv);
         createTimeTv = (TextView) this.findViewById(R.id.create_time_tv);
+        phone_LL = (LinearLayout)this.findViewById(R.id.phone_ll);
     }
+
+    public LinearLayout getPhone_LL() {
+        return phone_LL;
+    }
+
+    public void setPhone_LL(LinearLayout phone_LL) {
+        this.phone_LL = phone_LL;
+    }
+
     public TextView getTitle_TV() {
         return title_TV;
     }
