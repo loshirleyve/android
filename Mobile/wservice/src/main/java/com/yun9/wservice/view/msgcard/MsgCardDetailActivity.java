@@ -418,14 +418,16 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         });
 
         //添加“业务单据”功能
-        if(AssertValue.isNotNullAndNotEmpty(msgCard.getSource()) && AssertValue.isNotNullAndNotEmpty(msgCard.getSourceid())) {
+        if (AssertValue.isNotNullAndNotEmpty(msgCard.getSource()) && AssertValue.isNotNullAndNotEmpty(msgCard.getSourceid())) {
             MsgCardPanelActionItem bizDoc =
                     new MsgCardPanelActionItem(getResources().getString(R.string.business_documents),
                             R.drawable.save_fill, MsgCardPanelActionItem.ActionType.TYPE_PROCESS);
             bizDoc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
+                    if ("so".equals(msgCard.getSource())) {
+                        OrderDetailActivity.start(MsgCardDetailActivity.this, msgCard.getSourceid());
+                    }
                 }
             });
             panelActionItems.add(bizDoc);
@@ -460,7 +462,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         MsgCardPanelActionItem item = (MsgCardPanelActionItem) view.getTag();
-                        if (AssertValue.isNotNull(item.getOnClickListener())){
+                        if (AssertValue.isNotNull(item.getOnClickListener())) {
                             item.getOnClickListener().onClick(view);
                         }
                     }
@@ -585,7 +587,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void addRandomNumber(){
+    private void addRandomNumber() {
         Resource resource = resourceFactory.create("AddRandomNumber");
         resource.param("devicemodel", "100000").param("locationx", "20").param("locationy", "20")
                 .param("locationlabel", "20").param("locationscale", "xx").param("userid", currUserid)
