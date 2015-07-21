@@ -383,7 +383,8 @@ public class ClientActivity extends JupiterFragmentActivity {
     private void editClient(String clientId) {
         command = new EditClientCommand();
         command.setClientId(clientId);
-        EditClientActivity.start(this,command);
+        //EditClientActivity.start(this,command);
+        ClientDetailActivity.start(this, command);
     }
 
     private View.OnClickListener onTitleLeftClickListener = new View.OnClickListener() {
