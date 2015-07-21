@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textSize="10dp"
-                android:textColor="@color/devide_line"
+                android:textColor="@color/purple_font"
                 android:text="购买中"/>
             <TextView
                 android:id="@+id/state_time_tv"

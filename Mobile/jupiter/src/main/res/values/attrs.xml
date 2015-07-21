@@ -71,7 +71,9 @@
     <declare-styleable name="JupiterImageButtonLayout">
         <attr name="imageButtonIcoSrc" format="reference"></attr>
         <attr name="imageButtonText" format="string"></attr>
+        <attr name="imageButtonTextColor" format="reference"></attr>
         <attr name="imageButtonShowIco" format="boolean"></attr>
+        <attr name="imageButtonBackgroundColor" format="reference"></attr>
 
     </declare-styleable>
 

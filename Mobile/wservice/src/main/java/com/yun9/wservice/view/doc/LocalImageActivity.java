@@ -18,12 +18,14 @@ import android.widget.Toast;
 
 import com.yun9.jupiter.image.ImageBrowerActivity;
 import com.yun9.jupiter.image.ImageBrowerCommand;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.camera.CameraActivity;
@@ -71,6 +73,9 @@ public class LocalImageActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.sendmsgcard)
     private JupiterImageButtonLayout sendMsgCardBtn;
+
+    @BeanInject
+    private SessionManager sessionManager;
 
 
     @Override
@@ -343,6 +348,8 @@ public class LocalImageActivity extends JupiterFragmentActivity {
                     if (AssertValue.isNotNullAndNotEmpty(currImages)) {
                         for (FileBean fileBean : currImages) {
                             if (fileBean.isSelected()) {
+                                fileBean.setUserid(sessionManager.getUser().getId());
+                                fileBean.setInstid(sessionManager.getInst().getId());
                                 onSelectImages.add(fileBean);
                             }
                         }

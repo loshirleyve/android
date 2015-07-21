@@ -52,6 +52,7 @@ public class OrderItemWidget extends JupiterRelativeLayout{
                 CtrlCodeCache.getInstance()
                         .getCtrlcodeName(CtrlCodeDefNo.ORDER_STATE,order.getState()));
         orderTimeTV.setText(DateFormatUtil.format(order.getCreatedate(),"yyyy年MM月dd日"));
+        productDescTv.setText(order.getProductIntroduce());
     }
 
     @Override

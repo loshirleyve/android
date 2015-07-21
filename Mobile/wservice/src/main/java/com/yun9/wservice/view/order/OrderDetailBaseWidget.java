@@ -19,6 +19,7 @@ public class OrderDetailBaseWidget extends JupiterRelativeLayout{
     private TextView productPriceTV;
     private TextView orderSnTV;
     private ImageView productImgeIV;
+    private TextView productDescTv;
 
     public OrderDetailBaseWidget(Context context) {
         super(context);
@@ -37,7 +38,8 @@ public class OrderDetailBaseWidget extends JupiterRelativeLayout{
         productNameTV.setText(product.getProductname());
         orderSnTV.setText(order.getOrder().getOrdersn());
         productPriceTV.setText(product.getGoodsamount() + "元");
-        ImageLoaderUtil.getInstance(this.mContext).displayImage(product.getProductimgid(),productImgeIV);
+        ImageLoaderUtil.getInstance(this.mContext).displayImage(product.getProductimgid(), productImgeIV);
+        productDescTv.setText(product.getProductIntroduce());
     }
 
     @Override
@@ -51,5 +53,6 @@ public class OrderDetailBaseWidget extends JupiterRelativeLayout{
         productPriceTV = (TextView) this.findViewById(R.id.product_price_tv);
         orderSnTV = (TextView) this.findViewById(R.id.order_sn_tv);
         productImgeIV = (ImageView) this.findViewById(R.id.product_image_iv);
+        productDescTv = (TextView) this.findViewById(R.id.product_desc_tv);
     }
 }
