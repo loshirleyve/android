@@ -105,7 +105,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getClientId())) {
             clientid = command.getClientId();
         }
-        titleBarLayout.setOnClickListener(onBackClickListener);
+        titleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         clientDetailSure.setOnClickListener(onSureClickListener);
         typeLayout.setOnClickListener(onTypeClickListener);
         industryLayout.setOnClickListener(onIndustrylickListener);
