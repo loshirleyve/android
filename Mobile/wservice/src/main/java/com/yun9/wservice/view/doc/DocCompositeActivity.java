@@ -155,6 +155,17 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
             mInstid = sessionManager.getInst().getId();
         }
 
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getFileType())) {
+            if (FileBean.FILE_TYPE_DOC.equals(command.getFileType())){
+                localImageBtn.setVisibility(View.GONE);
+                yunImageBtn.setVisibility(View.GONE);
+                photoBtn.setVisibility(View.GONE);
+            }else if (FileBean.FILE_TYPE_IMAGE.equals(command.getFileType())){
+                localFileBtn.setVisibility(View.GONE);
+                yunFileBtn.setVisibility(View.GONE);
+            }
+        }
+
         localImageBtn.setOnClickListener(onLocalImageClickListener);
         localFileBtn.setOnClickListener(onLocalFileClickListener);
         yunFileBtn.setOnClickListener(onYunFileClickListener);

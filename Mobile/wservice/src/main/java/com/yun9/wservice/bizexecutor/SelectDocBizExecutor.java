@@ -57,6 +57,7 @@ public class SelectDocBizExecutor implements FormUtilFactory.BizExecutor{
         compositeCommand.setEdit(true);
         compositeCommand.setOnSelectFiles(selectedDoc);
         compositeCommand.setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK);
+        compositeCommand.setFileType(FileBean.FILE_TYPE_DOC);
         DocCompositeActivity.start(activity, compositeCommand);
     }
 }

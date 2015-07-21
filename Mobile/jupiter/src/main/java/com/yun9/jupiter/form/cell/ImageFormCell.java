@@ -102,6 +102,7 @@ public class ImageFormCell extends FormCell {
 
     private void restore() {
         if (cellBean.getValue() == null) {
+            restore(new String[0]);
             return;
         }
         restore(((String[]) cellBean.getValue()));
@@ -180,12 +181,15 @@ public class ImageFormCell extends FormCell {
             for (int i = 0; i < len - cellBean.getMaxNum(); i++) {
                 itemList.remove(len -(i+1));
             }
-        } else if (itemList.size() < cellBean.getMaxNum()) {
+        } else if (itemList.size() < cellBean.getMaxNum()
+                && itemList.size() != 0) {
             JupiterEditableView item = itemList.get(itemList.size() - 1);
             // 只有添加按钮的tag为null
             if (item.getTag() != null) {
                 appendAddButton();
             }
+        } else if (itemList.size() == 0){
+            appendAddButton();
         }
     }
 
@@ -226,17 +230,17 @@ public class ImageFormCell extends FormCell {
 
     @Override
     public String validate() {
-        List<String> ids = (List<String>) getValue();
+        String[] ids = (String[]) getValue();
         if (cellBean.isRequired()
-                && ids.size() == 0){
+                && ids.length == 0){
             return "请选择 " + cellBean.getLabel();
         }
         if (cellBean.getMinNum() > 0
-                && ids.size() < cellBean.getMinNum()){
+                && ids.length < cellBean.getMinNum()){
             return cellBean.getLabel()+" 至少需要 "+cellBean.getMinNum()+" 个";
         }
         if (cellBean.getMaxNum() > 0 &&
-                ids.size() > cellBean.getMaxNum()){
+                ids.length > cellBean.getMaxNum()){
             return cellBean.getLabel() + " 至多只能包含 "+cellBean.getMaxNum()+" 个";
         }
         return null;

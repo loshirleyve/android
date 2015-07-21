@@ -52,6 +52,7 @@ public class SelectImageBizExecutor implements BizExecutor{
         compositeCommand.setEdit(true);
         compositeCommand.setOnSelectImages(selectedDoc);
         compositeCommand.setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK);
+        compositeCommand.setFileType(FileBean.FILE_TYPE_IMAGE);
         DocCompositeActivity.start(activity, compositeCommand);
     }
 }

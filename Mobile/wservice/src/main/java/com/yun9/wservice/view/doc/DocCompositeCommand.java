@@ -22,6 +22,8 @@ public class DocCompositeCommand extends JupiterCommand {
 
     private String userid;
 
+    private String fileType;
+
     private String completeType = COMPLETE_TYPE_SENDMSGCARD;
 
     private List<FileBean> onSelectFiles;
@@ -80,6 +82,15 @@ public class DocCompositeCommand extends JupiterCommand {
 
     public DocCompositeCommand setOnSelectImages(List<FileBean> onSelectImages) {
         this.onSelectImages = onSelectImages;
+        return this;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public DocCompositeCommand setFileType(String fileType) {
+        this.fileType = fileType;
         return this;
     }
 }

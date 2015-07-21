@@ -330,6 +330,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
             }
             compositeCommand.setEdit(true);
             compositeCommand.setCompleteType(DocCompositeCommand.COMPLETE_TYPE_CALLBACK);
+            compositeCommand.setFileType(FileBean.FILE_TYPE_IMAGE);
             DocCompositeActivity.start(PaymentResultActivity.this, compositeCommand);
         }
     };

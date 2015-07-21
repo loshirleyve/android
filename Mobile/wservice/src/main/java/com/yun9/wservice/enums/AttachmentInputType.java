@@ -8,4 +8,5 @@ public interface AttachmentInputType {
 
     public static final String FILE = "file";
     public static final String TEXT = "text";
+    public static final String IMAGE = "image";
 }
