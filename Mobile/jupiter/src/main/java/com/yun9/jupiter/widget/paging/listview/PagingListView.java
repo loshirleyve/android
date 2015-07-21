@@ -94,10 +94,6 @@ public class PagingListView extends ListView {
                 }
 
                 int lastVisibleItem = firstVisibleItem + visibleItemCount;
-                System.out.println("lastVisibleItem: "+lastVisibleItem);
-                System.out.println("totalItemCount: "+totalItemCount);
-                System.out.println("visibleItemCount: "+visibleItemCount);
-                System.out.println("firstVisibleItem: "+firstVisibleItem);
                 if (!isLoading && hasMoreItems && (lastVisibleItem == totalItemCount) && isFling) {
                     if (pagingableListener != null) {
                         isLoading = true;
@@ -117,7 +113,6 @@ public class PagingListView extends ListView {
                 } else {
                     isFling = false;
                 }
-                System.out.println("isFling: "+isFling);
                 return false;
             }
         });

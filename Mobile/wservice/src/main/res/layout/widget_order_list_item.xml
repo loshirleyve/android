@@ -8,56 +8,15 @@
     android:background="@color/whites">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="wrap_content"
         android:paddingBottom="3dp"
         android:paddingTop="8dp">
-        <LinearLayout
+        <ImageView
+            android:id="@+id/product_image_iv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/product_image_iv"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
-            <RelativeLayout
-                android:layout_marginLeft="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/product_name_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textColor="#374760"
-                        android:text="代理记账"/>
-
-                    <TextView
-                        android:id="@+id/product_desc_tv"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:textColor="@color/gray_font"
-                        android:text="顶聚优选产品"/>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/product_price_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:textSize="15dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/red"
-                    android:text="99.5元"/>
-            </RelativeLayout>
-        </LinearLayout>
+            android:src="@drawable/upload_icon"/>
         <TextView
             android:id="@+id/order_time_tv"
             android:layout_width="wrap_content"
@@ -65,7 +24,6 @@
             android:layout_marginRight="15dp"
             android:layout_alignParentRight="true"
             android:textSize="12dp"
-            android:text="2015年06月15日"
             android:textColor="@color/drak"/>
         <ImageView
             android:id="@+id/arrow_right_iv"
@@ -76,6 +34,43 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:background="@drawable/arrow_right" />
+        <RelativeLayout
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/product_image_iv"
+            android:layout_toLeftOf="@id/arrow_right_iv"
+            android:layout_marginRight="8dp">
+            <TextView
+                android:id="@+id/product_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="#374760"
+                android:text="代理记账"/>
+
+            <TextView
+                android:id="@+id/product_desc_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_name_tv"
+                android:layout_marginTop="6dp"
+                android:textSize="15dp"
+                android:textColor="@color/gray_font"
+                android:text="顶聚优选产品"/>
+            <TextView
+                android:id="@+id/product_price_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_desc_tv"
+                android:layout_marginTop="3dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:textColor="@color/red"
+                android:text="99.5元"/>
+        </RelativeLayout>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -95,6 +90,7 @@
             <TextView
                 android:id="@+id/order_sn_tip"
                 android:textSize="14dp"
+                android:textColor="@color/purple_font"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="订单号: "/>
@@ -103,13 +99,13 @@
                 android:textSize="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="3888898983993"/>
+                android:textColor="@color/purple_font"/>
         </LinearLayout>
         <TextView
             android:id="@+id/order_state_tv"
             android:layout_width="wrap_content"
             android:textSize="14dp"
-            android:textColor="@color/drak"
+            android:textColor="@color/purple_font"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"

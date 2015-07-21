@@ -176,6 +176,16 @@ public class Order implements Serializable{
         private String productid;
         private String goodsnum;
         private String productname;
+        private String productIntroduce;
+
+        public String getProductIntroduce() {
+            return productIntroduce;
+        }
+
+        public OrderProduct setProductIntroduce(String productIntroduce) {
+            this.productIntroduce = productIntroduce;
+            return this;
+        }
 
         public double getGoodsamount() {
             return goodsamount;

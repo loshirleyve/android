@@ -13,12 +13,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.cache.CtrlCodeCache;
+import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheFile;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -34,10 +37,13 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.enums.RechargeState;
 import com.yun9.wservice.model.FinanceCollects;
+import com.yun9.wservice.task.UploadFileAsyncTask;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
+import com.yun9.wservice.view.myself.UserInfoCommand;
 import com.yun9.wservice.view.product.ProductClassifyPopLayout;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -80,6 +86,8 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     private DocCompositeCommand compositeCommand;
 
     private String selectedImageId;
+
+    private FileBean selectedFile;
 
     private String collectId;
 
@@ -132,6 +140,40 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     }
 
     private void confirmPayArrive() {
+        if (selectedFile != null
+                && FileBean.FILE_STORAGE_TYPE_LOCAL.equals(selectedFile.getStorageType())){
+            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(this,
+                    Collections.singletonList(selectedFile));
+            uploadFileAsyncTask.setCompImage(true);
+            uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
+                @Override
+                public void onPostExecute(List<FileBean> imgs) {
+                    boolean upload = true;
+                    if (AssertValue.isNotNull(imgs)) {
+                        for (FileBean image : imgs) {
+                            if (image.FILE_STORAGE_TYPE_LOCAL.equals(image.getStorageType())) {
+                                upload = false;
+                            } else {
+                                selectedImageId = image.getId();
+                            }
+                        }
+                    }
+
+                    if (!upload) {
+                        Toast.makeText(mContext, getString(R.string.new_image_upload_error), Toast.LENGTH_SHORT).show();
+                    } else {
+                        submit();
+                    }
+                }
+            });
+            uploadFileAsyncTask.execute();
+        } else {
+            submit();
+        }
+
+    }
+
+    private void submit() {
         String content = popWidget.getConfirmContentEt().getText().toString();
         Resource resource = resourceFactory.create("UpdateCollectByArriveInfoService");
         resource.param("collectid",collectId);
@@ -257,8 +299,9 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
             if (images != null
                     && images.size() > 0){
                 selectedImageId = images.get(0).getId();
+                selectedFile = images.get(0);
                 ImageLoaderUtil.getInstance(PaymentResultActivity.this).displayImage(
-                        selectedImageId,popWidget.getUploadImageIv()
+                        selectedFile.getFilePath(),popWidget.getUploadImageIv()
                 );
             } else {
                 selectedImageId = null;
@@ -276,6 +319,13 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNullAndNotEmpty(selectedImageId)){
                 FileBean fileBean = new FileBean();
                 fileBean.setId(selectedImageId);
+                fileBean.setStorageType(FileBean.FILE_STORAGE_TYPE_YUN);
+                CacheFile file = FileCache.getInstance().getFile(selectedImageId);
+                if (file != null){
+                    fileBean.setFilePath(file.getThumbnailUrl());
+                    fileBean.setThumbnailPath(file.getThumbnailUrl());
+                    fileBean.setUrl(file.getUrl());
+                }
                 compositeCommand.setOnSelectImages(Collections.singletonList(fileBean));
             }
             compositeCommand.setEdit(true);

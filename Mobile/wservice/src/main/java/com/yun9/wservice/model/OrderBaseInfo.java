@@ -23,6 +23,16 @@ public class OrderBaseInfo implements Serializable{
     private String createby;
     private int paystate;
     private String productimgid;
+    private String productIntroduce;
+
+    public String getProductIntroduce() {
+        return productIntroduce;
+    }
+
+    public OrderBaseInfo setProductIntroduce(String productIntroduce) {
+        this.productIntroduce = productIntroduce;
+        return this;
+    }
 
     public String getOrderid() {
         return orderid;

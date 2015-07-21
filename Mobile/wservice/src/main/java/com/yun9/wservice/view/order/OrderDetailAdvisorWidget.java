@@ -40,7 +40,7 @@ public class OrderDetailAdvisorWidget extends JupiterRelativeLayout{
         this.order = order;
         CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviseruserid());
         if (user != null){
-            ImageLoaderUtil.getInstance(this.mContext).displayImage(user.getHead(),userHeadIV);
+            ImageLoaderUtil.getInstance(this.mContext).displayImage(user.getUrl(),userHeadIV);
             userNameTV.setText(user.getName());
         }
     }

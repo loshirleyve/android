@@ -267,7 +267,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     }
 
     private void refreshComplete() {
-        //TODO 由于还没有返回流程数据，暂时使用假数据
         //fakeDataProcessAction(mMsgCard);
         builderView(mMsgCard);
 
@@ -282,6 +281,14 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
 
     private void builderView(MsgCard msgCard) {
+
+        if (!AssertValue.isNotNullAndNotEmpty(command.getTitle())){
+            CacheUser user = UserCache.getInstance().getUser(msgCard.getCreateby());
+            if (user != null){
+                titleBar.getTitleTv().setText(user.getName());
+            }
+        }
+
         msgCardWidget.buildWithData(msgCard);
 
         commonItem.getDescTextTV().setText(msgCard.getCommentcount() + "");
