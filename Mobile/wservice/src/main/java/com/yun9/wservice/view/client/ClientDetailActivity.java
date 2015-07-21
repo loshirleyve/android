@@ -32,6 +32,8 @@ import com.yun9.wservice.view.inst.InitInstActivity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by li on 2015/7/20.
@@ -142,7 +144,11 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 Toast.makeText(mContext, getString(R.string.post_chose), Toast.LENGTH_SHORT).show();
             } else if (clientRankLayout.getSutitleTv().getVisibility() == View.GONE) {
                 Toast.makeText(mContext, getString(R.string.client_rank_input), Toast.LENGTH_SHORT).show();
-            } else {
+            } else if (clientNoEt.getText().toString().equals(companyAbbrNameEt.getText().toString())){
+                Toast.makeText(mContext, getString(R.string.client_no_name_same_not), Toast.LENGTH_SHORT).show();
+            }else if (!isPhone(contactPhoneEt.getText().toString())){
+                Toast.makeText(mContext, getString(R.string.correct_phone_no_not), Toast.LENGTH_SHORT).show();
+            }else {
                 doSave();
             }
         }
@@ -162,7 +168,6 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         resource.param("region", regionEt.getText().toString());
         resource.param("source", source);
         resource.param("industry", industry);
-        //resource.param("scaleid", client.getScaleid());
         resource.param("scaleid", instScale);
         resource.param("contactposition", post);
         resource.param("createby", sessionManager.getUser().getId());
@@ -171,7 +176,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onSuccess(Response response) {
-                showToast("保存客户成功！");
+                showToast(getString(R.string.save_client_success_not));
                 doSuccess();
             }
 
@@ -362,5 +367,12 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                     break;
             }
         }
+    }
+    public boolean isPhone(String phone) {
+        String str = "((\\d{11})|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1})|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1}))$)";
+        Pattern p = Pattern.compile(str);
+        Matcher m = p.matcher(phone);
+
+        return m.matches();
     }
 }

@@ -306,4 +306,7 @@
     <string name="contact_phone_input">请输入联系电话</string>
     <string name="post_chose">请选择职位</string>
     <string name="client_rank_input">请选择客户等级</string>
+    <string name="client_no_name_same_not">客户编号和客户名字不能重复！</string>
+    <string name="correct_phone_no_not">请输入正确的电话号码！</string>
+    <string name="save_client_success_not">保存客户成功！</string>
 </resources>
