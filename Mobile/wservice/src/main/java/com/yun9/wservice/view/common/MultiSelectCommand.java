@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class MultiSelectCommand extends JupiterCommand{
 
+    public static String FLAG = "flag";
     private boolean isCancelable;
 
     private List<SerialableEntry<String, String>> selectedList;

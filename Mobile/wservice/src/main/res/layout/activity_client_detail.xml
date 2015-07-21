@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/client_detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleLeftIcoSrc="@drawable/arrow_left"
+        app:titleLeftIcoVisibility="true"
+        app:titleText="@string/detail_client" />
+
+    <com.yun9.jupiter.widget.JupiterScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/client_detail_title"
+        android:layout_above="@+id/client_detail_sure">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/client_no_input_notice"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/clientNoEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/client_no_input_notice"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/company_abbrev_name"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/companyAbbrNameEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/company_abbrev_name"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/company_full_name"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/companyFullNameEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/company_full_name"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/typeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="@string/type" />
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/industryLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="@string/industry" />
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/instScaleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="@string/inst_scale" />
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/sourceLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="@string/source" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/region"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/regionEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/region"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/detail_info"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/detailInfoEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/detail_info"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/contact_name"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/contactNameEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/contact_name"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/contact_phone"
+                android:textColor="@color/gray_font" />
+
+            <EditText
+                android:id="@+id/contactPhoneEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/whites"
+                android:hint="@string/contact_phone"
+                android:paddingBottom="20dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="20dp"
+                android:textSize="16dp" />
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/postLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="@string/post" />
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:id="@+id/clientRankLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="@string/client_rank" />
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterScrollView>
+
+    <TextView
+        android:id="@+id/client_detail_sure"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/whites"
+        android:gravity="center"
+        android:text="@string/sure"
+        android:textColor="@color/title_color"
+        android:textSize="18sp" />
+</RelativeLayout>
