@@ -187,6 +187,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
                 } else if (Page.PAGE_DIR_PULL.equals(dir)) {
                     showToast("没有新数据");
                 } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
+                    recordLV.setHasMoreItems(false);
                     showToast(R.string.app_no_more_data);
                 }
             }

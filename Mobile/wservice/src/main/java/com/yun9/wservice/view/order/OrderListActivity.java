@@ -170,6 +170,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
                 } else if (Page.PAGE_DIR_PULL.equals(dir)) {
                     showToast("没有新数据");
                 } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
+                    orderLV.setHasMoreItems(false);
                     showToast(R.string.app_no_more_data);
                 }
             }
