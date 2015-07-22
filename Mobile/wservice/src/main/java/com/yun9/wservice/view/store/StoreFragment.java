@@ -323,7 +323,7 @@ public class StoreFragment extends JupiterFragment {
         });
     }
 
-    private void refreshTopProduct(final ProductGroup productGroup){
+    private void refreshTopProduct(final ProductGroup productGroup) {
         if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
             return;
@@ -357,6 +357,7 @@ public class StoreFragment extends JupiterFragment {
             }
         });
     }
+
     private void refreshProduct(final ProductGroup productGroup, final String rowid, final String dir) {
         if (!AssertValue.isNotNull(productGroup)) {
             mPtrFrame.refreshComplete();
@@ -590,7 +591,12 @@ public class StoreFragment extends JupiterFragment {
             //当前定位城市是被支持的
             if (AssertValue.isNotNull(serviceCity) && !noticeSwitchCity && !switchAlertDialogShowing) {
                 //当前城市还没有确定或者当前城市与定位城市不一致
-                if (!AssertValue.isNotNull(currServiceCity) || (AssertValue.isNotNull(currServiceCity) && !currServiceCity.getId().equals(serviceCity.getId()) && !"all".equals(currServiceCity.getCityno()))) {
+                if (!AssertValue.isNotNull(currServiceCity)
+                        || (AssertValue.isNotNull(currServiceCity)
+                        && (!currServiceCity.getId().equals(serviceCity.getId())
+                        || (currServiceCity.getProvince().equals(serviceCity.getProvince())
+                        && currServiceCity.getCity().equals(serviceCity.getCity())
+                        && !"all".equals(currServiceCity.getCityno()))))) {
                     CharSequence content = getResources()
                             .getString(R.string.store_change_location_dialog_content, serviceCity.getCity(), serviceCity.getCity());
                     switchAlertDialogShowing = true;

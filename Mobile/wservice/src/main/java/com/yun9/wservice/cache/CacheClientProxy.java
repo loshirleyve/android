@@ -17,6 +17,11 @@ public class CacheClientProxy implements Serializable{
      */
     private String userId;
 
+    /**
+     * 客户ID
+     */
+    private String clientId;
+
     public String getInstId() {
         return instId;
     }
@@ -31,5 +36,14 @@ public class CacheClientProxy implements Serializable{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public CacheClientProxy setClientId(String clientId) {
+        this.clientId = clientId;
+        return this;
     }
 }

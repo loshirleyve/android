@@ -285,7 +285,8 @@ public class ClientActivity extends JupiterFragmentActivity {
         } else {
             CacheClientProxy clientProxy = new CacheClientProxy();
             clientProxy.setInstId(client.getClientinstid());
-            clientProxy.setUserId(client.getId());
+            clientProxy.setUserId(client.getClientadminid());
+            clientProxy.setClientId(client.getId());
             ClientProxyCache.getInstance().putClientProxy(clientProxy);
             showToast("成功代理客户：" + client.getFullname());
         }

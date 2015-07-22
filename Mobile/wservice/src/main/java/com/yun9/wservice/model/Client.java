@@ -27,6 +27,7 @@ public class Client implements java.io.Serializable {
     private String scaleid;
     private String industry;
     private String contactposition;
+    private String clientadminid;
 
     public String getCreateby() {
         return createby;
@@ -202,5 +203,14 @@ public class Client implements java.io.Serializable {
 
     public void setScaleid(String scaleid) {
         this.scaleid = scaleid;
+    }
+
+    public String getClientadminid() {
+        return clientadminid;
+    }
+
+    public Client setClientadminid(String clientadminid) {
+        this.clientadminid = clientadminid;
+        return this;
     }
 }
