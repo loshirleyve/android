@@ -21,6 +21,7 @@ public class OrderCartInfo implements Serializable{
     private Long createdate;
     private String createby;
     private int paystate;
+    private String purchase;
     private List<OrderProduct> orderproducts;
     private List<OrderAttachment> orderAttachments;
 
@@ -134,6 +135,15 @@ public class OrderCartInfo implements Serializable{
 
     public void setOrderAttachments(List<OrderAttachment> orderAttachments) {
         this.orderAttachments = orderAttachments;
+    }
+
+    public String getPurchase() {
+        return purchase;
+    }
+
+    public OrderCartInfo setPurchase(String purchase) {
+        this.purchase = purchase;
+        return this;
     }
 
     public static class OrderProduct implements Serializable {
