@@ -303,11 +303,6 @@ public class StoreFragment extends JupiterFragment {
                     if (supportCity && AssertValue.isNotNull(currServiceCity)) {
                         switchLocation(currServiceCity);
                     }
-
-                    //激活地理位置请求
-                    LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
-                    locationFactory.requestLocation();
-
                 }
             }
 
@@ -319,6 +314,10 @@ public class StoreFragment extends JupiterFragment {
             @Override
             public void onFinally(Response response) {
                 progressDialog.dismiss();
+                //激活地理位置请求
+                LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
+                locationFactory.setOnLocationListener(onLocationListener);
+                locationFactory.start();
             }
         });
     }
@@ -591,14 +590,19 @@ public class StoreFragment extends JupiterFragment {
             //当前定位城市是被支持的
             if (AssertValue.isNotNull(serviceCity) && !noticeSwitchCity && !switchAlertDialogShowing) {
                 //当前城市还没有确定或者当前城市与定位城市不一致
-                if (!AssertValue.isNotNull(currServiceCity)
+                if (currServiceCity == null
                         || (AssertValue.isNotNull(currServiceCity)
-                        && (!currServiceCity.getId().equals(serviceCity.getId())
-                        || (currServiceCity.getProvince().equals(serviceCity.getProvince())
-                        && currServiceCity.getCity().equals(serviceCity.getCity())
-                        && !"all".equals(currServiceCity.getCityno()))))) {
+                            && (!currServiceCity.getProvince().equals(serviceCity.getProvince())
+                                || !currServiceCity.getCity().equals(serviceCity.getCity())))
+                        || (AssertValue.isNotNull(currServiceCity)
+                            && (currServiceCity.getProvince().equals(serviceCity.getProvince())
+                                && currServiceCity.getCity().equals(serviceCity.getCity())
+                                && !"all".equals(currServiceCity.getCityno())
+                                && !currServiceCity.getDistrict().equals(serviceCity.getDistrict())))) {
                     CharSequence content = getResources()
-                            .getString(R.string.store_change_location_dialog_content, serviceCity.getCity(), serviceCity.getCity());
+                            .getString(R.string.store_change_location_dialog_content,
+                                    serviceCity.getCity(),serviceCity.getDistrict(),
+                                    serviceCity.getCity(),serviceCity.getDistrict());
                     switchAlertDialogShowing = true;
                     new AlertDialog.Builder(getActivity()).setTitle(R.string.store_change_location_dialog_title).setMessage(content).setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
                         @Override

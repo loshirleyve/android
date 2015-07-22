@@ -205,7 +205,7 @@
     <string name="new_dynamic_send_error">动态发送时出现错误！%1$s</string>
 
     <string name="store_change_location_dialog_title">城市改变</string>
-    <string name="store_change_location_dialog_content">系统定位到你在%1$s,需要切换到%2$s吗?</string>
+    <string name="store_change_location_dialog_content">系统定位到你在%1$s.%2$s,需要切换到%3$s.%4$s吗?</string>
 
     <string name="product_detail">服务详情</string>
     <string name="product_detail_selectcategory">选择分类</string>
