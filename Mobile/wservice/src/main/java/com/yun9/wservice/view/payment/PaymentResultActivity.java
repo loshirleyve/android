@@ -269,7 +269,8 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                         collectId = collect.getId();
                         selectedImageId = collect.getArriveimgid();
                         ImageLoaderUtil.getInstance(PaymentResultActivity.this)
-                                .displayImage(collect.getArriveimgid(), popWidget.getUploadImageIv());
+                                .displayImage(collect.getArriveimgid(), popWidget.getUploadImageIv(),
+                                        R.drawable.upload_icon);
                         popWidget.getConfirmContentEt().setText(collect.getArrivetext());
                         if (confirmWindow != null) {
                             WindowManager.LayoutParams lp = PaymentResultActivity.this.getWindow().getAttributes();
@@ -302,7 +303,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                 selectedFile = images.get(0);
                 ImageLoaderUtil.getInstance(PaymentResultActivity.this).displayImage(
                         selectedFile.getFilePath(),popWidget.getUploadImageIv()
-                );
+                ,R.drawable.upload_icon);
             } else {
                 selectedImageId = null;
                 ImageLoaderUtil.getInstance(PaymentResultActivity.this).displayImage(

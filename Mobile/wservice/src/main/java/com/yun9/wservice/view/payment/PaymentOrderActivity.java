@@ -18,6 +18,7 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
@@ -302,15 +303,16 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            JupiterRowStyleTitleLayout titleLayout;
+            JupiterRowStyleSutitleLayout titleLayout;
             if (convertView == null) {
-                titleLayout = new JupiterRowStyleTitleLayout(PaymentOrderActivity.this);
+                titleLayout = new JupiterRowStyleSutitleLayout(PaymentOrderActivity.this);
                 titleLayout.getHotNitoceTV()
                         .setBackgroundColor(getResources()
                                 .getColor(R.color.transparent));
                 titleLayout.getHotNitoceTV().setVisibility(View.VISIBLE);
                 titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
                 titleLayout.getMainIV().setVisibility(View.GONE);
+                titleLayout.getTimeTv().setVisibility(View.GONE);
                 titleLayout.getTitleTV()
                         .setText(payinfo.getPaymodeCategorys().get(position).getName());
                 titleLayout.setOnClickListener(new View.OnClickListener() {
@@ -324,26 +326,29 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 });
                 convertView = titleLayout;
             } else {
-                titleLayout = (JupiterRowStyleTitleLayout) convertView;
+                titleLayout = (JupiterRowStyleSutitleLayout) convertView;
             }
-            double amount = getUserAmount(payinfo.getPaymodeCategorys().get(position));
-            if (amount > 0) {
-                titleLayout.getHotNitoceTV().setText(amount+"元");
+            Payinfo.PaymodeInfo info = getUserAmount(payinfo.getPaymodeCategorys().get(position));
+            if (info != null) {
+                titleLayout.getSutitleTv().setVisibility(View.VISIBLE);
+                titleLayout.getSutitleTv().setText("已选: "+info.getPaymodeName());
+                titleLayout.getHotNitoceTV().setText(info.getUseAmount()+"元");
             } else {
+                titleLayout.getSutitleTv().setVisibility(View.GONE);
                 titleLayout.getHotNitoceTV().setText("未选择");
             }
             return convertView;
         }
 
-        private double getUserAmount(Payinfo.PaymodeCategory category) {
+        private Payinfo.PaymodeInfo getUserAmount(Payinfo.PaymodeCategory category) {
             if (category.getPaymodeInfos() != null) {
-                double sum = 0;
                 for (Payinfo.PaymodeInfo info : category.getPaymodeInfos()){
-                    sum +=info.getUseAmount();
+                    if (info.getUseAmount() > 0.0){
+                        return info;
+                    }
                 }
-                return sum;
             }
-            return 0;
+            return null;
         }
 
     };
