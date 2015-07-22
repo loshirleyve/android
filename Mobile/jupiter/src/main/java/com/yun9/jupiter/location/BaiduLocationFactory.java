@@ -123,6 +123,7 @@ public class BaiduLocationFactory implements Bean, Initialization, LocationFacto
         option.setScanSpan(1000 * 60 * 10);//设置发起定位请求的间隔时间为10分钟
         option.setIsNeedAddress(true);//返回的定位结果包含地址信息
         option.setNeedDeviceDirect(true);//返回的定位结果包含手机机头的方向
+        option.setOpenGps(false);// 不使用GPS
         this.locationClient.setLocOption(option);
     }
 
