@@ -29,6 +29,7 @@ import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.PinYinMaUtil;
 import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterImageButtonLayout;
@@ -175,7 +176,7 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
                         pu.setIsregister(true);
                 }
             }
-            phoneUserAdapter = new OrgPhoneUserAdapter(mContext, resourceFactory, phoneusers, instid, userid, command.getOrgid());
+            phoneUserAdapter = new OrgPhoneUserAdapter(this, resourceFactory, phoneusers, instid, userid, command.getOrgid());
             userListView.setAdapter(phoneUserAdapter);
         }
     }
@@ -274,7 +275,9 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
             phoneusers.clear();
             if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
                 for (PhoneUser user : textwatchusers) {
-                    if (StringUtil.contains(user.getUsername(), s.toString(), true)) {
+                    if (StringUtil.contains(user.getUsername(), s.toString(), true)
+                            || StringUtil.contains(PinYinMaUtil.stringToPinyin(user.getUsername(),true),
+                                                        s.toString(), true)) {
                         phoneusers.add(user);
                     }
                 }
@@ -290,41 +293,4 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
             finish();
         }
     };
-
-
-    public List<PhoneUser> build() {
-        phoneusers = new ArrayList<>();
-        PhoneUser user = new PhoneUser();
-        user.setUsername("阮小玉");
-        user.setUsernumber("13697110552");
-
-        PhoneUser user1 = new PhoneUser();
-        user1.setUsername("权志龙");
-        user1.setUsernumber("1369101459");
-
-        PhoneUser user2 = new PhoneUser();
-        user2.setUsername("崔胜贤");
-        user2.setUsernumber("136984939204");
-
-        PhoneUser user3 = new PhoneUser();
-        user3.setUsername("李胜利");
-        user3.setUsernumber("13593796895");
-
-        PhoneUser user4 = new PhoneUser();
-        user4.setUsername("东永裴");
-        user4.setUsernumber("1369998778");
-
-        PhoneUser user5 = new PhoneUser();
-        user5.setUsername("姜大声");
-        user5.setUsernumber("135577960");
-
-        phoneusers.add(user);
-        phoneusers.add(user1);
-        phoneusers.add(user2);
-        phoneusers.add(user3);
-        phoneusers.add(user4);
-        phoneusers.add(user5);
-        return phoneusers;
-
-    }
 }
