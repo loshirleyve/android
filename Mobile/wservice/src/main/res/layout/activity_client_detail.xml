@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/client_no_input_notice"
                 android:textColor="@color/gray_font" />
@@ -39,14 +39,14 @@
                 android:background="@color/whites"
                 android:hint="@string/client_no_input_notice"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/company_abbrev_name"
                 android:textColor="@color/gray_font" />
@@ -59,14 +59,14 @@
                 android:background="@color/whites"
                 android:hint="@string/company_abbrev_name"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/company_full_name"
                 android:textColor="@color/gray_font" />
@@ -79,7 +79,7 @@
                 android:background="@color/whites"
                 android:hint="@string/company_full_name"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 
@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/region"
                 android:textColor="@color/gray_font" />
@@ -139,14 +139,14 @@
                 android:background="@color/whites"
                 android:hint="@string/region"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/detail_info"
                 android:textColor="@color/gray_font" />
@@ -159,14 +159,14 @@
                 android:background="@color/whites"
                 android:hint="@string/detail_info"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/contact_name"
                 android:textColor="@color/gray_font" />
@@ -179,14 +179,14 @@
                 android:background="@color/whites"
                 android:hint="@string/contact_name"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/contact_phone"
                 android:textColor="@color/gray_font" />
@@ -199,7 +199,7 @@
                 android:background="@color/whites"
                 android:hint="@string/contact_phone"
                 android:paddingBottom="20dp"
-                android:paddingLeft="5dp"
+                android:paddingLeft="20dp"
                 android:paddingTop="20dp"
                 android:textSize="16dp" />
 

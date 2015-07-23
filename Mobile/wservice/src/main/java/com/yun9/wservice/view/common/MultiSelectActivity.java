@@ -16,6 +16,7 @@ import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
@@ -126,7 +127,13 @@ public class MultiSelectActivity extends JupiterFragmentActivity {
                 MultiSelectActivity.this.finish();
             }
         };
-        titleBarLayout.getTitleLeft().setOnClickListener(clickListener);
+        //titleBarLayout.getTitleLeft().setOnClickListener(clickListener);
+        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MultiSelectActivity.this.finish();
+            }
+        });
         submitTV.setOnClickListener(clickListener);
         if (command.getMaxNum() > 0){
             titleBarLayout.getTitleRightTv().setTextSize(13);
