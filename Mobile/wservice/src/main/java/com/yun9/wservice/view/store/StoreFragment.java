@@ -328,7 +328,9 @@ public class StoreFragment extends JupiterFragment {
             return;
         }
         final Resource resource = resourceFactory.create("QueryProducts");
-        resource.param("top", 1).param("groupid", productGroup.getId()).param("state","normal");
+        resource.param("top", 1)
+                .param("groupid", productGroup.getId())
+                .param("state","normal");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -364,7 +366,7 @@ public class StoreFragment extends JupiterFragment {
         }
 
         Resource resource = resourceFactory.create("QueryProducts");
-        resource.param("groupid", productGroup.getId()).param("state","normal");
+        resource.param("groupid", productGroup.getId());
         resource.page().setRowid(rowid).setDir(dir);
 
         resource.invok(new AsyncHttpResponseCallback() {

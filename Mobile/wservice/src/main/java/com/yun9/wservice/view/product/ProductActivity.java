@@ -183,7 +183,10 @@ public class ProductActivity extends JupiterFragmentActivity {
 
         ImageLoaderUtil.getInstance(this).displayImage(product.getProduct().getImgid(),
                 classifyPopLayout.getProducImage());
-        classifyPopLayout.getProductPriceTv().setText(product.getProduct().getPricedescr());
+        classifyPopLayout.getProductPriceTv().setText(
+                "￥" + product.getProduct().getMinprice()
+                        +" ~ "+product.getProduct().getMaxprice()
+        );
         classifyPopLayout.getConfirmLl().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,7 +216,8 @@ public class ProductActivity extends JupiterFragmentActivity {
             selectCategoryLayout.getSutitleTv().setVisibility(View.VISIBLE);
             selectCategoryLayout.getSutitleTv().setText(selectedClassify.getClassifyname());
         } else {
-            productPriceTV.setText(product.getProduct().getPricedescr());
+            productPriceTV.setText("￥" + product.getProduct().getMinprice()
+                    +" ~ "+product.getProduct().getMaxprice());
             selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select_product_classify));
             selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
             return;
@@ -274,7 +278,8 @@ public class ProductActivity extends JupiterFragmentActivity {
         productNameTV.setText(product.getProduct().getName());
         productDescTV.setText(product.getProduct().getIntroduce());
         productTipsTV.setText(product.getProduct().getProductdescr());
-        productPriceTV.setText(product.getProduct().getPricedescr());
+        productPriceTV.setText("￥" + product.getProduct().getMinprice()
+                                +" ~ "+product.getProduct().getMaxprice());
 
         if (product.getWorkorderComment() == null){
             commentLl.setVisibility(View.GONE);
@@ -446,17 +451,14 @@ public class ProductActivity extends JupiterFragmentActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             ProductPhaseItemWidget productPhaseItemWidget = null;
             CompositeProduct.ProductPhase productPhase = product.getProductPhases().get(position);
-
-            if (AssertValue.isNotNull(convertView)) {
-                productPhaseItemWidget = (ProductPhaseItemWidget) convertView;
-            } else {
+            if (convertView == null) {
                 productPhaseItemWidget = new ProductPhaseItemWidget(mContext);
+                productPhaseItemWidget.setTag(productPhase);
+                productPhaseItemWidget.getPhaseTV().setText(productPhase.getName()+": "+productPhase.getPhasedescr());
+                convertView = productPhaseItemWidget;
             }
 
-            productPhaseItemWidget.setTag(productPhase);
-            productPhaseItemWidget.getPhaseTV().setText(productPhase.getName()+": "+productPhase.getPhasedescr());
-
-            return productPhaseItemWidget;
+            return convertView;
         }
     };
 
