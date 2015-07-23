@@ -144,7 +144,7 @@ public class ClientListAdapter extends JupiterAdapter {
     }
 
     private void call(String phone) {
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(R.string.tel +
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" +
                 phone.replace("-", "")));
         context.startActivity(intent);
     }
