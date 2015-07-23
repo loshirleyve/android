@@ -249,14 +249,11 @@ public class ClientActivity extends JupiterFragmentActivity {
         resource.param("userid", sessionManager.getUser().getId())
                 .param("companyName", client.getFullname())
                 .param("companyNo", client.getSn())
-                .param("companyScale", client.getScaleid())
-                .param("homePageUrl", "")
-                .param("clientId", client.getId())
-                .param("logoImg", "");
+                .param("companyScale", client.getScaleid());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                showToast("初始化机构成功。");
+                showToast(getString(R.string.init_inst_success));
             }
 
             @Override

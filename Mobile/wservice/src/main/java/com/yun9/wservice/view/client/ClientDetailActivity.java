@@ -84,6 +84,8 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
     private String source;
     private String post;
     private String clientRank;
+    private List<Client> clients = new ArrayList<Client>();
+
 
     public static void start(Activity activity, EditClientCommand command) {
         Intent intent = new Intent(activity, ClientDetailActivity.class);
@@ -117,6 +119,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         sourceLayout.setOnClickListener(onSourceClickListener);
         postLayout.setOnClickListener(onPostClickListener);
         clientRankLayout.setOnClickListener(onClientRankClickListener);
+        clientNoEt.setOnFocusChangeListener(new OnFocusChangeListener(clientNoEt.getText().toString()));
     }
 
     private View.OnClickListener onSureClickListener = new View.OnClickListener() {
@@ -432,5 +435,36 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         postLayout.setShowSutitleText(true);
         clientRankLayout.getSutitleTv().setText(client.getLevel());
         clientRankLayout.setShowSutitleText(true);
+    }
+
+    private class OnFocusChangeListener implements View.OnFocusChangeListener{
+        private String content;
+        public OnFocusChangeListener(String content){
+            this.content = content;
+        }
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(!clientNoEt.hasFocus()){
+                Resource resource = resourceFactory.create("QueryInstClients");
+                resource.param("sn", clientNoEt.getText().toString());
+                resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                    @Override
+                    public void onSuccess(Response response) {
+                        clients = (List<Client>) response.getPayload();
+                        if (clients.size() > 0) {
+                            Toast.makeText(mContext, getString(R.string.duplicate_client_no_input_not), Toast.LENGTH_SHORT).show();
+                        }
+                        System.out.println("---------------------------clients.size:"+clients.size());
+                    }
+                    @Override
+                    public void onFailure(Response response) {
+                        Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onFinally(Response response) {
+                    }
+                });
+            }
+        }
     }
 }
