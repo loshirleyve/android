@@ -190,6 +190,10 @@ public class ProductActivity extends JupiterFragmentActivity {
         classifyPopLayout.getConfirmLl().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!sessionManager.isLogin()) {
+                    LoginMainActivity.start(ProductActivity.this, new LoginCommand());
+                    return;
+                }
                 if (selectedClassify == null
                         && product.getBizProductClassifies() != null
                         && product.getBizProductClassifies().size() > 0) {
