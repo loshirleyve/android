@@ -427,7 +427,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         //添加“业务单据”功能
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getSource()) && AssertValue.isNotNullAndNotEmpty(msgCard.getSourceid())) {
             MsgCardPanelActionItem bizDoc =
-                    new MsgCardPanelActionItem(getResources().getString(R.string.business_documents),
+                    new MsgCardPanelActionItem(getResources().getString(R.string.order),
                             R.drawable.save_fill, MsgCardPanelActionItem.ActionType.TYPE_PROCESS);
             bizDoc.setOnClickListener(new View.OnClickListener() {
                 @Override

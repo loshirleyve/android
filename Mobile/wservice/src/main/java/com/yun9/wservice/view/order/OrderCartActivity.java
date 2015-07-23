@@ -16,6 +16,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheInst;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -99,8 +100,14 @@ public class OrderCartActivity extends JupiterFragmentActivity{
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderViewService");
         resource.param("buyinstid",sessionManager.getInst().getId());
+        resource.param("purchase",sessionManager.getUser().getId());
+        resource.param("createby",sessionManager.getUser().getId());
         if (ClientProxyCache.getInstance().isProxy()){
-            resource.param("buyinstid",ClientProxyCache.getInstance().getProxy().getInstId());
+            CacheClientProxy clientProxy = ClientProxyCache.getInstance().getProxy();
+            resource.param("proxyinstid",sessionManager.getInst().getId());
+            resource.param("proxyperson",sessionManager.getUser().getId());
+            resource.param("purchase",clientProxy.getUserId());
+            resource.param("buyinstid",clientProxy.getInstId());
         }
         resource.param("orderProductViews",command.getOrderProductViews());
         resource.invok(new AsyncHttpResponseCallback() {
@@ -112,6 +119,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFailure(Response response) {
+                showToast(response.getCause());
                 orderList = null;
             }
 

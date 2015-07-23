@@ -14,6 +14,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.SerialableEntry;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -105,6 +106,9 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getClientId())) {
             clientid = command.getClientId();
         }
+        if(AssertValue.isNotNullAndNotEmpty(clientid)){
+            queryInstClientById(clientid);
+        }
         titleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         clientDetailSure.setOnClickListener(onSureClickListener);
         typeLayout.setOnClickListener(onTypeClickListener);
@@ -120,7 +124,9 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             if (!AssertValue.isNotNullAndNotEmpty(clientNoEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.client_no_input_please), Toast.LENGTH_SHORT).show();
-            } else if (!AssertValue.isNotNullAndNotEmpty(companyAbbrNameEt.getText().toString())) {
+            }else if (!isClientNo(clientNoEt.getText().toString())){
+                Toast.makeText(mContext, getString(R.string.client_no_correct_not), Toast.LENGTH_SHORT).show();
+            }else if (!AssertValue.isNotNullAndNotEmpty(companyAbbrNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.company_abbrev_name_input), Toast.LENGTH_SHORT).show();
             } else if (!AssertValue.isNotNullAndNotEmpty(companyFullNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.company_full_name_input), Toast.LENGTH_SHORT).show();
@@ -144,7 +150,8 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 Toast.makeText(mContext, getString(R.string.post_chose), Toast.LENGTH_SHORT).show();
             } else if (clientRankLayout.getSutitleTv().getVisibility() == View.GONE) {
                 Toast.makeText(mContext, getString(R.string.client_rank_input), Toast.LENGTH_SHORT).show();
-            } else if (clientNoEt.getText().toString().equals(companyAbbrNameEt.getText().toString())){
+            } else if (clientNoEt.getText().toString().equals(companyAbbrNameEt.getText().toString())
+                    || clientNoEt.getText().toString().equals(companyFullNameEt.getText().toString())){
                 Toast.makeText(mContext, getString(R.string.client_no_name_same_not), Toast.LENGTH_SHORT).show();
             }else if (!isPhone(contactPhoneEt.getText().toString())){
                 Toast.makeText(mContext, getString(R.string.correct_phone_no_not), Toast.LENGTH_SHORT).show();
@@ -158,6 +165,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddOrUpdateInstClientsService");
         resource.param("id", clientid);
+        resource.param("sn", clientNoEt.getText().toString());
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("name", companyAbbrNameEt.getText().toString());
         resource.param("fullname", companyFullNameEt.getText().toString());
@@ -166,6 +174,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         resource.param("contactman", contactNameEt.getText().toString());
         resource.param("contactphone", contactPhoneEt.getText().toString());
         resource.param("region", regionEt.getText().toString());
+        resource.param("address", detailInfoEt.getText().toString());
         resource.param("source", source);
         resource.param("industry", industry);
         resource.param("scaleid", instScale);
@@ -316,7 +325,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                         typeLayout.getSutitleTv().setVisibility(View.VISIBLE);
                         typeLayout.getSutitleTv().setText(selectedList.get(0).getValue());
                         type = selectedList.get(0).getKey();
-                    } else {
+                    }else if(AssertValue.isNotNull(selectedList) && selectedList.size() == 0){
                         typeLayout.getSutitleTv().setVisibility(View.GONE);
                     }
                     break;
@@ -372,7 +381,56 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         String str = "((\\d{11})|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1})|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1}))$)";
         Pattern p = Pattern.compile(str);
         Matcher m = p.matcher(phone);
-
         return m.matches();
+    }
+    public boolean isClientNo(String clientNo) {
+        String str = "^([a-zA-Z0-9]{6,8})$";
+        Pattern p = Pattern.compile(str);
+        Matcher m = p.matcher(clientNo);
+        return m.matches();
+    }
+
+    private void queryInstClientById(String clientid) {
+        Resource resource = resourceFactory.create("QueryInstClientById");
+        resource.param("instClient", clientid);
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Client client = (Client) response.getPayload();
+                displayClientData(client);
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
+    }
+
+    private void displayClientData(Client client) {
+        clientNoEt.setText(client.getSn());
+        companyAbbrNameEt.setText(client.getName());
+        companyFullNameEt.setText(client.getFullname());
+        typeLayout.getSutitleTv().setText(client.getType());
+        typeLayout.setShowSutitleText(true);
+        industryLayout.getSutitleTv().setText(client.getIndustry());
+        industryLayout.setShowSutitleText(true);
+        instScaleLayout.getSutitleTv().setText(client.getScaleid());
+        instScaleLayout.setShowSutitleText(true);
+        sourceLayout.getSutitleTv().setText(client.getSource());
+        sourceLayout.setShowSutitleText(true);
+        regionEt.setText(client.getRegion());
+        detailInfoEt.setText(client.getAddress());
+        contactNameEt.setText(client.getContactman());
+        contactPhoneEt.setText(client.getContactphone());
+        postLayout.getSutitleTv().setText(client.getContactposition());
+        postLayout.setShowSutitleText(true);
+        clientRankLayout.getSutitleTv().setText(client.getLevel());
+        clientRankLayout.setShowSutitleText(true);
     }
 }

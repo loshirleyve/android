@@ -33,6 +33,8 @@ import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
 import com.yun9.wservice.view.msgcard.MsgCardDetailActivity;
 import com.yun9.wservice.view.msgcard.MsgCardDetailCommand;
+import com.yun9.wservice.view.org.OrgUserDetailActivity;
+import com.yun9.wservice.view.org.OrgUserDetailCommand;
 import com.yun9.wservice.view.payment.PaymentOrderActivity;
 import com.yun9.wservice.view.payment.PaymentOrderCommand;
 import com.yun9.wservice.view.payment.PaymentResultActivity;
@@ -217,6 +219,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             orderDetailAdvisorWidget.buildWitdhData(order);
             orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
             orderDetailAdvisorWidget.getCallUsIv().setOnClickListener(onCallUsClick);
+            orderDetailAdvisorWidget.getUserHeadIV().setOnClickListener(onAdvisorUserInfoClick);
         } else {
             orderDetailAdvisorWidget.setVisibility(View.GONE);
         }
@@ -246,6 +249,14 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             }
             MsgCardDetailActivity.start(OrderDetailActivity.this,
                     msgCardDetailCommand);
+        }
+    };
+
+    private View.OnClickListener onAdvisorUserInfoClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            OrgUserDetailActivity.start(OrderDetailActivity.this,
+                    new OrgUserDetailCommand().setUserId(order.getOrder().getAdviseruserid()));
         }
     };
 
