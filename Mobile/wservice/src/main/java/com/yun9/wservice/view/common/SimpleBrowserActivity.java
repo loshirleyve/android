@@ -1,7 +1,9 @@
 package com.yun9.wservice.view.common;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,6 +30,8 @@ public class SimpleBrowserActivity extends JupiterFragmentActivity{
     private WebView webView;
 
     private SimpleBrowserCommand command;
+
+    private ProgressDialog progressDialog;
 
     public static void start(Context context,SimpleBrowserCommand command) {
         Intent intent = new Intent(context,SimpleBrowserActivity.class);
@@ -60,6 +64,25 @@ public class SimpleBrowserActivity extends JupiterFragmentActivity{
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
                 view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url,Bitmap favicon) {//网页页面开始加载的时候
+                if (progressDialog == null) {
+                    progressDialog=new ProgressDialog(SimpleBrowserActivity.this);
+                    progressDialog.setMessage(getResources().getString(R.string.app_wating));
+                    progressDialog.show();
+                    webView.setEnabled(false);// 当加载网页的时候将网页进行隐藏
+                }
+                super.onPageStarted(view, url, favicon);
+            }
+            @Override
+            public void onPageFinished(WebView view, String url) {//网页加载结束的时候
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                    progressDialog = null;
+                    webView.setEnabled(true);
+                }
             }
         });
         if (AssertValue.isNotNull(command.getTitle())){

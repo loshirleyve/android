@@ -1,5 +1,7 @@
 package com.yun9.jupiter.model;
 
+import com.yun9.jupiter.util.AssertValue;
+
 /**
  * Created by Leon on 15/6/23.
  */
@@ -9,6 +11,7 @@ public class CacheUser implements java.io.Serializable{
     private String name;
     private String head;
     private String url;
+    private String phone;
 
     public String getId() {
         return id;
@@ -48,5 +51,31 @@ public class CacheUser implements java.io.Serializable{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public CacheUser setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    public String[] getPhones() {
+        if (AssertValue.isNotNullAndNotEmpty(this.phone)){
+            return phone.split(";");
+        }
+        return null;
+    }
+
+    public String getFirstPhone() {
+        String[] phones = getPhones();
+
+        if (phones != null
+                && phones.length > 0){
+            return phones[0];
+        }
+        return null;
     }
 }

@@ -265,11 +265,12 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         @Override
         public void onClick(View v) {
             CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviseruserid());
-            if (user == null){
+            if (user == null
+                    || AssertValue.isNotNullAndNotEmpty(user.getFirstPhone())){
                 showToast("无法获取用户电话号码");
                 return;
             }
-            final String phone = "10086";
+            final String phone = user.getFirstPhone();
             if (!AssertValue.isNotNullAndNotEmpty(phone)){
                 Toast.makeText(OrderDetailActivity.this, "无法获取机构电话号码", Toast.LENGTH_SHORT).show();
                 return;
