@@ -1,14 +1,17 @@
 package com.yun9.wservice.view.org;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.telephony.SmsManager;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -88,6 +91,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item.setShowTime(false);
             item.setShowArrow(false);
             item.getArrowRightButton().setText(R.string.invitation_reg);
+            item.getArrowRightButton().setTextColor(mContext.getResources().getColor(R.color.whites));
             item.getArrowRightButton().setBackgroundResource(R.drawable.button_background);
             if (!user.isregister())
                 item.setShowArrowButton(true);
@@ -107,34 +111,57 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
     private View.OnClickListener onAddUserOrgClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            final PhoneUser user = (PhoneUser) v.getTag();
-            if (AssertValue.isNotNull(user)) {
-                Resource resource = resourceFactory.create("InviteUser");
-                resource.param("instid", instid);
-                resource.param("userid", userid);
-                resource.param("phoneNum", user.getUsernumber());
-                resource.param("deptid", orgid);
-                resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
-                    @Override
-                    public void onSuccess(Response response) {
-                        Map<String, String> msginfo = (Map<String, String>) response.getPayload();
-                        if (AssertValue.isNotNullAndNotEmpty(msginfo)) {
-                            sendMsgInfo(user.getUsernumber(), (String) msginfo.get("message"));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Response response) {
-                        Toast.makeText(mContext, response.getCause(), Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onFinally(Response response) {
-                    }
-                });
-            }
+            inviteUser((PhoneUser) v.getTag());
         }
     };
+
+    private void inviteUser(final PhoneUser user) {
+        if (AssertValue.isNotNull(user)) {
+            Resource resource = resourceFactory.create("InviteUser");
+            resource.param("instid", instid);
+            resource.param("userid", userid);
+            resource.param("phoneNum", user.getUsernumber());
+            resource.param("deptid", orgid);
+            resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+                @Override
+                public void onSuccess(Response response) {
+                    Map<String, String> msginfo = (Map<String, String>) response.getPayload();
+                    if (AssertValue.isNotNullAndNotEmpty(msginfo)) {
+                        alertDialog(user.getUsername(),user.getUsernumber(), (String) msginfo.get("message"));
+                    }
+                }
+
+                @Override
+                public void onFailure(Response response) {
+                    Toast.makeText(mContext, response.getCause(), Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFinally(Response response) {
+                }
+            });
+        }
+    }
+
+    private void alertDialog(String userName, final String userNumber, final String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(message);
+        builder.setTitle("发送信息给 "+userName+"("+userNumber+")：");
+        builder.setPositiveButton("确认", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                sendMsgInfo(userNumber,message);
+            }
+        });
+        builder.setNegativeButton("取消", new android.content.DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
 
 
     protected void sendMsgInfo(String phonenumber, String msginfo) {
