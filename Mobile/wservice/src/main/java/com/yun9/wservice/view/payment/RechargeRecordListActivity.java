@@ -122,6 +122,8 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 recordLV.setHasMoreItems(true);
+                pullRowid = null;
+                records.clear();
                 refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 

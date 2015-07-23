@@ -220,6 +220,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
             orderDetailAdvisorWidget.getCallUsIv().setOnClickListener(onCallUsClick);
             orderDetailAdvisorWidget.getUserHeadIV().setOnClickListener(onAdvisorUserInfoClick);
+            orderDetailAdvisorWidget.getUserNameTV().setOnClickListener(onAdvisorUserInfoClick);
         } else {
             orderDetailAdvisorWidget.setVisibility(View.GONE);
         }

@@ -219,6 +219,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                     } else {
                         toolbarTabWidget.getMsgCardPraiseIv().setImageResource(R.drawable.some_praise1);
                     }
+                    command.setMsgCardId(mMsgCard.getId());
                     refreshComplete();
                 }
             }

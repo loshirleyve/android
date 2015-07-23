@@ -105,6 +105,8 @@ public class OrderListActivity extends JupiterFragmentActivity{
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 orderLV.setHasMoreItems(true);
+                pullRowid = null;
+                orderList.clear();
                 refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
