@@ -119,7 +119,9 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         sourceLayout.setOnClickListener(onSourceClickListener);
         postLayout.setOnClickListener(onPostClickListener);
         clientRankLayout.setOnClickListener(onClientRankClickListener);
-        clientNoEt.setOnFocusChangeListener(new OnFocusChangeListener(clientNoEt.getText().toString()));
+        clientNoEt.setOnFocusChangeListener(new OnFocusChangeListener());
+        companyAbbrNameEt.setOnFocusChangeListener(new OnFocusChangeListener());
+        contactPhoneEt.setOnFocusChangeListener(new OnFocusChangeListener());
     }
 
     private View.OnClickListener onSureClickListener = new View.OnClickListener() {
@@ -438,15 +440,17 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
     }
 
     private class OnFocusChangeListener implements View.OnFocusChangeListener{
-        private String content;
-        public OnFocusChangeListener(String content){
-            this.content = content;
-        }
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if(!clientNoEt.hasFocus()){
+            if(!v.hasFocus()){
                 Resource resource = resourceFactory.create("QueryInstClients");
-                resource.param("sn", clientNoEt.getText().toString());
+                if(v == clientNoEt){
+                    resource.param("sn", clientNoEt.getText().toString());
+                }else if(v == companyAbbrNameEt){
+                    resource.param("name", companyAbbrNameEt.getText().toString());
+                }else if(v == contactPhoneEt){
+                    resource.param("contactphone", contactPhoneEt.getText().toString());
+                }
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override
                     public void onSuccess(Response response) {
@@ -454,7 +458,6 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                         if (clients.size() > 0) {
                             Toast.makeText(mContext, getString(R.string.duplicate_client_no_input_not), Toast.LENGTH_SHORT).show();
                         }
-                        System.out.println("---------------------------clients.size:"+clients.size());
                     }
                     @Override
                     public void onFailure(Response response) {
