@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -18,6 +19,7 @@ import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -214,21 +216,19 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (newDynamicCommand != null
-                && requestCode == newDynamicCommand.getRequestCode() && resultCode == NewDynamicCommand.RESULT_CODE_OK) {
-            mPtrFrame.autoRefresh();
-        }
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
             List<Org> orgs = (List<Org>) data.getSerializableExtra(OrgCompositeCommand.PARAM_ORG);
-            if ((AssertValue.isNotNullAndNotEmpty(users) || AssertValue.isNotNullAndNotEmpty(orgs)) && AssertValue.isNotNullAndNotEmpty(forwardMsgCardId)) {
+            if ((AssertValue.isNotNullAndNotEmpty(users) || AssertValue.isNotNullAndNotEmpty(orgs))
+                    && AssertValue.isNotNullAndNotEmpty(forwardMsgCardId)) {
                 newDynamicCommand = new NewDynamicCommand().setMsgCardId(forwardMsgCardId)
                         .setSelectUsers(users).setSelectOrgs(orgs)
                         .setType(NewDynamicCommand.MSG_FORWARD);
                 NewDynamicActivity.start(MsgCardListActivity.this, newDynamicCommand);
+                return;
             }
         }
-        if(resultCode == MsgCardDetailCommand.RESULT_CODE_OK){
+        if(resultCode == JupiterCommand.RESULT_CODE_OK){
             mPtrFrame.autoRefresh();
         }
     }

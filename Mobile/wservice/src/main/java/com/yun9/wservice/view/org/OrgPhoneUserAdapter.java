@@ -93,17 +93,18 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item.getArrowRightButton().setText(R.string.invitation_reg);
             item.getArrowRightButton().setTextColor(mContext.getResources().getColor(R.color.whites));
             item.getArrowRightButton().setBackgroundResource(R.drawable.button_background);
-            if (!user.isregister())
+            if (!user.isregister()) {
                 item.setShowArrowButton(true);
+            }
+            item.getTitleTV().setText(user.getUsername());
+            item.getSutitleTv().setText(user.getUsernumber());
+            item.select(user.isregister());
+            item.getArrowRightButton().setTag(user);
+            item.getArrowRightButton().setOnClickListener(onAddUserOrgClickListener);
 
         } else {
             item = (JupiterRowStyleSutitleLayout) convertView;
         }
-        item.getTitleTV().setText(user.getUsername());
-        item.getSutitleTv().setText(user.getUsernumber());
-        item.select(user.isregister());
-        item.getArrowRightButton().setTag(user);
-        item.getArrowRightButton().setOnClickListener(onAddUserOrgClickListener);
         return item;
     }
 
@@ -117,6 +118,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
     private void inviteUser(final PhoneUser user) {
         if (AssertValue.isNotNull(user)) {
+            final ProgressDialog progressDialog = ProgressDialog.show(mContext, null, mContext.getResources().getString(R.string.app_wating), true);
             Resource resource = resourceFactory.create("InviteUser");
             resource.param("instid", instid);
             resource.param("userid", userid);
@@ -138,6 +140,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
 
                 @Override
                 public void onFinally(Response response) {
+                    progressDialog.dismiss();
                 }
             });
         }

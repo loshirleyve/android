@@ -19,6 +19,10 @@ public final class State implements Serializable{
         public static final String COMPLETE = "complete";
     }
 
+    public class MsgCard {
+        public static final String UN_READ = "unread";
+    }
+
     public class WorkOrder {
         public static final String COMPLETE = "complete";
     }

@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -41,6 +42,7 @@ import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
 import com.yun9.wservice.model.MsgCardProcessAction;
 import com.yun9.wservice.model.MsgCardShare;
+import com.yun9.wservice.model.State;
 import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.dynamic.NewDynamicCommand;
@@ -269,6 +271,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private void refreshComplete() {
         //fakeDataProcessAction(mMsgCard);
+        markAsReaded();
         builderView(mMsgCard);
 
         if (AssertValue.isNotNull(command) && command.isScrollComment()) {
@@ -278,6 +281,31 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
         segmentedGroup.selectItem(currentItem);
         viewPager.setCurrentItem(currentItem);
+    }
+
+    private void markAsReaded() {
+        if (!State.MsgCard.UN_READ.equals(mMsgCard.getState())){
+            return;
+        }
+        Resource resource = resourceFactory.create("UpdateMsgStateByMsgIdsService");
+        resource.param("msgidlist",new String[]{mMsgCard.getId()});
+        resource.param("userid",sessionManager.getUser().getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                setResult(JupiterCommand.RESULT_CODE_OK);
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 
 
@@ -291,6 +319,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         }
 
         msgCardWidget.buildWithData(msgCard);
+        msgCardWidget.getIsNewIv().setVisibility(View.GONE);
 
         commonItem.getDescTextTV().setText(msgCard.getCommentcount() + "");
         shareItem.getDescTextTV().setText(msgCard.getSharecount() + "");

@@ -13,6 +13,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.UserCache;
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -24,6 +25,7 @@ import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.util.PublicHelp;
+import com.yun9.jupiter.view.JupiterBadgeView;
 import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
@@ -297,21 +299,27 @@ public class DynamicSessionFragment extends JupiterFragment {
 
             if (convertView == null) {
                 jupiterRowStyleSutitleLayout = new JupiterRowStyleSutitleLayout(mContext);
+                jupiterRowStyleSutitleLayout.setTag(msgsGroup);
+                jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
+                jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
+                jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
+
+                //获取用户信息
+                CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
+
+                if (AssertValue.isNotNull(cacheUser)) {
+                    ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());
+                    jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
+                }
+                if (msgsGroup.getUnreadnum() > 0){
+                    JupiterBadgeView badgeView = new JupiterBadgeView(getActivity(), jupiterRowStyleSutitleLayout.getMainIV());
+                    badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
+                    badgeView.setText(""+msgsGroup.getUnreadnum());
+                    badgeView.setBadgeSize(18, 18);
+                    badgeView.show();
+                }
             } else {
                 jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
-            }
-
-            jupiterRowStyleSutitleLayout.setTag(msgsGroup);
-            jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
-            jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
-            jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
-
-            //获取用户信息
-            CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
-
-            if (AssertValue.isNotNull(cacheUser)) {
-                ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());
-                jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
             }
 
             return jupiterRowStyleSutitleLayout;
@@ -413,7 +421,7 @@ public class DynamicSessionFragment extends JupiterFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (AssertValue.isNotNull(newDynamicCommand) && newDynamicCommand.getRequestCode() == requestCode && resultCode == NewDynamicCommand.RESULT_CODE_OK) {
+        if ( resultCode == JupiterCommand.RESULT_CODE_OK) {
             mPtrClassicFrameLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {

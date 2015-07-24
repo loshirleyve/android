@@ -26,6 +26,7 @@ import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardAttachment;
+import com.yun9.wservice.model.State;
 import com.yun9.wservice.widget.AlbumImageGridItem;
 import com.yun9.wservice.widget.FileItemWidget;
 
@@ -57,6 +58,8 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     private JupiterGridView imageGV;
 
     private JupiterListView docLV;
+
+    private ImageView isNewIv;
 
     private MsgCard mMsgCard;
 
@@ -102,6 +105,8 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         commentRL = (RelativeLayout) this.findViewById(R.id.comm_rl);
         commentNumTV = (TextView) this.findViewById(R.id.comm_num_tv);
+
+        isNewIv = (ImageView) this.findViewById(R.id.isnew_iv);
 
         //actionRL = (RelativeLayout) this.findViewById(R.id.action_rl);
 
@@ -173,6 +178,11 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         if (!AssertValue.isNotNull(msgCard))
             return;
 
+        if (State.MsgCard.UN_READ.equals(msgCard.getState())){
+            isNewIv.setVisibility(VISIBLE);
+        } else {
+            isNewIv.setVisibility(GONE);
+        }
         imageAttachments.clear();
         docAttachments.clear();
 
@@ -381,5 +391,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
     public RelativeLayout getMainRl() {
         return mainRl;
+    }
+
+    public ImageView getIsNewIv() {
+        return isNewIv;
     }
 }

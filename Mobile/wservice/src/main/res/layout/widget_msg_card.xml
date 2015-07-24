@@ -7,6 +7,7 @@
     android:background="@drawable/msg_card_background"
     android:descendantFocusability="blocksDescendants">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -191,4 +192,14 @@
                 android:textColor="@color/black" />
         </LinearLayout>
     </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/isnew_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/new_arrow"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
 </RelativeLayout>

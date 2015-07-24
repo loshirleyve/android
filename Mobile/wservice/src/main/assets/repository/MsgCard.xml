@@ -93,4 +93,11 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 标记消息为已读 -->
+    <repository>
+        <name>UpdateMsgStateByMsgIdsService</name>
+        <action>com.yun9.ws.biz.service.UpdateMsgStateByMsgIdsService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>
