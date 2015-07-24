@@ -224,8 +224,8 @@ public class ProductActivity extends JupiterFragmentActivity {
             selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
             return;
         }
-        productPriceTV.setText(selectedClassify.getPrice()+"元");
-        classifyPopLayout.getProductPriceTv().setText(selectedClassify.getPrice() + "元");
+        productPriceTV.setText("￥"+selectedClassify.getPrice());
+        classifyPopLayout.getProductPriceTv().setText("￥" + selectedClassify.getPrice());
         classifyPopLayout.getClassifyNameTv().setText(selectedClassify.getClassifyname());
     }
 
