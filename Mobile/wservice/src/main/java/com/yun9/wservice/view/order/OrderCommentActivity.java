@@ -133,6 +133,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             showToast("请填写评论内容！");
             return;
         }
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         // 调用服务提交评论
         Resource resource = resourceFactory.create("AddWorkOrderCommentService");
         resource.param("workorderid",commentCommand.getWorkOrder().getOrderworkid());
@@ -155,7 +156,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-
+                registerDialog.dismiss();
             }
         });
     }
