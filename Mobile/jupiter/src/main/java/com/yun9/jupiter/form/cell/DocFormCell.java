@@ -11,6 +11,7 @@ import com.yun9.jupiter.form.FormUtilFactory;
 import com.yun9.jupiter.form.model.DocFormCellBean;
 import com.yun9.jupiter.form.model.FormCellBean;
 import com.yun9.jupiter.model.CacheFile;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.widget.BasicJupiterEditAdapter;
@@ -36,6 +37,8 @@ public class DocFormCell extends FormCell {
     private DocFormCellBean cellBean;
 
     private JupiterEditAdapter adapter;
+
+    private List<FileBean> fileBeans;
 
     public DocFormCell(FormCellBean cellBean) {
         super(cellBean);
@@ -82,6 +85,19 @@ public class DocFormCell extends FormCell {
             return;
         }
         restore((String[]) cellBean.getValue());
+    }
+
+    public void restore(List<FileBean> docs) {
+        this.fileBeans = docs;
+        List<String> ids =  new ArrayList<String>();
+        for (FileBean fileBean : fileBeans){
+            if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fileBean.getStorageType())){
+                ids.add(fileBean.getFilePath());
+            } else if (FileBean.FILE_STORAGE_TYPE_YUN.equals(fileBean.getStorageType())){
+                ids.add(fileBean.getId());
+            }
+        }
+        restore(ids.toArray(new String[0]));
     }
 
     public void restore(String[] ids) {
@@ -180,4 +196,12 @@ public class DocFormCell extends FormCell {
         this.cellBean = (DocFormCellBean) bean;
     }
 
+    public List<FileBean> getFileBeans() {
+        return fileBeans;
+    }
+
+    public DocFormCell setFileBeans(List<FileBean> fileBeans) {
+        this.fileBeans = fileBeans;
+        return this;
+    }
 }

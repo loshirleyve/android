@@ -23,6 +23,7 @@ import com.yun9.jupiter.form.model.ImageFormCellBean;
 import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
 import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.form.model.UserFormCellBean;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -148,6 +149,33 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
         }
         return attachements;
     }
+
+    public List<FileBean> getFileBeans() {
+        List<FileBean> fileBeans = new ArrayList<>();
+        for (FormCell cell : cells){
+            if (cell.getClass() == DocFormCell.class){
+                List<FileBean> temp = ((DocFormCell)cell).getFileBeans();
+                if (temp != null && temp.size() > 0){
+                    for (FileBean fb : temp){
+                        if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fb.getStorageType())){
+                            fileBeans.add(fb);
+                        }
+                    }
+                }
+            } else if (cell.getClass() == ImageFormCell.class){
+                List<FileBean> temp = ((ImageFormCell)cell).getFileBeans();
+                if (temp != null && temp.size() > 0){
+                    for (FileBean fb : temp){
+                        if (FileBean.FILE_STORAGE_TYPE_LOCAL.equals(fb.getStorageType())){
+                            fileBeans.add(fb);
+                        }
+                    }
+                }
+            }
+        }
+        return fileBeans;
+    }
+
 
     public class Attachement{
         private String id;

@@ -33,11 +33,7 @@ public class SelectImageBizExecutor implements BizExecutor{
                     List<FileBean> docs = (List<FileBean>) data
                             .getSerializableExtra(DocCompositeCommand.PARAM_IMAGE);
                     if (docs != null){
-                        List<String> ids =  new ArrayList<String>();
-                        for (FileBean fileBean : docs){
-                            ids.add(fileBean.getId());
-                        }
-                        formCell.restore(ids.toArray(new String[0]));
+                        formCell.restore(docs);
                     }
                 }
             }

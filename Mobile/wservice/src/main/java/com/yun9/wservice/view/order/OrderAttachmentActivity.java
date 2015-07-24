@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.CustomCallbackActivity;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -22,9 +25,11 @@ import com.yun9.wservice.enums.AttachmentInputType;
 import com.yun9.wservice.enums.AttachmentTransferType;
 import com.yun9.wservice.model.Attachment;
 import com.yun9.wservice.model.wrapper.AttachmentWrapper;
+import com.yun9.wservice.task.UploadFileAsyncTask;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -201,10 +206,62 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
             showToast("请选择实物资料提交方式");
             return;
         }
-        List<OrderAttachmentVitualWidget.Attachement> attachements = vitualWidget.getValue();
+        final List<OrderAttachmentVitualWidget.Attachement> attachements = vitualWidget.getValue();
         if (attachements == null){
             return;
         }
+       List<FileBean> fileBeans = vitualWidget.getFileBeans();
+        final List<String> filePaths = toFilePath(fileBeans);
+        if (fileBeans.size() > 0){
+            UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(this,fileBeans);
+            uploadFileAsyncTask.setCompImage(true);
+            uploadFileAsyncTask.setOnFileUploadCallback(new UploadFileAsyncTask.OnFileUploadCallback() {
+                @Override
+                public void onPostExecute(List<FileBean> imgs) {
+                    boolean upload = true;
+                    if (AssertValue.isNotNull(imgs)) {
+                        FileBean image;
+                        for (int i = 0; i < imgs.size();i++) {
+                            image = imgs.get(i);
+                            if (image.FILE_STORAGE_TYPE_LOCAL.equals(image.getStorageType())) {
+                                upload = false;
+                            } else {
+                                changeRealFileId(attachements,filePaths.get(i),image.getId());
+                            }
+                        }
+                    }
+
+                    if (!upload) {
+                        showToast(R.string.new_image_upload_error);
+                    } else {
+                        submit(attachements);
+                    }
+                }
+            });
+            uploadFileAsyncTask.execute();
+        } else {
+            submit(attachements);
+        }
+    }
+
+    private List<String> toFilePath(List<FileBean> fileBeans) {
+        List<String> filePaths = new ArrayList<>();
+        for (FileBean fileBean : fileBeans){
+            filePaths.add(fileBean.getFilePath());
+        }
+        return filePaths;
+    }
+
+    private void changeRealFileId(List<OrderAttachmentVitualWidget.Attachement> attachements,
+                             String fakeId,String realId) {
+        for (OrderAttachmentVitualWidget.Attachement attachement : attachements){
+            if (fakeId.equals(attachement.getInputvalue())){
+                attachement.setInputvalue(realId);
+            }
+        }
+    }
+
+    private void submit(List<OrderAttachmentVitualWidget.Attachement> attachements) {
         Resource resource = resourceFactory.create("UpdateOrderAttachmentService");
         resource.param("attachkeys",attachements);
         resource.invok(new AsyncHttpResponseCallback() {
