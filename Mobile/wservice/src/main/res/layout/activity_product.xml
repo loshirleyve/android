@@ -246,6 +246,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:background="@drawable/button_blue"
                     android:text="查看更多评价" />
 
             </LinearLayout>
