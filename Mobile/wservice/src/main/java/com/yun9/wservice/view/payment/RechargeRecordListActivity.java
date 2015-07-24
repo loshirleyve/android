@@ -166,7 +166,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
     }
 
     private void completeRefresh(String rowid, final String dir) {
-        Resource resource = resourceFactory.create("QueryRechargeService");
+        final Resource resource = resourceFactory.create("QueryRechargeService");
         resource.param("state", state);
         resource.param("userid", sessionManager.getUser().getId());
         resource.page().setDir(dir).setRowid(rowid);
@@ -181,6 +181,10 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
                         records.addAll(0, tempList);
                         if (!AssertValue.isNotNullAndNotEmpty(pushRowid)){
                             pushRowid = tempList.get(tempList.size() - 1).getId();
+                        }
+
+                        if (tempList.size() < Integer.valueOf(resource.page().getSize())){
+                            recordLV.setHasMoreItems(false);
                         }
                     } else {
                         pushRowid = tempList.get(tempList.size() - 1).getId();

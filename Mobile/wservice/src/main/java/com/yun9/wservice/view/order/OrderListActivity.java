@@ -165,6 +165,9 @@ public class OrderListActivity extends JupiterFragmentActivity{
                         if (!AssertValue.isNotNullAndNotEmpty(pushRowid)){
                             pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getOrderid();
                         }
+                        if (orderBaseInfos.size() < Integer.valueOf(resource.page().getSize())){
+                            orderLV.setHasMoreItems(false);
+                        }
                     } else {
                         pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getOrderid();
                         orderList.addAll(orderBaseInfos);

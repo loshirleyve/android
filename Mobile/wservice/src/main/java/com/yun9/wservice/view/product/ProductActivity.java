@@ -135,6 +135,8 @@ public class ProductActivity extends JupiterFragmentActivity {
 
     private CompositeProduct.ProductClassify selectedClassify;
 
+    private String priceDesc;
+
     @Override
     protected int getContentView() {
         return R.layout.activity_product;
@@ -183,10 +185,7 @@ public class ProductActivity extends JupiterFragmentActivity {
 
         ImageLoaderUtil.getInstance(this).displayImage(product.getProduct().getImgid(),
                 classifyPopLayout.getProducImage());
-        classifyPopLayout.getProductPriceTv().setText(
-                "￥" + product.getProduct().getMinprice()
-                        +" ~ "+product.getProduct().getMaxprice()
-        );
+        classifyPopLayout.getProductPriceTv().setText(priceDesc );
         classifyPopLayout.getConfirmLl().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -220,8 +219,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             selectCategoryLayout.getSutitleTv().setVisibility(View.VISIBLE);
             selectCategoryLayout.getSutitleTv().setText(selectedClassify.getClassifyname());
         } else {
-            productPriceTV.setText("￥" + product.getProduct().getMinprice()
-                    +" ~ "+product.getProduct().getMaxprice());
+            productPriceTV.setText(priceDesc);
             selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select_product_classify));
             selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
             return;
@@ -279,11 +277,17 @@ public class ProductActivity extends JupiterFragmentActivity {
             instnameTV.setText(getResources().getString(R.string.product_detail_instname, cacheInst.getInstname()));
         }
 
+        if (product.getProduct().getMaxprice() == product.getProduct().getMinprice()){
+            priceDesc = "￥" + product.getProduct().getMinprice();
+        } else {
+            priceDesc = "￥" + product.getProduct().getMinprice()
+                    +" ~ "+product.getProduct().getMaxprice();
+        }
+
         productNameTV.setText(product.getProduct().getName());
         productDescTV.setText(product.getProduct().getIntroduce());
         productTipsTV.setText(product.getProduct().getProductdescr());
-        productPriceTV.setText("￥" + product.getProduct().getMinprice()
-                                +" ~ "+product.getProduct().getMaxprice());
+        productPriceTV.setText(priceDesc);
 
         if (product.getWorkorderComment() == null){
             commentLl.setVisibility(View.GONE);

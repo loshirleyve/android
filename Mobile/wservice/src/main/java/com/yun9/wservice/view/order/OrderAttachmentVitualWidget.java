@@ -102,6 +102,9 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
                 cellBean.setId(attachment.getId());
                 cellBean.setLabel(attachment.getAttachname());
                 cellBean.setMaxNum(1);
+                if (AssertValue.isNotNullAndNotEmpty(attachment.getInputvalue())){
+                    cellBean.setValue(attachment.getInputvalue().split(","));
+                }
                 cellBeans.add(cellBean);
             } else if (AttachmentInputType.TEXT.equals(attachment.getInputtype())){
                 TextFormCellBean cellBean = new TextFormCellBean();
@@ -118,6 +121,9 @@ public class OrderAttachmentVitualWidget extends JupiterRelativeLayout{
                 cellBean.setId(attachment.getId());
                 cellBean.setLabel(attachment.getAttachname());
                 cellBean.setMaxNum(1);
+                if (AssertValue.isNotNullAndNotEmpty(attachment.getInputvalue())){
+                    cellBean.setValue(attachment.getInputvalue().split(","));
+                }
                 cellBeans.add(cellBean);
             }
         }
