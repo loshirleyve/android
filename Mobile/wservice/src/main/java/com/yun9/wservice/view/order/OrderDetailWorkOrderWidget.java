@@ -29,6 +29,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
 
     private TextView workOrderIdTV;
     private TextView workOrderNameTV;
+    private TextView workOrderRemarkTV;
     private TextView workOrderStateTV;
     private TextView checkoutWorkOrderCommentTV;
 
@@ -55,6 +56,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
         workOrderStateTV.setText(CtrlCodeCache.getInstance()
                 .getCtrlcodeName(CtrlCodeDefNo.WORK_STATE, workOrder.getOrderworkstate()));
+        workOrderRemarkTV.setText(workOrder.getRemark());
         // 没有完成不能评论
         if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
             checkoutWorkOrderCommentTV.setVisibility(GONE);
@@ -73,6 +75,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         workOrderIdTV = (TextView) this.findViewById(R.id.work_order_id_tv);
         workOrderNameTV = (TextView) this.findViewById(R.id.work_order_name_tv);
         workOrderStateTV = (TextView) this.findViewById(R.id.work_order_state_tv);
+        workOrderRemarkTV = (TextView) this.findViewById(R.id.work_order_remark_tv);
         checkoutWorkOrderCommentTV = (TextView) this.findViewById(R.id.checkout_work_order_comment_tv);
         buildView();
     }
@@ -81,33 +84,13 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
     }
 
     private void checkoutComment() {
-        ResourceFactory resourceFactory = JupiterApplication.getBeanManager()
-                                                                .get(ResourceFactory.class);
-        Resource resource = resourceFactory.create("QueryWorkCommentsByWorkOrderIdService");
-        resource.param("workorderid", workOrder.getOrderworkid());
-        resource.invok(new AsyncHttpResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                WorkOrderComment comment = (WorkOrderComment) response.getPayload();
-                if (comment != null
-                        && AssertValue.isNotNullAndNotEmpty(comment.getId())) {
-                    checkoutWorkOrderCommentTV.setText("查看评论");
-                    checkoutWorkOrderCommentTV.setOnClickListener(showComment);
-                } else {
-                    checkoutWorkOrderCommentTV.setOnClickListener(commentWorkOrder);
-                    checkoutWorkOrderCommentTV.setText("评论工单");
-                }
-            }
-
-            @Override
-            public void onFailure(Response response) {
-                checkoutWorkOrderCommentTV.setVisibility(GONE);
-            }
-
-            @Override
-            public void onFinally(Response response) {
-            }
-        });
+        if (workOrder.getCommentNum() > 0) {
+            checkoutWorkOrderCommentTV.setText("查看评论");
+            checkoutWorkOrderCommentTV.setOnClickListener(showComment);
+        } else {
+            checkoutWorkOrderCommentTV.setOnClickListener(commentWorkOrder);
+            checkoutWorkOrderCommentTV.setText("评论工单");
+        }
     }
 
     private OnClickListener commentWorkOrder = new OnClickListener() {

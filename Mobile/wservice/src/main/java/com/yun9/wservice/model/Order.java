@@ -277,6 +277,9 @@ public class Order implements Serializable{
         private Long assigneddate;
         private Long expirydate;
         private Long completedate;
+        private String duty;
+        private String remark;
+        private int commentNum;
 
         public String getOrderworkid() {
             return orderworkid;
@@ -356,6 +359,33 @@ public class Order implements Serializable{
 
         public void setCompletedate(Long completedate) {
             this.completedate = completedate;
+        }
+
+        public String getDuty() {
+            return duty;
+        }
+
+        public OrderWorkOrder setDuty(String duty) {
+            this.duty = duty;
+            return this;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public OrderWorkOrder setRemark(String remark) {
+            this.remark = remark;
+            return this;
+        }
+
+        public int getCommentNum() {
+            return commentNum;
+        }
+
+        public OrderWorkOrder setCommentNum(int commentNum) {
+            this.commentNum = commentNum;
+            return this;
         }
     }
 }

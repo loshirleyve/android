@@ -272,7 +272,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             }
             final String phone = user.getFirstPhone();
             if (!AssertValue.isNotNullAndNotEmpty(phone)){
-                Toast.makeText(OrderDetailActivity.this, "无法获取机构电话号码", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderDetailActivity.this, "无法获取用户电话号码", Toast.LENGTH_SHORT).show();
                 return;
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
