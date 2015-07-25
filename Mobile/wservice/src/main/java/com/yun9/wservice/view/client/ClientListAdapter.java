@@ -75,7 +75,7 @@ public class ClientListAdapter extends JupiterAdapter {
             // 如果正在代理该机构
             if (ClientProxyCache.getInstance().isProxy()){
                 CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
-                if (client.getId().equals(proxy.getUserId())
+                if (client.getClientadminid().equals(proxy.getUserId())
                         && proxy.getInstId().equals(client.getClientinstid())){
                     clientItemLayout.getTitle_TV().setText(client.getName()+R.string.is_proxy);
                     clientItemLayout.getTitle_TV().setTextColor(clientItemLayout.getResources()
@@ -104,7 +104,7 @@ public class ClientListAdapter extends JupiterAdapter {
         Client client = clients.get(position);
         if (ClientProxyCache.getInstance().isProxy()){
             CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
-            if (client.getId().equals(proxy.getUserId())
+            if (client.getClientadminid().equals(proxy.getUserId())
                     && proxy.getInstId().equals(client.getClientinstid())){
                 if (AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
                     return ClientActivity.VIEW_TYPE_INITED_PROXY;

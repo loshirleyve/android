@@ -246,10 +246,12 @@ public class ClientActivity extends JupiterFragmentActivity {
         final ProgressDialog registerDialog =
                 ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("InstInit");
-        resource.param("userid", sessionManager.getUser().getId())
-                .param("companyName", client.getFullname())
-                .param("companyNo", client.getSn())
-                .param("companyScale", client.getScaleid());
+        resource.param("companyName",client.getFullname());
+        resource.param("companyNo",client.getSn());
+        resource.param("companyScale",client.getScaleid());
+        resource.param("userNo", client.getContactphone());
+        resource.param("userName", client.getContactman());
+        resource.param("clientId", client.getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -275,7 +277,7 @@ public class ClientActivity extends JupiterFragmentActivity {
             return;
         }
         CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
-        if (proxy != null && client.getId().equals(proxy.getUserId())
+        if (proxy != null && client.getClientadminid().equals(proxy.getUserId())
                 && proxy.getInstId().equals(client.getClientinstid())){
             ClientProxyCache.getInstance().putClientProxy(null);
             showToast("成功取消代理");
