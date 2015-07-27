@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,6 +48,7 @@ import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
+import com.yun9.wservice.view.msgcard.widget.MsgCardDetailCommentItemWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailCommentWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailPraiseWidget;
 import com.yun9.wservice.view.msgcard.widget.MsgCardDetailShareWidget;
@@ -284,13 +286,11 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     }
 
     private void markAsReaded() {
-        if (!State.MsgCard.UN_READ.equals(mMsgCard.getState())
-                || mMsgCard.getBizMsg() == null
-                || !AssertValue.isNotNullAndNotEmpty(mMsgCard.getBizMsg().getId())){
+        if (mMsgCard.getRead() > 0){
             return;
         }
-        Resource resource = resourceFactory.create("UpdateMsgStateByMsgIdsService");
-        resource.param("msgidlist",new String[]{mMsgCard.getBizMsg().getId()});
+        Resource resource = resourceFactory.create("UpdateMsgCardStateByIdsService");
+        resource.param("msgcardidList",new String[]{mMsgCard.getId()});
         resource.param("userid",sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -312,12 +312,15 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
 
     private void builderView(MsgCard msgCard) {
-
+        CacheUser user = UserCache.getInstance().getUser(msgCard.getFrom());
         if (!AssertValue.isNotNullAndNotEmpty(command.getTitle())){
-            CacheUser user = UserCache.getInstance().getUser(msgCard.getCreateby());
             if (user != null){
                 titleBar.getTitleTv().setText(user.getName());
             }
+        }
+        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getInstname())){
+            titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
+            titleBar.getTitleSutitleTv().setText(user.getInstname());
         }
 
         msgCardWidget.buildWithData(msgCard);
@@ -357,17 +360,29 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     }
 
-    private JupiterRowStyleSutitleLayout createCommonItem(MsgCardComment msgCardComment) {
-        JupiterRowStyleSutitleLayout itemWidget = new JupiterRowStyleSutitleLayout(mContext);
+    private MsgCardDetailCommentItemWidget createCommonItem(MsgCardComment msgCardComment) {
+        ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(this)
+                .inflate(R.layout.wrapper_msg_card_detail_comment_item, null);
+        MsgCardDetailCommentItemWidget itemWidget =
+                (MsgCardDetailCommentItemWidget) viewGroup.findViewById(R.id.main);
+        viewGroup.removeView(itemWidget);
         CacheUser cacheUser = UserCache.getInstance().getUser(msgCardComment.getFrom());
-        if (AssertValue.isNotNull(cacheUser)) {
-            itemWidget.getTitleTV().setText(cacheUser.getName());
-            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV());
+        if (msgCardComment.getFrom().equals(sessionManager.getUser().getId())){
+            itemWidget.getLeftLl().setVisibility(View.GONE);
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getRightIv());
+            itemWidget.getRightTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
+            itemWidget.getRightContentTv().setText(msgCardComment.getContent());
+        } else {
+            itemWidget.getRightLl().setVisibility(View.GONE);
+            itemWidget.getLeftTitleTv().setText(cacheUser.getName());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
+            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
+                itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
+                itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstname());
+            }
+            itemWidget.getLeftTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
+            itemWidget.getLeftContentTv().setText(msgCardComment.getContent());
         }
-
-        itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
-        itemWidget.getSutitleTv().setText(msgCardComment.getContent());
-        itemWidget.setShowArrow(false);
         return itemWidget;
     }
 

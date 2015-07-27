@@ -49,7 +49,7 @@
                     ext:segmented_item_ico_selected="@drawable/com222"
                     ext:segmented_item_text_color="@color/drak"
                     ext:segmented_item_text_color_selected="@color/black"
-                    ext:segmented_item_titleText="@string/msg_card_comment"></com.yun9.jupiter.widget.JupiterSegmentedItem>
+                    ext:segmented_item_titleText="@string/msg"></com.yun9.jupiter.widget.JupiterSegmentedItem>
 
 
                 <com.yun9.jupiter.widget.JupiterSegmentedItem

@@ -700,7 +700,11 @@ public class StoreFragment extends JupiterFragment {
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
             ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImgid(), productItemLayout.getMainIV());
-            productItemLayout.getHotnoticeTV().setText(product.getPricedescr());
+            if (product.getMaxprice() >  product.getMinprice()){
+                productItemLayout.getHotnoticeTV().setText("￥"+product.getMinprice()+"~"+product.getMaxprice());
+            } else {
+                productItemLayout.getHotnoticeTV().setText("￥"+product.getMaxprice());
+            }
             productItemLayout.setTag(product);
 
             return productItemLayout;

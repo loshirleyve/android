@@ -48,7 +48,9 @@ public class MsgCard implements java.io.Serializable {
     private int commentcount;
     private boolean mypraise;
 
-    private BizMsg bizMsg;
+    private int readnums;
+    private int opennums;
+    private int read;
 
     private MsgCardComment lastComment;
 
@@ -331,12 +333,30 @@ public class MsgCard implements java.io.Serializable {
         this.process = process;
     }
 
-    public BizMsg getBizMsg() {
-        return bizMsg;
+    public int getReadnums() {
+        return readnums;
     }
 
-    public MsgCard setBizMsg(BizMsg bizMsg) {
-        this.bizMsg = bizMsg;
+    public MsgCard setReadnums(int readnums) {
+        this.readnums = readnums;
+        return this;
+    }
+
+    public int getOpennums() {
+        return opennums;
+    }
+
+    public MsgCard setOpennums(int opennums) {
+        this.opennums = opennums;
+        return this;
+    }
+
+    public int getRead() {
+        return read;
+    }
+
+    public MsgCard setRead(int read) {
+        this.read = read;
         return this;
     }
 }

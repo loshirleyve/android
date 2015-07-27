@@ -38,6 +38,8 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
 
     private ImageView selectModeIV;
 
+    private TextView titleTipTV;
+
     private boolean selected;
 
     private OnSelectListener onSelectListener;
@@ -74,6 +76,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         this.selectModeIV = (ImageView) this.findViewById(R.id.selectmode_iv);
         this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
         this.subItemContainer = (LinearLayout) this.findViewById(R.id.subtitle_item_container);
+        this.titleTipTV = (TextView) this.findViewById(R.id.title_tip_tv);
 
         this.initAttr(attrs);
     }
@@ -328,5 +331,14 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
 
     public void setOnSelectListener(OnSelectListener onSelectListener) {
         this.onSelectListener = onSelectListener;
+    }
+
+    public TextView getTitleTipTV() {
+        return titleTipTV;
+    }
+
+    public JupiterRowStyleSutitleLayout setTitleTipTV(TextView titleTipTV) {
+        this.titleTipTV = titleTipTV;
+        return this;
     }
 }

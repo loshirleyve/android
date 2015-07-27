@@ -21,6 +21,8 @@ public class Product implements java.io.Serializable {
     private String backgorundimgid;
     private boolean istop;
     private String imgid;
+    private double minprice;
+    private double maxprice;
 
     private List<ProductPhase> phases;
 
@@ -170,5 +172,23 @@ public class Product implements java.io.Serializable {
 
     public void setImgid(String imgid) {
         this.imgid = imgid;
+    }
+
+    public double getMinprice() {
+        return minprice;
+    }
+
+    public Product setMinprice(double minprice) {
+        this.minprice = minprice;
+        return this;
+    }
+
+    public double getMaxprice() {
+        return maxprice;
+    }
+
+    public Product setMaxprice(double maxprice) {
+        this.maxprice = maxprice;
+        return this;
     }
 }
