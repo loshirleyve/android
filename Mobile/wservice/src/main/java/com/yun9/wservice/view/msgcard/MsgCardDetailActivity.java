@@ -284,11 +284,13 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     }
 
     private void markAsReaded() {
-        if (!State.MsgCard.UN_READ.equals(mMsgCard.getState())){
+        if (!State.MsgCard.UN_READ.equals(mMsgCard.getState())
+                || mMsgCard.getBizMsg() == null
+                || !AssertValue.isNotNullAndNotEmpty(mMsgCard.getBizMsg().getId())){
             return;
         }
         Resource resource = resourceFactory.create("UpdateMsgStateByMsgIdsService");
-        resource.param("msgidlist",new String[]{mMsgCard.getId()});
+        resource.param("msgidlist",new String[]{mMsgCard.getBizMsg().getId()});
         resource.param("userid",sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override

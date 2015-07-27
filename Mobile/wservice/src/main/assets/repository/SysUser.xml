@@ -99,6 +99,13 @@
         <type>yun9</type>
     </repository>
 
+    <!--通过EMAIL注册用户 -->
+    <repository>
+        <name>AddUserByEmailService</name>
+        <action>com.yun9.ws.biz.service.AddUserByEmailService</action>
+        <type>yun9</type>
+    </repository>
+
 
 
 </repositorys>
