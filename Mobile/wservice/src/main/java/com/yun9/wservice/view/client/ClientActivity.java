@@ -167,7 +167,7 @@ public class ClientActivity extends JupiterFragmentActivity {
                         getApplicationContext());
                 openItem.setBackground(new ColorDrawable(Color.rgb(233, 75, 53)));
                 openItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
-                openItem.setTitle("打开");
+                openItem.setTitle(R.string.doc_file_open);
                 openItem.setTitleSize(18);
                 openItem.setTitleColor(Color.WHITE);
                 menu.addMenuItem(openItem);
@@ -178,7 +178,7 @@ public class ClientActivity extends JupiterFragmentActivity {
                             getApplicationContext());
                     initalItem.setBackground(new ColorDrawable(Color.rgb(6, 119, 183)));
                     initalItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 100));
-                    initalItem.setTitle("初始化机构");
+                    initalItem.setTitle(R.string.init_inst);
                     initalItem.setTitleSize(18);
                     initalItem.setTitleColor(Color.WHITE);
                     menu.addMenuItem(initalItem);
@@ -191,7 +191,7 @@ public class ClientActivity extends JupiterFragmentActivity {
                     proxyItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
                             0xCE)));
                     proxyItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
-                    proxyItem.setTitle("代理客户");
+                    proxyItem.setTitle(R.string.proxy_client);
                     proxyItem.setTitleSize(18);
                     proxyItem.setTitleColor(Color.WHITE);
                     menu.addMenuItem(proxyItem);
@@ -203,7 +203,7 @@ public class ClientActivity extends JupiterFragmentActivity {
                             getApplicationContext());
                     deleteProxy.setBackground(new ColorDrawable(Color.rgb(127, 179, 76)));
                     deleteProxy.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
-                    deleteProxy.setTitle("取消代理");
+                    deleteProxy.setTitle(R.string.cancel_proxy);
                     deleteProxy.setTitleSize(18);
                     deleteProxy.setTitleColor(Color.WHITE);
                     menu.addMenuItem(deleteProxy);
@@ -273,21 +273,21 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private void proxyClient(Client client) {
         if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
-            showToast("该客户尚未初始化机构，请先初始化.");
+            showToast(R.string.the_client_is_not_init_yet);
             return;
         }
         CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
         if (proxy != null && client.getClientadminid().equals(proxy.getUserId())
                 && proxy.getInstId().equals(client.getClientinstid())){
             ClientProxyCache.getInstance().putClientProxy(null);
-            showToast("成功取消代理");
+            showToast(R.string.success_cancel_proxy);
         } else {
             CacheClientProxy clientProxy = new CacheClientProxy();
             clientProxy.setInstId(client.getClientinstid());
             clientProxy.setUserId(client.getClientadminid());
             clientProxy.setClientId(client.getId());
             ClientProxyCache.getInstance().putClientProxy(clientProxy);
-            showToast("成功代理客户：" + client.getFullname());
+            showToast(getResources().getString(R.string.success_proxy_client,client.getFullname()));
         }
     }
 
