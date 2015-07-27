@@ -361,11 +361,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     }
 
     private MsgCardDetailCommentItemWidget createCommonItem(MsgCardComment msgCardComment) {
-        ViewGroup viewGroup = (ViewGroup) LayoutInflater.from(this)
-                .inflate(R.layout.wrapper_msg_card_detail_comment_item, null);
-        MsgCardDetailCommentItemWidget itemWidget =
-                (MsgCardDetailCommentItemWidget) viewGroup.findViewById(R.id.main);
-        viewGroup.removeView(itemWidget);
+        MsgCardDetailCommentItemWidget itemWidget = new MsgCardDetailCommentItemWidget(mContext);
         CacheUser cacheUser = UserCache.getInstance().getUser(msgCardComment.getFrom());
         if (msgCardComment.getFrom().equals(sessionManager.getUser().getId())){
             itemWidget.getLeftLl().setVisibility(View.GONE);
