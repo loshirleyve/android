@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
@@ -159,6 +160,9 @@ public class OrgChooseAddUserActivity extends JupiterFragmentActivity {
                 }
                 adduseorg.getSutitleTv().setText(userstring);
             }
+        }
+        if (resultCode == JupiterCommand.RESULT_CODE_OK){
+            setResult(JupiterCommand.RESULT_CODE_OK);
         }
     }
 

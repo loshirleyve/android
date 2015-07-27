@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.listener.OnSelectListener;
@@ -93,18 +94,20 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item.getArrowRightButton().setText(R.string.invitation_reg);
             item.getArrowRightButton().setTextColor(mContext.getResources().getColor(R.color.whites));
             item.getArrowRightButton().setBackgroundResource(R.drawable.button_background);
-            if (!user.isregister()) {
-                item.setShowArrowButton(true);
-            }
-            item.getTitleTV().setText(user.getUsername());
-            item.getSutitleTv().setText(user.getUsernumber());
-            item.select(user.isregister());
-            item.getArrowRightButton().setTag(user);
             item.getArrowRightButton().setOnClickListener(onAddUserOrgClickListener);
-
         } else {
             item = (JupiterRowStyleSutitleLayout) convertView;
         }
+
+        if (!user.isregister()) {
+            item.setShowArrowButton(true);
+        } else {
+            item.setShowArrowButton(false);
+        }
+        item.getTitleTV().setText(user.getUsername());
+        item.getSutitleTv().setText(user.getUsernumber());
+        item.select(user.isregister());
+        item.getArrowRightButton().setTag(user);
         return item;
     }
 
@@ -172,6 +175,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
         ArrayList<String> texts = smsManager.divideMessage(msginfo);//拆分短信,短信字数太多了的时候要分几次发
         smsManager.sendMultipartTextMessage(phonenumber, null, texts, null, null);//发送短信,mobile是对方手机号
         Toast.makeText(mContext, R.string.orguserphone_success_tip, Toast.LENGTH_LONG).show();//提示成功
+        ((Activity)mContext).setResult(JupiterCommand.RESULT_CODE_OK);// 邀请了用户后，设置操作OK，用户返回刷新
     }
 
 

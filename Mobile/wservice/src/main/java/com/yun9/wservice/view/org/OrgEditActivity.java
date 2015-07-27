@@ -528,7 +528,7 @@ public class OrgEditActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == OrgChooseAddUserCommand.REQUEST_CODE && resultCode == OrgChooseAddUserCommand.RESULT_CODE_OK) || (requestCode == OrgEditCommand.REQUEST_CODE && resultCode == OrgEditCommand.RESULT_CODE_OK)) {
+        if (resultCode == OrgEditCommand.RESULT_CODE_OK) {
             requestcode = OrgEditCommand.RESULT_CODE_OK;
             command.setEdit(edit);
             initView();
