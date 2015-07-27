@@ -14,8 +14,6 @@ import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.model.CacheCtrlcode;
-import com.yun9.jupiter.model.CacheCtrlcodeItem;
 import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -23,13 +21,13 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
-import com.yun9.jupiter.widget.JupiterTag;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.model.Client;
+import com.yun9.wservice.model.MdInstScale;
 import com.yun9.wservice.model.MdInstScales;
 import com.yun9.wservice.view.common.MultiSelectActivity;
 import com.yun9.wservice.view.common.MultiSelectCommand;
@@ -228,7 +226,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 multiSelectCommand = new MultiSelectCommand();
             }
             MultiSelectCommand.FLAG = "type";
-            getOptions("clienttype", null);
+            getOptions(v, "clienttype", null);
         }
     };
     private View.OnClickListener onIndustrylickListener = new View.OnClickListener() {
@@ -238,7 +236,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 multiSelectCommand = new MultiSelectCommand();
             }
             MultiSelectCommand.FLAG = "industry";
-            getOptions("clientindustry", null);
+            getOptions(v, "clientindustry", null);
         }
     };
     private View.OnClickListener onInstScaleClickListener = new View.OnClickListener() {
@@ -248,7 +246,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 multiSelectCommand = new MultiSelectCommand();
             }
             MultiSelectCommand.FLAG = "instScale";
-            getOptionMap();
+            getOptionMap(v);
         }
     };
     private View.OnClickListener onSourceClickListener = new View.OnClickListener() {
@@ -258,7 +256,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 multiSelectCommand = new MultiSelectCommand();
             }
             MultiSelectCommand.FLAG = "source";
-            getOptions("clientsource", null);
+            getOptions(v, "clientsource", null);
         }
     };
     private View.OnClickListener onPostClickListener = new View.OnClickListener() {
@@ -268,7 +266,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 multiSelectCommand = new MultiSelectCommand();
             }
             MultiSelectCommand.FLAG = "post";
-            getOptions("contactposition", null);
+            getOptions(v, "contactposition", null);
         }
     };
     private View.OnClickListener onClientRankClickListener = new View.OnClickListener() {
@@ -278,11 +276,11 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 multiSelectCommand = new MultiSelectCommand();
             }
             MultiSelectCommand.FLAG = "clientRank";
-            getOptions("clientlevel", null);
+            getOptions(v, "clientlevel", null);
         }
     };
 
-    private void getOptions(String ctrlCode, List<SerialableEntry<String, String>> optionMap) {
+    private void getOptions(View v, String ctrlCode, List<SerialableEntry<String, String>> optionMap) {
         if (AssertValue.isNotNull(ctrlCode) && !AssertValue.isNotNull(optionMap)) {
             multiSelectCommand.setCtrlCode(ctrlCode);
             multiSelectCommand.setOptions(null);
@@ -292,6 +290,56 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         }
         multiSelectCommand.setMaxNum(1);
         multiSelectCommand.setIsCancelable(true);
+        switch (v.getId()){
+            case R.id.typeLayout:
+                if(AssertValue.isNotNullAndNotEmpty(typeLayout.getSutitleTv().getText().toString()) && AssertValue.isNotNullAndNotEmpty(type)) {
+                    SerialableEntry<String, String> object = new SerialableEntry<String, String>(type, typeLayout.getSutitleTv().getText().toString());
+                    List<SerialableEntry<String, String>> list = new ArrayList<>();
+                    list.add(object);
+                    multiSelectCommand.setSelectedList(list);
+                }
+                break;
+            case R.id.industryLayout:
+                if(AssertValue.isNotNullAndNotEmpty(industryLayout.getSutitleTv().getText().toString()) && AssertValue.isNotNullAndNotEmpty(industry)) {
+                    SerialableEntry<String, String> object = new SerialableEntry<String, String>(industry, industryLayout.getSutitleTv().getText().toString());
+                    List<SerialableEntry<String, String>> list = new ArrayList<>();
+                    list.add(object);
+                    multiSelectCommand.setSelectedList(list);
+                }
+                break;
+            case R.id.instScaleLayout:
+                if(AssertValue.isNotNullAndNotEmpty(instScaleLayout.getSutitleTv().getText().toString()) && AssertValue.isNotNullAndNotEmpty(instScale)) {
+                    SerialableEntry<String, String> object = new SerialableEntry<String, String>(instScale, instScaleLayout.getSutitleTv().getText().toString());
+                    List<SerialableEntry<String, String>> list = new ArrayList<>();
+                    list.add(object);
+                    multiSelectCommand.setSelectedList(list);
+                }
+                break;
+            case R.id.sourceLayout:
+                if(AssertValue.isNotNullAndNotEmpty(sourceLayout.getSutitleTv().getText().toString()) && AssertValue.isNotNullAndNotEmpty(source)) {
+                    SerialableEntry<String, String> object = new SerialableEntry<String, String>(source, sourceLayout.getSutitleTv().getText().toString());
+                    List<SerialableEntry<String, String>> list = new ArrayList<>();
+                    list.add(object);
+                    multiSelectCommand.setSelectedList(list);
+                }
+                break;
+            case R.id.postLayout:
+                if(AssertValue.isNotNullAndNotEmpty(postLayout.getSutitleTv().getText().toString()) && AssertValue.isNotNullAndNotEmpty(post)) {
+                    SerialableEntry<String, String> object = new SerialableEntry<String, String>(post, postLayout.getSutitleTv().getText().toString());
+                    List<SerialableEntry<String, String>> list = new ArrayList<>();
+                    list.add(object);
+                    multiSelectCommand.setSelectedList(list);
+                }
+                break;
+            case R.id.clientRankLayout:
+                if(AssertValue.isNotNullAndNotEmpty(clientRankLayout.getSutitleTv().getText().toString()) && AssertValue.isNotNullAndNotEmpty(clientRank)) {
+                    SerialableEntry<String, String> object = new SerialableEntry<String, String>(clientRank, clientRankLayout.getSutitleTv().getText().toString());
+                    List<SerialableEntry<String, String>> list = new ArrayList<>();
+                    list.add(object);
+                    multiSelectCommand.setSelectedList(list);
+                }
+                break;
+        }
         MultiSelectActivity.start(ClientDetailActivity.this, multiSelectCommand);
     }
     private void getCurrentScaleId(final String scaleid) {
@@ -322,7 +370,8 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
             }
         });
     }
-    private void getOptionMap() {
+    private void getOptionMap(final View v) {
+        optionMap.clear();
         Resource resource = resourceFactory.create("QueryMdInstScale");
         resource.param("userid", sessionManager.getUser().getId());
         final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
@@ -336,7 +385,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                                 , mdInstScales.getBizMdInstScales().get(i).getName()));
                     }
                 }
-                getOptions(null, optionMap);
+                getOptions(v, null, optionMap);
             }
 
             @Override
