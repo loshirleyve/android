@@ -9,12 +9,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.SerialableEntry;
-import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -24,13 +24,11 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.model.Client;
 import com.yun9.wservice.model.MdInstScales;
 import com.yun9.wservice.view.common.MultiSelectActivity;
 import com.yun9.wservice.view.common.MultiSelectCommand;
-import com.yun9.wservice.view.inst.InitInstActivity;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,7 +38,7 @@ import java.util.regex.Pattern;
  * Created by li on 2015/7/20.
  */
 public class ClientDetailActivity extends JupiterFragmentActivity {
-    private List<SerialableEntry<String, String>> optionMap = new ArrayList<>();;
+    private List<SerialableEntry<String, String>> optionMap = new ArrayList<>();
     @BeanInject
     SessionManager sessionManager;
     @BeanInject
@@ -108,7 +106,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getClientId())) {
             clientid = command.getClientId();
         }
-        if(AssertValue.isNotNullAndNotEmpty(clientid)){
+        if (AssertValue.isNotNullAndNotEmpty(clientid)) {
             queryInstClientById(clientid);
         }
         titleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
@@ -129,9 +127,9 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             if (!AssertValue.isNotNullAndNotEmpty(clientNoEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.client_no_input_please), Toast.LENGTH_SHORT).show();
-            }else if (!isClientNo(clientNoEt.getText().toString())){
+            } else if (!isClientNo(clientNoEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.client_no_correct_not), Toast.LENGTH_SHORT).show();
-            }else if (!AssertValue.isNotNullAndNotEmpty(companyAbbrNameEt.getText().toString())) {
+            } else if (!AssertValue.isNotNullAndNotEmpty(companyAbbrNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.company_abbrev_name_input), Toast.LENGTH_SHORT).show();
             } else if (!AssertValue.isNotNullAndNotEmpty(companyFullNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.company_full_name_input), Toast.LENGTH_SHORT).show();
@@ -156,11 +154,11 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
             } else if (clientRankLayout.getSutitleTv().getVisibility() == View.GONE) {
                 Toast.makeText(mContext, getString(R.string.client_rank_input), Toast.LENGTH_SHORT).show();
             } else if (clientNoEt.getText().toString().equals(companyAbbrNameEt.getText().toString())
-                    || clientNoEt.getText().toString().equals(companyFullNameEt.getText().toString())){
+                    || clientNoEt.getText().toString().equals(companyFullNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.client_no_name_same_not), Toast.LENGTH_SHORT).show();
-            }else if (!isPhone(contactPhoneEt.getText().toString())){
+            } else if (!isPhone(contactPhoneEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.correct_phone_no_not), Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 doSave();
             }
         }
@@ -279,10 +277,10 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
     };
 
     private void getOptions(String ctrlCode, List<SerialableEntry<String, String>> optionMap) {
-        if(AssertValue.isNotNull(ctrlCode) && !AssertValue.isNotNull(optionMap)) {
+        if (AssertValue.isNotNull(ctrlCode) && !AssertValue.isNotNull(optionMap)) {
             multiSelectCommand.setCtrlCode(ctrlCode);
             multiSelectCommand.setOptions(null);
-        }else {
+        } else {
             multiSelectCommand.setOptions(optionMap);
             multiSelectCommand.setCtrlCode(null);
         }
@@ -290,7 +288,34 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         multiSelectCommand.setIsCancelable(true);
         MultiSelectActivity.start(ClientDetailActivity.this, multiSelectCommand);
     }
+    private void getCurrentScaleId(final String scaleid) {
+        Resource resource = resourceFactory.create("QueryMdInstScale");
+        resource.param("userid", sessionManager.getUser().getId());
+        final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating));
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                MdInstScales mdInstScales = (MdInstScales) response.getPayload();
+                if (AssertValue.isNotNull(mdInstScales) && AssertValue.isNotNullAndNotEmpty(mdInstScales.getBizMdInstScales())) {
+                    for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
+                        if(mdInstScales.getBizMdInstScales().get(i).getType().equals(scaleid)){
+                            instScaleLayout.getSutitleTv().setText(mdInstScales.getBizMdInstScales().get(i).getName());
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                progressDialog.dismiss();
+            }
+        });
+    }
     private void getOptionMap() {
         Resource resource = resourceFactory.create("QueryMdInstScale");
         resource.param("userid", sessionManager.getUser().getId());
@@ -301,7 +326,8 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 MdInstScales mdInstScales = (MdInstScales) response.getPayload();
                 if (AssertValue.isNotNull(mdInstScales) && AssertValue.isNotNullAndNotEmpty(mdInstScales.getBizMdInstScales())) {
                     for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
-                        optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType(), mdInstScales.getBizMdInstScales().get(i).getName()));
+                        optionMap.add(i, new SerialableEntry<String, String>(mdInstScales.getBizMdInstScales().get(i).getType()
+                                , mdInstScales.getBizMdInstScales().get(i).getName()));
                     }
                 }
                 getOptions(null, optionMap);
@@ -330,7 +356,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                         typeLayout.getSutitleTv().setVisibility(View.VISIBLE);
                         typeLayout.getSutitleTv().setText(selectedList.get(0).getValue());
                         type = selectedList.get(0).getKey();
-                    }else if(AssertValue.isNotNull(selectedList) && selectedList.size() == 0){
+                    } else if (AssertValue.isNotNull(selectedList) && selectedList.size() == 0) {
                         typeLayout.getSutitleTv().setVisibility(View.GONE);
                     }
                     break;
@@ -382,12 +408,14 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
             }
         }
     }
+
     public boolean isPhone(String phone) {
         String str = "((\\d{11})|^((\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})|(\\d{4}|\\d{3})-(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1})|(\\d{7,8})-(\\d{4}|\\d{3}|\\d{2}|\\d{1}))$)";
         Pattern p = Pattern.compile(str);
         Matcher m = p.matcher(phone);
         return m.matches();
     }
+
     public boolean isClientNo(String clientNo) {
         String str = "^([a-zA-Z0-9]{6,8})$";
         Pattern p = Pattern.compile(str);
@@ -419,36 +447,44 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
 
     private void displayClientData(Client client) {
         clientNoEt.setText(client.getSn());
+        clientNoEt.setEnabled(false);
         companyAbbrNameEt.setText(client.getName());
         companyFullNameEt.setText(client.getFullname());
-        typeLayout.getSutitleTv().setText(client.getType());
+        companyFullNameEt.setEnabled(false);
+        typeLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_TYPE_STATE, client.getType()));
         typeLayout.setShowSutitleText(true);
-        industryLayout.getSutitleTv().setText(client.getIndustry());
+        type = client.getType();
+        industryLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_INDUSTRY_STATE, client.getIndustry()));
         industryLayout.setShowSutitleText(true);
-        instScaleLayout.getSutitleTv().setText(client.getScaleid());
+        industry = client.getIndustry();
+        getCurrentScaleId(client.getScaleid());
         instScaleLayout.setShowSutitleText(true);
-        sourceLayout.getSutitleTv().setText(client.getSource());
+        instScale = client.getScaleid();
+        sourceLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_SOURCE_STATE, client.getSource()));
         sourceLayout.setShowSutitleText(true);
+        source = client.getSource();
         regionEt.setText(client.getRegion());
         detailInfoEt.setText(client.getAddress());
         contactNameEt.setText(client.getContactman());
         contactPhoneEt.setText(client.getContactphone());
-        postLayout.getSutitleTv().setText(client.getContactposition());
+        postLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_POSITION_STATE, client.getContactposition()));
         postLayout.setShowSutitleText(true);
-        clientRankLayout.getSutitleTv().setText(client.getLevel());
+        post = client.getContactposition();
+        clientRankLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_LEVEL_STATE, client.getLevel()));
         clientRankLayout.setShowSutitleText(true);
+        clientRank = client.getLevel();
     }
 
-    private class OnFocusChangeListener implements View.OnFocusChangeListener{
+    private class OnFocusChangeListener implements View.OnFocusChangeListener {
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
-            if(!v.hasFocus()){
+            if (!v.hasFocus()) {
                 Resource resource = resourceFactory.create("QueryInstClients");
-                if(v == clientNoEt){
+                if (v == clientNoEt) {
                     resource.param("sn", clientNoEt.getText().toString());
-                }else if(v == companyAbbrNameEt){
+                } else if (v == companyAbbrNameEt) {
                     resource.param("name", companyAbbrNameEt.getText().toString());
-                }else if(v == contactPhoneEt){
+                } else if (v == contactPhoneEt) {
                     resource.param("contactphone", contactPhoneEt.getText().toString());
                 }
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
@@ -459,10 +495,12 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                             Toast.makeText(mContext, getString(R.string.duplicate_client_no_input_not), Toast.LENGTH_SHORT).show();
                         }
                     }
+
                     @Override
                     public void onFailure(Response response) {
                         Toast.makeText(mContext, response.getCause(), Toast.LENGTH_SHORT).show();
                     }
+
                     @Override
                     public void onFinally(Response response) {
                     }
