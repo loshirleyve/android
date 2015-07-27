@@ -15,6 +15,8 @@ public class OrderCartInfo implements Serializable{
     private String orderamount;
     private String commitattachment;
     private String instid;
+    private String proxyinstid;
+    private String proxyperson;
     private String buyerinstid;
     private String salesmanid;
     private String adviseruserid;
@@ -24,6 +26,24 @@ public class OrderCartInfo implements Serializable{
     private String purchase;
     private List<OrderProduct> orderproducts;
     private List<OrderAttachment> orderAttachments;
+
+    public String getProxyinstid() {
+        return proxyinstid;
+    }
+
+    public OrderCartInfo setProxyinstid(String proxyinstid) {
+        this.proxyinstid = proxyinstid;
+        return this;
+    }
+
+    public String getProxyperson() {
+        return proxyperson;
+    }
+
+    public OrderCartInfo setProxyperson(String proxyperson) {
+        this.proxyperson = proxyperson;
+        return this;
+    }
 
     public String getProductname() {
         return productname;

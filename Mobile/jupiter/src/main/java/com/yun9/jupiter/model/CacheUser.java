@@ -12,6 +12,7 @@ public class CacheUser implements java.io.Serializable{
     private String head;
     private String url;
     private String phone;
+    private String instname;
 
     public String getId() {
         return id;
@@ -77,5 +78,14 @@ public class CacheUser implements java.io.Serializable{
             return phones[0];
         }
         return null;
+    }
+
+    public String getInstname() {
+        return instname;
+    }
+
+    public CacheUser setInstname(String instname) {
+        this.instname = instname;
+        return this;
     }
 }

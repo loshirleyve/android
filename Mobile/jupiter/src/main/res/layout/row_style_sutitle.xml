@@ -46,18 +46,33 @@
 
                     <TextView
                         android:id="@+id/title_tv"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@+id/time_tv"
+                        android:layout_alignParentLeft="true"
                         android:text="@string/jupiter_row_cell_title"
                         android:textColor="@color/black"
                         android:textSize="16dp" />
+
+
+                    <TextView
+                        android:id="@+id/title_tip_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/title_tv"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/jupiter"
+                        android:textSize="12dp"
+                        android:visibility="gone"
+                        android:textColor="#374760"/>
 
                     <TextView
                         android:id="@+id/time_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/title_tip_tv"
                         android:layout_alignParentRight="true"
+                        android:gravity="right"
                         android:text="@string/jupiter_row_cell_time"
                         android:textSize="12dp" />
                 </RelativeLayout>

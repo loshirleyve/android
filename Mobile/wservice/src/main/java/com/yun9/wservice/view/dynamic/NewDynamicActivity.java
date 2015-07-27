@@ -207,7 +207,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
                 if (NewDynamicCommand.MSG_COMMENT.equals(command.getType())) {
                     shareTv.setVisibility(View.GONE);
                     this.selectUserRL.setVisibility(View.GONE);
-                    titleBarLayout.getTitleTv().setText(R.string.msg_card_comment);
+                    titleBarLayout.getTitleTv().setText(R.string.msg);
                     this.titleBarLayout.getTitleRight().setOnClickListener(onCommentClickListener);
                 } else if (NewDynamicCommand.MSG_FORWARD.equals(command.getType())) {
                     titleBarLayout.getTitleTv().setText(R.string.msg_card_fw);

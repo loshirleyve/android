@@ -21,6 +21,7 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.cache.CacheClientProxy;
 import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.OrderCartInfo;
 import com.yun9.wservice.model.SimpleIdReturn;
@@ -92,6 +93,16 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
         Resource resource = resourceFactory.create("AddOrderByOrderViewService");
         this.order.setCreateby(sessionManager.getUser().getId());
+        this.order.setBuyerinstid(sessionManager.getInst().getId());
+        this.order.setPurchase(sessionManager.getUser().getId());
+        if (ClientProxyCache.getInstance().isProxy()){
+            CacheClientProxy clientProxy = ClientProxyCache.getInstance().getProxy();
+            this.order.setSalesmanid(sessionManager.getUser().getId());
+            this.order.setProxyinstid(sessionManager.getInst().getId());
+            this.order.setProxyperson(sessionManager.getUser().getId());
+            this.order.setBuyerinstid(clientProxy.getInstId());
+            this.order.setPurchase(clientProxy.getUserId());
+        }
         resource.param("orderViews", Collections.singletonList(this.order));
         resource.invok(new AsyncHttpResponseCallback() {
             @Override

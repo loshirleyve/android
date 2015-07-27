@@ -9,10 +9,12 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Page;
@@ -100,6 +102,14 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
             titleBar.getTitleTv().setText(command.getTitle());
+        }
+
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid())) {
+            CacheUser cacheUser = UserCache.getInstance().getUser(command.getFromuserid());
+            if (cacheUser != null && AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
+                titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
+                titleBar.getTitleSutitleTv().setText(cacheUser.getInstname());
+            }
         }
 
         msgCardList.setAdapter(msgCardListAdapter);
@@ -255,8 +265,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             final MsgCardWidget msgCardWidget;
             if (convertView == null) {
                 msgCardWidget = new MsgCardWidget(mContext);
-
-
                 msgCardWidget.getPraiseRL().setTag(msgCard);
                 msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
                     @Override

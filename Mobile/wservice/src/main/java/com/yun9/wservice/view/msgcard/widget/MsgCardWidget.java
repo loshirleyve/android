@@ -178,10 +178,10 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         if (!AssertValue.isNotNull(msgCard))
             return;
 
-        if (State.MsgCard.UN_READ.equals(msgCard.getState())){
-            isNewIv.setVisibility(VISIBLE);
-        } else {
+        if (msgCard.getRead() > 0){
             isNewIv.setVisibility(GONE);
+        } else {
+            isNewIv.setVisibility(VISIBLE);
         }
         imageAttachments.clear();
         docAttachments.clear();

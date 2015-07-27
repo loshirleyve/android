@@ -12,6 +12,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.view.myself.AppAboutActivity;
 
 /**
@@ -65,6 +66,7 @@ public class SettingActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             sessionManager.logout(sessionManager.getUser());
+            ClientProxyCache.getInstance().removeProxy();
             SettingActivity.this.finish();
         }
     };
