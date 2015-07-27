@@ -48,6 +48,8 @@ public class MsgCard implements java.io.Serializable {
     private int commentcount;
     private boolean mypraise;
 
+    private BizMsg bizMsg;
+
     private MsgCardComment lastComment;
 
     private List<MsgCardAttachment> attachments;
@@ -327,5 +329,14 @@ public class MsgCard implements java.io.Serializable {
 
     public void setProcess(List<MsgCardProcessAction> process) {
         this.process = process;
+    }
+
+    public BizMsg getBizMsg() {
+        return bizMsg;
+    }
+
+    public MsgCard setBizMsg(BizMsg bizMsg) {
+        this.bizMsg = bizMsg;
+        return this;
     }
 }
