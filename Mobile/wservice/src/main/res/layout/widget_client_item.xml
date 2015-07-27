@@ -51,6 +51,7 @@
                     android:src="@drawable/user_head"/>
 
                 <TextView
+                    android:ems="4"
                     android:id="@+id/contact_tv"
                     android:layout_marginLeft="5dp"
                     android:layout_width="wrap_content"
