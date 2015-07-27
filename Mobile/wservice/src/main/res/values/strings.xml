@@ -310,5 +310,8 @@
     <string name="correct_phone_no_not">请输入正确的电话号码！</string>
     <string name="save_client_success_not">保存客户成功！</string>
     <string name="client_no_correct_not">请输入6-8位由字母或数字组成的客户编号！</string>
-    <string name="duplicate_client_no_input_not">用户已存在</string>
+    <string name="duplicate_client_not">%1$S用户已存在</string>
+    <string name="duplicate_client_no">拥有此客户编号的</string>
+    <string name="duplicate_client_name">拥有此名称的</string>
+    <string name="duplicate_client_phone">拥有此电话号码的</string>
 </resources>

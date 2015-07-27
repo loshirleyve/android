@@ -14,12 +14,16 @@ import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheCtrlcode;
+import com.yun9.jupiter.model.CacheCtrlcodeItem;
 import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterEditableView;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterTag;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -83,7 +87,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
     private String post;
     private String clientRank;
     private List<Client> clients = new ArrayList<Client>();
-
+    private List<JupiterEditableView> itemList;
 
     public static void start(Activity activity, EditClientCommand command) {
         Intent intent = new Intent(activity, ClientDetailActivity.class);
@@ -117,9 +121,11 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         sourceLayout.setOnClickListener(onSourceClickListener);
         postLayout.setOnClickListener(onPostClickListener);
         clientRankLayout.setOnClickListener(onClientRankClickListener);
-        clientNoEt.setOnFocusChangeListener(new OnFocusChangeListener());
-        companyAbbrNameEt.setOnFocusChangeListener(new OnFocusChangeListener());
-        contactPhoneEt.setOnFocusChangeListener(new OnFocusChangeListener());
+        if(!AssertValue.isNotNullAndNotEmpty(clientid)){
+            clientNoEt.setOnFocusChangeListener(new OnFocusChangeListener());
+            companyAbbrNameEt.setOnFocusChangeListener(new OnFocusChangeListener());
+            contactPhoneEt.setOnFocusChangeListener(new OnFocusChangeListener());
+        }
     }
 
     private View.OnClickListener onSureClickListener = new View.OnClickListener() {
@@ -298,7 +304,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 MdInstScales mdInstScales = (MdInstScales) response.getPayload();
                 if (AssertValue.isNotNull(mdInstScales) && AssertValue.isNotNullAndNotEmpty(mdInstScales.getBizMdInstScales())) {
                     for (int i = 0; i < mdInstScales.getBizMdInstScales().size(); i++) {
-                        if(mdInstScales.getBizMdInstScales().get(i).getType().equals(scaleid)){
+                        if (mdInstScales.getBizMdInstScales().get(i).getType().equals(scaleid)) {
                             instScaleLayout.getSutitleTv().setText(mdInstScales.getBizMdInstScales().get(i).getName());
                         }
                     }
@@ -454,22 +460,28 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         typeLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_TYPE_STATE, client.getType()));
         typeLayout.setShowSutitleText(true);
         type = client.getType();
+
         industryLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_INDUSTRY_STATE, client.getIndustry()));
         industryLayout.setShowSutitleText(true);
         industry = client.getIndustry();
+
         getCurrentScaleId(client.getScaleid());
         instScaleLayout.setShowSutitleText(true);
         instScale = client.getScaleid();
+
         sourceLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_SOURCE_STATE, client.getSource()));
         sourceLayout.setShowSutitleText(true);
         source = client.getSource();
+
         regionEt.setText(client.getRegion());
         detailInfoEt.setText(client.getAddress());
         contactNameEt.setText(client.getContactman());
         contactPhoneEt.setText(client.getContactphone());
+
         postLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_POSITION_STATE, client.getContactposition()));
         postLayout.setShowSutitleText(true);
         post = client.getContactposition();
+
         clientRankLayout.getSutitleTv().setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.CLIENT_LEVEL_STATE, client.getLevel()));
         clientRankLayout.setShowSutitleText(true);
         clientRank = client.getLevel();
@@ -477,7 +489,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
 
     private class OnFocusChangeListener implements View.OnFocusChangeListener {
         @Override
-        public void onFocusChange(View v, boolean hasFocus) {
+        public void onFocusChange(final View v, boolean hasFocus) {
             if (!v.hasFocus()) {
                 Resource resource = resourceFactory.create("QueryInstClients");
                 if (v == clientNoEt) {
@@ -491,8 +503,16 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                     @Override
                     public void onSuccess(Response response) {
                         clients = (List<Client>) response.getPayload();
+                        String notice = null;
                         if (clients.size() > 0) {
-                            Toast.makeText(mContext, getString(R.string.duplicate_client_no_input_not), Toast.LENGTH_SHORT).show();
+                            if(v == clientNoEt) {
+                                notice = getResources().getString(R.string.duplicate_client_not, getString(R.string.duplicate_client_no));
+                            }else if(v == companyAbbrNameEt){
+                                notice = getResources().getString(R.string.duplicate_client_not, getString(R.string.duplicate_client_name));
+                            }else if(v == contactPhoneEt){
+                                notice = getResources().getString(R.string.duplicate_client_not, getString(R.string.duplicate_client_phone));
+                            }
+                            Toast.makeText(mContext, notice, Toast.LENGTH_SHORT).show();
                         }
                     }
 
