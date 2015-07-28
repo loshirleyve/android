@@ -368,6 +368,10 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
             badgeView.setGravity(Gravity.CENTER);
             badgeView.setBadgeSize(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
-        badgeView.setText("" + num);
+        if (num > 99){
+            badgeView.setText("99+");
+        } else {
+            badgeView.setText("" + num);
+        }
     }
 }
