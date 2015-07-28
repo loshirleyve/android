@@ -333,6 +333,10 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             for (MsgCardComment msgCardComment : msgCard.getComments()) {
                 commentView.getCommonLl().addView(this.createCommonItem(msgCardComment));
             }
+            // 加个视图撑位置，不然最后一个对话框显示不全，不知道为啥
+            View line = new View(mContext);
+            line.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,5));
+            commentView.getCommonLl().addView(line);
         }
 
         if (AssertValue.isNotNullAndNotEmpty(msgCard.getPraises())) {
@@ -369,7 +373,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
             if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefInstname())){
                 itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
-                itemWidget.getLeftTitleTipTv().setText(cacheUser.getBriefInstname());
+                itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstname());
             }
             itemWidget.getLeftTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
             itemWidget.getLeftContentTv().setText(msgCardComment.getContent());

@@ -67,13 +67,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:layout_marginLeft="3dp"
-                    android:padding="8dp"
                     android:background="@drawable/button_blue">
                     <TextView
                         android:id="@+id/left_content_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
+                        android:layout_margin="8dp"
                         android:textSize="14dp"
                         android:text="评论内容"/>
                 </LinearLayout>

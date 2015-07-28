@@ -311,9 +311,9 @@ public class DynamicSessionFragment extends JupiterFragment {
             if (AssertValue.isNotNull(cacheUser)) {
                 ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());
                 jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
-                if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefInstname())){
+                if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
                     jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.VISIBLE);
-                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheUser.getBriefInstname());
+                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheUser.getInstname());
                 }
             }
 

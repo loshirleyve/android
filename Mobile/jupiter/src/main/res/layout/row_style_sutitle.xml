@@ -35,7 +35,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="3dp"
                 android:layout_marginLeft="2dp"
                 android:orientation="vertical">
@@ -49,33 +48,34 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
                         android:text="@string/jupiter_row_cell_title"
                         android:textColor="@color/black"
                         android:textSize="16dp" />
 
 
                     <TextView
-                        android:id="@+id/title_tip_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/title_tv"
-                        android:layout_marginLeft="3dp"
-                        android:layout_marginTop="2dp"
-                        android:text="@string/jupiter"
-                        android:textSize="12dp"
-                        android:visibility="gone"
-                        android:textColor="#374760"/>
-
-                    <TextView
                         android:id="@+id/time_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/title_tip_tv"
+                        android:layout_toRightOf="@id/title_tv"
                         android:layout_alignParentRight="true"
                         android:gravity="right"
                         android:text="@string/jupiter_row_cell_time"
                         android:textSize="12dp" />
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/title_tip_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="@string/jupiter"
+                    android:textSize="12dp"
+                    android:visibility="gone"
+                    android:textColor="#374760"/>
 
                 <TextView
                     android:id="@+id/sutitle_tv"
