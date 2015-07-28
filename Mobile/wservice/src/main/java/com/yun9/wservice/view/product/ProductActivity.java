@@ -311,9 +311,8 @@ public class ProductActivity extends JupiterFragmentActivity {
             productDetailContentLl.setVisibility(View.GONE);
         }
 
-        if (!AssertValue.isNotNullAndNotEmpty(product.getProductPhases())){
-            productDetailPhasesLl.setVisibility(View.GONE);
-        }
+        // 服务阶段不显示
+        productDetailPhasesLl.setVisibility(View.GONE);
 
         commentNum.setText("("+product.getProduct().getCommentnums()+")");
 
