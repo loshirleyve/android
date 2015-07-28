@@ -1,7 +1,6 @@
 package com.yun9.wservice.view.msgcard;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,8 +41,6 @@ import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
 import com.yun9.wservice.model.MsgCardProcessAction;
 import com.yun9.wservice.model.MsgCardShare;
-import com.yun9.wservice.model.State;
-import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 import com.yun9.wservice.view.dynamic.NewDynamicActivity;
 import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.model.MsgCardPanelActionItem;
@@ -59,7 +55,6 @@ import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 import com.yun9.wservice.view.order.OrderDetailActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
-import com.yun9.wservice.view.org.OrgEditCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -318,9 +313,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 titleBar.getTitleTv().setText(user.getName());
             }
         }
-        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getInstname())){
+        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getBriefInstname())){
             titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
-            titleBar.getTitleSutitleTv().setText(user.getInstname());
+            titleBar.getTitleSutitleTv().setText(user.getBriefInstname());
         }
 
         msgCardWidget.buildWithData(msgCard);
@@ -372,9 +367,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             itemWidget.getRightLl().setVisibility(View.GONE);
             itemWidget.getLeftTitleTv().setText(cacheUser.getName());
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
-            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
+            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefInstname())){
                 itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
-                itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstname());
+                itemWidget.getLeftTitleTipTv().setText(cacheUser.getBriefInstname());
             }
             itemWidget.getLeftTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
             itemWidget.getLeftContentTv().setText(msgCardComment.getContent());

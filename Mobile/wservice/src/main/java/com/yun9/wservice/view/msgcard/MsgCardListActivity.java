@@ -21,7 +21,6 @@ import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -37,7 +36,6 @@ import com.yun9.wservice.view.dynamic.NewDynamicCommand;
 import com.yun9.wservice.view.msgcard.widget.MsgCardWidget;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
-import com.yun9.wservice.view.org.OrgEditCommand;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -106,9 +104,9 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid())) {
             CacheUser cacheUser = UserCache.getInstance().getUser(command.getFromuserid());
-            if (cacheUser != null && AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
+            if (cacheUser != null && AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefInstname())){
                 titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
-                titleBar.getTitleSutitleTv().setText(cacheUser.getInstname());
+                titleBar.getTitleSutitleTv().setText(cacheUser.getBriefInstname());
             }
         }
 
