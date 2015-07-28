@@ -24,6 +24,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.Payinfo;
 import com.yun9.wservice.view.order.OrderRechargeWidget;
@@ -211,10 +212,14 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayinfoService");
         resource.param("source", command.getSource());
-        resource.param("instId", sessionManager.getInst().getId());
+        resource.param("instId", command.getInstId());
+        resource.param("buyinstId", sessionManager.getInst().getId());
         resource.param("sourceValue", command.getSourceValue());
         resource.param("userId", sessionManager.getUser().getId());
         resource.param("paymodeInfos", categoryChoicePaymodeMap.values());
+        if (ClientProxyCache.getInstance().isProxy()){
+            resource.param("buyinstId", ClientProxyCache.getInstance().getProxy().getInstId());
+        }
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
