@@ -24,6 +24,9 @@ public class OrderCartInfo implements Serializable{
     private String createby;
     private String paystate;
     private String purchase;
+    private String name;
+    private String imgid;
+    private String introduce;
     private List<OrderProduct> orderproducts;
     private List<OrderAttachment> orderAttachments;
 
@@ -163,6 +166,33 @@ public class OrderCartInfo implements Serializable{
 
     public OrderCartInfo setPurchase(String purchase) {
         this.purchase = purchase;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public OrderCartInfo setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getImgid() {
+        return imgid;
+    }
+
+    public OrderCartInfo setImgid(String imgid) {
+        this.imgid = imgid;
+        return this;
+    }
+
+    public String getIntroduce() {
+        return introduce;
+    }
+
+    public OrderCartInfo setIntroduce(String introduce) {
+        this.introduce = introduce;
         return this;
     }
 
