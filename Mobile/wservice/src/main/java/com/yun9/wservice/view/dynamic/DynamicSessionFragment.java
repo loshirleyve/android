@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -298,35 +299,33 @@ public class DynamicSessionFragment extends JupiterFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             MsgsGroup msgsGroup = msgsGroups.get(position);
             JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = null;
-
             if (convertView == null) {
                 jupiterRowStyleSutitleLayout = new JupiterRowStyleSutitleLayout(mContext);
-                jupiterRowStyleSutitleLayout.setTag(msgsGroup);
-                jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
-                jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
-                jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
-
-                //获取用户信息
-                CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
-
-                if (AssertValue.isNotNull(cacheUser)) {
-                    ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());
-                    jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
-                    if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
-                        jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.VISIBLE);
-                        jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheUser.getInstname());
-                    }
-                }
-
-                if (msgsGroup.getUnreadnum() > 0){
-                    JupiterBadgeView badgeView = new JupiterBadgeView(getActivity(), jupiterRowStyleSutitleLayout.getMainIV());
-                    badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
-                    badgeView.setText(""+msgsGroup.getUnreadnum());
-                    badgeView.setBadgeSize(18, 18);
-                    badgeView.show();
-                }
             } else {
                 jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
+            }
+            jupiterRowStyleSutitleLayout.setTag(msgsGroup);
+            jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
+            jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
+            jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
+
+            //获取用户信息
+            CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
+
+            if (AssertValue.isNotNull(cacheUser)) {
+                ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), jupiterRowStyleSutitleLayout.getMainIV());
+                jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
+                if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstname())){
+                    jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.VISIBLE);
+                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheUser.getInstname());
+                }
+            }
+
+            if (msgsGroup.getUnreadnum() > 0){
+                jupiterRowStyleSutitleLayout.setCornerNum(jupiterRowStyleSutitleLayout.getMainIV(),msgsGroup.getUnreadnum());
+                jupiterRowStyleSutitleLayout.showCornerIco();
+            } else {
+                jupiterRowStyleSutitleLayout.hideCornerIco();
             }
 
             return jupiterRowStyleSutitleLayout;
@@ -426,15 +425,8 @@ public class DynamicSessionFragment extends JupiterFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if ( resultCode == JupiterCommand.RESULT_CODE_OK) {
-            mPtrClassicFrameLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mPtrClassicFrameLayout.autoRefresh();
-                }
-            }, 100);
+            mPtrClassicFrameLayout.autoRefresh();
         }
 
     }

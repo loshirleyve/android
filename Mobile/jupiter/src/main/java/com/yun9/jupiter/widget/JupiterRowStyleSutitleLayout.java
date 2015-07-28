@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import com.yun9.jupiter.R;
 import com.yun9.jupiter.listener.OnSelectListener;
 import com.yun9.jupiter.model.ISelectable;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.view.JupiterBadgeView;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -48,6 +50,8 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
     private TextView hotNitoceTV;
 
     private LinearLayout subItemContainer;
+
+    private JupiterBadgeView badgeView;
 
     public JupiterRowStyleSutitleLayout(Context context) {
         super(context);
@@ -340,5 +344,30 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
     public JupiterRowStyleSutitleLayout setTitleTipTV(TextView titleTipTV) {
         this.titleTipTV = titleTipTV;
         return this;
+    }
+
+    public void hideCornerIco() {
+        if (badgeView != null){
+            badgeView.setVisibility(GONE);
+            badgeView.hide();
+        }
+    }
+
+    public void showCornerIco() {
+        if (badgeView != null){
+            badgeView.setVisibility(VISIBLE);
+            badgeView.show();
+        }
+    }
+
+    public void setCornerNum(View parent,int num) {
+        if (badgeView == null){
+            badgeView = new JupiterBadgeView(getContext(), parent);
+            badgeView.setBadgePosition(JupiterBadgeView.POSITION_TOP_RIGHT_EDGE);
+            badgeView.setTextSize(12);
+            badgeView.setGravity(Gravity.CENTER);
+            badgeView.setBadgeSize(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        badgeView.setText("" + num);
     }
 }

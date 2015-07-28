@@ -142,6 +142,8 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     private void confirmPayArrive() {
         if (selectedFile != null
                 && FileBean.FILE_STORAGE_TYPE_LOCAL.equals(selectedFile.getStorageType())){
+            selectedFile.setUserid(sessionManager.getUser().getId());
+            selectedFile.setInstid(sessionManager.getInst().getId());
             UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(this,
                     Collections.singletonList(selectedFile));
             uploadFileAsyncTask.setCompImage(true);
@@ -318,9 +320,12 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             compositeCommand = new DocCompositeCommand();
             if (AssertValue.isNotNullAndNotEmpty(selectedImageId)){
-                FileBean fileBean = new FileBean();
-                fileBean.setId(selectedImageId);
-                fileBean.setStorageType(FileBean.FILE_STORAGE_TYPE_YUN);
+                FileBean fileBean = selectedFile;
+                if (fileBean == null){
+                    fileBean = new FileBean();
+                    fileBean.setId(selectedImageId);
+                    fileBean.setStorageType(FileBean.FILE_STORAGE_TYPE_YUN);
+                }
                 CacheFile file = FileCache.getInstance().getFile(selectedImageId);
                 if (file != null){
                     fileBean.setFilePath(file.getThumbnailUrl());

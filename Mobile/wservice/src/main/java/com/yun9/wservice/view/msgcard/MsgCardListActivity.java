@@ -239,6 +239,7 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
             }
         }
         if(resultCode == JupiterCommand.RESULT_CODE_OK){
+            setResult(JupiterCommand.RESULT_CODE_OK);
             mPtrFrame.autoRefresh();
         }
     }

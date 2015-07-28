@@ -81,7 +81,7 @@ public class FileBean implements java.io.Serializable {
         thumbnailPath = "file://" + file.getPath();
         name = FileUtil.getFileNameNoEx(file);
         extensionName = FileUtil.getExtensionName(file);
-        dateAdded = DateUtil.getDateStr(file.lastModified());
+        dateAdded = file.lastModified()+"";
         type = FILE_TYPE_DOC;
         size = FileUtil.getFileSize(file);
         storageType = FileBean.FILE_STORAGE_TYPE_LOCAL;
