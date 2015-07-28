@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
-import com.yun9.jupiter.R;
 import com.yun9.jupiter.bean.injected.BeanInjectedUtil;
 import com.yun9.jupiter.view.injected.ViewInjectedUtil;
 
