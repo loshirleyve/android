@@ -382,7 +382,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             productView.setClassifyid(selectedClassify.getId());
             productView.setPrice(selectedClassify.getPrice());
         } else {
-            productView.setPrice(product.getProduct().getSaleprice());
+            productView.setPrice(product.getProduct().getMaxprice());
         }
         orderProductViews.add(productView);
         command.setOrderProductViews(orderProductViews);
