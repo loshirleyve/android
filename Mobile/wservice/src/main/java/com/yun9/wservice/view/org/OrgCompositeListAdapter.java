@@ -87,18 +87,19 @@ public class OrgCompositeListAdapter extends BaseAdapter {
             tempView = (JupiterRowStyleSutitleLayout) convertView;
         } else {
             tempView = new JupiterRowStyleSutitleLayout(mContext);
-            CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeUserListBean.getUser().getId());
-            if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
-                ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), tempView.getMainIV());
-            }else{
-                tempView.getMainIV().setImageResource(R.drawable.user_head);
-            }
-            tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
-            tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
-            tempView.getTimeTv().setVisibility(View.GONE);
-            tempView.getArrowRightIV().setVisibility(View.GONE);
-            tempView.setTag(orgCompositeUserListBean);
+
         }
+        CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeUserListBean.getUser().getId());
+        if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), tempView.getMainIV());
+        } else {
+            tempView.getMainIV().setImageResource(R.drawable.user_head);
+        }
+        tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
+        tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
+        tempView.getTimeTv().setVisibility(View.GONE);
+        tempView.getArrowRightIV().setVisibility(View.GONE);
+        tempView.setTag(orgCompositeUserListBean);
 
         if (this.selectMode) {
             tempView.setSelectMode(true);
