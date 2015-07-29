@@ -98,7 +98,7 @@ public class ProductActivity extends JupiterFragmentActivity {
     private TextView commentNum;
 
     @ViewInject(id = R.id.detail_page_layout)
-    private JupiterRowStyleSutitleLayout detailPageLayout;
+    private JupiterRowStyleTitleLayout detailPageLayout;
 
     @ViewInject(id = R.id.show_comment_widget)
     private ShowCommentWidget showCommentWidget;
@@ -197,7 +197,7 @@ public class ProductActivity extends JupiterFragmentActivity {
                 if (selectedClassify == null
                         && product.getBizProductClassifies() != null
                         && product.getBizProductClassifies().size() > 0) {
-                    showToast("请选择产品分类");
+                    showToast(R.string.please_select_product_classify);
                 } else {
                     buyNow();
                 }
@@ -221,7 +221,7 @@ public class ProductActivity extends JupiterFragmentActivity {
             selectCategoryLayout.getSutitleTv().setText(selectedClassify.getClassifyname());
         } else {
             productPriceTV.setText(priceDesc);
-            selectCategoryLayout.getTitleTV().setText(getResources().getString(R.string.please_select_product_classify));
+            selectCategoryLayout.getTitleTV().setText(R.string.please_select_product_classify);
             selectCategoryLayout.getSutitleTv().setVisibility(View.GONE);
             return;
         }

@@ -187,6 +187,19 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                    android:id="@+id/detail_page_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ext:rowStyleTitleShowMainImage="false"
+                    ext:rowStyleTitleText="@string/product_detail"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/comment_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -251,23 +264,6 @@
                     android:text="查看更多评价" />
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                    android:id="@+id/detail_page_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    ext:rowStyleSutitleShowMainImage="false"
-                    ext:rowStyleSutitleShowSutitleText="false"
-                    ext:rowStyleSutitleShowTimeText="false"
-                    ext:rowStyleSutitleTitleText="查看服务详情"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
-            </LinearLayout>
-
-
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 </RelativeLayout>
