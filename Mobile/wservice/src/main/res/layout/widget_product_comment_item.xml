@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/show_comment_widget"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="-10dp"
         android:background="@color/whites"
         android:dividerHeight="2dp"
         android:divider="@color/groupbackground"

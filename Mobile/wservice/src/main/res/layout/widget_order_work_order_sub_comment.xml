@@ -5,7 +5,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/sub_comment_time_tv"
@@ -18,7 +18,7 @@
             android:id="@+id/sub_comment_tv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:textSize="14dp"
             android:text="时代共赢服务做的不错，省去了我们很多麻烦，价格也实惠，会继续使用的。"/>
     </LinearLayout>
