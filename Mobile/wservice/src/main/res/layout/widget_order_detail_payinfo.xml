@@ -12,13 +12,10 @@
         android:textSize="14dp"
         android:textColor="@color/devide_line"
         android:text="@string/pay_detail"/>
-    <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+    <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
         android:id="@+id/subtitle_layout"
         android:layout_below="@id/pay_detail_tip_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:rowStyleSutitleTitleText="未付款"
-        app:rowStyleSutitleShowSutitleText="false"
-        app:rowStyleSutitleShowMainImage="false"
-        app:rowStyleSutitleShowTimeText="false"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
+        app:rowStyleTitleShowMainImage="false"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 </RelativeLayout>

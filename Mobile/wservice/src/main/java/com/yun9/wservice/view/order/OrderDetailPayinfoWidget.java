@@ -12,6 +12,7 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
@@ -25,7 +26,7 @@ import com.yun9.wservice.view.payment.RechargeResultActivity;
  */
 public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
 
-    private JupiterRowStyleSutitleLayout sutitleLayout;
+    private JupiterRowStyleTitleLayout sutitleLayout;
 
     public OrderDetailPayinfoWidget(Context context) {
         super(context);
@@ -46,7 +47,7 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        sutitleLayout = (JupiterRowStyleSutitleLayout) this.findViewById(R.id.subtitle_layout);
+        sutitleLayout = (JupiterRowStyleTitleLayout) this.findViewById(R.id.subtitle_layout);
         buildView();
     }
 
@@ -61,11 +62,10 @@ public class OrderDetailPayinfoWidget extends JupiterRelativeLayout{
         sutitleLayout.getHotNitoceTV().getPaint().setFakeBoldText(true);
         sutitleLayout.getHotNitoceTV().setText(R.string.payment_now);
         sutitleLayout.getTitleTV().setTextSize(14);
-        sutitleLayout.getSutitleTv().setTextColor(getResources().getColor(R.color.purple_font));
         sutitleLayout.getTitleTV().setTextColor(getResources().getColor(R.color.red));
     }
 
-    public JupiterRowStyleSutitleLayout getSutitleLayout() {
+    public JupiterRowStyleTitleLayout getSutitleLayout() {
         return sutitleLayout;
     }
 }

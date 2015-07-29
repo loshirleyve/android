@@ -165,6 +165,7 @@ public class ProductActivity extends JupiterFragmentActivity {
         productContentLV.setAdapter(productContentLVAdapter);
         productPhasesLV.setAdapter(productPhasesLVAdapter);
         detailPageLayout.setOnClickListener(onProductDetailClickListener);
+        selectCategoryLayout.setMainContentGravity(Gravity.CENTER);
         selectCategoryLayout.setOnClickListener(onSelectCategoryClickListener);
         buyLl.setOnClickListener(onBuyClickListener);
         moreComment.setOnClickListener(onMoreCommenClickListener);

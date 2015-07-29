@@ -53,6 +53,8 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
 
     private JupiterBadgeView badgeView;
 
+    private LinearLayout mainContentLl;
+
     public JupiterRowStyleSutitleLayout(Context context) {
         super(context);
     }
@@ -81,6 +83,7 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         this.hotNitoceTV = (TextView) this.findViewById(R.id.hot_notice);
         this.subItemContainer = (LinearLayout) this.findViewById(R.id.subtitle_item_container);
         this.titleTipTV = (TextView) this.findViewById(R.id.title_tip_tv);
+        this.mainContentLl = (LinearLayout) this.findViewById(R.id.main_content_ll);
 
         this.initAttr(attrs);
     }
@@ -373,5 +376,16 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
         } else {
             badgeView.setText("" + num);
         }
+    }
+
+    public void setMainContentGravity(int gravity) {
+        LinearLayout.LayoutParams layoutParams =
+                (LinearLayout.LayoutParams) mainContentLl.getLayoutParams();
+        layoutParams.gravity = gravity;
+        mainContentLl.setLayoutParams(layoutParams);
+    }
+
+    public LinearLayout getMainContentLl() {
+        return mainContentLl;
     }
 }
