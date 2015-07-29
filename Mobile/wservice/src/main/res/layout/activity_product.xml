@@ -242,6 +242,7 @@
                     ext:numsOfStar="5" />
                 <com.yun9.jupiter.widget.JupiterListView
                     android:background="@color/groupbackground"
+                    android:layout_marginTop="-10dp"
                     android:paddingLeft="20dp"
                     android:id="@+id/sub_comment_lv"
                     android:layout_width="match_parent"
