@@ -207,7 +207,7 @@ public class OrderCartInfo implements Serializable{
         private int goodsnum;
         private String productname;
         private List<ProductPhases> productPhases;
-        private List<ProductProfiles> productProfiles;
+        private List<ProductProfile> productProfiles;
 
         public double getGoodsamount() {
             return goodsamount;
@@ -281,11 +281,11 @@ public class OrderCartInfo implements Serializable{
             this.productPhases = productPhases;
         }
 
-        public List<ProductProfiles> getProductProfiles() {
+        public List<ProductProfile> getProductProfiles() {
             return productProfiles;
         }
 
-        public void setProductProfiles(List<ProductProfiles> productProfiles) {
+        public void setProductProfiles(List<ProductProfile> productProfiles) {
             this.productProfiles = productProfiles;
         }
     }
@@ -425,37 +425,6 @@ public class OrderCartInfo implements Serializable{
 
         public void setPhasedescr(String phasedescr) {
             this.phasedescr = phasedescr;
-        }
-    }
-
-    public static class ProductProfiles implements Serializable{
-        private String productid;
-        private String synopsis;
-        private int sort;
-
-
-        public String getProductid() {
-            return productid;
-        }
-
-        public void setProductid(String productid) {
-            this.productid = productid;
-        }
-
-        public String getSynopsis() {
-            return synopsis;
-        }
-
-        public void setSynopsis(String synopsis) {
-            this.synopsis = synopsis;
-        }
-
-        public int getSort() {
-            return sort;
-        }
-
-        public void setSort(int sort) {
-            this.sort = sort;
         }
     }
 
