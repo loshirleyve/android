@@ -68,6 +68,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (OrderCartCommand) getIntent().getSerializableExtra(OrderCartCommand.PARAM_COMMAND);
+        titleBarLayout.getTitleSutitleTv().setVisibility(View.GONE);
         buildView();
         reload();
     }
