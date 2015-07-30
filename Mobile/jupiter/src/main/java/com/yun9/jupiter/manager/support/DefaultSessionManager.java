@@ -256,13 +256,6 @@ public class DefaultSessionManager implements SessionManager, Bean,
     public void changeInst(Inst newInst) {
 
         if (AssertValue.isNotNull(newInst)) {
-            Inst oldInst = this.getInst();
-
-            //新旧机构相同无需切换
-            if (AssertValue.isNotNull(oldInst) && oldInst.getId().equals(newInst.getId())) {
-                return;
-            }
-
             //执行机构的后续动作
             if (AssertValue.isNotNullAndNotEmpty(this.onChangeInstListenerList)) {
                 for (OnChangeInstListener onChangeInstListener : this.onChangeInstListenerList) {
