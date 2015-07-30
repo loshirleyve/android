@@ -86,14 +86,6 @@ public class OrderCartActivity extends JupiterFragmentActivity{
                 OrderCartActivity.this.finish();
             }
         });
-        if (ClientProxyCache.getInstance().isProxy()){
-            CacheInst inst = InstCache.getInstance().getInst(ClientProxyCache.getInstance().getProxy().getInstId());
-            if (inst != null){
-                titleBarLayout.getTitleSutitleTv().setText("正在为"+inst.getInstname()+"代理购买");
-            }
-        } else {
-            titleBarLayout.getTitleSutitleTv().setVisibility(View.GONE);
-        }
     }
 
     private void reload() {
@@ -109,12 +101,13 @@ public class OrderCartActivity extends JupiterFragmentActivity{
             resource.param("purchase",clientProxy.getUserId());
             resource.param("buyinstid",clientProxy.getInstId());
         }
-        resource.param("orderProductViews",command.getOrderProductViews());
+        resource.param("orderProductViews", command.getOrderProductViews());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 OrderCartInfoWrapper wrapper = (OrderCartInfoWrapper) response.getPayload();
                 orderList = wrapper.getOrderViews();
+                checkTitle();
             }
 
             @Override
@@ -129,6 +122,17 @@ public class OrderCartActivity extends JupiterFragmentActivity{
                 registerDialog.dismiss();
             }
         });
+    }
+
+    private void checkTitle() {
+        if (ClientProxyCache.getInstance().isProxy()){
+            CacheInst inst = InstCache.getInstance().getInst(ClientProxyCache.getInstance().getProxy().getInstId());
+            if (inst != null){
+                titleBarLayout.getTitleSutitleTv().setText("正在为"+inst.getInstname()+"代理购买");
+            }
+        } else {
+            titleBarLayout.getTitleSutitleTv().setVisibility(View.GONE);
+        }
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {

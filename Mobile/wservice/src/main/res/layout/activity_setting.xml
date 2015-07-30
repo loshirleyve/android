@@ -26,7 +26,8 @@
             android:layout_marginTop="10dp"
             android:text="@string/setting_general" />
 
-        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
+        <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+            xmlns:row="http://schemas.android.com/apk/res-auto"
             android:id="@+id/clean"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,6 +35,8 @@
             row:rowStyleSutitleShowMainImage="false"
             row:rowStyleSutitleShowSutitleText="false"
             row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleMaintContentGravity="center"
+            android:layout_gravity="center"
             row:rowStyleSutitleTitleText="@string/setting_clean">
         </com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
@@ -44,6 +47,7 @@
             row:rowStyleSutitleShowMainImage="false"
             row:rowStyleSutitleShowSutitleText="false"
             row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleMaintContentGravity="center"
             row:rowStyleSutitleTitleText="@string/setting_about"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
         <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout xmlns:row="http://schemas.android.com/apk/res-auto"
@@ -54,6 +58,7 @@
             row:rowStyleSutitleShowMainImage="false"
             row:rowStyleSutitleShowSutitleText="false"
             row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleMaintContentGravity="center"
             row:rowStyleSutitleTitleText="@string/setting_logout"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
 
 
