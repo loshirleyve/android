@@ -161,6 +161,12 @@ public class JupiterRowStyleSutitleLayout extends JupiterRelativeLayout implemen
                     this.mainIV.setImageDrawable(mainImage);
                 }
             }
+
+            if (typedArray.hasValue(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMaintContentGravity)){
+                int gravity = typedArray.getInt(R.styleable.JupiterRowStyleSutitleLayout_rowStyleSutitleMaintContentGravity,
+                        Gravity.TOP);
+                setMainContentGravity(gravity);
+            }
         }finally{
             typedArray.recycle();
         }
