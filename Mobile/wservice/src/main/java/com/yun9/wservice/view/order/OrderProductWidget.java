@@ -65,15 +65,32 @@ public class OrderProductWidget extends JupiterRelativeLayout{
         }
         ImageLoaderUtil.getInstance(this.getContext()).displayImage(orderCartProduct.getProductimgid(), productImageIV);
         productNameTV.setText(orderCartProduct.getProductname());
-        if (orderCartProduct.getProductPhases() != null && orderCartProduct.getProductPhases().size() > 0){
+//        if (orderCartProduct.getProductPhases() != null && orderCartProduct.getProductPhases().size() > 0){
+//            StringBuffer tip = new StringBuffer();
+//            OrderCartInfo.ProductPhases productPhase;
+//            for (int i = 0;i < orderCartProduct.getProductPhases().size();i++){
+//                productPhase = orderCartProduct.getProductPhases().get(i);
+//                if (i != 0){
+//                    tip.append("\n").append(productPhase.getName()).append(": ").append(productPhase.getPhasedescr());
+//                } else {
+//                    tip.append(productPhase.getName()).append(": ").append(productPhase.getPhasedescr());
+//                }
+//            }
+//            productTipTV.setText(tip);
+//        } else {
+//            productTipTV.setVisibility(GONE);
+//        }
+
+
+        if (orderCartProduct.getProductProfiles() != null && orderCartProduct.getProductProfiles().size() > 0){
             StringBuffer tip = new StringBuffer();
-            OrderCartInfo.ProductPhases productPhase;
-            for (int i = 0;i < orderCartProduct.getProductPhases().size();i++){
-                productPhase = orderCartProduct.getProductPhases().get(i);
+            OrderCartInfo.ProductProfiles productProfiles;
+            for (int i = 0;i < orderCartProduct.getProductProfiles().size();i++){
+                productProfiles = orderCartProduct.getProductProfiles().get(i);
                 if (i != 0){
-                    tip.append("\n").append(productPhase.getName()).append(": ").append(productPhase.getPhasedescr());
+                    tip.append("\n").append(productProfiles.getSynopsis());
                 } else {
-                    tip.append(productPhase.getName()).append(": ").append(productPhase.getPhasedescr());
+                    tip.append(productProfiles.getSynopsis());
                 }
             }
             productTipTV.setText(tip);
