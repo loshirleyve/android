@@ -14,6 +14,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.Inst;
+import com.yun9.jupiter.model.LoginUser;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -27,6 +28,8 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.inst.SelectInstActivity;
 import com.yun9.wservice.view.inst.SelectInstCommand;
+
+import java.util.List;
 
 /**
  * Created by xia on 2015/5/20.
@@ -139,10 +142,13 @@ public class LoginActivity extends JupiterFragmentActivity {
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                user = (User) response.getPayload();
+                LoginUser loginUser = (LoginUser) response.getPayload();
+                user = loginUser.getUser();
                 //检查登录用户的机构信息
-                if (AssertValue.isNotNull(sessionManager.getInst(user.getId()))) {
-                    complete(user, sessionManager.getInst(user.getId()));
+                Inst cacheInst = sessionManager.getInst(user.getId());
+                cacheInst = containInst(loginUser.getInsts(), cacheInst);
+                if (AssertValue.isNotNull(cacheInst)) {
+                    complete(user, cacheInst);
                 } else {
                     //未选择机构，进行机构选择操作
                     SelectInstActivity.start(LoginActivity.this, new SelectInstCommand().setUser(user));
@@ -162,6 +168,17 @@ public class LoginActivity extends JupiterFragmentActivity {
 
             }
         });
+    }
+
+    private Inst containInst(List<Inst> insts, Inst cacheInst) {
+        if (insts != null && cacheInst != null){
+            for (Inst inst : insts){
+                if (inst.getId().equals(cacheInst.getId())){
+                    return inst;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
