@@ -226,18 +226,16 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
 
         //content
-        if (msgCard.getContent() != null) {
             contentTV.setText(msgCard.getContent());
-        }
 
         //location
-        if (msgCard.getLocationlabel() != null) {
-            locationTV.setText(msgCard.getLocationlabel());
-        }
+        locationTV.setText(msgCard.getLocationlabel());
 
         //createDate
         if (msgCard.getCreatedate() != null) {
             timeTV.setText(DateUtil.timeAgo(msgCard.getCreatedate()));
+        } else {
+            timeTV.setText("");
         }
 
         //praiseIv
