@@ -81,6 +81,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
     private Order order;
 
+    private ProgressDialog reloadDataDialog;
+
     public static void start(Context context,String orderId) {
         Intent intent = new Intent(context,OrderDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -127,7 +129,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData() {
-        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
+        reloadDataDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
         resource.param("orderid", orderId);
         resource.invok(new AsyncHttpResponseCallback() {
@@ -145,8 +147,6 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
-                mainRl.setVisibility(View.VISIBLE);
-                registerDialog.dismiss();
             }
         });
     }
@@ -237,6 +237,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         } else {
             orderDetailWorkOrderListWidget.buildWithData(order);
         }
+        mainRl.setVisibility(View.VISIBLE);
+        reloadDataDialog.dismiss();
     }
 
     private View.OnClickListener onContactUsClick = new View.OnClickListener() {

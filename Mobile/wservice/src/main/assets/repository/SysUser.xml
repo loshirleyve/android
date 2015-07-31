@@ -5,7 +5,7 @@
         <name>CheckUserPassword</name>
         <action>com.yun9.sys.inst.serivce.QueryIdentificationByUsernoAndPasswd</action>
         <output>
-            <classname>com.yun9.jupiter.model.User</classname>
+            <classname>com.yun9.jupiter.model.LoginUser</classname>
             <type>object</type>
         </output>
         <type>yun9</type>

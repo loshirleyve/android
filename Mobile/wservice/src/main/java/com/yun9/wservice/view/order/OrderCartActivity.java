@@ -129,6 +129,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
         if (ClientProxyCache.getInstance().isProxy()){
             CacheInst inst = InstCache.getInstance().getInst(ClientProxyCache.getInstance().getProxy().getInstId());
             if (inst != null){
+                titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
                 titleBarLayout.getTitleSutitleTv().setText("正在为"+inst.getInstname()+"代理购买");
             } else {
                 titleBarLayout.getTitleSutitleTv().setText("警告：无法获取代理机构信息！！");
