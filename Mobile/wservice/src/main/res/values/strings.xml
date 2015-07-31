@@ -282,7 +282,8 @@
     <string name="can_not_get_phone">无法获取机构电话号码</string>
     <string name="tel">tel:</string>
     <string name="is_proxy">(正在代理)</string>
-    <string name="client_no_input_notice">客户编号-建议使用公司名称拼音</string>
+    <string name="client_no_input">客户编号-建议使用公司名称的拼音首字母</string>
+    <string name="client_no_input_notice">请输入4至8位客户编号</string>
     <string name="company_abbrev_name">公司简称</string>
     <string name="company_full_name">公司全称</string>
     <string name="type">类型</string>
@@ -290,7 +291,7 @@
     <string name="inst_scale">公司规模</string>
     <string name="source">来源</string>
     <string name="region">区域</string>
-    <string name="detail_info">详细信息</string>
+    <string name="client_address">客户地址</string>
     <string name="contact_phone">联系电话</string>
     <string name="post">职位</string>
     <string name="client_rank">客户等级</string>
@@ -310,7 +311,7 @@
     <string name="client_no_name_same_not">客户编号和客户名字不能重复！</string>
     <string name="correct_phone_no_not">请输入正确的电话号码！</string>
     <string name="save_client_success_not">保存客户成功！</string>
-    <string name="client_no_correct_not">请输入6-8位由字母或数字组成的客户编号！</string>
+    <string name="client_no_correct_not">请输入4-8位由字母或数字组成的客户编号！</string>
     <string name="duplicate_client_not">%1$S用户已存在</string>
     <string name="duplicate_client_no">拥有此客户编号的</string>
     <string name="duplicate_client_name">拥有此名称的</string>

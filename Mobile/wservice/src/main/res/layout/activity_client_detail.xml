@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/client_no_input_notice"
+                android:text="@string/client_no_input"
                 android:textColor="@color/gray_font" />
 
             <EditText
@@ -148,16 +148,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/detail_info"
+                android:text="@string/client_address"
                 android:textColor="@color/gray_font" />
 
             <EditText
-                android:id="@+id/detailInfoEt"
+                android:id="@+id/clientAddressEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
-                android:hint="@string/detail_info"
+                android:hint="@string/client_address"
                 android:paddingBottom="20dp"
                 android:paddingLeft="20dp"
                 android:paddingTop="20dp"
