@@ -27,7 +27,6 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.model.Client;
-import com.yun9.wservice.model.MdInstScale;
 import com.yun9.wservice.model.MdInstScales;
 import com.yun9.wservice.view.common.MultiSelectActivity;
 import com.yun9.wservice.view.common.MultiSelectCommand;
@@ -63,8 +62,8 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
     private JupiterRowStyleSutitleLayout sourceLayout;
     @ViewInject(id = R.id.regionEt)
     private EditText regionEt;
-    @ViewInject(id = R.id.detailInfoEt)
-    private EditText detailInfoEt;
+    @ViewInject(id = R.id.clientAddressEt)
+    private EditText clientAddressEt;
     @ViewInject(id = R.id.contactNameEt)
     private EditText contactNameEt;
     @ViewInject(id = R.id.contactPhoneEt)
@@ -147,7 +146,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 Toast.makeText(mContext, getString(R.string.source_chose), Toast.LENGTH_SHORT).show();
             } else if (!AssertValue.isNotNullAndNotEmpty(regionEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.region_input), Toast.LENGTH_SHORT).show();
-            } else if (!AssertValue.isNotNullAndNotEmpty(detailInfoEt.getText().toString())) {
+            } else if (!AssertValue.isNotNullAndNotEmpty(clientAddressEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.detail_info_input), Toast.LENGTH_SHORT).show();
             } else if (!AssertValue.isNotNullAndNotEmpty(contactNameEt.getText().toString())) {
                 Toast.makeText(mContext, getString(R.string.contact_name_input), Toast.LENGTH_SHORT).show();
@@ -181,7 +180,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         resource.param("contactman", contactNameEt.getText().toString());
         resource.param("contactphone", contactPhoneEt.getText().toString());
         resource.param("region", regionEt.getText().toString());
-        resource.param("address", detailInfoEt.getText().toString());
+        resource.param("address", clientAddressEt.getText().toString());
         resource.param("source", source);
         resource.param("industry", industry);
         resource.param("scaleid", instScale);
@@ -472,7 +471,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
     }
 
     public boolean isClientNo(String clientNo) {
-        String str = "^([a-zA-Z0-9]{6,8})$";
+        String str = "^([a-zA-Z0-9]{4,8})$";
         Pattern p = Pattern.compile(str);
         Matcher m = p.matcher(clientNo);
         return m.matches();
@@ -523,7 +522,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         source = client.getSource();
 
         regionEt.setText(client.getRegion());
-        detailInfoEt.setText(client.getAddress());
+        clientAddressEt.setText(client.getAddress());
         contactNameEt.setText(client.getContactman());
         contactPhoneEt.setText(client.getContactphone());
 
