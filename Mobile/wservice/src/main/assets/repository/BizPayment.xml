@@ -35,8 +35,8 @@
 
     <!-- 登记充值服务 -->
     <repository>
-        <name>QueryCollectsByRequestService</name>
-        <action>com.yun9.ws.biz.service.QueryCollectsByRequestService</action>
+        <name>QueryCollectsBySourceService</name>
+        <action>com.yun9.ws.biz.service.QueryCollectsBySourceService</action>
         <output>
             <classname>com.yun9.wservice.model.FinanceCollects</classname>
             <type>object</type>

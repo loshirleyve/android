@@ -324,7 +324,6 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         //不处理话题，服务器分析内容的话题进行处理
 
         newMsgCard.setContent(dynamicContentET.getText().toString());
-        newMsgCard.setSubject("-");
         //添加接收人
         if (AssertValue.isNotNullAndNotEmpty(selectOrgAndUsers)) {
             for (OrgAndUserBean orgAndUserBean : selectOrgAndUsers) {

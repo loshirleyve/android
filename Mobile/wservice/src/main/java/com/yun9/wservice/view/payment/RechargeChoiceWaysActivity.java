@@ -109,7 +109,6 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryRechargeTypeService");
-        resource.param("instid",sessionManager.getInst().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {

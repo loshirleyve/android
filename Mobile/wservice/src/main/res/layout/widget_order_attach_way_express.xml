@@ -40,6 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_centerInParent="true"
+            android:visibility="gone"
             android:background="@drawable/flicking"/>
         <EditText
             android:id="@+id/express_id_et"
