@@ -237,7 +237,7 @@ public class DynamicSessionFragment extends JupiterFragment {
 
         if (AssertValue.isNotNullAndNotEmpty(userid) && AssertValue.isNotNullAndNotEmpty(instid)) {
             Resource resource = resourceFactory.create("QueryMsgsGroup");
-            resource.param("instid", instid).param("userid", userid);
+            resource.param("userid", userid);
 
             resource.invok(new AsyncHttpResponseCallback() {
                 @Override

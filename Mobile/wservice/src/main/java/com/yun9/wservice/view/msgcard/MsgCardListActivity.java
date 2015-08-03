@@ -173,7 +173,6 @@ public class MsgCardListActivity extends JupiterFragmentActivity {
                 && AssertValue.isNotNullAndNotEmpty(command.getUserid())
                 && AssertValue.isNotNullAndNotEmpty(command.getType())) {
             Resource resource = resourceFactory.create("QueryMsgCardByScene");
-            resource.param("instid", sessionManager.getInst().getId());
             resource.param("userid", command.getUserid());
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
