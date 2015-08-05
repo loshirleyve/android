@@ -90,11 +90,13 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 
         }
         CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeUserListBean.getUser().getId());
+        tempView.getMainIV().setImageResource(R.drawable.user_head);
         if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), tempView.getMainIV());
-        } else {
-            tempView.getMainIV().setImageResource(R.drawable.user_head);
         }
+// else {
+//            tempView.getMainIV().setImageResource(R.drawable.user_head);
+//        }
         tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
         tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
         tempView.getTimeTv().setVisibility(View.GONE);
