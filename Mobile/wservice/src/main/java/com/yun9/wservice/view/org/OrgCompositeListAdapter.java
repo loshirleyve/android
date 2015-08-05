@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.org;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -87,7 +88,7 @@ public class OrgCompositeListAdapter extends BaseAdapter {
             tempView = (JupiterRowStyleSutitleLayout) convertView;
         } else {
             tempView = new JupiterRowStyleSutitleLayout(mContext);
-
+            tempView.setMainContentGravity(Gravity.CENTER);
         }
         CacheUser cacheUser = UserCache.getInstance().getUser(orgCompositeUserListBean.getUser().getId());
         tempView.getMainIV().setImageResource(R.drawable.user_head);
@@ -98,7 +99,11 @@ public class OrgCompositeListAdapter extends BaseAdapter {
 //            tempView.getMainIV().setImageResource(R.drawable.user_head);
 //        }
         tempView.getTitleTV().setText(orgCompositeUserListBean.getUser().getName());
-        tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
+        if (AssertValue.isNotNullAndNotEmpty(orgCompositeUserListBean.getUser().getSignature())) {
+            tempView.getSutitleTv().setText(orgCompositeUserListBean.getUser().getSignature());
+        } else {
+            tempView.getSutitleTv().setVisibility(View.GONE);
+        }
         tempView.getTimeTv().setVisibility(View.GONE);
         tempView.getArrowRightIV().setVisibility(View.GONE);
         tempView.setTag(orgCompositeUserListBean);

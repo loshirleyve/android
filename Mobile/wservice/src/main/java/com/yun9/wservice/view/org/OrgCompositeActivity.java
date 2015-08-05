@@ -216,7 +216,11 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
             if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getUrl())) {
                 ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), orgCompositeTopWidget.getMyselfLL().getMainIV());
             }
-            orgCompositeTopWidget.getMyselfLL().getSutitleTv().setText(orgCompositeInfoBean.getMyself().getSignature());
+            if (AssertValue.isNotNullAndNotEmpty(orgCompositeInfoBean.getMyself().getSignature())){
+                orgCompositeTopWidget.getMyselfLL().getSutitleTv().setText(orgCompositeInfoBean.getMyself().getSignature());
+            } else {
+                orgCompositeTopWidget.getMyselfLL().getSutitleTv().setVisibility(View.GONE);
+            }
         }
 
         if (AssertValue.isNotNull(orgCompositeInfoBean) && AssertValue.isNotNullAndNotEmpty(orgCompositeInfoBean.getDim())) {
@@ -473,6 +477,15 @@ public class OrgCompositeActivity extends JupiterFragmentActivity {
         if (AssertValue.isNotNull(orgCompositeTopWidget)) {
             orgCompositeTopWidget.getOrgGroupLL().getSutitleTv().setText(sutitles.get(OrgCompositeCommand.DIM_TYPE_GROUP));
             orgCompositeTopWidget.getOrgHrLL().getSutitleTv().setText(sutitles.get(OrgCompositeCommand.DIM_TYPE_HR));
+            if (!AssertValue.isNotNullAndNotEmpty(sutitles.get(OrgCompositeCommand.DIM_TYPE_GROUP))){
+                orgCompositeTopWidget.getOrgGroupLL().getSutitleTv().setVisibility(View.GONE);
+            }
+            if (!AssertValue.isNotNullAndNotEmpty(sutitles.get(OrgCompositeCommand.DIM_TYPE_HR))){
+                orgCompositeTopWidget.getOrgHrLL().getSutitleTv().setVisibility(View.GONE);
+            }
+        } else {
+            orgCompositeTopWidget.getOrgGroupLL().getSutitleTv().setVisibility(View.GONE);
+            orgCompositeTopWidget.getOrgHrLL().getSutitleTv().setVisibility(View.GONE);
         }
     }
 

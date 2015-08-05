@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -318,6 +319,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
                 titleLayout.getMainIV().setVisibility(View.GONE);
                 titleLayout.getTimeTv().setVisibility(View.GONE);
+                titleLayout.setMainContentGravity(Gravity.CENTER);
                 titleLayout.getTitleTV()
                         .setText(payinfo.getPaymodeCategorys().get(position).getName());
                 titleLayout.setOnClickListener(new View.OnClickListener() {

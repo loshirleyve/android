@@ -140,14 +140,6 @@ public class StoreFragment extends JupiterFragment {
 
         titleBar.getTitleLeft().setOnClickListener(onLocationClickListener);
 
-        //检查是否已经登录了
-        if (sessionManager.isLogin()) {
-            titleBar.getTitleRight().setVisibility(View.GONE);
-        } else {
-            titleBar.getTitleRight().setVisibility(View.VISIBLE);
-            titleBar.getTitleRight().setOnClickListener(onLoginClickListener);
-        }
-
         mPtrFrame.setLastUpdateTimeRelateObject(this);
         mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -237,6 +229,13 @@ public class StoreFragment extends JupiterFragment {
         LocationFactory locationFactory = JupiterApplication.getBeanManager().get(LocationFactory.class);
         locationFactory.setOnLocationListener(onLocationListener);
         locationFactory.start();
+        //检查是否已经登录了
+        if (sessionManager.isLogin()) {
+            titleBar.getTitleRight().setVisibility(View.GONE);
+        } else {
+            titleBar.getTitleRight().setVisibility(View.VISIBLE);
+            titleBar.getTitleRight().setOnClickListener(onLoginClickListener);
+        }
     }
 
     private void reset() {

@@ -125,7 +125,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     }
 
     private void openRechargeHistoryActivity(OrderBuyManagerInfo.RechargeGroup rechargeGroup) {
-        RechargeRecordListActivity.start(this, rechargeGroup.getStateno(), rechargeGroup.getStatename());
+        RechargeRecordListActivity.start(this, rechargeGroup.getState(), rechargeGroup.getStatename());
     }
 
     private JupiterAdapter rechargeAdapter = new JupiterAdapter() {

@@ -87,7 +87,11 @@ public class OrgListAdapter extends JupiterAdapter {
 
         item.setSelectMode(selectMode);
         item.getTitleTV().setText(orgListBean.getName());
-        item.getSutitleTv().setText(orgListBean.getUserNames());
+        if (AssertValue.isNotNullAndNotEmpty(orgListBean.getUserNames())){
+            item.getSutitleTv().setText(orgListBean.getUserNames());
+        } else {
+            item.getSutitleTv().setVisibility(View.GONE);
+        }
         item.select(orgListBean.isSelected());
         item.setTag(orgListBean);
         if(selectMode==false)

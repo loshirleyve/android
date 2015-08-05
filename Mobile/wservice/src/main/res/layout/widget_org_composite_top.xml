@@ -14,6 +14,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleMaintContentGravity="center"
             row:rowStyleSutitleText="@string/app_name"
             row:rowStyleSutitleTitleText="@string/org_composite_myself">
 
@@ -26,6 +27,7 @@
             android:layout_marginTop="5dp"
             android:clickable="true"
             row:rowStyleSutitleMainImage="@drawable/user_group"
+            row:rowStyleSutitleMaintContentGravity="center"
             row:rowStyleSutitleShowTimeText="false"
             row:rowStyleSutitleText="@string/app_name"
             row:rowStyleSutitleTitleText="@string/org_composite_org_hr"></com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout>
@@ -37,6 +39,7 @@
             android:clickable="true"
             row:rowStyleSutitleMainImage="@drawable/user_group"
             row:rowStyleSutitleShowTimeText="false"
+            row:rowStyleSutitleMaintContentGravity="center"
             row:rowStyleSutitleText="@string/app_name"
             row:rowStyleSutitleTitleText="@string/org_composite_org_group"
             android:layout_marginBottom="5dp">
