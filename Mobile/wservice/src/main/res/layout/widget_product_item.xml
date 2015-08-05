@@ -37,6 +37,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
+                    android:layout_margin="3dp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -47,6 +48,17 @@
                         android:text="@string/jupiter_row_cell_title"
                         android:textColor="@color/black"
                         android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/hot_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/jupiter_ne_version"
+                        android:textColor="@color/title_color" />
+
 
                     <TextView
                         android:id="@+id/time_tv"
@@ -64,6 +76,16 @@
                     android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:textColor="@color/black"
+                    android:layout_margin="3dp"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/company_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/black"
+                    android:layout_margin="3dp"
                     android:textSize="12dp" />
 
                 <LinearLayout
@@ -85,18 +107,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="5dp">
-
-            <TextView
-                android:id="@+id/hot_notice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:text="@string/jupiter_ne_version"
-                android:textColor="@color/title_color"
-                android:visibility="visible" />
-            <!--android:background="@color/title_color"-->
-            <!--android:visibility="gone" -->
 
             <ImageView
                 android:id="@+id/selectmode_iv"

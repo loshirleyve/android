@@ -17,6 +17,7 @@ public class ProductItemLayout extends JupiterRelativeLayout {
     private TextView SutitleTV;
     private ImageView MainIV;
     private TextView HotnoticeTV;
+    private TextView companyTv;
 
     public ProductItemLayout(Context context) {
         super(context);
@@ -39,6 +40,7 @@ public class ProductItemLayout extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         this.TitleTV = (TextView) findViewById(R.id.title_tv);
         SutitleTV = (TextView)findViewById(R.id.sutitle_tv);
+        companyTv= (TextView)findViewById(R.id.company_tv);
         MainIV = (ImageView)findViewById(R.id.main_iv);
         HotnoticeTV = (TextView)findViewById(R.id.hot_notice);
     }
@@ -53,6 +55,14 @@ public class ProductItemLayout extends JupiterRelativeLayout {
 
     public TextView getSutitleTV() {
         return SutitleTV;
+    }
+
+    public TextView getCompanyTv() {
+        return companyTv;
+    }
+
+    public void setCompanyTv(TextView companyTv) {
+        this.companyTv = companyTv;
     }
 
     public void setSutitleTV(TextView sutitleTV) {

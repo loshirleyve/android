@@ -25,6 +25,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import com.yun9.jupiter.app.JupiterApplication;
 import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.cache.InstCache;
+import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.location.LocationBean;
@@ -329,7 +330,7 @@ public class StoreFragment extends JupiterFragment {
         final Resource resource = resourceFactory.create("QueryProducts");
         resource.param("top", 1)
                 .param("groupid", productGroup.getId())
-                .param("state","normal");
+                .param("state", "normal");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -593,17 +594,17 @@ public class StoreFragment extends JupiterFragment {
                 //当前城市还没有确定或者当前城市与定位城市不一致
                 if (currServiceCity == null
                         || (AssertValue.isNotNull(currServiceCity)
-                            && (!currServiceCity.getProvince().equals(serviceCity.getProvince())
-                                || !currServiceCity.getCity().equals(serviceCity.getCity())))
+                        && (!currServiceCity.getProvince().equals(serviceCity.getProvince())
+                        || !currServiceCity.getCity().equals(serviceCity.getCity())))
                         || (AssertValue.isNotNull(currServiceCity)
-                            && (currServiceCity.getProvince().equals(serviceCity.getProvince())
-                                && currServiceCity.getCity().equals(serviceCity.getCity())
-                                && !"all".equals(currServiceCity.getCityno())
-                                && !currServiceCity.getDistrict().equals(serviceCity.getDistrict())))) {
+                        && (currServiceCity.getProvince().equals(serviceCity.getProvince())
+                        && currServiceCity.getCity().equals(serviceCity.getCity())
+                        && !"all".equals(currServiceCity.getCityno())
+                        && !currServiceCity.getDistrict().equals(serviceCity.getDistrict())))) {
                     CharSequence content = getResources()
                             .getString(R.string.store_change_location_dialog_content,
-                                    serviceCity.getCity(),serviceCity.getDistrict(),
-                                    serviceCity.getCity(),serviceCity.getDistrict());
+                                    serviceCity.getCity(), serviceCity.getDistrict(),
+                                    serviceCity.getCity(), serviceCity.getDistrict());
                     switchAlertDialogShowing = true;
                     new AlertDialog.Builder(getActivity()).setTitle(R.string.store_change_location_dialog_title).setMessage(content).setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -698,11 +699,14 @@ public class StoreFragment extends JupiterFragment {
 
             productItemLayout.getTitleTV().setText(product.getName());
             productItemLayout.getSutitleTV().setText(product.getIntroduce());
+            CacheInst inst = InstCache.getInstance().getInst(product.getInstid());
+            if (AssertValue.isNotNull(inst))
+                productItemLayout.getCompanyTv().setText(inst.getInstname());
             ImageLoaderUtil.getInstance(getActivity()).displayImage(product.getImgid(), productItemLayout.getMainIV());
-            if (product.getMaxprice() >  product.getMinprice()){
-                productItemLayout.getHotnoticeTV().setText("￥"+product.getMinprice()+"~"+product.getMaxprice());
+            if (product.getMaxprice() > product.getMinprice()) {
+                productItemLayout.getHotnoticeTV().setText("￥" + product.getMinprice() + "~" + product.getMaxprice());
             } else {
-                productItemLayout.getHotnoticeTV().setText("￥"+product.getMaxprice());
+                productItemLayout.getHotnoticeTV().setText("￥" + product.getMaxprice());
             }
             productItemLayout.setTag(product);
 
