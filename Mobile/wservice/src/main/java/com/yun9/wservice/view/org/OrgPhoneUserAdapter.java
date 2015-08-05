@@ -91,6 +91,7 @@ public class OrgPhoneUserAdapter extends JupiterAdapter {
             item = new JupiterRowStyleSutitleLayout(mContext);
             item.setShowTime(false);
             item.setShowArrow(false);
+            item.setMainContentGravity(Gravity.CENTER);
             item.getArrowRightButton().setText(R.string.invitation_reg);
             item.getArrowRightButton().setTextColor(mContext.getResources().getColor(R.color.whites));
             item.getArrowRightButton().setBackgroundResource(R.drawable.button_background);

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.FileBean;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -23,7 +24,9 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.AttachmentInputType;
 import com.yun9.wservice.enums.AttachmentTransferType;
+import com.yun9.wservice.model.AttachTransferWay;
 import com.yun9.wservice.model.Attachment;
+import com.yun9.wservice.model.BizMdInstTransfer;
 import com.yun9.wservice.model.wrapper.AttachmentWrapper;
 import com.yun9.wservice.task.UploadFileAsyncTask;
 
@@ -55,6 +58,9 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
 
     @BeanInject
     private ResourceFactory resourceFactory;
+
+    @BeanInject
+    private SessionManager sessionManager;
 
     private String orderId;
 
@@ -112,6 +118,7 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
                 AttachmentWrapper wrapper = (AttachmentWrapper) response.getPayload();
                 List<Attachment> attachments = wrapper.getOrderAttachments();
                 buildWithData(attachments);
+                buildChoiceMeterialWay(wrapper);
             }
 
             @Override
@@ -125,6 +132,24 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
             }
         });
 
+    }
+
+    private void buildChoiceMeterialWay(AttachmentWrapper wrapper) {
+        if (wrapper.getBizMdInstTransfer() != null){
+            materialWidget.getTitleLayout().getHotNitoceTV().setTextColor(getResources()
+                    .getColor(R.color.title_color));
+            AttachTransferWay way = new AttachTransferWay();
+            way.setName("阿拉拉拉");
+            way.setId(wrapper.getBizMdInstTransfer().getTransferid());
+            if (way != null){
+                materialWidget.getTitleLayout().getHotNitoceTV().setText(
+                        way.getName()
+                );
+                choicedMaterialWay = new OrderAttachmentChoiceWayActivity.ViewHolder();
+                choicedMaterialWay.setWay(way);
+                choicedMaterialWay.setValue(wrapper.getBizMdInstTransfer().getInputvalue());
+            }
+        }
     }
 
     private void buildWithData(List<Attachment> attachments) {
@@ -202,12 +227,16 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
      * 提交资料
      */
     private void submitAttach() {
-        if (choicedMaterialWay == null){
+        if (materialWidget.getVisibility() == View.VISIBLE
+                     && choicedMaterialWay == null){
             showToast("请选择实物资料提交方式");
             return;
+        } else {
+            submitMaterialWay();
         }
         final List<OrderAttachmentVitualWidget.Attachement> attachements = vitualWidget.getValue();
         if (attachements == null){
+            showToast("无法获取资料信息");
             return;
         }
        List<FileBean> fileBeans = vitualWidget.getFileBeans();
@@ -242,6 +271,30 @@ public class OrderAttachmentActivity extends CustomCallbackActivity{
         } else {
             submit(attachements);
         }
+    }
+
+    private void submitMaterialWay() {
+        Resource resource = resourceFactory.create("AddOrUpdateOrderTransferService");
+        resource.param("orderid",orderId);
+        resource.param("transferid",choicedMaterialWay.getWay().getId());
+        resource.param("inputvalue",choicedMaterialWay.getValue());
+        resource.param("createby",sessionManager.getUser().getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
     }
 
     private List<String> toFilePath(List<FileBean> fileBeans) {

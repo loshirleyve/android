@@ -1,6 +1,7 @@
 package com.yun9.wservice.model.wrapper;
 
 import com.yun9.wservice.model.Attachment;
+import com.yun9.wservice.model.BizMdInstTransfer;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public class AttachmentWrapper implements Serializable{
     private List<Attachment> orderAttachments;
+    private BizMdInstTransfer bizMdInstTransfer;
 
     public List<Attachment> getOrderAttachments() {
         return orderAttachments;
@@ -17,5 +19,14 @@ public class AttachmentWrapper implements Serializable{
 
     public void setOrderAttachments(List<Attachment> orderAttachments) {
         this.orderAttachments = orderAttachments;
+    }
+
+    public BizMdInstTransfer getBizMdInstTransfer() {
+        return bizMdInstTransfer;
+    }
+
+    public AttachmentWrapper setBizMdInstTransfer(BizMdInstTransfer bizMdInstTransfer) {
+        this.bizMdInstTransfer = bizMdInstTransfer;
+        return this;
     }
 }

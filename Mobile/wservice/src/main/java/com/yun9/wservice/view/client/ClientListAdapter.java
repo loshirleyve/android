@@ -77,7 +77,7 @@ public class ClientListAdapter extends JupiterAdapter {
                 CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
                 if (proxy.getUserId().equals(client.getClientadminid())
                         && proxy.getInstId().equals(client.getClientinstid())){
-                    clientItemLayout.getTitle_TV().setText(client.getName()+R.string.is_proxy);
+                    clientItemLayout.getTitle_TV().setText(client.getName()+"(正在代理)");
                     clientItemLayout.getTitle_TV().setTextColor(clientItemLayout.getResources()
                             .getColor(R.color.title_color));
                     clientItemLayout.getTitle_TV().getPaint().setFakeBoldText(true);

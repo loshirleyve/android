@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -297,6 +300,7 @@ public class DynamicSessionFragment extends JupiterFragment {
             JupiterRowStyleSutitleLayout jupiterRowStyleSutitleLayout = null;
             if (convertView == null) {
                 jupiterRowStyleSutitleLayout = new JupiterRowStyleSutitleLayout(mContext);
+                jupiterRowStyleSutitleLayout.setMainContentGravity(Gravity.TOP);
             } else {
                 jupiterRowStyleSutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
             }

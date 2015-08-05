@@ -93,7 +93,7 @@ public class OrderBuyManagerInfo implements Serializable{
     public static class RechargeGroup implements Serializable{
 
         private long nums;
-        private String stateno;
+        private String state;
         private String statename;
 
         public RechargeGroup() {
@@ -101,7 +101,7 @@ public class OrderBuyManagerInfo implements Serializable{
 
         public RechargeGroup(long nums, String stateno, String statename) {
             this.nums = nums;
-            this.stateno = stateno;
+            this.state = stateno;
             this.statename = statename;
         }
 
@@ -113,12 +113,13 @@ public class OrderBuyManagerInfo implements Serializable{
             this.nums = nums;
         }
 
-        public String getStateno() {
-            return stateno;
+        public String getState() {
+            return state;
         }
 
-        public void setStateno(String stateno) {
-            this.stateno = stateno;
+        public RechargeGroup setState(String state) {
+            this.state = state;
+            return this;
         }
 
         public String getStatename() {
