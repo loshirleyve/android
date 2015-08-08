@@ -20,10 +20,10 @@
 
     <!-- 根据不同场景获取消息卡片 -->
     <repository>
-        <name>QueryMsgCardByScene</name>
-        <action>com.yun9.ws.biz.service.QueryMsgCardBySceneService</action>
+        <name>QueryMsgBySceneService</name>
+        <action>com.yun9.ws.biz.service.QueryMsgBySceneService</action>
         <output>
-            <classname>com.yun9.wservice.model.MsgCard</classname>
+            <classname>com.yun9.wservice.model.Msg</classname>
             <type>list</type>
         </output>
         <type>yun9</type>

@@ -84,7 +84,7 @@ public class CacheUser implements java.io.Serializable{
         if (AssertValue.isNotNullAndNotEmpty(instname)){
             String[] is = instname.split("\\s");
             if (is.length > 1){
-                return is[0]+"...";
+                return is[0];
             }
         }
         return instname;

@@ -25,6 +25,13 @@ public abstract class CustomCallbackActivity extends JupiterFragmentActivity{
      * 回调接口定义
      */
     public interface IActivityCallback {
-        public void onActivityResult(int resultCode, Intent data);
+        void onActivityResult(int resultCode, Intent data);
     }
+
+    protected static final IActivityCallback EMPTY_CALL_BACK = new IActivityCallback() {
+        @Override
+        public void onActivityResult(int resultCode, Intent data) {
+
+        }
+    };
 }
