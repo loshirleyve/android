@@ -9,8 +9,9 @@ public class MsgCardListCommand extends JupiterCommand {
 
     public static final String TYPE_TOUSER = "touser";
 
-    public static final String TYPE_USER_GIVEME = "usergiveme";
+    public static final String TYPE_INST_GIVEME = "instgiveme";
 
+    public static final String TYPE_USER_GIVEME = "usergiveme";
 
     public static final String TYPE_TOPIC = "topic";
 
@@ -18,6 +19,7 @@ public class MsgCardListCommand extends JupiterCommand {
     private String userid;
     private String fromuserid;
     private String title;
+    private String instid;
 
     private String topic;
 
@@ -63,6 +65,15 @@ public class MsgCardListCommand extends JupiterCommand {
 
     public MsgCardListCommand setTopic(String topic) {
         this.topic = topic;
+        return this;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public MsgCardListCommand setInstid(String instid) {
+        this.instid = instid;
         return this;
     }
 }

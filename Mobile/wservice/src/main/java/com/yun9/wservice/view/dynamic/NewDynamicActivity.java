@@ -382,6 +382,7 @@ public class NewDynamicActivity extends JupiterFragmentActivity {
         resource.param("source", newMsgCard.getSource());
         resource.param("scope", newMsgCard.getScope());
         resource.param("users", newMsgCard.getUsers());
+        resource.param("msgFromtype", "person");
         if (AssertValue.isNotNull(lastPoiInfoBean)) {
             resource.header("locationx", lastPoiInfoBean.getLatitude() + "");
             resource.header("locationy", lastPoiInfoBean.getLontitude() + "");

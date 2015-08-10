@@ -10,6 +10,8 @@ public class MsgsGroup {
     private long lastmsgdate;
     private String lastcontent;
     private String touserid;
+    private String fromtype;
+    private String instid;
 
     public int getUnreadnum() {
         return unreadnum;
@@ -49,5 +51,23 @@ public class MsgsGroup {
 
     public void setTouserid(String touserid) {
         this.touserid = touserid;
+    }
+
+    public String getFromtype() {
+        return fromtype;
+    }
+
+    public MsgsGroup setFromtype(String fromtype) {
+        this.fromtype = fromtype;
+        return this;
+    }
+
+    public String getInstid() {
+        return instid;
+    }
+
+    public MsgsGroup setInstid(String instid) {
+        this.instid = instid;
+        return this;
     }
 }

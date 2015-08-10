@@ -15,11 +15,13 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
@@ -36,6 +38,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.MsgFromType;
 import com.yun9.wservice.model.MsgsGroup;
 import com.yun9.wservice.model.Scene;
 import com.yun9.wservice.model.TopicBean;
@@ -120,7 +123,11 @@ public class DynamicSessionFragment extends JupiterFragment {
                     MsgCardListCommand msgCardListCommand = new MsgCardListCommand()
                             .setType(MsgCardListCommand.TYPE_USER_GIVEME)
                             .setFromuserid(msgsGroup.getFromuserid())
-                            .setUserid(msgsGroup.getTouserid());
+                            .setUserid(msgsGroup.getTouserid())
+                            .setInstid(msgsGroup.getInstid());
+                    if (MsgFromType.TYPE_INST.equals(msgsGroup.getFromtype())){
+                        msgCardListCommand.setType(MsgCardListCommand.TYPE_INST_GIVEME);
+                    }
                     //获取用户信息
                     CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
                     if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNullAndNotEmpty(cacheUser.getName())) {
@@ -326,6 +333,16 @@ public class DynamicSessionFragment extends JupiterFragment {
                 jupiterRowStyleSutitleLayout.showCornerIco();
             } else {
                 jupiterRowStyleSutitleLayout.hideCornerIco();
+            }
+
+            // 如果是来自机构
+            if (MsgFromType.TYPE_INST.equals(msgsGroup.getFromtype())
+                    && AssertValue.isNotNullAndNotEmpty(msgsGroup.getInstid())){
+                CacheInst cacheInst = InstCache.getInstance().getInst(msgsGroup.getInstid());
+                if (cacheInst != null){
+                    jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.GONE);
+                    jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheInst.getInstname());
+                }
             }
 
             return jupiterRowStyleSutitleLayout;

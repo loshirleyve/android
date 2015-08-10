@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
@@ -26,6 +28,7 @@ import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.MsgFromType;
 import com.yun9.wservice.manager.MsgManager;
 import com.yun9.wservice.model.Msg;
 import com.yun9.wservice.model.MsgCard;
@@ -109,6 +112,16 @@ public class MsgCardListActivity extends CustomCallbackActivity {
                 titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
                 titleBar.getTitleSutitleTv().setText(cacheUser.getBriefInstname());
             }
+            // 如果来自机构
+            if (MsgCardListCommand.TYPE_INST_GIVEME.equals(command.getType())
+                &&AssertValue.isNotNullAndNotEmpty(command.getInstid())){
+                CacheInst inst = InstCache.getInstance().getInst(command.getInstid());
+                if (inst != null){
+                    titleBar.getTitleSutitleTv().setVisibility(View.GONE);
+                    titleBar.getTitleTv().setTextSize(16);
+                    titleBar.getTitleTv().setText(inst.getInstname());
+                }
+            }
         }
 
         msgCardList.setAdapter(msgCardListAdapter);
@@ -171,6 +184,7 @@ public class MsgCardListActivity extends CustomCallbackActivity {
             resource.param("fromuserid", command.getFromuserid());
             resource.param("sence", command.getType());
             resource.param("topic", command.getTopic());
+            resource.param("instid",command.getInstid());
             resource.page().setDir(dir).setRowid(rowid);
 
 
