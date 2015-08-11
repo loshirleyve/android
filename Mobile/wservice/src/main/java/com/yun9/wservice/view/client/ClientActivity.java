@@ -384,7 +384,8 @@ public class ClientActivity extends JupiterFragmentActivity {
         command = new EditClientCommand();
         command.setClientId(clientId);
         //EditClientActivity.start(this,command);
-        ClientDetailActivity.start(this, command);
+        //ClientDetailActivity.start(this, command);
+        ClientDetaiActivity.start(this, command);
     }
 
     private View.OnClickListener onTitleLeftClickListener = new View.OnClickListener() {
@@ -397,7 +398,9 @@ public class ClientActivity extends JupiterFragmentActivity {
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            clientListView.smoothOpenMenu(position);
+            //clientListView.smoothOpenMenu(position);
+            Client client = showClients.get(position);
+            editClient(client.getId());
         }
     };
 }
