@@ -587,7 +587,11 @@ public class StoreFragment extends JupiterFragment {
         public void onReceiveLocation(LocationBean locationBean) {
             //检查是否被支持的城市
             final ServiceCity serviceCity = findCity(locationBean.getProvince(), locationBean.getCity(), locationBean.getDistrict());
-            final String key = "com.yun9.wservice.store.switchcity.notice";
+            String temp = "com.yun9.wservice.store.switchcity.notice";
+            if (serviceCity != null){
+                temp += serviceCity.getProvince()+serviceCity.getCity()+serviceCity.getDistrict();
+            }
+            final String key = temp;
             boolean noticeSwitchCity = AppCache.getInstance().getAsBoolean(key);
             //当前定位城市是被支持的
             if (AssertValue.isNotNull(serviceCity) && !noticeSwitchCity && !switchAlertDialogShowing) {
