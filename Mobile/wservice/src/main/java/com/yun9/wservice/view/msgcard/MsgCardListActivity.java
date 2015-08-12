@@ -118,8 +118,7 @@ public class MsgCardListActivity extends CustomCallbackActivity {
                 CacheInst inst = InstCache.getInstance().getInst(command.getInstid());
                 if (inst != null){
                     titleBar.getTitleSutitleTv().setVisibility(View.GONE);
-                    titleBar.getTitleTv().setTextSize(16);
-                    titleBar.getTitleTv().setText(inst.getInstname());
+                    titleBar.getTitleTv().setText(inst.getSimplename());
                 }
             }
         }
