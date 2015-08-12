@@ -138,6 +138,9 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
             initClient(client);
         }
     };
+    private void refresh() {
+        ClientDetaiActivity.start(this, command);
+    }
     private void initClient(Client client) {
         final ProgressDialog registerDialog =
                 ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
@@ -148,11 +151,12 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
         resource.param("userNo", client.getContactphone());
         resource.param("userName", client.getContactman());
         resource.param("clientId", client.getId());
-        resource.param("simplename", client.getName());
+        resource.param("simpleName", client.getName());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 showToast(getString(R.string.init_inst_success));
+                refresh();
             }
 
             @Override
