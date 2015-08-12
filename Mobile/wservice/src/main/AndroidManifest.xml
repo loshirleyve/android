@@ -499,6 +499,11 @@
             android:label="@string/detail_client"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.client.ClientDetaiActivity"
+            android:label="@string/detail_client"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
