@@ -166,9 +166,35 @@ public class MsgCardListActivity extends CustomCallbackActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             MsgCard msgCard = (MsgCard) view.getTag();
+            if (msgCard.getRead() == 0){
+                markAsReaded(msgCard.getId());
+            }
             MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()));
         }
     };
+
+    private void markAsReaded(String msgCardId) {
+        Resource resource = resourceFactory.create("UpdateMsgCardStateByIdsService");
+        resource.param("msgcardidList",new String[]{msgCardId});
+        resource.param("userid",sessionManager.getUser().getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                setResult(JupiterCommand.RESULT_CODE_OK);
+                mPtrFrame.autoRefresh();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
+            }
+        });
+    }
 
     @Override
     protected int getContentView() {
