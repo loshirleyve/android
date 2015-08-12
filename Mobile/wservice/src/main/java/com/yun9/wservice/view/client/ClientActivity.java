@@ -1,52 +1,25 @@
 package com.yun9.wservice.view.client;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
-import com.baoyz.swipemenulistview.SwipeMenuCreator;
-import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.yun9.jupiter.command.JupiterCommand;
-import com.yun9.jupiter.form.FormActivity;
-import com.yun9.jupiter.form.FormCommand;
-import com.yun9.jupiter.form.cell.MultiSelectFormCell;
-import com.yun9.jupiter.form.cell.TextFormCell;
-import com.yun9.jupiter.form.model.FormBean;
-import com.yun9.jupiter.form.model.MultiSelectFormCellBean;
-import com.yun9.jupiter.form.model.TextFormCellBean;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.model.SerialableEntry;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.JsonUtil;
 import com.yun9.jupiter.util.Logger;
-import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterSearchInputLayout;
@@ -54,16 +27,10 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.cache.CacheClientProxy;
-import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.Client;
-import com.yun9.wservice.view.order.OrderProviderWidget;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -114,7 +81,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     public static void start(Activity activity,ClientCommand command) {
         Intent intent = new Intent(activity, ClientActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("command",command);
+        bundle.putSerializable("command", command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -156,140 +123,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListAdapter = new ClientListAdapter(this, showClients);
         clientListView.setAdapter(clientListAdapter);
         clientListView.setOnItemClickListener(onItemClickListener);
-
-        // 设置左滑菜单
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
-
-            @Override
-            public void create(SwipeMenu menu) {
-
-                SwipeMenuItem openItem = new SwipeMenuItem(
-                        getApplicationContext());
-                openItem.setBackground(new ColorDrawable(Color.rgb(233, 75, 53)));
-                openItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
-                openItem.setTitle(R.string.doc_file_open);
-                openItem.setTitleSize(18);
-                openItem.setTitleColor(Color.WHITE);
-                menu.addMenuItem(openItem);
-
-                if (menu.getViewType() == VIEW_TYPE_NORMAL
-                        || menu.getViewType() == VIEW_TYPE_PROXY){
-                    SwipeMenuItem initalItem = new SwipeMenuItem(
-                            getApplicationContext());
-                    initalItem.setBackground(new ColorDrawable(Color.rgb(6, 119, 183)));
-                    initalItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 100));
-                    initalItem.setTitle(R.string.init_inst);
-                    initalItem.setTitleSize(18);
-                    initalItem.setTitleColor(Color.WHITE);
-                    menu.addMenuItem(initalItem);
-                }
-
-                if (menu.getViewType() == VIEW_TYPE_NORMAL
-                        || menu.getViewType() == VIEW_TYPE_INITED_NORMAL){
-                    SwipeMenuItem proxyItem = new SwipeMenuItem(
-                            getApplicationContext());
-                    proxyItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
-                            0xCE)));
-                    proxyItem.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
-                    proxyItem.setTitle(R.string.proxy_client);
-                    proxyItem.setTitleSize(18);
-                    proxyItem.setTitleColor(Color.WHITE);
-                    menu.addMenuItem(proxyItem);
-                }
-
-                if (menu.getViewType() == VIEW_TYPE_INITED_PROXY
-                        || menu.getViewType() == VIEW_TYPE_PROXY){
-                    SwipeMenuItem deleteProxy = new SwipeMenuItem(
-                            getApplicationContext());
-                    deleteProxy.setBackground(new ColorDrawable(Color.rgb(127, 179, 76)));
-                    deleteProxy.setWidth(PublicHelp.dip2px(ClientActivity.this, 90));
-                    deleteProxy.setTitle(R.string.cancel_proxy);
-                    deleteProxy.setTitleSize(18);
-                    deleteProxy.setTitleColor(Color.WHITE);
-                    menu.addMenuItem(deleteProxy);
-                }
-            }
-        };
-
-        clientListView.setMenuCreator(creator);
-
-        clientListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                Client client = showClients.get(position);
-                switch (index) {
-                    case 0:
-                        editClient(client.getId());
-                        break;
-                    case 1:
-                        if (menu.getViewType() == VIEW_TYPE_NORMAL
-                                || menu.getViewType() == VIEW_TYPE_PROXY) {
-                            initClient(client);
-                        } else {
-                            proxyClient(client);
-                        }
-                        break;
-                    case 2:
-                        proxyClient(client);
-                        break;
-                }
-                clientListAdapter.notifyDataSetChanged();
-                // false : close the menu; true : not close the menu
-                return false;
-            }
-        });
-
         this.autoRefresh();
-    }
-
-    private void initClient(Client client) {
-        final ProgressDialog registerDialog =
-                ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
-        Resource resource = resourceFactory.create("InstInit");
-        resource.param("companyName",client.getFullname());
-        resource.param("companyNo",client.getSn());
-        resource.param("companyScale",client.getScaleid());
-        resource.param("userNo", client.getContactphone());
-        resource.param("userName", client.getContactman());
-        resource.param("clientId", client.getId());
-        resource.param("simpleName", client.getName());
-        resource.invok(new AsyncHttpResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                showToast(getString(R.string.init_inst_success));
-            }
-
-            @Override
-            public void onFailure(Response response) {
-                showToast(response.getCause());
-            }
-
-            @Override
-            public void onFinally(Response response) {
-                registerDialog.dismiss();
-                refresh();
-            }
-        });
-    }
-
-    private void proxyClient(Client client) {
-        if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
-            showToast(R.string.the_client_is_not_init_yet);
-            return;
-        }
-        CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
-        if (proxy != null && client.getClientadminid().equals(proxy.getUserId())
-                && proxy.getInstId().equals(client.getClientinstid())){
-            ClientProxyCache.getInstance().putClientProxy(null);
-            showToast(R.string.success_cancel_proxy);
-        } else {
-            CacheClientProxy clientProxy = new CacheClientProxy();
-            clientProxy.setInstId(client.getClientinstid());
-            clientProxy.setUserId(client.getClientadminid());
-            clientProxy.setClientId(client.getId());
-            ClientProxyCache.getInstance().putClientProxy(clientProxy);
-            showToast(getResources().getString(R.string.success_proxy_client,client.getFullname()));
-        }
     }
 
     private void refresh() {
@@ -384,8 +218,6 @@ public class ClientActivity extends JupiterFragmentActivity {
     private void editClient(String clientId) {
         command = new EditClientCommand();
         command.setClientId(clientId);
-        //EditClientActivity.start(this,command);
-        //ClientDetailActivity.start(this, command);
         ClientDetaiActivity.start(this, command);
     }
 
