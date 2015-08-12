@@ -14,11 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
@@ -35,6 +37,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.MsgFromType;
 import com.yun9.wservice.enums.SourceType;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardComment;
@@ -316,6 +319,14 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         if (user != null && AssertValue.isNotNullAndNotEmpty(user.getBriefInstname())){
             titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
             titleBar.getTitleSutitleTv().setText(user.getBriefInstname());
+        }
+
+        if (MsgFromType.TYPE_INST.equals(msgCard.getFromtype())){
+            CacheInst inst = InstCache.getInstance().getInst(msgCard.getInstid());
+            if (inst != null){
+                titleBar.getTitleSutitleTv().setVisibility(View.GONE);
+                titleBar.getTitleTv().setText(inst.getSimplename());
+            }
         }
 
         msgCardWidget.buildWithData(msgCard);

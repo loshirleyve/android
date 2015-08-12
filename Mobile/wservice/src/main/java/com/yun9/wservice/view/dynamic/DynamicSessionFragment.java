@@ -344,6 +344,8 @@ public class DynamicSessionFragment extends JupiterFragment {
                     ImageLoaderUtil.getInstance(mContext).displayImage(cacheInst.getLogourl(),
                             jupiterRowStyleSutitleLayout.getMainIV());
                     jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.GONE);
+                    jupiterRowStyleSutitleLayout.getTitleTV().setTextColor(getResources()
+                    .getColor(R.color.dark_blue));
                     jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheInst.getSimplename());
                 }
             }

@@ -51,6 +51,7 @@ public class MsgCard implements java.io.Serializable {
     private int readnums;
     private int opennums;
     private int read;
+    private String fromtype;
 
     private MsgCardComment lastComment;
 
@@ -357,6 +358,15 @@ public class MsgCard implements java.io.Serializable {
 
     public MsgCard setRead(int read) {
         this.read = read;
+        return this;
+    }
+
+    public String getFromtype() {
+        return fromtype;
+    }
+
+    public MsgCard setFromtype(String fromtype) {
+        this.fromtype = fromtype;
         return this;
     }
 }
