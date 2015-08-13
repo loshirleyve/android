@@ -28,7 +28,6 @@ import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.enums.MsgFromType;
 import com.yun9.wservice.manager.MsgManager;
 import com.yun9.wservice.model.Msg;
 import com.yun9.wservice.model.MsgCard;
@@ -108,9 +107,9 @@ public class MsgCardListActivity extends CustomCallbackActivity {
 
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getFromuserid())) {
             CacheUser cacheUser = UserCache.getInstance().getUser(command.getFromuserid());
-            if (cacheUser != null && AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefInstname())){
+            if (cacheUser != null && AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefSimpleInstname())){
                 titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
-                titleBar.getTitleSutitleTv().setText(cacheUser.getBriefInstname());
+                titleBar.getTitleSutitleTv().setText(cacheUser.getBriefSimpleInstname());
             }
             // 如果来自机构
             if (MsgCardListCommand.TYPE_INST_GIVEME.equals(command.getType())

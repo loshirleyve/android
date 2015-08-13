@@ -316,9 +316,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
                 titleBar.getTitleTv().setText(user.getName());
             }
         }
-        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getBriefInstname())){
+        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getBriefSimpleInstname())){
             titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
-            titleBar.getTitleSutitleTv().setText(user.getBriefInstname());
+            titleBar.getTitleSutitleTv().setText(user.getBriefSimpleInstname());
         }
 
         if (MsgFromType.TYPE_INST.equals(msgCard.getFromtype())){
@@ -382,7 +382,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             itemWidget.getRightLl().setVisibility(View.GONE);
             itemWidget.getLeftTitleTv().setText(cacheUser.getName());
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
-            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefInstname())){
+            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefSimpleInstname())){
                 itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
                 itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstname());
             }

@@ -13,6 +13,7 @@ public class CacheUser implements java.io.Serializable{
     private String url;
     private String phone;
     private String instname;
+    private String instsimplename;
 
     public String getId() {
         return id;
@@ -80,6 +81,16 @@ public class CacheUser implements java.io.Serializable{
         return null;
     }
 
+    public String getBriefSimpleInstname() {
+        if (AssertValue.isNotNullAndNotEmpty(instsimplename)){
+            String[] is = instsimplename.split("\\s");
+            if (is.length > 1){
+                return is[0];
+            }
+        }
+        return instsimplename;
+    }
+
     public String getBriefInstname() {
         if (AssertValue.isNotNullAndNotEmpty(instname)){
             String[] is = instname.split("\\s");
@@ -96,6 +107,15 @@ public class CacheUser implements java.io.Serializable{
 
     public CacheUser setInstname(String instname) {
         this.instname = instname;
+        return this;
+    }
+
+    public String getInstsimplename() {
+        return instsimplename;
+    }
+
+    public CacheUser setInstsimplename(String instsimplename) {
+        this.instsimplename = instsimplename;
         return this;
     }
 }
