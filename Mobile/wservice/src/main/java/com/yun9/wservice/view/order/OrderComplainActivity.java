@@ -132,7 +132,7 @@ public class OrderComplainActivity extends JupiterFragmentActivity{
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddComplainService");
         resource.param("instid",sessionManager.getInst().getId());
-        resource.param("serviceinstid",order.getOrder().getProvideinstid());
+        resource.param("serviceinstid",order.getOrder().getInstid());
         resource.param("complain",content);
         resource.param("sourceid",orderId);
         resource.param("sourcetype", SourceType.TYPE_ORDER);

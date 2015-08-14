@@ -51,121 +51,204 @@ public class Order implements Serializable{
 
     public static class OrderBase implements Serializable{
         private String orderid;
+        private String name;
+        private String imgid;
+        private String introduce;
         private String ordersn;
         private String state;
-        private double orderamount;
-        private double accountbalance;
-        private int commitattachment;
+        private Double orderamount;
+        private Double factamount;
+        private int commitdoc;
+        private String instid;
         private String buyerinstid;
-        private String provideinstid;
+        private String proxyinstid;
+        private String proxyman;
         private String salesmanid;
-        private String adviseruserid;
+        private String purchase;
         private Long createdate;
         private String createby;
         private String paystate;
+        private Long begindate;
+        private Long enddate;
 
         public String getOrderid() {
             return orderid;
         }
 
-        public void setOrderid(String orderid) {
+        public OrderBase setOrderid(String orderid) {
             this.orderid = orderid;
+            return this;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public OrderBase setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public String getImgid() {
+            return imgid;
+        }
+
+        public OrderBase setImgid(String imgid) {
+            this.imgid = imgid;
+            return this;
+        }
+
+        public String getIntroduce() {
+            return introduce;
+        }
+
+        public OrderBase setIntroduce(String introduce) {
+            this.introduce = introduce;
+            return this;
         }
 
         public String getOrdersn() {
             return ordersn;
         }
 
-        public void setOrdersn(String ordersn) {
+        public OrderBase setOrdersn(String ordersn) {
             this.ordersn = ordersn;
+            return this;
         }
 
         public String getState() {
             return state;
         }
 
-        public void setState(String state) {
+        public OrderBase setState(String state) {
             this.state = state;
+            return this;
         }
 
-        public double getOrderamount() {
+        public Double getOrderamount() {
             return orderamount;
         }
 
-        public void setOrderamount(double orderamount) {
+        public OrderBase setOrderamount(Double orderamount) {
             this.orderamount = orderamount;
+            return this;
         }
 
-        public double getAccountbalance() {
-            return accountbalance;
+        public Double getFactamount() {
+            return factamount;
         }
 
-        public void setAccountbalance(double accountbalance) {
-            this.accountbalance = accountbalance;
+        public OrderBase setFactamount(Double factamount) {
+            this.factamount = factamount;
+            return this;
         }
 
-        public int getCommitattachment() {
-            return commitattachment;
+        public int getCommitdoc() {
+            return commitdoc;
         }
 
-        public void setCommitattachment(int commitattachment) {
-            this.commitattachment = commitattachment;
+        public OrderBase setCommitdoc(int commitdoc) {
+            this.commitdoc = commitdoc;
+            return this;
+        }
+
+        public String getInstid() {
+            return instid;
+        }
+
+        public OrderBase setInstid(String instid) {
+            this.instid = instid;
+            return this;
         }
 
         public String getBuyerinstid() {
             return buyerinstid;
         }
 
-        public void setBuyerinstid(String buyerinstid) {
+        public OrderBase setBuyerinstid(String buyerinstid) {
             this.buyerinstid = buyerinstid;
+            return this;
         }
 
-        public String getProvideinstid() {
-            return provideinstid;
+        public String getProxyinstid() {
+            return proxyinstid;
         }
 
-        public void setProvideinstid(String provideinstid) {
-            this.provideinstid = provideinstid;
+        public OrderBase setProxyinstid(String proxyinstid) {
+            this.proxyinstid = proxyinstid;
+            return this;
+        }
+
+        public String getProxyman() {
+            return proxyman;
+        }
+
+        public OrderBase setProxyman(String proxyman) {
+            this.proxyman = proxyman;
+            return this;
         }
 
         public String getSalesmanid() {
             return salesmanid;
         }
 
-        public void setSalesmanid(String salesmanid) {
+        public OrderBase setSalesmanid(String salesmanid) {
             this.salesmanid = salesmanid;
+            return this;
         }
 
-        public String getAdviseruserid() {
-            return adviseruserid;
+        public String getPurchase() {
+            return purchase;
         }
 
-        public void setAdviseruserid(String adviseruserid) {
-            this.adviseruserid = adviseruserid;
+        public OrderBase setPurchase(String purchase) {
+            this.purchase = purchase;
+            return this;
         }
 
         public Long getCreatedate() {
             return createdate;
         }
 
-        public void setCreatedate(Long createdate) {
+        public OrderBase setCreatedate(Long createdate) {
             this.createdate = createdate;
+            return this;
         }
 
         public String getCreateby() {
             return createby;
         }
 
-        public void setCreateby(String createby) {
+        public OrderBase setCreateby(String createby) {
             this.createby = createby;
+            return this;
         }
 
         public String getPaystate() {
             return paystate;
         }
 
-        public void setPaystate(String paystate) {
+        public OrderBase setPaystate(String paystate) {
             this.paystate = paystate;
+            return this;
+        }
+
+        public Long getBegindate() {
+            return begindate;
+        }
+
+        public OrderBase setBegindate(Long begindate) {
+            this.begindate = begindate;
+            return this;
+        }
+
+        public Long getEnddate() {
+            return enddate;
+        }
+
+        public OrderBase setEnddate(Long enddate) {
+            this.enddate = enddate;
+            return this;
         }
     }
 

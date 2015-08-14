@@ -1,6 +1,5 @@
 package com.yun9.wservice.view.order;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -200,7 +199,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
                         command.setSourceValue(order.getOrder().getOrderid());
-                        command.setInstId(order.getOrder().getProvideinstid());
+                        command.setInstId(order.getOrder().getInstid());
                         PaymentOrderActivity.start(OrderDetailActivity.this, command);
                     }
                 }
@@ -209,13 +208,13 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             orderDetailPayinfoWidget.setVisibility(View.GONE);
         }
         if (AssertValue.isNotNull(order.getOrder())
-                && order.getOrder().getCommitattachment() > 0){
+                && order.getOrder().getCommitdoc() > 0){
             orderDetailAttachWidget.buildWithData(order);
         } else {
             orderDetailAttachWidget.setVisibility(View.GONE);
         }
         if (AssertValue.isNotNull(order.getOrder())
-                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviseruserid())){
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getSalesmanid())){
             orderDetailAdvisorWidget.buildWitdhData(order);
             orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
             orderDetailAdvisorWidget.getCallUsIv().setOnClickListener(onCallUsClick);
@@ -226,7 +225,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         }
 
         if (AssertValue.isNotNull(order.getOrder())
-                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getProvideinstid())){
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getInstid())){
             orderDetailProviderWidget.buildWitdhData(order);
         } else {
             orderDetailProviderWidget.setVisibility(View.GONE);
@@ -246,7 +245,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         public void onClick(View v) {
             MsgCardDetailCommand msgCardDetailCommand =
                     new MsgCardDetailCommand().setOrderId(orderId);
-            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviseruserid());
+            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getSalesmanid());
             if (user != null){
                 msgCardDetailCommand.setTitle(user.getName());
             }
@@ -259,14 +258,14 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         @Override
         public void onClick(View v) {
             OrgUserDetailActivity.start(OrderDetailActivity.this,
-                    new OrgUserDetailCommand().setUserId(order.getOrder().getAdviseruserid()));
+                    new OrgUserDetailCommand().setUserId(order.getOrder().getSalesmanid()));
         }
     };
 
     private View.OnClickListener onCallUsClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviseruserid());
+            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getSalesmanid());
             if (user == null
                     || AssertValue.isNotNullAndNotEmpty(user.getFirstPhone())){
                 showToast("无法获取用户电话号码");
