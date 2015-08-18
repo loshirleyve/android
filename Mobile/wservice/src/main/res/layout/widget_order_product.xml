@@ -77,24 +77,23 @@
                             android:textSize="12dp" />
 
                         <TextView
-                            android:id="@+id/product_desc_tv"
+                            android:id="@+id/product_classify_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
                             android:textColor="@color/purple_font"
                             android:textSize="12dp" />
                     </LinearLayout>
+                    <TextView
+                        android:id="@+id/product_desc_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:layout_marginLeft="5dp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-    <com.yun9.jupiter.widget.JupiterListView
-        android:id="@+id/product_detail_content_lv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_below="@id/main_left"
-        android:scrollbars="none"></com.yun9.jupiter.widget.JupiterListView>
 
 
 </RelativeLayout>

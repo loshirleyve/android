@@ -78,10 +78,21 @@
 
     <!-- 预览订单服务 -->
     <repository>
-        <name>QueryOrderViewService</name>
-        <action>com.yun9.ws.biz.service.QueryOrderViewService</action>
+        <name>SelectProductsService</name>
+        <action>com.yun9.ws.biz.order.service.SelectProductsService</action>
         <output>
             <classname>com.yun9.wservice.model.wrapper.OrderCartInfoWrapper</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 查询订单产品服务 -->
+    <repository>
+        <name>QueryOrderProductsByOrderidService</name>
+        <action>com.yun9.ws.biz.service.QueryOrderProductsByOrderidService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrderCartInfo</classname>
             <type>list</type>
         </output>
         <type>yun9</type>
@@ -89,12 +100,8 @@
 
     <!-- 新增订单服务 -->
     <repository>
-        <name>AddOrderByOrderViewService</name>
-        <action>com.yun9.ws.biz.service.AddOrderByOrderViewService</action>
-        <output>
-            <classname>com.yun9.wservice.model.SimpleIdReturn</classname>
-            <type>list</type>
-        </output>
+        <name>UpdateOrderByBuyService</name>
+        <action>com.yun9.ws.biz.order.service.UpdateOrderByBuyService</action>
         <type>yun9</type>
     </repository>
 

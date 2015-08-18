@@ -7,7 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
-import com.yun9.jupiter.widget.SelectableRoundedImageView;
 import com.yun9.wservice.R;
 
 /**
@@ -21,7 +20,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     private LinearLayout docLL;
 
-    private LinearLayout userBuyer;
+    private LinearLayout myOrderLL;
 
     private LinearLayout myWalletLL;
 
@@ -57,7 +56,7 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
         headerLL = (LinearLayout)this.findViewById(R.id.user_head);
         this.orgLL = (LinearLayout) this.findViewById(R.id.org);
         this.docLL = (LinearLayout) this.findViewById(R.id.sendUserFile);
-        this.userBuyer = (LinearLayout) this.findViewById(R.id.getUserBuyer);
+        this.myOrderLL = (LinearLayout) this.findViewById(R.id.getUserBuyer);
         this.myWalletLL = (LinearLayout) this.findViewById(R.id.myWalle);
 
         this.userNameTV = (TextView) this.findViewById(R.id.user_head_name_tv);
@@ -89,14 +88,6 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     public void setDocLL(LinearLayout docLL) {
         this.docLL = docLL;
-    }
-
-    public LinearLayout getUserBuyer() {
-        return userBuyer;
-    }
-
-    public void setUserBuyer(LinearLayout userBuyer) {
-        this.userBuyer = userBuyer;
     }
 
     public TextView getUserNameTV() {
@@ -137,5 +128,9 @@ public class UserHeadWidget extends JupiterRelativeLayout  {
 
     public LinearLayout getMyWalletLL() {
         return myWalletLL;
+    }
+
+    public LinearLayout getMyOrderLL() {
+        return myOrderLL;
     }
 }

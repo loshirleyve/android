@@ -24,9 +24,6 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
 import com.yun9.wservice.view.payment.RechargeRecordListActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 购买管理界面
  * Created by huangbinglong on 15/6/12.
@@ -35,9 +32,6 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
-
-    @ViewInject(id = R.id.order_category_list)
-    private ListView orderCategoryLV;
 
     @ViewInject(id = R.id.recharge_category_list)
     private ListView rechargeHistoryLV;
@@ -78,7 +72,6 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     }
 
     private void buildView() {
-        orderCategoryLV.setAdapter(orderAdapter);
         rechargeHistoryLV.setAdapter(rechargeAdapter);
 
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
@@ -108,7 +101,6 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                orderAdapter.notifyDataSetChanged();
                 rechargeAdapter.notifyDataSetChanged();
                 registerDialog.dismiss();
             }
@@ -172,52 +164,6 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
             }
             row.getHotNitoceTV().setText(rechargeGroup.getNums() + "");
             row.getTitleTV().setText(rechargeGroup.getStatename());
-            return convertView;
-        }
-    };
-
-    private JupiterAdapter orderAdapter = new JupiterAdapter() {
-        @Override
-        public int getCount() {
-            if (buyManagerInfo != null
-                    && buyManagerInfo.getOrderGroups() != null) {
-                return buyManagerInfo.getOrderGroups().size();
-            }
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            JupiterRowStyleTitleLayout row;
-            final OrderBuyManagerInfo.OrderGroup orderGroup = buyManagerInfo.getOrderGroups().get(position);
-            if (convertView == null) {
-                row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
-                row.getMainIV().setVisibility(View.GONE);
-                row.getHotNitoceTV().setVisibility(View.VISIBLE);
-                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
-                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
-                row.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openOrderListActivity(orderGroup);
-                    }
-                });
-                convertView = row;
-            } else {
-                row = (JupiterRowStyleTitleLayout) convertView;
-            }
-            row.getHotNitoceTV().setText(orderGroup.getNums() + "");
-            row.getTitleTV().setText(orderGroup.getStatename());
             return convertView;
         }
     };

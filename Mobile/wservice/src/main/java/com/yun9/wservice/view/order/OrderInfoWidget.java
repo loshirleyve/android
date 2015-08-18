@@ -1,35 +1,18 @@
 package com.yun9.wservice.view.order;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.yun9.jupiter.app.JupiterApplication;
-import com.yun9.jupiter.http.AsyncHttpResponseCallback;
-import com.yun9.jupiter.http.Response;
-import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.repository.Resource;
-import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
-import com.yun9.wservice.cache.CacheClientProxy;
-import com.yun9.wservice.cache.ClientProxyCache;
 import com.yun9.wservice.model.OrderCartInfo;
-import com.yun9.wservice.model.SimpleIdReturn;
-import com.yun9.wservice.view.payment.PaymentOrderActivity;
-import com.yun9.wservice.view.payment.PaymentOrderCommand;
+import com.yun9.wservice.model.wrapper.OrderCartInfoWrapper;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,11 +24,9 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
 
     private OrderProviderWidget providerWidget;
 
-    private TextView orderFeeTV;
+    private OrderCartInfoWrapper order;
 
-    private LinearLayout payNowLL;
-
-    private OrderCartInfo order;
+    private List<OrderCartInfo>  orderProducts;
 
     public OrderInfoWidget(Context context) {
         super(context);
@@ -59,8 +40,9 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(OrderCartInfo order) {
+    public void buildWithData(OrderCartInfoWrapper order,List<OrderCartInfo> orderProducts) {
         this.order = order;
+        this.orderProducts = orderProducts;
         reload();
     }
 
@@ -73,74 +55,14 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         productLV = (ListView) this.findViewById(R.id.product_list);
         providerWidget = (OrderProviderWidget) this.findViewById(R.id.inst_cell);
-        orderFeeTV = (TextView) this.findViewById(R.id.order_fee_tv);
-        payNowLL = (LinearLayout) this.findViewById(R.id.pay_now_ll);
         buildView();
     }
 
     private void buildView() {
-        payNowLL.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitOrderAndPay();
-            }
-        });
-    }
 
-    private void submitOrderAndPay() {
-        final ProgressDialog registerDialog = ProgressDialog.show(this.mContext, null, getResources().getString(R.string.app_wating), true);
-        SessionManager sessionManager = JupiterApplication.getBeanManager().get(SessionManager.class);
-        ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
-        Resource resource = resourceFactory.create("AddOrderByOrderViewService");
-        this.order.setCreateby(sessionManager.getUser().getId());
-        this.order.setBuyerinstid(sessionManager.getInst().getId());
-        this.order.setPurchase(sessionManager.getUser().getId());
-        if (ClientProxyCache.getInstance().isProxy()){
-            CacheClientProxy clientProxy = ClientProxyCache.getInstance().getProxy();
-            this.order.setSalesmanid(sessionManager.getUser().getId());
-            this.order.setProxyinstid(sessionManager.getInst().getId());
-            this.order.setProxyperson(sessionManager.getUser().getId());
-            this.order.setBuyerinstid(clientProxy.getInstId());
-            this.order.setPurchase(clientProxy.getUserId());
-        }
-        resource.param("orderViews", Collections.singletonList(this.order));
-        resource.invok(new AsyncHttpResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                List<SimpleIdReturn> orderIds= (List<SimpleIdReturn>) response.getPayload();
-                showOrder(orderIds.get(0).getId());
-            }
-
-            @Override
-            public void onFailure(Response response) {
-                Toast.makeText(getContext(),response.getCause(),Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFinally(Response response) {
-                registerDialog.dismiss();
-            }
-        });
-    }
-
-    private void showOrder(String orderId) {
-        OrderDetailActivity.start(this.mContext,orderId);
-        ((Activity) (getContext())).finish();
-    }
-
-    private List<String> getProductIds() {
-        List<String> ids = new ArrayList<>();
-        if (order != null
-                && order.getOrderproducts() != null){
-            for (OrderCartInfo.OrderProduct product : order.getOrderproducts()){
-                ids.add(product.getProductid());
-            }
-        }
-        return ids;
     }
 
     private void reload() {
-        orderFeeTV.setText(order.getOrderamount() + "元");
         if (AssertValue.isNotNullAndNotEmpty(order.getInstid())){
             providerWidget.buildWithData(order.getInstid());
         } else {
@@ -152,9 +74,8 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     private JupiterAdapter adapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            if (order != null
-                    && order.getOrderproducts() != null){
-                return order.getOrderproducts().size();
+            if (order != null){
+                return 1;
             }
             return 0;
         }
@@ -174,11 +95,11 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
             OrderProductWidget widget;
             if (convertView == null) {
                 widget = new OrderProductWidget(OrderInfoWidget.this.getContext());
-                widget.buildWithData(order.getOrderproducts().get(position));
                 convertView = widget;
             } else {
                 widget = (OrderProductWidget) convertView;
             }
+            widget.buildWithData(orderProducts.get(position));
             return convertView;
         }
     };

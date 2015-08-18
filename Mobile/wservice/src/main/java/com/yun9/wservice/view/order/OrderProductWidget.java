@@ -13,7 +13,6 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
-import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderCartInfo;
 import com.yun9.wservice.model.ProductProfile;
@@ -30,9 +29,9 @@ public class OrderProductWidget extends JupiterRelativeLayout {
 
     private TextView productNameTV;
 
-    private TextView productDescTV;
+    private TextView productClassifyTV;
 
-    private ListView productContentLV;
+    private TextView productDescTV;
 
     private TextView productFeeTV;
 
@@ -59,69 +58,22 @@ public class OrderProductWidget extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         productImageIV = (ImageView) this.findViewById(R.id.product_image_iv);
         productNameTV = (TextView) this.findViewById(R.id.product_name_tv);
+        productClassifyTV = (TextView) this.findViewById(R.id.product_classify_tv);
         productDescTV = (TextView) this.findViewById(R.id.product_desc_tv);
-        productContentLV = (ListView) this.findViewById(R.id.product_detail_content_lv);
         productFeeTV = (TextView) this.findViewById(R.id.product_fee_tv);
         classifyLl = (LinearLayout) this.findViewById(R.id.classify_ll);
     }
 
-    public void buildWithData(OrderCartInfo.OrderProduct orderCartProduct) {
+    public void buildWithData(OrderCartInfo orderCartProduct) {
         productFeeTV.setText(orderCartProduct.getGoodsamount() + "元");
-        if (AssertValue.isNotNullAndNotEmpty(orderCartProduct.getProductclassifyname())) {
-            productDescTV.setText(orderCartProduct.getProductclassifyname());
+        if (AssertValue.isNotNullAndNotEmpty(orderCartProduct.getClassifyname())) {
+            productClassifyTV.setText(orderCartProduct.getClassifyname());
         } else {
             classifyLl.setVisibility(GONE);
         }
-        ImageLoaderUtil.getInstance(this.getContext()).displayImage(orderCartProduct.getProductimgid(), productImageIV);
+        ImageLoaderUtil.getInstance(this.getContext()).displayImage(orderCartProduct.getImgid(), productImageIV);
         productNameTV.setText(orderCartProduct.getProductname());
-        productContentLV.setAdapter(new ProductContentLVAdapter(orderCartProduct.getProductProfiles()));
+        productDescTV.setText(orderCartProduct.getIntroduce());
 
     }
-
-    public class ProductContentLVAdapter extends JupiterAdapter {
-
-        private List<ProductProfile> productProfiles;
-
-        public ProductContentLVAdapter(List<ProductProfile> productProfiles) {
-            this.productProfiles = productProfiles;
-        }
-
-        @Override
-        public int getCount() {
-            if (AssertValue.isNotNullAndNotEmpty(productProfiles) && productProfiles.size() > 0) {
-                return productProfiles.size();
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return productProfiles.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ProductProfileItemWidget productProfileItemWidget = null;
-            ProductProfile productProfile = productProfiles.get(position);
-
-            if (AssertValue.isNotNull(convertView)) {
-                productProfileItemWidget = (ProductProfileItemWidget) convertView;
-            } else {
-                productProfileItemWidget = new ProductProfileItemWidget(mContext);
-            }
-
-            productProfileItemWidget.setTag(productProfile);
-            productProfileItemWidget.getProfileTV().setText(productProfile.getSynopsis());
-
-            return productProfileItemWidget;
-        }
-    }
-
-    ;
 }
