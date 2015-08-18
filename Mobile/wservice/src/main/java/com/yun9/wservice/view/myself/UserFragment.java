@@ -60,6 +60,9 @@ public class UserFragment extends JupiterFragment {
     @ViewInject(id = R.id.switch_inst)
     private JupiterRowStyleTitleLayout switchInstLayout;
 
+    @ViewInject(id = R.id.user_org)
+    private JupiterRowStyleTitleLayout userOgrLayout;
+
     @ViewInject(id = R.id.about2)
     private JupiterRowStyleTitleLayout client;
 
@@ -100,7 +103,7 @@ public class UserFragment extends JupiterFragment {
             }
         });
 
-        userHeadWidget.getUserBuyer().setOnClickListener(new View.OnClickListener() {
+        userHeadWidget.getMyWalletLL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OrderManagerActivity.start(UserFragment.this.getActivity());
@@ -177,7 +180,6 @@ public class UserFragment extends JupiterFragment {
 
                     if (AssertValue.isNotNull(user)) {
                         userHeadWidget.getUserNameTV().setText(user.getName());
-                        //TODO 等待服务完善返回机构信息后增加
                         userHeadWidget.getCompanyTV().setText(sessionManager.getInst().getName());
                         userHeadWidget.getOrgTV().setText(user.getOrgNames());
                         userHeadWidget.getSignTV().setText(user.getSignature());

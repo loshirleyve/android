@@ -79,6 +79,26 @@
         android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/myWalle"
+            style="@style/user_hader_btnbar">
+
+            <ImageView
+                style="@style/user_hader_btnbar_img"
+                android:src="@drawable/user_org" />
+
+            <TextView
+                style="@style/user_hader_btnbar_text"
+                android:text="@string/my_wallet" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:background="@color/devide_line" />
 
         <LinearLayout
             android:id="@+id/getUserBuyer"
@@ -100,7 +120,6 @@
             android:layout_marginBottom="5dp"
             android:background="@color/devide_line" />
 
-
         <LinearLayout
             android:id="@+id/sendUserFile"
             style="@style/user_hader_btnbar">
@@ -112,30 +131,6 @@
             <TextView
                 style="@style/user_hader_btnbar_text"
                 android:text="@string/user_file" />
-
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
-            android:background="@color/devide_line" />
-
-
-        <LinearLayout
-            android:id="@+id/todoUserOrg"
-            style="@style/user_hader_btnbar"
-            android:visibility="gone">
-
-            <ImageView
-                style="@style/user_hader_btnbar_img"
-                android:src="@drawable/user_org" />
-
-            <TextView
-                style="@style/user_hader_btnbar_text"
-                android:text="@string/user_org" />
 
         </LinearLayout>
 

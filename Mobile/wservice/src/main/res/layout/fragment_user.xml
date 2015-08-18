@@ -60,6 +60,15 @@
                 app:rowStyleTitleMainImage="@drawable/contact"
                 app:rowStyleTitleText="@string/user_mycontact"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/user_org"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/user_org"
+                app:rowStyleTitleText="@string/user_org"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
 
             <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
                 android:id="@+id/switch_inst"
