@@ -20,8 +20,9 @@
         android:layout_below="@id/product_list"
         android:layout_width="match_parent"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_height="0.5dp"
-        android:background="@color/devide_line"/>
+        android:layerType="software"
+        android:background="@drawable/dash_line_1"/>
 </RelativeLayout>

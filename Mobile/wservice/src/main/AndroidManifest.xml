@@ -310,7 +310,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize"></activity>
 
         <activity
-            android:name=".view.order.OrderManagerActivity"
+            android:name=".view.order.MyWalletActivity"
             android:label="@string/user_buyer"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>

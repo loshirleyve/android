@@ -25,10 +25,10 @@ import com.yun9.wservice.model.OrderBuyManagerInfo;
 import com.yun9.wservice.view.payment.RechargeRecordListActivity;
 
 /**
- * 购买管理界面
+ * 我的钱包
  * Created by huangbinglong on 15/6/12.
  */
-public class OrderManagerActivity extends JupiterFragmentActivity {
+public class MyWalletActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -47,7 +47,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
     private OrderBuyManagerInfo buyManagerInfo;
 
     public static void start(Activity activity) {
-        Intent intent = new Intent(activity, OrderManagerActivity.class);
+        Intent intent = new Intent(activity, MyWalletActivity.class);
         intent.putExtras(new Bundle());
         activity.startActivity(intent);
     }
@@ -78,7 +78,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View v) {
                 setResult(JupiterCommand.RESULT_CODE_CANCEL);
-                OrderManagerActivity.this.finish();
+                MyWalletActivity.this.finish();
             }
         });
     }
@@ -147,7 +147,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
                     .getRecharegeGroups()
                     .get(position);
             if (convertView == null) {
-                row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
+                row = new JupiterRowStyleTitleLayout(MyWalletActivity.this);
                 row.getMainIV().setVisibility(View.GONE);
                 row.getHotNitoceTV().setVisibility(View.VISIBLE);
                 row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
