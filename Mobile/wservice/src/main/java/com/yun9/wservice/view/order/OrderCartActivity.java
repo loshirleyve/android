@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.app.JupiterApplication;
@@ -49,7 +50,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.order_fee_tv)
     private TextView orderFeeTV;
     @ViewInject(id=R.id.pay_now_ll)
-    private LinearLayout payNowLL;
+    private RelativeLayout payNowLL;
 
     @BeanInject
     private SessionManager sessionManager;

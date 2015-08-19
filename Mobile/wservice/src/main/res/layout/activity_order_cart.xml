@@ -29,49 +29,53 @@
     <RelativeLayout
         android:id="@+id/order_fee_rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:paddingTop="4dp"
-        android:paddingBottom="2dp"
         android:background="@color/whites">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
             android:paddingBottom="10dp"
+            android:gravity="center_vertical"
             android:paddingTop="10dp"
-            android:layout_height="wrap_content">
+            android:background="@color/black"
+            android:layout_height="match_parent">
             <TextView
+                android:id="@+id/order_fee__tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/purple_font"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textColor="@color/whites"
                 android:text="@string/order_money_tip"/>
             <TextView
                 android:id="@+id/order_fee_tv"
+                android:layout_toRightOf="@id/order_fee__tip"
+                android:layout_marginRight="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"/>
-        </LinearLayout>
-        <LinearLayout
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:textColor="@color/whites"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/pay_now_ll"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_alignParentRight="true">
+            android:layout_height="match_parent"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:background="@color/title_color">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/whites"
+                android:textSize="16dp"
                 android:text="@string/submit_order"
-                android:textStyle="bold"
-                android:layout_marginRight="10dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:background="@color/title_color"/>
-        </LinearLayout>
+                android:textStyle="bold"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <View
