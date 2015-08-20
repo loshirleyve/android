@@ -48,24 +48,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.payment_sub_title_tv)
     private TextView subTitleTv;
 
-    @ViewInject(id=R.id.order_recharge)
-    private OrderRechargeWidget rechargeWidget;
-
-    @ViewInject(id=R.id.payment_ways_inst_tv)
-    private TextView paymentInstTv;
-
-    @ViewInject(id=R.id.payment_ways_lv)
-    private ListView listView;
-
-    @ViewInject(id=R.id.order_money_tv)
-    private TextView paymentMoneyTv;
-
-    @ViewInject(id=R.id.total_money_tv)
-    private TextView totalMoneyTv;
-
-    @ViewInject(id=R.id.remain_money_tv)
-    private TextView remainMoneyTv;
-
     @ViewInject(id=R.id.confirm_ll)
     private LinearLayout confirmLl;
 
@@ -108,7 +90,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        loadData();
+//        loadData();
     }
 
     @Override
@@ -172,7 +154,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 submit();
             }
         });
-        listView.setAdapter(adapter);
     }
 
     private void submit() {
@@ -243,10 +224,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     private void rebuild() {
         titleTv.setText(payinfo.getTitle());
         subTitleTv.setText(payinfo.getSubtitle());
-        rechargeWidget.buildWithData(payinfo.getBalance());
-        paymentMoneyTv.setText(payinfo.getPayableAmount() + "元");
-        totalMoneyTv.setText(payinfo.getFactpayAmount() + "元");
-        remainMoneyTv.setText(payinfo.getSurplusAmount() + "元");
 
         if (payinfo.getSurplusAmount() != 0){
             confirmTv.setTextColor(getResources().getColor(R.color.devide_line));
@@ -255,7 +232,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             confirmTv.setTextColor(getResources().getColor(R.color.title_color));
             confirmLl.setClickable(true);
         }
-        rechargeWidget.getRechargeIV().setOnClickListener(rechargeClickListener);
         rebuildChoicedPayItem();
         adapter.notifyDataSetChanged();
     }
@@ -358,18 +334,6 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             return null;
         }
 
-    };
-
-    private View.OnClickListener rechargeClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RechargeCommand rechargeCommand = new RechargeCommand();
-            double amount = payinfo.getPayableAmount() - payinfo.getBalance();
-            if (amount > 0.0){
-                rechargeCommand.setAmount(amount);
-            }
-            RechargeActivity.start(PaymentOrderActivity.this,rechargeCommand);
-        }
     };
 
     private class PayItem{

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleLeftIcoVisibility="true"
-        app:titleText="@string/payment_now">
+        app:titleText="@string/checkstand">
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
@@ -19,56 +19,105 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <com.yun9.wservice.view.payment.PaymentOrderInfoWidget
+                android:id="@+id/payment_order_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.yun9.wservice.view.payment.PaymentOrderInfoWidget>
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleShowSutitleText="false"
+                app:rowStyleSutitleTitleText="支付方式"
+                android:layout_marginTop="15dp"/>
+
+            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleSutitleShowMainImage="false"
+                app:rowStyleSutitleShowTimeText="false"
+                app:rowStyleSutitleTitleText="余额"
+                app:rowStyleSutitleText="300元"
+                android:layout_marginTop="15dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_marginTop="15dp"
                 android:background="@color/whites"
-                android:gravity="center_horizontal">
-                <TextView
-                    android:id="@+id/payment_title_tv"
-                    android:layout_width="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/purple_font"
+                        android:text="支付总额"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/gray_font"
+                        android:paddingRight="10dp"
+                        android:text="156.00元"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/purple_font"
-                    android:layout_marginTop="15dp"
-                    android:textStyle="bold"
-                    android:textSize="18dp"/>
-                <TextView
-                    android:id="@+id/payment_sub_title_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/purple_font"
+                        android:paddingLeft="10dp"
+                        android:text="-余额支付"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/gray_font"
+                        android:paddingRight="10dp"
+                        android:text="100.00元"/>
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/devide_line"
+                    android:layout_marginTop="10dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/purple_font"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="15dp"
-                    android:textSize="12dp"/>
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="20dp">
+                    <TextView
+                        android:id="@+id/remainMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@color/title_color"
+                        android:textSize="16dp"
+                        android:text="1460.00元"/>
+                    <TextView
+                        android:layout_toLeftOf="@id/remainMoney"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="还需支付: "/>
+                </RelativeLayout>
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="15dp"/>
-            <com.yun9.wservice.view.order.OrderRechargeWidget
-                android:id="@+id/order_recharge"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/whites"/>
-            <TextView
-                android:id="@+id/payment_ways_inst_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone"
-                android:textColor="@color/devide_line"
-                android:text="支付给深圳市顶聚科技有限公司"
-                />
-            <com.yun9.jupiter.widget.JupiterListView
-                android:id="@+id/payment_ways_lv"
-                android:layout_marginTop="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@drawable/spacer_min">
-            </com.yun9.jupiter.widget.JupiterListView>
+
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
     <LinearLayout
@@ -77,99 +126,29 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:background="@color/drak">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true">
-                <TextView
-                    android:id="@+id/order_money_tip_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/purple_font"
-                    android:textSize="12dp"
-                    android:text="@string/order_money_tip"/>
-                <TextView
-                    android:id="@+id/order_money_tv"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="@color/purple_font"
-                    android:layout_alignParentRight="true"
-                    />
-            </LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true">
-                <TextView
-                    android:id="@+id/total_money_tip_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="@color/purple_font"
-                    android:text="@string/total_money_tip"/>
-                <TextView
-                    android:id="@+id/total_money_tv"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:textColor="@color/purple_font"
-                    android:layout_alignParentRight="true"
-                    />
-            </LinearLayout>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="8dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_alignParentRight="true">
-                <TextView
-                    android:id="@+id/remain_money_tip_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:textColor="@color/title_color"
-                    android:text="@string/remain_money_tip"/>
-                <TextView
-                    android:id="@+id/remain_money_tv"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:textColor="@color/title_color"
-                    android:layout_alignParentRight="true"
-                    />
-            </LinearLayout>
-        </RelativeLayout>
         <LinearLayout
             android:id="@+id/confirm_ll"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:gravity="center_horizontal"
-            android:background="@color/whites">
+            android:gravity="center_horizontal|right"
+            android:orientation="horizontal"
+            android:background="@color/whites"
+            android:paddingRight="20dp">
+
             <TextView
                 android:id="@+id/confirm_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
-                android:text="@string/confirm_pay"
+                android:layout_marginLeft="10dp"
+                android:textSize="16dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:text="去支付"
                 android:layout_gravity="center"
-                android:textColor="@color/title_color"/>
+                android:textColor="@color/whites"
+                android:background="@drawable/button_red"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
