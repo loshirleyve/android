@@ -10,7 +10,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +39,7 @@ import com.yun9.wservice.model.FinanceCollects;
 import com.yun9.wservice.task.UploadFileAsyncTask;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
-import com.yun9.wservice.view.myself.UserInfoCommand;
-import com.yun9.wservice.view.product.ProductClassifyPopLayout;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,15 +56,6 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
 
     @ViewInject(id=R.id.product_name_tv)
     private TextView productNameTv;
-
-    @ViewInject(id=R.id.product_id_tv)
-    private TextView productIdTv;
-
-    @ViewInject(id=R.id.pay_way_ll)
-    private LinearLayout payWayLl;
-
-    @ViewInject(id=R.id.product_amount_tv)
-    private TextView productAmountTv;
 
     private PopupWindow confirmWindow;
 
@@ -227,15 +213,12 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     }
 
     private void buildWithData(FinanceCollects financeCollects) {
-        payWayLl.removeAllViews();
         if (financeCollects == null) {
             return;
         }
         stateNameTv.setText(CtrlCodeCache.getInstance().getCtrlcodeName(CtrlCodeDefNo.COLLECT_STATE,
                 financeCollects.getCollectstate()));
         productNameTv.setText(financeCollects.getSourceInfo().getProductname());
-        productIdTv.setText(financeCollects.getSourceInfo().getOrdersn());
-        productAmountTv.setText(financeCollects.getSourceInfo().getOrderamount()+"元");
         if (financeCollects.getFinanceCollectList() != null){
             PaymentResultItemWidget widget;
             for (final FinanceCollects.FinanceCollect collect : financeCollects.getFinanceCollectList()){
@@ -282,7 +265,6 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                         }
                     }
                 });
-                payWayLl.addView(widget);
             }
         }
     }

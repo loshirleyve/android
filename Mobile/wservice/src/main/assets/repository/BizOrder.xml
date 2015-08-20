@@ -60,10 +60,21 @@
 
     <!-- 获取支付信息基于单据信息 -->
     <repository>
-        <name>QueryPayinfoService</name>
-        <action>com.yun9.ws.biz.service.QueryPayinfoService</action>
+        <name>QueryPayinfoBySourceService</name>
+        <action>com.yun9.ws.biz.service.QueryPayinfoBySourceService</action>
         <output>
             <classname>com.yun9.wservice.model.Payinfo</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 获取历史支付信息基于单据信息 -->
+    <repository>
+        <name>QueryPayRegisterBySourceService</name>
+        <action>com.yun9.ws.biz.pay.service.QueryPayRegisterBySourceService</action>
+        <output>
+            <classname>com.yun9.wservice.model.HistoryPayInfo</classname>
             <type>object</type>
         </output>
         <type>yun9</type>

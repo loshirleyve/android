@@ -11,12 +11,12 @@
         <type>yun9</type>
     </repository>
 
-    <!-- 登记充值服务 -->
+    <!-- 登记在线充值服务 -->
     <repository>
-        <name>AddRechargeService</name>
-        <action>com.yun9.ws.biz.service.AddRechargeService</action>
+        <name>UpdateByCollectService</name>
+        <action>com.yun9.ws.biz.pay.service.UpdateByCollectService</action>
         <output>
-            <classname>com.yun9.wservice.model.AddRechargeResult</classname>
+            <classname>com.yun9.wservice.model.PayRegisterCollect</classname>
             <type>object</type>
         </output>
         <type>yun9</type>

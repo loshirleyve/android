@@ -165,7 +165,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, "登记中，请稍候...", true);
         Resource resource = resourceFactory.create("AddRechargeService");
         resource.param("own", sessionManager.getUser().getId());
-        resource.param("accounttype", Payinfo.BizFinanceAccount.TYPE_BALANCE);
+        resource.param("accounttype", "balance");
         resource.param("amount", amount);
         resource.param("typeid", rechargeType.getId());
         resource.param("userid", sessionManager.getUser().getId());
