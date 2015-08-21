@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ext="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ext:titleCenterIcoVisibility="false"
+        ext:titleLeftIcoVisibility="true"
+        ext:titleText="@string/user_buyer"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/category_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titlebar"
+        android:background="@color/title_color"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
+        <info.hoang8f.android.segmented.SegmentedGroup xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/category_segmented"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/locationinfo"
+            android:gravity="center"
+            android:orientation="horizontal"
+            segmentedgroup:border_width="1dp"
+            segmentedgroup:checked_text_color="@color/black"
+            segmentedgroup:corner_radius="10dp"
+            segmentedgroup:tint_color="@color/whites"></info.hoang8f.android.segmented.SegmentedGroup>
+    </RelativeLayout>
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rotate_header_list_view_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/category_rl"
+        android:background="@color/groupbackground"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
+
+        <com.yun9.jupiter.widget.paging.listview.PagingListView
+            android:id="@+id/order_List"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/groupbackground"
+            android:dividerHeight="5dp" />
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+</RelativeLayout>

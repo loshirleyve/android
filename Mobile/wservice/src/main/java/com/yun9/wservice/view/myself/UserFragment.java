@@ -27,6 +27,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.view.client.ClientActivity;
 import com.yun9.wservice.view.client.ClientCommand;
 import com.yun9.wservice.view.order.MyWalletActivity;
+import com.yun9.wservice.view.order.OrderActivity;
 import com.yun9.wservice.view.other.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
@@ -34,6 +35,7 @@ import com.yun9.wservice.view.inst.SelectInstActivity;
 import com.yun9.wservice.view.inst.SelectInstCommand;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
+
 
 /**
  *
@@ -105,6 +107,14 @@ public class UserFragment extends JupiterFragment {
             @Override
             public void onClick(View v) {
                 MyWalletActivity.start(UserFragment.this.getActivity());
+            }
+        });
+
+        userHeadWidget.getMyOrderLL().setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                OrderActivity.start(UserFragment.this.getActivity());
             }
         });
 

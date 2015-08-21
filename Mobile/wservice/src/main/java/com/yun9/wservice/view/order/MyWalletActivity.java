@@ -22,6 +22,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
+import com.yun9.wservice.model.OrderGroup;
 import com.yun9.wservice.view.payment.RechargeRecordListActivity;
 
 /**
@@ -112,7 +113,7 @@ public class MyWalletActivity extends JupiterFragmentActivity {
      *
      * @param orderGroup
      */
-    private void openOrderListActivity(OrderBuyManagerInfo.OrderGroup orderGroup) {
+    private void openOrderListActivity(OrderGroup orderGroup) {
         OrderListActivity.start(this, orderGroup.getState(), orderGroup.getStatename());
     }
 
@@ -167,4 +168,52 @@ public class MyWalletActivity extends JupiterFragmentActivity {
             return convertView;
         }
     };
+
+
+    private JupiterAdapter orderAdapter = new JupiterAdapter() {
+        @Override
+        public int getCount() {
+            if (buyManagerInfo != null
+                    && buyManagerInfo.getOrderGroups() != null) {
+                return buyManagerInfo.getOrderGroups().size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            JupiterRowStyleTitleLayout row;
+            final OrderGroup orderGroup = buyManagerInfo.getOrderGroups().get(position);
+            if (convertView == null) {
+                row = new JupiterRowStyleTitleLayout(MyWalletActivity.this);
+                row.getMainIV().setVisibility(View.GONE);
+                row.getHotNitoceTV().setVisibility(View.VISIBLE);
+                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
+                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openOrderListActivity(orderGroup);
+                    }
+                });
+                convertView = row;
+            } else {
+                row = (JupiterRowStyleTitleLayout) convertView;
+            }
+            row.getHotNitoceTV().setText(orderGroup.getNums() + "");
+            row.getTitleTV().setText(orderGroup.getStatename());
+            return convertView;
+        }
+    };
+
 }
