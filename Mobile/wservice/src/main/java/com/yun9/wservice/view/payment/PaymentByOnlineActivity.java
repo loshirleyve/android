@@ -87,11 +87,14 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
 
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
-        Resource resource = resourceFactory.create("QueryPayRegisterBySourceService");
+        Resource resource = resourceFactory.create("QueryPayModeTypeService");
+        resource.param("instid",paymentByOnlineCommand.getInstId());
+        resource.param("paymodetype","online");
+        resource.param("type","3rdparty");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-
+                payModeTypes = (List<PayModeType>) response.getPayload();
             }
 
             @Override

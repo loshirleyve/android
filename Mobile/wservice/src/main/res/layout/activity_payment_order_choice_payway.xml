@@ -20,19 +20,4 @@
             android:background="@color/groupbackground">
         </com.yun9.jupiter.widget.JupiterListView>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
-    <LinearLayout
-        android:id="@+id/confirm_ll"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:background="@color/title_color">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:text="@string/app_ok"
-            android:layout_gravity="center"
-            android:textColor="@color/whites"/>
-    </LinearLayout>
 </RelativeLayout>

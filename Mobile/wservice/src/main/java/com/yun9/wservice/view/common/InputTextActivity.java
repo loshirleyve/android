@@ -83,8 +83,18 @@ public class InputTextActivity extends JupiterFragmentActivity{
                 }
             }
         }
+        if (command.getMinValue() != null
+                && Double.valueOf(value) < command.getMinValue()){
+            showToast("数值不能小于："+command.getMinValue());
+            return;
+        }
+        if (command.getMinValue() != null
+                && Double.valueOf(value) > command.getMaxValue()){
+            showToast("数值不能大于："+command.getMaxValue());
+            return;
+        }
         Intent intent = new Intent();
-        intent.putExtra("data",value);
+        intent.putExtra(JupiterCommand.RESULT_PARAM,value);
         setResult(JupiterCommand.RESULT_CODE_OK,intent);
         this.finish();
     }

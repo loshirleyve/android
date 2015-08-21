@@ -11,6 +11,8 @@ public class PaymentResultCommand extends JupiterCommand{
 
     private String sourceId;
 
+    private String instId;
+
     private boolean paymentDone;
 
     public PaymentResultCommand() {
@@ -44,6 +46,15 @@ public class PaymentResultCommand extends JupiterCommand{
 
     public PaymentResultCommand setPaymentDone(boolean paymentDone) {
         this.paymentDone = paymentDone;
+        return this;
+    }
+
+    public String getInstId() {
+        return instId;
+    }
+
+    public PaymentResultCommand setInstId(String instId) {
+        this.instId = instId;
         return this;
     }
 }

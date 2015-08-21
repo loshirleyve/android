@@ -392,8 +392,26 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
-            android:name=".view.payment.PaymentChoiceWaysActivity"
+            android:name=".view.payment.PaymentOrderChoicePayWayActivity"
             android:label="@string/payment_ways"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+        android:name=".view.payment.PaymentByOnlineActivity"
+        android:label="@string/online_pay"
+        android:screenOrientation="portrait"
+        android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.payment.PaymentOrderRemainActivity"
+            android:label="@string/remain_pay"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
+            android:name=".view.common.InputTextActivity"
+            android:label="@string/single_input"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 

@@ -11,6 +11,8 @@ import java.util.Map;
 public class InputTextCommand extends JupiterCommand {
 
     private String value;
+    private Double minValue;
+    private Double maxValue;
     private Map<String,String> regularMap;
 
     public String getValue() {
@@ -36,6 +38,24 @@ public class InputTextCommand extends JupiterCommand {
 
     public InputTextCommand setRegularMap(Map<String, String> regularMap) {
         this.regularMap = regularMap;
+        return this;
+    }
+
+    public Double getMinValue() {
+        return minValue;
+    }
+
+    public InputTextCommand setMinValue(Double minValue) {
+        this.minValue = minValue;
+        return this;
+    }
+
+    public Double getMaxValue() {
+        return maxValue;
+    }
+
+    public InputTextCommand setMaxValue(Double maxValue) {
+        this.maxValue = maxValue;
         return this;
     }
 }

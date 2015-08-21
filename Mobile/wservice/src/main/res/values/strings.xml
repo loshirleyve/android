@@ -330,4 +330,7 @@
     <string name="my_wallet">我的钱包</string>
     <string name="submit_order">提交订单</string>
     <string name="checkstand">收银台</string>
+    <string name="online_pay">在线支付</string>
+    <string name="remain_pay">继续支付</string>
+    <string name="single_input">单个输入</string>
 </resources>

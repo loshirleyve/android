@@ -44,7 +44,7 @@ public class PaymentOrderChoicePayWayActivity extends JupiterFragmentActivity {
     private List<PayMode> payModes;
 
     public static void start(Activity activity,PaymentOrderChoicePayWayCommand command) {
-        Intent intent = new Intent(activity,RechargeChoiceWaysActivity.class);
+        Intent intent = new Intent(activity,PaymentOrderChoicePayWayActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(PaymentOrderChoicePayWayCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);

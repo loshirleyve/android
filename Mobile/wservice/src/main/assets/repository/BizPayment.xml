@@ -22,6 +22,27 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询在线支付方式 -->
+    <repository>
+        <name>QueryPayModeTypeService</name>
+        <action>com.yun9.ws.biz.pay.service.QueryPayModeTypeService</action>
+        <output>
+            <classname>com.yun9.wservice.model.PayModeType</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <repository>
+        <name>AddPayRegisterBySoruceService</name>
+        <action>com.yun9.ws.biz.service.AddPayRegisterBySoruceService</action>
+        <output>
+            <classname>com.yun9.wservice.model.HistoryPayInfo</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
     <!-- 根据充值状态查询充值记录列表服务 -->
     <repository>
         <name>QueryRechargeService</name>

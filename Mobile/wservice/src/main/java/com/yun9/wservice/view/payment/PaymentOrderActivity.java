@@ -20,6 +20,8 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.PayModeType;
+import com.yun9.wservice.model.HistoryPayInfo;
 import com.yun9.wservice.model.PayMode;
 import com.yun9.wservice.model.Payinfo;
 import com.yun9.wservice.view.common.InputTextActivity;
@@ -73,6 +75,8 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
     private Double useBalance;
 
+    private Double unPayAmount;
+
     public static void start(Activity activity,PaymentOrderCommand command) {
         Intent intent =  new Intent(activity,PaymentOrderActivity.class);
         Bundle bundle = new Bundle();
@@ -102,7 +106,19 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        if (resultCode != JupiterCommand.RESULT_CODE_OK){
+            return;
+        }
+        if (inputTextCommand != null && inputTextCommand.getRequestCode() == requestCode){
+            useBalance = data.getDoubleExtra(JupiterCommand.RESULT_PARAM,0);
+            unPayAmount = payinfo.getPayableAmount() - useBalance;
+            refreshUnpayAmount();
+            refreshUseBalance();
+        } else if (paymentOrderChoicePayWayCommand != null
+                && paymentOrderChoicePayWayCommand.getRequestCode() == requestCode) {
+            usePayMode = (PayMode) data.getSerializableExtra(JupiterCommand.RESULT_PARAM);
+            refreshUsePayMode();
+        }
     }
 
     private void buildView() {
@@ -116,6 +132,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         payIb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                registerPay();
             }
         });
 
@@ -125,6 +142,12 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 if (inputTextCommand == null){
                     inputTextCommand = new InputTextCommand();
                     inputTextCommand.addRegular(".+","请输入金额");
+                    inputTextCommand
+                            .addRegular("^(([0-9]+\\\\.[0-9]*[1-9][0-9]*)|" +
+                                            "([0-9]*[1-9][0-9]*\\\\.[0-9]+)|([0-9]*[1-9][0-9]*))$",
+                                    "输入非有效金额，请重输");
+                    inputTextCommand.setMinValue(0.0);
+                    inputTextCommand.setMaxValue(payinfo.getBalance().getBalance());
                 }
                 inputTextCommand.setValue(useBalance+"");
                 InputTextActivity.start(PaymentOrderActivity.this,inputTextCommand);
@@ -147,7 +170,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayinfoBySourceService");
-        resource.param("source",command.getSource());
+        resource.param("source", command.getSource());
         resource.param("sourceValue", command.getSourceValue());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -173,28 +196,97 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             return;
         }
         useBalance = payinfo.getUseBalance();
+        refreshUseBalance();
         usePayMode = payinfo.getPayMode();
+        unPayAmount = payinfo.getUnpayAmount();
         paymentOrderInfoWidget.getPaymentTitleTv().setText(payinfo.getTitle());
         paymentOrderInfoWidget.getPaymentSubTitleTv().setText(payinfo.getSubtitle());
         paymentPayWay.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
-        if (payinfo.getPayMode() != null){
-            paymentPayWay.getHotNitoceTV().setText(payinfo.getPayMode().getName());
-        } else {
-            paymentPayWay.getHotNitoceTV().setText("为选择");
-        }
+        refreshUsePayMode();
+        paymentBalance.getSutitleTv().setVisibility(View.VISIBLE);
+        paymentBalance.getHotNitoceTV().setVisibility(View.VISIBLE);
+        paymentBalance.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
+        paymentBalance.getSutitleTv().setTextColor(getResources().getColor(R.color.title_color));
         if (payinfo.getBalance() != null){
-            paymentBalance.getSutitleTv().setVisibility(View.VISIBLE);
-            paymentBalance.getHotNitoceTV().setVisibility(View.VISIBLE);
             paymentBalance.getSutitleTv().setText(payinfo.getBalance().getBalance() + "元");
-            paymentBalance.getHotNitoceTV().setText(payinfo.getUseBalance()+"元");
         } else {
-            paymentBalance.getSutitleTv().setVisibility(View.GONE);
-            paymentBalance.getHotNitoceTV().setVisibility(View.GONE);
-
+            paymentBalance.getSutitleTv().setText("0元");
+            paymentBalance.setEnabled(false);
         }
         totalAmountTv.setText(payinfo.getPayableAmount()+"元");
-        useBalanceTv.setText(payinfo.getUseBalance()+"元");
-        remainBalance.setText(payinfo.getUnpayAmount()+"元");
+        refreshUnpayAmount();
+    }
+
+    private void refreshUseBalance() {
+        if (useBalance != null){
+            paymentBalance.getHotNitoceTV().setText("已使用 "+useBalance+"元");
+            useBalanceTv.setText(useBalance + "元");
+        } else {
+            paymentBalance.getHotNitoceTV().setText("已使用 0元");
+            useBalanceTv.setText("0元");
+        }
+    }
+
+    private void refreshUsePayMode() {
+        if (usePayMode != null){
+            paymentPayWay.getHotNitoceTV().setText(usePayMode.getName());
+        } else {
+            paymentPayWay.getHotNitoceTV().setText("未选择");
+        }
+    }
+
+    private void refreshUnpayAmount() {
+        remainBalance.setText(unPayAmount+"元");
+    }
+
+    private void registerPay() {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
+        Resource resource = resourceFactory.create("AddPayRegisterBySoruceService");
+        resource.param("source", command.getSource());
+        resource.param("sourceId", command.getSourceValue());
+        resource.param("instId", command.getInstId());
+        resource.param("businessKey", payinfo.getSubtitle());
+        resource.param("payableAmount", payinfo.getPayableAmount());
+        resource.param("useBalance", useBalance);
+        if (usePayMode != null){
+            resource.param("paymodeCode", usePayMode.getCode());
+        }
+        resource.param("createBy", sessionManager.getUser().getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                HistoryPayInfo historyPayInfo = (HistoryPayInfo) response.getPayload();
+                if (PayModeType.TYPE_ONLINE.equals(historyPayInfo.getPaymodeType())
+                        && historyPayInfo.getUnPayamount() != null
+                        && historyPayInfo.getUnPayamount() > 0.0){
+                    PaymentByOnlineCommand onlineCommand = new PaymentByOnlineCommand();
+                    onlineCommand.setPayRegisterId(historyPayInfo.getId());
+                    onlineCommand.setSource(command.getSource());
+                    onlineCommand.setSourceid(command.getSourceValue());
+                    onlineCommand.setInstId(command.getInstId());
+                    onlineCommand.setAmount(historyPayInfo.getUnPayamount());
+                    PaymentByOnlineActivity.start(PaymentOrderActivity.this, onlineCommand);
+                    PaymentOrderActivity.this.finish();
+                } else {
+                    PaymentResultCommand resultCommand = new PaymentResultCommand();
+                    resultCommand.setInstId(command.getInstId());
+                    resultCommand.setSource(command.getSource());
+                    resultCommand.setSourceId(command.getSourceValue());
+                    resultCommand.setPaymentDone(true);
+                    PaymentResultActivity.start(PaymentOrderActivity.this,resultCommand);
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                registerDialog.dismiss();
+            }
+        });
     }
 }
