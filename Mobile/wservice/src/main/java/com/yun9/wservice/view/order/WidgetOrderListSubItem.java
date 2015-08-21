@@ -13,7 +13,7 @@ import com.yun9.wservice.R;
 public class WidgetOrderListSubItem extends JupiterRelativeLayout {
 
     private TextView workorderitemname;
-    private TextView workorderitemstate;
+    private TextView workorderitemdescr;
     private TextView workorderitemnums;
 
     public WidgetOrderListSubItem(Context context) {
@@ -36,7 +36,7 @@ public class WidgetOrderListSubItem extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         workorderitemname = (TextView) findViewById(R.id.workorderitemname);
-        workorderitemstate = (TextView) findViewById(R.id.workorderitemstate);
+        workorderitemdescr = (TextView) findViewById(R.id.workorderitemdescr);
         workorderitemnums = (TextView) findViewById(R.id.workorderitemnums);
     }
 
@@ -48,12 +48,12 @@ public class WidgetOrderListSubItem extends JupiterRelativeLayout {
         this.workorderitemname = workorderitemname;
     }
 
-    public TextView getWorkorderitemstate() {
-        return workorderitemstate;
+    public TextView getWorkorderitemdescr() {
+        return workorderitemdescr;
     }
 
-    public void setWorkorderitemstate(TextView workorderitemstate) {
-        this.workorderitemstate = workorderitemstate;
+    public void setWorkorderitemdescr(TextView workorderitemdescr) {
+        this.workorderitemdescr = workorderitemdescr;
     }
 
     public TextView getWorkorderitemnums() {

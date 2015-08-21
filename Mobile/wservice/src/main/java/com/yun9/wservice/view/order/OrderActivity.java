@@ -105,6 +105,8 @@ public class OrderActivity extends JupiterFragmentActivity {
                     if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
                         refreshOrderInfos(currOrderGroup, orderinfos.get(0).getOrderid(), Page.PAGE_DIR_PULL);
                     } else {
+                        orderinfos.clear();
+                        orderLists.setHasMoreItems(true);
                         refreshOrderInfos(currOrderGroup, null, Page.PAGE_DIR_PULL);
                     }
                 }
@@ -297,11 +299,21 @@ public class OrderActivity extends JupiterFragmentActivity {
             String date = format.format(new Date(orderInfo.getCreatedate()));
             widgetOrderListItem.getOrderDate().setText(date);
             widgetOrderListItem.getOrderWork().setAdapter(new Subadapter(orderInfo.getWorkorders()));
-            widgetOrderListItem.setTag(orderInfo);
-
+            widgetOrderListItem.setTag(orderInfo.getOrderid());
+            widgetOrderListItem.setOnClickListener(onOrderItemClickListener);
             return widgetOrderListItem;
         }
     };
+
+
+    private View.OnClickListener onOrderItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String orderid=(String)v.getTag();
+            OrderDetailActivity.start(OrderActivity.this,orderid);
+        }
+    };
+
 
 
     private class Subadapter extends JupiterAdapter {
@@ -333,16 +345,16 @@ public class OrderActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             WidgetOrderListSubItem widgetOrderListSubItem = null;
-
+            WorkorderDto workorderDto =workorderDtos.get(position);
             if (convertView == null) {
                 widgetOrderListSubItem = new WidgetOrderListSubItem(OrderActivity.this);
                 convertView = widgetOrderListSubItem;
             } else {
                 widgetOrderListSubItem = (WidgetOrderListSubItem) convertView;
             }
-            widgetOrderListSubItem.getWorkorderitemname().setText(workorderDtos.get(position).getInserviceName());
-            widgetOrderListSubItem.getWorkorderitemstate().setText(workorderDtos.get(position).getInserviceName());
-            widgetOrderListSubItem.getWorkorderitemnums().setText(workorderDtos.get(position).getCompleteNum() + "/" + workorderDtos.get(position).getAllNum());
+            widgetOrderListSubItem.getWorkorderitemname().setText(workorderDto.getInserviceName());
+            widgetOrderListSubItem.getWorkorderitemdescr().setText(workorderDto.getDescr());
+            widgetOrderListSubItem.getWorkorderitemnums().setText(workorderDto.getCompleteNum() + "/" +workorderDto.getAllNum());
             return widgetOrderListSubItem;
         }
     }

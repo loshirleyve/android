@@ -135,10 +135,12 @@
         android:background="@color/devide_line" />
 
 
-    <ListView
+    <com.yun9.jupiter.widget.JupiterListView
         android:id="@+id/order_work"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/line2"
-        android:layout_marginLeft="30dp"></ListView>
+        android:layout_marginLeft="30dp"
+        android:background="@color/whites"></com.yun9.jupiter.widget.JupiterListView>
+
 </RelativeLayout>

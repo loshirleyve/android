@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 
@@ -21,7 +22,7 @@ public class WidgetOrderListItem extends JupiterRelativeLayout {
     private TextView orderDesc;
     private TextView orderPrice;
     private TextView orderDate;
-    private ListView orderWork;
+    private JupiterListView orderWork;
 
 
     public WidgetOrderListItem(Context context) {
@@ -50,7 +51,7 @@ public class WidgetOrderListItem extends JupiterRelativeLayout {
         orderDesc = (TextView) findViewById(R.id.order_desc_tv);
         orderPrice = (TextView) findViewById(R.id.order_price_tv);
         orderDate = (TextView) findViewById(R.id.order_date_tv);
-        orderWork = (ListView) findViewById(R.id.order_work);
+        orderWork = (JupiterListView) findViewById(R.id.order_work);
     }
 
     public TextView getOrderSn() {
@@ -109,11 +110,11 @@ public class WidgetOrderListItem extends JupiterRelativeLayout {
         this.orderDate = orderDate;
     }
 
-    public ListView getOrderWork() {
+    public JupiterListView getOrderWork() {
         return orderWork;
     }
 
-    public void setOrderWork(ListView orderWork) {
+    public void setOrderWork(JupiterListView orderWork) {
         this.orderWork = orderWork;
     }
 }
