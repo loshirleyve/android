@@ -55,5 +55,33 @@
                 android:textColor="@color/gray_font"
                 android:text="深圳时代共赢服务有限公司"/>
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/devide_line"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp">
+            <TextView
+                android:id="@+id/source_sn_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:textSize="13dp"
+                android:textColor="@color/gray_font"
+                android:text="88888888888"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/source_sn_tv"
+                android:layout_marginRight="5dp"
+                android:textSize="13dp"
+                android:textColor="@color/gray_font"
+                android:text="单据号:"/>
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

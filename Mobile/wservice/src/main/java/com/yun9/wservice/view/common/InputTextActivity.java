@@ -51,6 +51,9 @@ public class InputTextActivity extends JupiterFragmentActivity{
     }
 
     private void buildView() {
+        if (AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
+            titleBarLayout.getTitleTv().setText(command.getTitle());
+        }
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +64,7 @@ public class InputTextActivity extends JupiterFragmentActivity{
         if (AssertValue.isNotNullAndNotEmpty(command.getValue())){
             editText.setText(command.getValue());
         }
+
 
         confirmLl.setOnClickListener(new View.OnClickListener() {
             @Override

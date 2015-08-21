@@ -12,6 +12,7 @@ public class PaymentByOnlineCommand extends JupiterCommand {
     private String sourceid;
     private double amount;
     private String instId;
+    private String createBy;
 
     public String getPayRegisterId() {
         return payRegisterId;
@@ -55,6 +56,15 @@ public class PaymentByOnlineCommand extends JupiterCommand {
 
     public PaymentByOnlineCommand setInstId(String instId) {
         this.instId = instId;
+        return this;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public PaymentByOnlineCommand setCreateBy(String createBy) {
+        this.createBy = createBy;
         return this;
     }
 }

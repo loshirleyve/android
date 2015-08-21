@@ -13,6 +13,8 @@ public class PaymentResultCommand extends JupiterCommand{
 
     private String instId;
 
+    private String createBy;
+
     private boolean paymentDone;
 
     public PaymentResultCommand() {
@@ -55,6 +57,15 @@ public class PaymentResultCommand extends JupiterCommand{
 
     public PaymentResultCommand setInstId(String instId) {
         this.instId = instId;
+        return this;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public PaymentResultCommand setCreateBy(String createBy) {
+        this.createBy = createBy;
         return this;
     }
 }

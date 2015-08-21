@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class InputTextCommand extends JupiterCommand {
 
+    private String title;
     private String value;
     private Double minValue;
     private Double maxValue;
@@ -56,6 +57,15 @@ public class InputTextCommand extends JupiterCommand {
 
     public InputTextCommand setMaxValue(Double maxValue) {
         this.maxValue = maxValue;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public InputTextCommand setTitle(String title) {
+        this.title = title;
         return this;
     }
 }

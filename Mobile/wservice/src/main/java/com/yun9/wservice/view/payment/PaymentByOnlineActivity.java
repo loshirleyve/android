@@ -104,6 +104,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
+                adapter.notifyDataSetChanged();
                 registerDialog.dismiss();
             }
         });
@@ -149,7 +150,6 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
             final PayModeType payMode = payModeTypes.get(position);
             if (convertView == null) {
                 sutitleLayout = new JupiterRowStyleSutitleLayout(PaymentByOnlineActivity.this);
-                sutitleLayout.setSelectMode(true);
                 sutitleLayout.getArrowRightIV().setVisibility(View.GONE);
                 sutitleLayout.getTitleTV().setText(payMode.getName());
                 sutitleLayout.getSutitleTv().setText(payMode.getDescr());
@@ -184,6 +184,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
         resource.param("payTypeCode","balance");
         resource.param("amount",paymentByOnlineCommand.getAmount());
         resource.param("createby",sessionManager.getUser().getId());
+        resource.param("collectuserid",paymentByOnlineCommand.getCreateBy());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {

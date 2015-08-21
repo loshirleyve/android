@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -110,7 +112,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             return;
         }
         if (inputTextCommand != null && inputTextCommand.getRequestCode() == requestCode){
-            useBalance = data.getDoubleExtra(JupiterCommand.RESULT_PARAM,0);
+            useBalance = Double.valueOf(data.getStringExtra(JupiterCommand.RESULT_PARAM));
             unPayAmount = payinfo.getPayableAmount() - useBalance;
             refreshUnpayAmount();
             refreshUseBalance();
@@ -139,30 +141,33 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         paymentBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (inputTextCommand == null){
+                if (inputTextCommand == null) {
                     inputTextCommand = new InputTextCommand();
-                    inputTextCommand.addRegular(".+","请输入金额");
+                    inputTextCommand.setTitle("请输入金额");
+                    inputTextCommand.addRegular(".+", "请输入金额");
                     inputTextCommand
-                            .addRegular("^(([0-9]+\\\\.[0-9]*[1-9][0-9]*)|" +
-                                            "([0-9]*[1-9][0-9]*\\\\.[0-9]+)|([0-9]*[1-9][0-9]*))$",
+                            .addRegular("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|" +
+                                            "([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*)|(0+))$",
                                     "输入非有效金额，请重输");
                     inputTextCommand.setMinValue(0.0);
-                    inputTextCommand.setMaxValue(payinfo.getBalance().getBalance());
+                    double maxValue = payinfo.getPayableAmount()>payinfo.getBalance().getBalance()
+                            ?payinfo.getBalance().getBalance():payinfo.getPayableAmount();
+                    inputTextCommand.setMaxValue(maxValue);
                 }
-                inputTextCommand.setValue(useBalance+"");
-                InputTextActivity.start(PaymentOrderActivity.this,inputTextCommand);
+                inputTextCommand.setValue(useBalance + "");
+                InputTextActivity.start(PaymentOrderActivity.this, inputTextCommand);
             }
         });
 
         paymentPayWay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (paymentOrderChoicePayWayCommand == null){
+                if (paymentOrderChoicePayWayCommand == null) {
                     paymentOrderChoicePayWayCommand = new PaymentOrderChoicePayWayCommand();
                     paymentOrderChoicePayWayCommand.setPayModes(payinfo.getPaymodes());
                 }
                 paymentOrderChoicePayWayCommand.setPayMode(usePayMode);
-                PaymentOrderChoicePayWayActivity.start(PaymentOrderActivity.this,paymentOrderChoicePayWayCommand);
+                PaymentOrderChoicePayWayActivity.start(PaymentOrderActivity.this, paymentOrderChoicePayWayCommand);
             }
         });
     }
@@ -214,8 +219,13 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             paymentBalance.getSutitleTv().setText("0元");
             paymentBalance.setEnabled(false);
         }
-        totalAmountTv.setText(payinfo.getPayableAmount()+"元");
+        totalAmountTv.setText(payinfo.getPayableAmount() + "元");
         refreshUnpayAmount();
+        paymentOrderInfoWidget.getSourceSnTv().setText(payinfo.getSourceSn());
+        CacheInst cacheInst = InstCache.getInstance().getInst(payinfo.getInstId());
+        if (cacheInst != null){
+            paymentOrderInfoWidget.getPaymentInstNameTv().setText(cacheInst.getInstname());
+        }
     }
 
     private void refreshUseBalance() {
@@ -252,7 +262,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         if (usePayMode != null){
             resource.param("paymodeCode", usePayMode.getCode());
         }
-        resource.param("createBy", sessionManager.getUser().getId());
+        resource.param("createBy", payinfo.getCreateBy());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -265,6 +275,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     onlineCommand.setSourceid(command.getSourceValue());
                     onlineCommand.setInstId(command.getInstId());
                     onlineCommand.setAmount(historyPayInfo.getUnPayamount());
+                    onlineCommand.setCreateBy(payinfo.getCreateBy());
                     PaymentByOnlineActivity.start(PaymentOrderActivity.this, onlineCommand);
                     PaymentOrderActivity.this.finish();
                 } else {
@@ -273,6 +284,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     resultCommand.setSource(command.getSource());
                     resultCommand.setSourceId(command.getSourceValue());
                     resultCommand.setPaymentDone(true);
+                    resultCommand.setCreateBy(payinfo.getCreateBy());
                     PaymentResultActivity.start(PaymentOrderActivity.this,resultCommand);
                 }
             }

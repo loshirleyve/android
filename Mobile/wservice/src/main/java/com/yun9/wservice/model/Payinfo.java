@@ -19,6 +19,7 @@ public class Payinfo implements Serializable{
     private String sourceSn;
     private Balance balance;
     private PayMode payMode;
+    private String createBy;
     private List<PayMode> paymodes;
 
     public String getSource() {
@@ -126,6 +127,15 @@ public class Payinfo implements Serializable{
 
     public Payinfo setPaymodes(List<PayMode> paymodes) {
         this.paymodes = paymodes;
+        return this;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public Payinfo setCreateBy(String createBy) {
+        this.createBy = createBy;
         return this;
     }
 }

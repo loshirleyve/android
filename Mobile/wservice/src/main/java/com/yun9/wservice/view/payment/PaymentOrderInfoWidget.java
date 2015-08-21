@@ -18,6 +18,8 @@ public class PaymentOrderInfoWidget extends JupiterRelativeLayout{
 
     private TextView paymentInstNameTv;
 
+    private TextView sourceSnTv;
+
     public PaymentOrderInfoWidget(Context context) {
         super(context);
     }
@@ -40,6 +42,7 @@ public class PaymentOrderInfoWidget extends JupiterRelativeLayout{
         paymentTitleTv = (TextView) this.findViewById(R.id.payment_title_tv);
         paymentSubTitleTv = (TextView) this.findViewById(R.id.payment_sub_title_tv);
         paymentInstNameTv = (TextView) this.findViewById(R.id.payment_inst_name);
+        sourceSnTv = (TextView) this.findViewById(R.id.source_sn_tv);
     }
 
     public TextView getPaymentTitleTv() {
@@ -52,5 +55,9 @@ public class PaymentOrderInfoWidget extends JupiterRelativeLayout{
 
     public TextView getPaymentInstNameTv() {
         return paymentInstNameTv;
+    }
+
+    public TextView getSourceSnTv() {
+        return sourceSnTv;
     }
 }
