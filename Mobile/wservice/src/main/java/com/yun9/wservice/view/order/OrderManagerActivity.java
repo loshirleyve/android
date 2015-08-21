@@ -22,6 +22,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
+import com.yun9.wservice.model.OrderGroup;
 import com.yun9.wservice.view.payment.RechargeRecordListActivity;
 
 import java.util.ArrayList;
@@ -120,7 +121,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
      *
      * @param orderGroup
      */
-    private void openOrderListActivity(OrderBuyManagerInfo.OrderGroup orderGroup) {
+    private void openOrderListActivity(OrderGroup orderGroup) {
         OrderListActivity.start(this, orderGroup.getState(), orderGroup.getStatename());
     }
 
@@ -199,7 +200,7 @@ public class OrderManagerActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             JupiterRowStyleTitleLayout row;
-            final OrderBuyManagerInfo.OrderGroup orderGroup = buyManagerInfo.getOrderGroups().get(position);
+            final OrderGroup orderGroup = buyManagerInfo.getOrderGroups().get(position);
             if (convertView == null) {
                 row = new JupiterRowStyleTitleLayout(OrderManagerActivity.this);
                 row.getMainIV().setVisibility(View.GONE);

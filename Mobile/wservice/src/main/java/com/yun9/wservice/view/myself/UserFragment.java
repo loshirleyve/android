@@ -26,16 +26,15 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.client.ClientActivity;
 import com.yun9.wservice.view.client.ClientCommand;
-import com.yun9.wservice.view.order.OrderManagerActivity;
+import com.yun9.wservice.view.order.OrderActivity;
 import com.yun9.wservice.view.other.SettingActivity;
 import com.yun9.wservice.view.doc.DocCompositeActivity;
 import com.yun9.wservice.view.doc.DocCompositeCommand;
 import com.yun9.wservice.view.inst.SelectInstActivity;
 import com.yun9.wservice.view.inst.SelectInstCommand;
-import com.yun9.wservice.view.order.OrderManagerActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
-import com.yun9.wservice.view.other.SettingActivity;
+import com.yun9.wservice.view.product.ProductCommand;
 
 /**
  *
@@ -103,7 +102,7 @@ public class UserFragment extends JupiterFragment {
         userHeadWidget.getUserBuyer().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderManagerActivity.start(UserFragment.this.getActivity());
+                OrderActivity.start(UserFragment.this.getActivity());
             }
         });
 
