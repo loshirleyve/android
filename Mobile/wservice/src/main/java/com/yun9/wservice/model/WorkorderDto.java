@@ -9,8 +9,8 @@ public class WorkorderDto implements Serializable {
 
     private String descr;
     private String inserviceName;
-    private double completeNum;
-    private double allNum;
+    private int completeNum;
+    private int allNum;
 
     public String getDescr() {
         return descr;
@@ -28,19 +28,19 @@ public class WorkorderDto implements Serializable {
         this.inserviceName = inserviceName;
     }
 
-    public double getCompleteNum() {
+    public int getCompleteNum() {
         return completeNum;
     }
 
-    public void setCompleteNum(double completeNum) {
+    public void setCompleteNum(int completeNum) {
         this.completeNum = completeNum;
     }
 
-    public double getAllNum() {
+    public int getAllNum() {
         return allNum;
     }
 
-    public void setAllNum(double allNum) {
+    public void setAllNum(int allNum) {
         this.allNum = allNum;
     }
 }
