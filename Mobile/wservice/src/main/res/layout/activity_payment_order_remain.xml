@@ -20,12 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.yun9.wservice.view.payment.PaymentOrderInfoWidget
-                android:id="@+id/payment_order_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.yun9.wservice.view.payment.PaymentOrderInfoWidget>
-
             <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
                 android:id="@+id/payment_payway"
                 android:layout_width="match_parent"
@@ -36,86 +30,20 @@
                 app:rowStyleSutitleShowArrow="false"
                 app:rowStyleSutitleTitleText="支付方式"
                 android:layout_marginTop="15dp"/>
-
-            <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
-                android:id="@+id/payment_balance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rowStyleSutitleShowMainImage="false"
-                app:rowStyleSutitleShowTimeText="false"
-                app:rowStyleSutitleShowArrow="false"
-                app:rowStyleSutitleTitleText="余额支付"
-                app:rowStyleSutitleShowSutitleText="false"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="15dp"
                 android:background="@color/whites"
-                android:paddingTop="10dp"
                 android:paddingBottom="10dp">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/purple_font"
-                        android:text="支付总额"/>
-                    <TextView
-                        android:id="@+id/total_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/gray_font"
-                        android:paddingRight="10dp"
-                        android:text="156.00元"/>
-                </RelativeLayout>
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/items_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:textColor="@color/purple_font"
-                        android:paddingLeft="10dp"
-                        android:text="-余额支付"/>
-                    <TextView
-                        android:id="@+id/use_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/gray_font"
-                        android:paddingRight="10dp"
-                        android:text="100.00元"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/other_payway_rl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <TextView
-                        android:id="@+id/other_payway_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:textColor="@color/purple_font"
-                        android:paddingLeft="10dp"
-                        android:text="-在线支付"/>
-                    <TextView
-                        android:id="@+id/other_payway_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/gray_font"
-                        android:paddingRight="10dp"
-                        android:text="100.00元"/>
-                </RelativeLayout>
+                    android:orientation="vertical">
+
+                </LinearLayout>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
@@ -168,6 +96,7 @@
                 android:layout_width="80dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:layout_gravity="center" />
 
             <ImageButton

@@ -257,7 +257,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         resource.param("sourceId", command.getSourceValue());
         resource.param("instId", command.getInstId());
         resource.param("businessKey", payinfo.getSubtitle());
-        resource.param("payableAmount", payinfo.getPayableAmount());
+        resource.param("sourceAmount", payinfo.getPayableAmount());
         resource.param("useBalance", useBalance);
         if (usePayMode != null){
             resource.param("paymodeCode", usePayMode.getCode());

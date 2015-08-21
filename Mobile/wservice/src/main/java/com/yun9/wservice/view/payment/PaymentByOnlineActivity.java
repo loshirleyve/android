@@ -83,6 +83,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                 .getSerializableExtra(PaymentByOnlineCommand.PARAM_COMMAND);
         buildView();
         loadData();
+        setResult(JupiterCommand.RESULT_CODE_OK);
     }
 
     private void loadData() {
@@ -118,6 +119,9 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
             }
         });
         listView.setAdapter(adapter);
+        paymentAmount.getHotNitoceTV().setVisibility(View.VISIBLE);
+        paymentAmount.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
+        paymentAmount.getTitleTV().setText(paymentByOnlineCommand.getAmount()+"元");
     }
 
     @Override
@@ -234,18 +238,29 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                             setResult(JupiterCommand.RESULT_CODE_OK);
                             showToast("支付成功");
                             PaymentByOnlineActivity.this.finish();
+                            PaymentResultCommand resultCommand = new PaymentResultCommand();
+                            resultCommand.setInstId(paymentByOnlineCommand.getInstId());
+                            resultCommand.setSource(paymentByOnlineCommand.getSource());
+                            resultCommand.setSourceId(paymentByOnlineCommand.getSourceid());
+                            resultCommand.setPaymentDone(true);
+                            resultCommand.setCreateBy(paymentByOnlineCommand.getCreateBy());
+                            PaymentResultActivity.start(PaymentByOnlineActivity.this, resultCommand);
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败
                             // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                             if (TextUtils.equals(resultStatus, "8000")) {
                                 setResult(JupiterCommand.RESULT_CODE_OK);
                                 showToast("支付结果正在确认");
-                                PaymentByOnlineActivity.this.finish();
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                                 showToast("支付失败\n" + memo);
-                                PaymentByOnlineActivity.this.finish();
                             }
+                            PaymentByOnlineActivity.this.finish();
+                            PaymentOrderCommand command = new PaymentOrderCommand();
+                            command.setSource(paymentByOnlineCommand.getSource());
+                            command.setSourceValue(paymentByOnlineCommand.getSourceid());
+                            command.setInstId(paymentByOnlineCommand.getInstId());
+                            PaymentOrderRemainActivity.start(PaymentByOnlineActivity.this, command);
                         }
                         break;
                     }

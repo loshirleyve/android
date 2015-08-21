@@ -36,6 +36,7 @@ import com.yun9.wservice.view.org.OrgUserDetailActivity;
 import com.yun9.wservice.view.org.OrgUserDetailCommand;
 import com.yun9.wservice.view.payment.PaymentOrderActivity;
 import com.yun9.wservice.view.payment.PaymentOrderCommand;
+import com.yun9.wservice.view.payment.PaymentOrderRemainActivity;
 import com.yun9.wservice.view.payment.PaymentResultActivity;
 import com.yun9.wservice.view.payment.PaymentResultCommand;
 
@@ -176,7 +177,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                     .getTitleTV().setText(CtrlCodeCache.getInstance()
             .getCtrlcodeName(CtrlCodeDefNo.ORDER_PAY_STATE,order.getOrder().getPaystate()));
 
-            if (!State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())){
+            if (State.OrderPayState.COMPLETE.equals(order.getOrder().getPaystate())){
                 orderDetailPayinfoWidget.getSutitleLayout()
                         .getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
                 orderDetailPayinfoWidget.getSutitleLayout()
@@ -185,22 +186,30 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                         .getHotNitoceTV().getPaint().setFakeBoldText(false);
                 orderDetailPayinfoWidget.getSutitleLayout()
                         .getTitleTV().setTextColor(getResources().getColor(R.color.black));
+            } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())){
+                orderDetailPayinfoWidget.getSutitleLayout().getHotNitoceTV().setText("继续支付");
             }
 
             orderDetailPayinfoWidget.getSutitleLayout().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())) {
-                        PaymentResultActivity.start(OrderDetailActivity.this,
-                                new PaymentResultCommand(
-                                        SourceType.TYPE_ORDER,orderId
-                                ));
-                    } else {
+                    if (State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())) {
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
                         command.setSourceValue(order.getOrder().getOrderid());
                         command.setInstId(order.getOrder().getInstid());
                         PaymentOrderActivity.start(OrderDetailActivity.this, command);
+                    } else if (State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())){
+                        PaymentOrderCommand command = new PaymentOrderCommand();
+                        command.setSource(PaymentOrderCommand.SOURCE_ORDER);
+                        command.setSourceValue(order.getOrder().getOrderid());
+                        command.setInstId(order.getOrder().getInstid());
+                        PaymentOrderRemainActivity.start(OrderDetailActivity.this, command);
+                    }else {
+                        PaymentResultActivity.start(OrderDetailActivity.this,
+                                new PaymentResultCommand(
+                                        SourceType.TYPE_ORDER,orderId
+                                ));
                     }
                 }
             });

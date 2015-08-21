@@ -15,7 +15,7 @@ public final class State implements Serializable{
 
     public class OrderPayState {
         public static final String WAITING_PAY = "waitingpay";
-        public static final String IN_SERVICE = "inservice";
+        public static final String UN_CONFIRM = "unconfirm";
         public static final String COMPLETE = "complete";
     }
 

@@ -20,10 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <com.yun9.wservice.view.payment.PaymentOrderInfoWidget
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.yun9.wservice.view.payment.PaymentOrderInfoWidget>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,68 +43,13 @@
                 android:layout_height="0.5dp"
                 android:background="@color/devide_line"/>
             <LinearLayout
+                android:id="@+id/items_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/whites"
                 android:orientation="vertical"
-                android:paddingBottom="20dp"
-                android:paddingTop="10dp">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/purple_font"
-                        android:text="余额支付"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/gray_font"
-                        android:paddingRight="10dp"
-                        android:text="156.00元"/>
-                </RelativeLayout>
-                <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:textColor="@color/purple_font"
-                    android:paddingLeft="10dp"
-                    android:text="支付宝支付"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/gray_font"
-                    android:paddingRight="10dp"
-                    android:text="100.00元"/>
-            </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:textColor="@color/purple_font"
-                        android:paddingLeft="10dp"
-                        android:text="总支付"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textColor="@color/gray_font"
-                        android:paddingRight="10dp"
-                        android:text="1000.00元"/>
-                </RelativeLayout>
+                android:paddingBottom="20dp">
+
             </LinearLayout>
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
@@ -117,9 +58,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
+        android:visibility="gone"
         android:background="@color/drak">
         <LinearLayout
-            android:id="@+id/confirm_ll"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center_horizontal|right"
@@ -127,19 +68,13 @@
             android:background="@color/whites"
             android:paddingRight="20dp">
 
-            <TextView
-                android:id="@+id/delete_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:paddingRight="15dp"
-                android:paddingLeft="15dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="删除订单"
-                android:layout_gravity="center"
-                android:textColor="@color/whites"
-                android:background="@drawable/button_green"/>
+            <ImageButton
+                android:id="@+id/delete_order_ib"
+                android:background="@drawable/shanchudingdan"
+                android:layout_width="80dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
