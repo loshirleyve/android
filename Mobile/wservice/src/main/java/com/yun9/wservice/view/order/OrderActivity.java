@@ -97,7 +97,7 @@ public class OrderActivity extends JupiterFragmentActivity {
         mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-
+                orderinfos.clear();
                 if (!AssertValue.isNotNullAndNotEmpty(orderGroups)) {
                     refreshOrderGroup();
                     mPtrFrame.refreshComplete();
@@ -105,8 +105,6 @@ public class OrderActivity extends JupiterFragmentActivity {
                     if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
                         refreshOrderInfos(currOrderGroup, orderinfos.get(0).getOrderid(), Page.PAGE_DIR_PULL);
                     } else {
-                        orderinfos.clear();
-                        orderLists.setHasMoreItems(true);
                         refreshOrderInfos(currOrderGroup, null, Page.PAGE_DIR_PULL);
                     }
                 }
