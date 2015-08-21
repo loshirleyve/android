@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by huangbinglong on 15/6/12.
  */
-public class OrderBuyManagerInfo implements Serializable{
+public class OrderBuyManagerInfo implements Serializable {
 
     /**
      * 余额
@@ -47,50 +47,8 @@ public class OrderBuyManagerInfo implements Serializable{
         this.recharegeGroups = recharegeGroups;
     }
 
-    /**
-     * 订单分类
-     */
-    public static class OrderGroup implements Serializable {
 
-        private long nums;
-        private String state;
-        private String statename;
-
-        public OrderGroup() {
-        }
-
-        public OrderGroup(long nums, String state, String statename) {
-            this.nums = nums;
-            this.state = state;
-            this.statename = statename;
-        }
-
-        public long getNums() {
-            return nums;
-        }
-
-        public void setNums(long nums) {
-            this.nums = nums;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getStatename() {
-            return statename;
-        }
-
-        public void setStatename(String statename) {
-            this.statename = statename;
-        }
-    }
-
-    public static class RechargeGroup implements Serializable{
+    public static class RechargeGroup implements Serializable {
 
         private long nums;
         private String state;

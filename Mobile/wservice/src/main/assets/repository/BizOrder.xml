@@ -145,4 +145,26 @@
         <type>yun9</type>
     </repository>
 
+    <!--获取订单分组服务-->
+    <repository>
+        <name>QueryOrderGroupsByUserId</name>
+        <action>com.yun9.ws.biz.service.QueryOrderGroupsByUserIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrderGroup</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!--根据订单状态查询订单服务-->
+    <repository>
+        <name>QueryOrdersByState</name>
+        <action>com.yun9.ws.biz.service.QueryOrdersByStateService</action>
+        <output>
+            <classname>com.yun9.wservice.model.OrderInfo</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>
