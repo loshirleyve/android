@@ -122,6 +122,12 @@ public class PaymentOrderChoicePayWayActivity extends JupiterFragmentActivity {
             }else {
                 sutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
             }
+            if (command.getPayMode() != null
+                    && command.getPayMode().getId().equals(payMode.getId())){
+                sutitleLayout.select(true);
+            } else {
+                sutitleLayout.select(false);
+            }
             return convertView;
         }
     };

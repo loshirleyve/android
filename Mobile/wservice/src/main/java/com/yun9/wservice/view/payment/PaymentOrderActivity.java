@@ -258,8 +258,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 HistoryPayInfo historyPayInfo = (HistoryPayInfo) response.getPayload();
                 if (PayModeType.TYPE_ONLINE.equals(historyPayInfo.getPaymodeType())
-                        && historyPayInfo.getUnPayamount() != null
-                        && historyPayInfo.getUnPayamount() > 0.0){
+                        && unPayAmount > 0.0){
                     PaymentByOnlineCommand onlineCommand = new PaymentByOnlineCommand();
                     onlineCommand.setPayRegisterId(historyPayInfo.getId());
                     onlineCommand.setSource(command.getSource());
