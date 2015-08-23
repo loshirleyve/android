@@ -72,4 +72,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询用户余额 -->
+    <repository>
+        <name>QueryBalanceByOwnerService</name>
+        <action>com.yun9.ws.biz.member.service.QueryBalanceByOwnerService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Balance</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

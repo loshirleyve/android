@@ -21,6 +21,7 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.model.Balance;
 import com.yun9.wservice.model.OrderBuyManagerInfo;
 import com.yun9.wservice.model.OrderGroup;
 import com.yun9.wservice.view.payment.RechargeRecordListActivity;
@@ -44,8 +45,6 @@ public class MyWalletActivity extends JupiterFragmentActivity {
     private ResourceFactory resourceFactory;
     @BeanInject
     private SessionManager sessionManager;
-
-    private OrderBuyManagerInfo buyManagerInfo;
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, MyWalletActivity.class);
@@ -86,18 +85,18 @@ public class MyWalletActivity extends JupiterFragmentActivity {
 
     private void reLoadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
-        Resource resource = resourceFactory.create("QueryBuyManagerInfoByUserIdService");
-        resource.param("userid", sessionManager.getUser().getId());
+        Resource resource = resourceFactory.create("QueryBalanceByOwnerService");
+        resource.param("owner", sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                buyManagerInfo = (OrderBuyManagerInfo) response.getPayload();
-                orderRechargeWidget.buildWithData(buyManagerInfo.getBalance());
+                Balance balance = (Balance) response.getPayload();
+                orderRechargeWidget.buildWithData(balance.getBalance());
             }
 
             @Override
             public void onFailure(Response response) {
-                buyManagerInfo = null;
+                showToast(response.getCause());
             }
 
             @Override
@@ -124,10 +123,6 @@ public class MyWalletActivity extends JupiterFragmentActivity {
     private JupiterAdapter rechargeAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            if (buyManagerInfo != null
-                    && buyManagerInfo.getRecharegeGroups() != null) {
-                return buyManagerInfo.getRecharegeGroups().size();
-            }
             return 0;
         }
 
@@ -144,9 +139,7 @@ public class MyWalletActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             JupiterRowStyleTitleLayout row;
-            final OrderBuyManagerInfo.RechargeGroup rechargeGroup = buyManagerInfo
-                    .getRecharegeGroups()
-                    .get(position);
+            final OrderBuyManagerInfo.RechargeGroup rechargeGroup = new OrderBuyManagerInfo.RechargeGroup();
             if (convertView == null) {
                 row = new JupiterRowStyleTitleLayout(MyWalletActivity.this);
                 row.getMainIV().setVisibility(View.GONE);
@@ -168,52 +161,4 @@ public class MyWalletActivity extends JupiterFragmentActivity {
             return convertView;
         }
     };
-
-
-    private JupiterAdapter orderAdapter = new JupiterAdapter() {
-        @Override
-        public int getCount() {
-            if (buyManagerInfo != null
-                    && buyManagerInfo.getOrderGroups() != null) {
-                return buyManagerInfo.getOrderGroups().size();
-            }
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            JupiterRowStyleTitleLayout row;
-            final OrderGroup orderGroup = buyManagerInfo.getOrderGroups().get(position);
-            if (convertView == null) {
-                row = new JupiterRowStyleTitleLayout(MyWalletActivity.this);
-                row.getMainIV().setVisibility(View.GONE);
-                row.getHotNitoceTV().setVisibility(View.VISIBLE);
-                row.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
-                row.getHotNitoceTV().setBackgroundColor(getResources().getColor(R.color.transparent));
-                row.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        openOrderListActivity(orderGroup);
-                    }
-                });
-                convertView = row;
-            } else {
-                row = (JupiterRowStyleTitleLayout) convertView;
-            }
-            row.getHotNitoceTV().setText(orderGroup.getNums() + "");
-            row.getTitleTV().setText(orderGroup.getStatename());
-            return convertView;
-        }
-    };
-
 }
