@@ -94,4 +94,15 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询充值分类 -->
+    <repository>
+        <name>QueryRechargeGroupsByUserIdService</name>
+        <action>com.yun9.ws.biz.service.QueryRechargeGroupsByUserIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.RechargeGroup</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

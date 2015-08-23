@@ -31,7 +31,10 @@ import com.yun9.wservice.enums.RechargeNo;
 import com.yun9.wservice.manager.AlipayManager;
 import com.yun9.wservice.model.AddRechargeResult;
 import com.yun9.wservice.model.Payinfo;
+import com.yun9.wservice.model.RechargeGroup;
 import com.yun9.wservice.model.RechargeType;
+
+import java.util.List;
 
 /**
  * 充值界面

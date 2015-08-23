@@ -184,7 +184,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
         resource.param("source",paymentByOnlineCommand.getSource());
         resource.param("sourceid",paymentByOnlineCommand.getSourceid());
         resource.param("type","lock");
-        resource.param("payTypeCode","balance");
+        resource.param("payTypeCode",payMode.getCode());
         resource.param("amount",paymentByOnlineCommand.getAmount());
         resource.param("createby",sessionManager.getUser().getId());
         resource.param("collectuserid",paymentByOnlineCommand.getCreateBy());

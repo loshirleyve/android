@@ -22,9 +22,11 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Balance;
-import com.yun9.wservice.model.OrderBuyManagerInfo;
 import com.yun9.wservice.model.OrderGroup;
+import com.yun9.wservice.model.RechargeGroup;
 import com.yun9.wservice.view.payment.RechargeRecordListActivity;
+
+import java.util.List;
 
 /**
  * 我的钱包
@@ -45,6 +47,8 @@ public class MyWalletActivity extends JupiterFragmentActivity {
     private ResourceFactory resourceFactory;
     @BeanInject
     private SessionManager sessionManager;
+
+    private List<RechargeGroup> rechargeGroupList;
 
     public static void start(Activity activity) {
         Intent intent = new Intent(activity, MyWalletActivity.class);
@@ -84,6 +88,7 @@ public class MyWalletActivity extends JupiterFragmentActivity {
     }
 
     private void reLoadData() {
+        loadRechargeRecord();
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryBalanceByOwnerService");
         resource.param("owner", sessionManager.getUser().getId());
@@ -92,6 +97,29 @@ public class MyWalletActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 Balance balance = (Balance) response.getPayload();
                 orderRechargeWidget.buildWithData(balance.getBalance());
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                registerDialog.dismiss();
+            }
+        });
+    }
+
+    private void loadRechargeRecord() {
+        final ProgressDialog registerDialog =
+                ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
+        Resource resource = resourceFactory.create("QueryRechargeGroupsByUserIdService");
+        resource.param("userid", sessionManager.getUser().getId());
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                rechargeGroupList = (List<RechargeGroup>) response.getPayload();
             }
 
             @Override
@@ -116,13 +144,16 @@ public class MyWalletActivity extends JupiterFragmentActivity {
         OrderListActivity.start(this, orderGroup.getState(), orderGroup.getStatename());
     }
 
-    private void openRechargeHistoryActivity(OrderBuyManagerInfo.RechargeGroup rechargeGroup) {
+    private void openRechargeHistoryActivity(RechargeGroup rechargeGroup) {
         RechargeRecordListActivity.start(this, rechargeGroup.getState(), rechargeGroup.getStatename());
     }
 
     private JupiterAdapter rechargeAdapter = new JupiterAdapter() {
         @Override
         public int getCount() {
+            if (rechargeGroupList != null){
+                return rechargeGroupList.size();
+            }
             return 0;
         }
 
@@ -139,7 +170,7 @@ public class MyWalletActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             JupiterRowStyleTitleLayout row;
-            final OrderBuyManagerInfo.RechargeGroup rechargeGroup = new OrderBuyManagerInfo.RechargeGroup();
+            final RechargeGroup rechargeGroup = rechargeGroupList.get(position);
             if (convertView == null) {
                 row = new JupiterRowStyleTitleLayout(MyWalletActivity.this);
                 row.getMainIV().setVisibility(View.GONE);

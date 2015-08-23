@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -25,6 +26,7 @@ import com.yun9.wservice.enums.PayRegisterCollectState;
 import com.yun9.wservice.model.HistoryPayInfo;
 import com.yun9.wservice.model.PayRegisterCollect;
 import com.yun9.wservice.view.common.LeftRightTextWidget;
+import com.yun9.wservice.view.order.OrderDetailActivity;
 
 /**
  * Created by huangbinglong on 7/3/15.
@@ -63,6 +65,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         command = (PaymentResultCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
         if (command.isPaymentDone()){
+            AppCache.getInstance().put(OrderDetailActivity.ORDER_DETAIL_NEES_REFRESH,true);
             setResult(JupiterCommand.RESULT_CODE_OK);
         }
         buildView();
