@@ -65,7 +65,6 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         if (command.isPaymentDone()){
             setResult(JupiterCommand.RESULT_CODE_OK);
         }
-        setResult(JupiterCommand.RESULT_CODE_OK);
         buildView();
         loadData();
     }
@@ -83,7 +82,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayRegisterBySourceService");
         resource.param("source",command.getSource());
-        resource.param("sourceValue",command.getSourceId());
+        resource.param("sourceid",command.getSourceId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {

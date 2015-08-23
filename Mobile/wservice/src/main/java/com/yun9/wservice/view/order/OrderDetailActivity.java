@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.command.JupiterCommand;
@@ -44,6 +45,8 @@ import com.yun9.wservice.view.payment.PaymentResultCommand;
  * Created by huangbinglong on 15/6/15.
  */
 public class OrderDetailActivity extends JupiterFragmentActivity{
+
+    public static final String ORDER_DETAIL_NEES_REFRESH = "ORDER_DETAIL_NEES_REFRESH";
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -104,6 +107,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == JupiterCommand.RESULT_CODE_OK){
             reloadData();
+        } else if (AppCache.getInstance().getAsBoolean(ORDER_DETAIL_NEES_REFRESH)){
+            reloadData();
         }
     }
 
@@ -129,6 +134,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData() {
+        AppCache.getInstance().put(ORDER_DETAIL_NEES_REFRESH,false);
         reloadDataDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
         resource.param("orderid", orderId);
@@ -199,7 +205,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                         command.setSourceValue(order.getOrder().getOrderid());
                         command.setInstId(order.getOrder().getInstid());
                         PaymentOrderActivity.start(OrderDetailActivity.this, command);
-                    } else if (State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())){
+                    } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())){
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
                         command.setSourceValue(order.getOrder().getOrderid());

@@ -83,7 +83,6 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                 .getSerializableExtra(PaymentByOnlineCommand.PARAM_COMMAND);
         buildView();
         loadData();
-        setResult(JupiterCommand.RESULT_CODE_OK);
     }
 
     private void loadData() {
@@ -121,7 +120,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
         listView.setAdapter(adapter);
         paymentAmount.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentAmount.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
-        paymentAmount.getTitleTV().setText(paymentByOnlineCommand.getAmount()+"元");
+        paymentAmount.getHotNitoceTV().setText(paymentByOnlineCommand.getAmount()+"元");
     }
 
     @Override

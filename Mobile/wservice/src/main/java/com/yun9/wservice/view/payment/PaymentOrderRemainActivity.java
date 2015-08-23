@@ -41,9 +41,6 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.go_to_pay_ib)
     private ImageButton payIb;
 
-    @ViewInject(id=R.id.total_amount)
-    private TextView totalAmountTv;
-
     @ViewInject(id=R.id.remain_balance)
     private TextView remainBalance;
 
@@ -74,7 +71,6 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
         command = (PaymentOrderCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
         buildView();
         loadData();
-        setResult(JupiterCommand.RESULT_CODE_OK);
     }
 
     private void buildView() {
@@ -97,7 +93,7 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayRegisterBySourceService");
         resource.param("source", command.getSource());
-        resource.param("sourceValue", command.getSourceValue());
+        resource.param("sourceid", command.getSourceValue());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -124,7 +120,6 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
         paymentPayWay.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
         paymentPayWay.getHotNitoceTV().setText(payInfo.getPaymodeName());
-        totalAmountTv.setText(payInfo.getAmount() + "元");
         remainBalance.setText(payInfo.getUnPayamount() + "元");
         if (payInfo.getPayRegisterCollects() != null){
             itemsLl.addView(createItem("支付总额",payInfo.getAmount()+"元"));
@@ -159,8 +154,8 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
             onlineCommand.setInstId(command.getInstId());
             onlineCommand.setAmount(payInfo.getUnPayamount());
             onlineCommand.setCreateBy(payInfo.getCreateby());
-            PaymentByOnlineActivity.start(PaymentOrderRemainActivity.this, onlineCommand);
             PaymentOrderRemainActivity.this.finish();
+            PaymentByOnlineActivity.start(PaymentOrderRemainActivity.this, onlineCommand);
         } else {
             PaymentResultCommand resultCommand = new PaymentResultCommand();
             resultCommand.setInstId(command.getInstId());
@@ -168,6 +163,7 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
             resultCommand.setSourceId(command.getSourceValue());
             resultCommand.setPaymentDone(true);
             resultCommand.setCreateBy(payInfo.getCreateby());
+            PaymentOrderRemainActivity.this.finish();
             PaymentResultActivity.start(PaymentOrderRemainActivity.this,resultCommand);
         }
     }

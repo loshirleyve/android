@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.yun9.jupiter.cache.AppCache;
 import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
@@ -28,6 +29,7 @@ import com.yun9.wservice.model.PayMode;
 import com.yun9.wservice.model.Payinfo;
 import com.yun9.wservice.view.common.InputTextActivity;
 import com.yun9.wservice.view.common.InputTextCommand;
+import com.yun9.wservice.view.order.OrderDetailActivity;
 
 /**
  * 立即支付订单界面
@@ -276,8 +278,8 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     onlineCommand.setInstId(command.getInstId());
                     onlineCommand.setAmount(historyPayInfo.getUnPayamount());
                     onlineCommand.setCreateBy(payinfo.getCreateBy());
-                    PaymentByOnlineActivity.start(PaymentOrderActivity.this, onlineCommand);
                     PaymentOrderActivity.this.finish();
+                    PaymentByOnlineActivity.start(PaymentOrderActivity.this, onlineCommand);
                 } else {
                     PaymentResultCommand resultCommand = new PaymentResultCommand();
                     resultCommand.setInstId(command.getInstId());
@@ -285,6 +287,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     resultCommand.setSourceId(command.getSourceValue());
                     resultCommand.setPaymentDone(true);
                     resultCommand.setCreateBy(payinfo.getCreateBy());
+                    PaymentOrderActivity.this.finish();
                     PaymentResultActivity.start(PaymentOrderActivity.this,resultCommand);
                 }
             }
@@ -296,6 +299,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
 
             @Override
             public void onFinally(Response response) {
+                AppCache.getInstance().put(OrderDetailActivity.ORDER_DETAIL_NEES_REFRESH,true);
                 registerDialog.dismiss();
             }
         });
