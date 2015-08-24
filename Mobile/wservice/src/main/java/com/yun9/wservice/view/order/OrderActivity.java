@@ -130,6 +130,7 @@ public class OrderActivity extends JupiterFragmentActivity {
     private void refreshOrderGroup() {
         Resource resource = resourceFactory.create("QueryOrderGroupsByUserId");
         resource.param("userid", sessionManager.getUser().getId());
+        resource.param("instid", sessionManager.getInst().getId());
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -292,7 +293,7 @@ public class OrderActivity extends JupiterFragmentActivity {
                 widgetOrderListItem.getOrderInstname().setText(inst.getInstname());
 
             widgetOrderListItem.getOrderDesc().setText(orderInfo.getIntroduce());
-            widgetOrderListItem.getOrderPrice().setText(orderInfo.getOrderamount() + "元");
+            widgetOrderListItem.getOrderPrice().setText(orderInfo.getFactamount() + "元");
             SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
             String date = format.format(new Date(orderInfo.getCreatedate()));
             widgetOrderListItem.getOrderDate().setText(date);
