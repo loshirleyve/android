@@ -54,7 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/jupiter_ne_version"
                 android:textColor="@color/black"
                 android:visibility="gone" />
 
