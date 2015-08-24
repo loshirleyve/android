@@ -14,6 +14,7 @@ public class InputTextCommand extends JupiterCommand {
     private String value;
     private Double minValue;
     private Double maxValue;
+    private String tip;
     private Map<String,String> regularMap;
 
     public String getValue() {
@@ -66,6 +67,15 @@ public class InputTextCommand extends JupiterCommand {
 
     public InputTextCommand setTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public String getTip() {
+        return tip;
+    }
+
+    public InputTextCommand setTip(String tip) {
+        this.tip = tip;
         return this;
     }
 }

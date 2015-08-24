@@ -65,6 +65,10 @@ public class InputTextActivity extends JupiterFragmentActivity{
             editText.setText(command.getValue());
         }
 
+        if (AssertValue.isNotNullAndNotEmpty(command.getTip())){
+            editText.setHint(command.getTip());
+        }
+
 
         confirmLl.setOnClickListener(new View.OnClickListener() {
             @Override
