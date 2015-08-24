@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <repositorys>
-    <!-- 查询机构客户信息 -->
+    <!-- 查询机构客户信息 --><!--
     <repository>
         <name>QueryInstClients</name>
         <action>com.yun9.ws.biz.service.QueryInstClientsService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Client</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+-->
+    <repository>
+        <name>QueryClientsByAdviser</name>
+        <action>com.yun9.ws.biz.service.QueryClientsByAdviserSerivce</action>
         <output>
             <classname>com.yun9.wservice.model.Client</classname>
             <type>list</type>
