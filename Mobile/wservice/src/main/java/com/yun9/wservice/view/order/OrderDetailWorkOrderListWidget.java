@@ -40,7 +40,7 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
 
     public void buildWithData(Order order) {
         this.order = order;
-        workOrders = order.getOrderWorkorders();
+        //workOrders = order.getOrderWorkorders();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }

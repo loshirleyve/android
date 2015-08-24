@@ -23,6 +23,7 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -44,35 +45,35 @@ import com.yun9.wservice.view.payment.PaymentResultCommand;
 /**
  * Created by huangbinglong on 15/6/15.
  */
-public class OrderDetailActivity extends JupiterFragmentActivity{
+public class OrderDetailActivity extends JupiterFragmentActivity {
 
     public static final String ORDER_DETAIL_NEES_REFRESH = "ORDER_DETAIL_NEES_REFRESH";
 
-    @ViewInject(id=R.id.title_bar)
+    @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.order_detail_base_widget)
+    @ViewInject(id = R.id.order_detail_base_widget)
     private OrderDetailBaseWidget orderDetailBaseWidget;
 
-    @ViewInject(id=R.id.order_detail_process_widget)
+    @ViewInject(id = R.id.order_detail_process_widget)
     private OrderDetailProcessWidget orderDetailProcessWidget;
 
-    @ViewInject(id=R.id.order_detail_payinfo_widget)
+    @ViewInject(id = R.id.order_detail_payinfo_widget)
     private OrderDetailPayinfoWidget orderDetailPayinfoWidget;
 
-    @ViewInject(id=R.id.order_detail_attach_widget)
+    @ViewInject(id = R.id.order_detail_attach_widget)
     private OrderDetailAttachWidget orderDetailAttachWidget;
 
-    @ViewInject(id=R.id.order_detail_advisor_widget)
+    @ViewInject(id = R.id.order_detail_advisor_widget)
     private OrderDetailAdvisorWidget orderDetailAdvisorWidget;
 
-    @ViewInject(id=R.id.order_detail_provider_widget)
+    @ViewInject(id = R.id.order_detail_provider_widget)
     private OrderDetailProviderWidget orderDetailProviderWidget;
 
-    @ViewInject(id=R.id.order_detail_work_order_list_widget)
-    private OrderDetailWorkOrderListWidget orderDetailWorkOrderListWidget;
+    @ViewInject(id = R.id.order_detail_work_order_list_widget)
+    private JupiterListView orderDetailWorkOrderListWidget;
 
-    @ViewInject(id=R.id.main)
+    @ViewInject(id = R.id.main)
     private RelativeLayout mainRl;
 
     @BeanInject
@@ -86,8 +87,8 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
     private ProgressDialog reloadDataDialog;
 
-    public static void start(Context context,String orderId) {
-        Intent intent = new Intent(context,OrderDetailActivity.class);
+    public static void start(Context context, String orderId) {
+        Intent intent = new Intent(context, OrderDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("orderid", orderId);
         intent.putExtras(bundle);
@@ -105,9 +106,9 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == JupiterCommand.RESULT_CODE_OK){
+        if (resultCode == JupiterCommand.RESULT_CODE_OK) {
             reloadData();
-        } else if (AppCache.getInstance().getAsBoolean(ORDER_DETAIL_NEES_REFRESH)){
+        } else if (AppCache.getInstance().getAsBoolean(ORDER_DETAIL_NEES_REFRESH)) {
             reloadData();
         }
     }
@@ -134,7 +135,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData() {
-        AppCache.getInstance().put(ORDER_DETAIL_NEES_REFRESH,false);
+        AppCache.getInstance().put(ORDER_DETAIL_NEES_REFRESH, false);
         reloadDataDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryOrderInfoService");
         resource.param("orderid", orderId);
@@ -158,32 +159,32 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
     }
 
     private void reloadData(final Order order) {
-        this.order =order;
+        this.order = order;
         if (!AssertValue.isNotNull(order.getOrder())
-                        || !State.Order.COMPLETE.equals(order.getOrder().getState())){
+                || !State.Order.COMPLETE.equals(order.getOrder().getState())) {
             titleBarLayout.getTitleRight().setVisibility(View.GONE);
         }
         if (order.getOrderproducts() == null
-                || order.getOrderproducts().size() == 0){
+                || order.getOrderproducts().size() == 0) {
             orderDetailBaseWidget.setVisibility(View.GONE);
         } else {
             orderDetailBaseWidget.builWithData(order);
         }
         if (order.getOrderLogs() == null
-                || order.getOrderLogs().size() == 0){
+                || order.getOrderLogs().size() == 0) {
             orderDetailProcessWidget.setVisibility(View.GONE);
         } else {
             orderDetailProcessWidget.buildWithData(order);
         }
         if (AssertValue.isNotNull(order.getOrder())
-                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())){
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())) {
             orderDetailPayinfoWidget.buildWithData(order);
 
             orderDetailPayinfoWidget.getSutitleLayout()
                     .getTitleTV().setText(CtrlCodeCache.getInstance()
-            .getCtrlcodeName(CtrlCodeDefNo.ORDER_PAY_STATE,order.getOrder().getPaystate()));
+                    .getCtrlcodeName(CtrlCodeDefNo.ORDER_PAY_STATE, order.getOrder().getPaystate()));
 
-            if (State.OrderPayState.COMPLETE.equals(order.getOrder().getPaystate())){
+            if (State.OrderPayState.COMPLETE.equals(order.getOrder().getPaystate())) {
                 orderDetailPayinfoWidget.getSutitleLayout()
                         .getHotNitoceTV().setTextColor(getResources().getColor(R.color.purple_font));
                 orderDetailPayinfoWidget.getSutitleLayout()
@@ -192,7 +193,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                         .getHotNitoceTV().getPaint().setFakeBoldText(false);
                 orderDetailPayinfoWidget.getSutitleLayout()
                         .getTitleTV().setTextColor(getResources().getColor(R.color.black));
-            } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())){
+            } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())) {
                 orderDetailPayinfoWidget.getSutitleLayout().getHotNitoceTV().setText("继续支付");
             }
 
@@ -205,16 +206,16 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
                         command.setSourceValue(order.getOrder().getOrderid());
                         command.setInstId(order.getOrder().getInstid());
                         PaymentOrderActivity.start(OrderDetailActivity.this, command);
-                    } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())){
+                    } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())) {
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
                         command.setSourceValue(order.getOrder().getOrderid());
                         command.setInstId(order.getOrder().getInstid());
                         PaymentOrderRemainActivity.start(OrderDetailActivity.this, command);
-                    }else {
+                    } else {
                         PaymentResultActivity.start(OrderDetailActivity.this,
                                 new PaymentResultCommand(
-                                        SourceType.TYPE_ORDER,orderId
+                                        SourceType.TYPE_ORDER, orderId
                                 ));
                     }
                 }
@@ -223,13 +224,13 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             orderDetailPayinfoWidget.setVisibility(View.GONE);
         }
         if (AssertValue.isNotNull(order.getOrder())
-                && order.getOrder().getCommitdoc() > 0){
+                && order.getOrder().getCommitdoc() > 0) {
             orderDetailAttachWidget.buildWithData(order);
         } else {
             orderDetailAttachWidget.setVisibility(View.GONE);
         }
         if (AssertValue.isNotNull(order.getOrder())
-                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getSalesmanid())){
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getSalesmanid())) {
             orderDetailAdvisorWidget.buildWitdhData(order);
             orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
             orderDetailAdvisorWidget.getCallUsIv().setOnClickListener(onCallUsClick);
@@ -240,16 +241,16 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         }
 
         if (AssertValue.isNotNull(order.getOrder())
-                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getInstid())){
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getInstid())) {
             orderDetailProviderWidget.buildWitdhData(order);
         } else {
             orderDetailProviderWidget.setVisibility(View.GONE);
         }
-        if (order.getOrderWorkorders() == null
-                || order.getOrderWorkorders().size() == 0){
+        if (order.getWorkorders() == null
+                || order.getWorkorders().size() == 0) {
             orderDetailWorkOrderListWidget.setVisibility(View.GONE);
         } else {
-            orderDetailWorkOrderListWidget.buildWithData(order);
+            orderDetailWorkOrderListWidget.setAdapter(new OrderListSubItemAdapter(order.getWorkorders(), OrderDetailActivity.this));
         }
         mainRl.setVisibility(View.VISIBLE);
         reloadDataDialog.dismiss();
@@ -261,7 +262,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
             MsgCardDetailCommand msgCardDetailCommand =
                     new MsgCardDetailCommand().setOrderId(orderId);
             CacheUser user = UserCache.getInstance().getUser(order.getOrder().getSalesmanid());
-            if (user != null){
+            if (user != null) {
                 msgCardDetailCommand.setTitle(user.getName());
             }
             MsgCardDetailActivity.start(OrderDetailActivity.this,
@@ -282,17 +283,17 @@ public class OrderDetailActivity extends JupiterFragmentActivity{
         public void onClick(View v) {
             CacheUser user = UserCache.getInstance().getUser(order.getOrder().getSalesmanid());
             if (user == null
-                    || AssertValue.isNotNullAndNotEmpty(user.getFirstPhone())){
+                    || AssertValue.isNotNullAndNotEmpty(user.getFirstPhone())) {
                 showToast("无法获取用户电话号码");
                 return;
             }
             final String phone = user.getFirstPhone();
-            if (!AssertValue.isNotNullAndNotEmpty(phone)){
+            if (!AssertValue.isNotNullAndNotEmpty(phone)) {
                 Toast.makeText(OrderDetailActivity.this, "无法获取用户电话号码", Toast.LENGTH_SHORT).show();
                 return;
             }
             AlertDialog.Builder builder = new AlertDialog.Builder(OrderDetailActivity.this);
-            builder.setMessage("打电话给："+phone);
+            builder.setMessage("打电话给：" + phone);
             builder.setTitle("提示");
             builder.setPositiveButton("确认", new android.content.DialogInterface.OnClickListener() {
                 @Override

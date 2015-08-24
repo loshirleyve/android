@@ -1,6 +1,7 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -130,6 +131,7 @@ public class OrderActivity extends JupiterFragmentActivity {
     private void refreshOrderGroup() {
         Resource resource = resourceFactory.create("QueryOrderGroupsByUserId");
         resource.param("userid", sessionManager.getUser().getId());
+        resource.param("instid", sessionManager.getInst().getId());
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -292,11 +294,11 @@ public class OrderActivity extends JupiterFragmentActivity {
                 widgetOrderListItem.getOrderInstname().setText(inst.getInstname());
 
             widgetOrderListItem.getOrderDesc().setText(orderInfo.getIntroduce());
-            widgetOrderListItem.getOrderPrice().setText(orderInfo.getOrderamount() + "元");
+            widgetOrderListItem.getOrderPrice().setText(orderInfo.getFactamount() + "元");
             SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
             String date = format.format(new Date(orderInfo.getCreatedate()));
             widgetOrderListItem.getOrderDate().setText(date);
-            widgetOrderListItem.getOrderWork().setAdapter(new Subadapter(orderInfo.getWorkorders()));
+            widgetOrderListItem.getOrderWork().setAdapter(new OrderListSubItemAdapter(orderInfo.getWorkorders(),OrderActivity.this));
             widgetOrderListItem.setTag(orderInfo.getOrderid());
             widgetOrderListItem.setOnClickListener(onOrderItemClickListener);
             return widgetOrderListItem;
@@ -313,50 +315,4 @@ public class OrderActivity extends JupiterFragmentActivity {
     };
 
 
-
-    private class Subadapter extends JupiterAdapter {
-
-        private List<WorkorderDto> workorderDtos;
-
-        public Subadapter(List<WorkorderDto> workorderDtos) {
-            this.workorderDtos = workorderDtos;
-        }
-
-        @Override
-        public int getCount() {
-            if (AssertValue.isNotNullAndNotEmpty(workorderDtos)) {
-                return workorderDtos.size();
-            }
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            WidgetOrderListSubItem widgetOrderListSubItem = null;
-            WorkorderDto workorderDto =workorderDtos.get(position);
-            if (convertView == null) {
-                widgetOrderListSubItem = new WidgetOrderListSubItem(OrderActivity.this);
-                convertView = widgetOrderListSubItem;
-            } else {
-                widgetOrderListSubItem = (WidgetOrderListSubItem) convertView;
-            }
-
-            widgetOrderListSubItem.getWorkorderitemdescr().setText(workorderDto.getDescr());
-            widgetOrderListSubItem.getWorkorderitemname().setText(workorderDto.getInserviceName());
-            widgetOrderListSubItem.getWorkorderitemnums().setText(workorderDto.getCompleteNum() + "/" +workorderDto.getAllNum());
-            return widgetOrderListSubItem;
-        }
-    }
-
-    ;
 }
