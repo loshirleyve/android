@@ -146,6 +146,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                 if (inputTextCommand == null) {
                     inputTextCommand = new InputTextCommand();
                     inputTextCommand.setTitle("请输入金额");
+                    inputTextCommand.setTip("请输入金额");
                     inputTextCommand.addRegular(".+", "请输入金额");
                     inputTextCommand
                             .addRegular("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|" +

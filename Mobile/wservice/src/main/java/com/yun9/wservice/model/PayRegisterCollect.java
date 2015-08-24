@@ -21,6 +21,7 @@ public class PayRegisterCollect implements Serializable {
     private String createby;
     private Long createdate;
     private String remark;
+    private String paymodetype;
 
     public String getPage() {
         return page;
@@ -145,6 +146,15 @@ public class PayRegisterCollect implements Serializable {
 
     public PayRegisterCollect setRemark(String remark) {
         this.remark = remark;
+        return this;
+    }
+
+    public String getPaymodetype() {
+        return paymodetype;
+    }
+
+    public PayRegisterCollect setPaymodetype(String paymodetype) {
+        this.paymodetype = paymodetype;
         return this;
     }
 }
