@@ -214,7 +214,7 @@ public class OrderActivity extends JupiterFragmentActivity {
 
     private void addCategory(OrderGroup orderGroup) {
         RadioButton radioButton = (RadioButton) this.getLayoutInflater().inflate(R.layout.radio_button_item, null);
-        radioButton.setText(orderGroup.getStatename());
+        radioButton.setText(orderGroup.getStatename()+"("+orderGroup.getNums()+")");
         radioButton.setTag(orderGroup);
         radioButton.setOnClickListener(onCategoryClickListener);
         segmentedGroup.addView(radioButton);
@@ -350,8 +350,9 @@ public class OrderActivity extends JupiterFragmentActivity {
             } else {
                 widgetOrderListSubItem = (WidgetOrderListSubItem) convertView;
             }
-            widgetOrderListSubItem.getWorkorderitemname().setText(workorderDto.getInserviceName());
+
             widgetOrderListSubItem.getWorkorderitemdescr().setText(workorderDto.getDescr());
+            widgetOrderListSubItem.getWorkorderitemname().setText(workorderDto.getInserviceName());
             widgetOrderListSubItem.getWorkorderitemnums().setText(workorderDto.getCompleteNum() + "/" +workorderDto.getAllNum());
             return widgetOrderListSubItem;
         }
