@@ -28,10 +28,7 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.PayModeTypeCode;
-import com.yun9.wservice.enums.RechargeNo;
 import com.yun9.wservice.manager.AlipayManager;
-import com.yun9.wservice.model.AddRechargeResult;
-import com.yun9.wservice.model.PayMode;
 import com.yun9.wservice.model.PayModeType;
 import com.yun9.wservice.model.PayRegisterCollect;
 
@@ -229,7 +226,6 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                         AlipayManager.PayResult payResult = new AlipayManager
                                 .PayResult((String) msg.obj);
                         // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
-                        String resultInfo = payResult.getResult();
                         String memo = payResult.getMemo();
                         String resultStatus = payResult.getResultStatus();
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
