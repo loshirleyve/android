@@ -2,6 +2,8 @@ package com.yun9.wservice.view.common;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
@@ -15,6 +17,10 @@ public class LeftRightTextWidget extends JupiterRelativeLayout{
     private TextView leftTv;
 
     private TextView rightTv;
+
+    private RelativeLayout bottomOperatorRl;
+
+    private ImageButton rightBtn;
 
     public LeftRightTextWidget(Context context) {
         super(context);
@@ -37,6 +43,8 @@ public class LeftRightTextWidget extends JupiterRelativeLayout{
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         leftTv = (TextView) this.findViewById(R.id.left_tv);
         rightTv = (TextView) this.findViewById(R.id.right_tv);
+        bottomOperatorRl = (RelativeLayout) this.findViewById(R.id.bottom_operator_rl);
+        rightBtn = (ImageButton) this.findViewById(R.id.right_btn);
     }
 
     public TextView getLeftTv() {
@@ -55,5 +63,13 @@ public class LeftRightTextWidget extends JupiterRelativeLayout{
     public LeftRightTextWidget setRightTv(TextView rightTv) {
         this.rightTv = rightTv;
         return this;
+    }
+
+    public RelativeLayout getBottomOperatorRl() {
+        return bottomOperatorRl;
+    }
+
+    public ImageButton getRightBtn() {
+        return rightBtn;
     }
 }

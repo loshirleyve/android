@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -15,6 +18,7 @@ import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
+import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -22,7 +26,9 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.PayModeType;
+import com.yun9.wservice.enums.PayModeTypeCode;
 import com.yun9.wservice.enums.PayRegisterCollectState;
+import com.yun9.wservice.manager.AlipayManager;
 import com.yun9.wservice.model.HistoryPayInfo;
 import com.yun9.wservice.model.PayRegisterCollect;
 import com.yun9.wservice.view.common.LeftRightTextWidget;
@@ -31,6 +37,10 @@ import com.yun9.wservice.view.common.LeftRightTextWidget;
  * Created by huangbinglong on 8/20/15.
  */
 public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
+
+    public static final String CODE_RECHARGE = "0001";
+
+    public static final String CODE_PAY = "0002";
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -55,6 +65,9 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
 
     @BeanInject
     private SessionManager sessionManager;
+
+    @BeanInject
+    private AlipayManager alipayManager;
 
     private HistoryPayInfo payInfo;
 
@@ -131,27 +144,42 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
         paymentPayWay.getHotNitoceTV().setText(payInfo.getPaymodeName());
         remainBalance.setText(payInfo.getUnPayamount() + "元");
         if (payInfo.getPayRegisterCollects() != null){
-            itemsLl.addView(createItem("支付总额", payInfo.getAmount()+"元"));
-            String name = null;
-            String amount  = null;
-            Double sum = 0.0;
+            itemsLl.addView(createItem(new PayRegisterCollect().setPtname("支付总额").setAmount(payInfo.getAmount())));
             for (PayRegisterCollect collect : payInfo.getPayRegisterCollects()){
-                name = "-" +collect.getPtname();
-                if (PayRegisterCollectState.LOCK.equals(collect.getState())){
-                    name += "(等待确认)";
-                }
-                sum += collect.getAmount();
-                amount = collect.getAmount()+"元";
-                itemsLl.addView(createItem(name,amount));
+                itemsLl.addView(createItem(collect));
             }
         }
     }
 
-    private View createItem(String name,String amount) {
+    private View createItem(final PayRegisterCollect collect) {
+        String name = "-" +collect.getPtname();
+        String amount  = collect.getAmount()+"元";
+        if (PayRegisterCollectState.LOCK.equals(collect.getState())){
+            name += "(等待确认)";
+        }
         LeftRightTextWidget widget = new LeftRightTextWidget(this);
         widget.getLeftTv().setText(name);
         widget.getRightTv().setText(amount);
+        if (PayModeType.TYPE_ONLINE.equals(collect.getPaymodetype())
+                && PayRegisterCollectState.LOCK.equals(collect.getState())){
+            widget.getBottomOperatorRl().setVisibility(View.VISIBLE);
+            widget.getRightBtn().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    payAgain(collect);
+                }
+            });
+        }
         return widget;
+    }
+
+    private void payAgain(PayRegisterCollect collect) {
+        if (PayModeTypeCode.CODE_WX.equals(collect.getPtcode())) {
+            showToast("功能正在研发...");
+            return;
+        }
+        payByAlipay(collect);
+
     }
 
     private void payNow() {
@@ -173,8 +201,65 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
             resultCommand.setPaymentDone(true);
             resultCommand.setCreateBy(payInfo.getCreateby());
             PaymentOrderRemainActivity.this.finish();
-            PaymentResultActivity.start(PaymentOrderRemainActivity.this,resultCommand);
+            PaymentResultActivity.start(PaymentOrderRemainActivity.this, resultCommand);
         }
+    }
+
+    /**
+     * 使用支付宝支付
+     *
+     * @param result
+     */
+    private void payByAlipay(final PayRegisterCollect result) {
+        final ProgressDialog registerDialog = ProgressDialog.show(this, null, "支付中，请稍候...", true);
+        AlipayManager.OrderInfo orderInfo =
+                new AlipayManager.OrderInfo("支付宝支付", sessionManager.getUser().getName()
+                        + "于" + DateUtil.getStringToday() + "支付" + result.getAmount() + "元",
+                        result.getId()+"_"+CODE_PAY, result.getAmount() + "");
+        Handler handler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case AlipayManager.SDK_PAY_FLAG: {
+                        AlipayManager.PayResult payResult = new AlipayManager
+                                .PayResult((String) msg.obj);
+                        // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
+                        String resultInfo = payResult.getResult();
+                        String memo = payResult.getMemo();
+                        String resultStatus = payResult.getResultStatus();
+                        // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                        if (TextUtils.equals(resultStatus, "9000")) {
+                            setResult(JupiterCommand.RESULT_CODE_OK);
+                            showToast("支付成功");
+                            PaymentOrderRemainActivity.this.finish();
+                            PaymentResultCommand resultCommand = new PaymentResultCommand();
+                            resultCommand.setInstId(command.getInstId());
+                            resultCommand.setSource(command.getSource());
+                            resultCommand.setSourceId(command.getSourceValue());
+                            resultCommand.setPaymentDone(true);
+                            resultCommand.setCreateBy(payInfo.getCreateby());
+                            PaymentResultActivity.start(PaymentOrderRemainActivity.this, resultCommand);
+                        } else {
+                            // 判断resultStatus 为非“9000”则代表可能支付失败
+                            // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                            if (TextUtils.equals(resultStatus, "8000")) {
+                                setResult(JupiterCommand.RESULT_CODE_OK);
+                                showToast("支付结果正在确认");
+                            } else {
+                                // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                                showToast("支付失败\n" + memo);
+                            }
+                            PaymentOrderRemainActivity.this.finish();
+                            PaymentOrderRemainActivity.start(PaymentOrderRemainActivity.this, command);
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                registerDialog.dismiss();
+            }
+        };
+        alipayManager.pay(this, orderInfo, handler);
     }
 
     @Override
