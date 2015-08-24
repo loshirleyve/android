@@ -1,9 +1,7 @@
 package com.yun9.wservice.view.payment;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +9,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.command.JupiterCommand;
@@ -24,8 +20,6 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
-import com.yun9.jupiter.util.StringPool;
-import com.yun9.jupiter.view.JupiterFragment;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -37,13 +31,9 @@ import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.enums.RechargeNo;
 import com.yun9.wservice.enums.RechargeState;
 import com.yun9.wservice.manager.AlipayManager;
-import com.yun9.wservice.model.AddRechargeResult;
-import com.yun9.wservice.model.Client;
-import com.yun9.wservice.model.CtrlCode;
 import com.yun9.wservice.model.RechargeRecord;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -247,7 +237,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
                                 CtrlCodeCache.getInstance().getCtrlcodeName(
                                         CtrlCodeDefNo.ACCOUNT_TYPE, record.getAccounttype()
                                 ) + "充值");
-                widget.getSutitleLayout().setSubTitleText(record.getRechargename() +
+                widget.getSutitleLayout().setSubTitleText(record.getTypeName() +
                         "支付  " + record.getAmount() + "元");
                 widget.getSutitleLayout().getTimeTv().setText(DateUtil.getDateStr(record.getExpirydate()));
                 widget.getRechargeStateTv().setText(CtrlCodeCache.getInstance()
@@ -292,9 +282,9 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
     }
 
     private void rechargeAgain(RechargeRecord record) {
-        if (RechargeNo.TYPE_ALIPAY.equals(record.getRechargeno())){
+        if (RechargeNo.TYPE_ALIPAY.equals(record.getTypecode())){
             payByAlipay(record);
-        } else if (RechargeNo.TYPE_ALIPAY.equals(record.getRechargeno())) {
+        } else if (RechargeNo.TYPE_ALIPAY.equals(record.getTypecode())) {
             showToast("功能正在研发中..");
         }
     }
@@ -313,7 +303,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
             public void handleMessage(Message msg) {
                 RechargeResultCommand command =
                         new RechargeResultCommand(record.getId(), null,
-                                record.getRechargename(), record.getAmount());
+                                record.getTypeName(), record.getAmount());
                 switch (msg.what) {
                     case AlipayManager.SDK_PAY_FLAG: {
                         AlipayManager.PayResult payResult = new AlipayManager

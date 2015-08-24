@@ -44,6 +44,17 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询当前机构在线支付方式 -->
+    <repository>
+        <name>QueryPayModeTypeByTypeService</name>
+        <action>com.yun9.ws.biz.pay.service.QueryPayModeTypeByTypeService</action>
+        <output>
+            <classname>com.yun9.wservice.model.PayModeType</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
     <repository>
         <name>AddPayRegisterBySoruceService</name>
         <action>com.yun9.ws.biz.service.AddPayRegisterBySoruceService</action>

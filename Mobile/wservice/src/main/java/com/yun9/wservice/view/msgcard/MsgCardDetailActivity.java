@@ -384,7 +384,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
             if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefSimpleInstname())){
                 itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
-                itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstname());
+                itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstsimplename());
             }
             itemWidget.getLeftTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
             itemWidget.getLeftContentTv().setText(msgCardComment.getContent());

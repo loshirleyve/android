@@ -6,103 +6,95 @@ import java.io.Serializable;
  * Created by huangbinglong on 7/13/15.
  */
 public class RechargeRecord implements Serializable{
+
     private String id;
     private String own;
     private String accounttype;
-    private String ticketid;
-    private double amount;
+    private Double amount;
     private String typeid;
     private String state;
     private Long expirydate;
-    private String rechargeno;
-    private String rechargename;
-    private String ticketname;
+    private String typeName;
+    private String typecode;
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public RechargeRecord setId(String id) {
         this.id = id;
+        return this;
     }
 
     public String getOwn() {
         return own;
     }
 
-    public void setOwn(String own) {
+    public RechargeRecord setOwn(String own) {
         this.own = own;
+        return this;
     }
 
     public String getAccounttype() {
         return accounttype;
     }
 
-    public void setAccounttype(String accounttype) {
+    public RechargeRecord setAccounttype(String accounttype) {
         this.accounttype = accounttype;
+        return this;
     }
 
-    public String getTicketid() {
-        return ticketid;
-    }
-
-    public void setTicketid(String ticketid) {
-        this.ticketid = ticketid;
-    }
-
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public RechargeRecord setAmount(Double amount) {
         this.amount = amount;
+        return this;
     }
 
     public String getTypeid() {
         return typeid;
     }
 
-    public void setTypeid(String typeid) {
+    public RechargeRecord setTypeid(String typeid) {
         this.typeid = typeid;
+        return this;
     }
 
     public String getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public RechargeRecord setState(String state) {
         this.state = state;
+        return this;
     }
 
     public Long getExpirydate() {
         return expirydate;
     }
 
-    public void setExpirydate(Long expirydate) {
+    public RechargeRecord setExpirydate(Long expirydate) {
         this.expirydate = expirydate;
+        return this;
     }
 
-    public String getRechargeno() {
-        return rechargeno;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setRechargeno(String rechargeno) {
-        this.rechargeno = rechargeno;
+    public RechargeRecord setTypeName(String typeName) {
+        this.typeName = typeName;
+        return this;
     }
 
-    public String getRechargename() {
-        return rechargename;
+    public String getTypecode() {
+        return typecode;
     }
 
-    public void setRechargename(String rechargename) {
-        this.rechargename = rechargename;
-    }
-
-    public String getTicketname() {
-        return ticketname;
-    }
-
-    public void setTicketname(String ticketname) {
-        this.ticketname = ticketname;
+    public RechargeRecord setTypecode(String typecode) {
+        this.typecode = typecode;
+        return this;
     }
 }
