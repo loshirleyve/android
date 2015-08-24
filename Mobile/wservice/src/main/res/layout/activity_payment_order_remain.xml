@@ -76,6 +76,7 @@
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
     <LinearLayout
+        android:id="@+id/bottom_operator_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

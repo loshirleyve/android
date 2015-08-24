@@ -280,7 +280,10 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     onlineCommand.setCreateBy(payinfo.getCreateBy());
                     PaymentOrderActivity.this.finish();
                     PaymentByOnlineActivity.start(PaymentOrderActivity.this, onlineCommand);
-                } else {
+                } else if (historyPayInfo.getComplete() == 0) {
+                    PaymentOrderActivity.this.finish();
+                    PaymentOrderRemainActivity.start(PaymentOrderActivity.this, command);
+                } else{
                     PaymentResultCommand resultCommand = new PaymentResultCommand();
                     resultCommand.setInstId(command.getInstId());
                     resultCommand.setSource(command.getSource());

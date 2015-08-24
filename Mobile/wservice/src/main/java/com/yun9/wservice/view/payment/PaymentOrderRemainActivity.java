@@ -47,6 +47,9 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
     @ViewInject(id=R.id.items_ll)
     private LinearLayout itemsLl;
 
+    @ViewInject(id=R.id.bottom_operator_ll)
+    private LinearLayout bottomOperatorLl;
+
     @BeanInject
     private ResourceFactory resourceFactory;
 
@@ -117,12 +120,18 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
         if (payInfo == null){
             return;
         }
+
+        if (PayModeType.TYPE_OFFLINE.equals(payInfo.getPaymodeType())
+                || payInfo.getUnPayamount() <=0.0){
+            bottomOperatorLl.setVisibility(View.GONE);
+        }
+
         paymentPayWay.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
         paymentPayWay.getHotNitoceTV().setText(payInfo.getPaymodeName());
         remainBalance.setText(payInfo.getUnPayamount() + "元");
         if (payInfo.getPayRegisterCollects() != null){
-            itemsLl.addView(createItem("支付总额",payInfo.getAmount()+"元"));
+            itemsLl.addView(createItem("支付总额", payInfo.getAmount()+"元"));
             String name = null;
             String amount  = null;
             Double sum = 0.0;
@@ -132,7 +141,7 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
                     name += "(等待确认)";
                 }
                 sum += collect.getAmount();
-                amount = collect.getAmount()+"";
+                amount = collect.getAmount()+"元";
                 itemsLl.addView(createItem(name,amount));
             }
         }

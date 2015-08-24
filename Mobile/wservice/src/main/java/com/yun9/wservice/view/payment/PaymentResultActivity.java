@@ -124,7 +124,7 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                     name += "(等待确认)";
                 }
                 sum += collect.getAmount();
-                amount = collect.getAmount()+"";
+                amount = collect.getAmount()+"元";
                 itemsLl.addView(createItem(name,amount));
             }
             itemsLl.addView(createItem("总支付:",sum+"元"));
