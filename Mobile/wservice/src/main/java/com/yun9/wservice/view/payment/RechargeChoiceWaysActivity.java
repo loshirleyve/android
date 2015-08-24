@@ -22,10 +22,9 @@ import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.RechargeType;
+import com.yun9.wservice.model.PayModeType;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,9 +50,9 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
 
     private RechargeChoiceWaysCommand command;
 
-    private List<RechargeType> rechargeTypes;
+    private List<PayModeType> rechargeTypes;
 
-    private RechargeType selectedType;
+    private PayModeType selectedType;
 
     public static void start(Activity activity,RechargeChoiceWaysCommand command) {
         Intent intent = new Intent(activity,RechargeChoiceWaysActivity.class);
@@ -108,11 +107,14 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
 
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
-        Resource resource = resourceFactory.create("QueryRechargeTypeService");
+        Resource resource = resourceFactory.create("QueryPayModeTypeService");
+        resource.param("instid",sessionManager.getInst().getId());
+        resource.param("paymodetype","online");
+        resource.param("type","3rdparty");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                rechargeTypes = (List<RechargeType>) response.getPayload();
+                rechargeTypes = (List<PayModeType>) response.getPayload();
             }
 
             @Override
@@ -155,8 +157,8 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
                 sutitleLayout = new JupiterRowStyleSutitleLayout(RechargeChoiceWaysActivity.this);
                 sutitleLayout.setSelectMode(true);
                 sutitleLayout.getArrowRightIV().setVisibility(View.GONE);
-                sutitleLayout.getTitleTV().setText(rechargeTypes.get(position).getRechargename());
-                sutitleLayout.getSutitleTv().setText(R.string.recharge_type_hint);
+                sutitleLayout.getTitleTV().setText(rechargeTypes.get(position).getName());
+                sutitleLayout.getSutitleTv().setText(rechargeTypes.get(position).getDescr());
                 sutitleLayout.getTimeTv().setVisibility(View.GONE);
                 sutitleLayout.getMainIV().setVisibility(View.GONE);
                 sutitleLayout.setTag(rechargeTypes.get(position));
@@ -167,7 +169,7 @@ public class RechargeChoiceWaysActivity extends JupiterFragmentActivity{
                         for (int i = 0; i < count; i++) {
                             JupiterRowStyleSutitleLayout sutitleLayout = (JupiterRowStyleSutitleLayout) listView.getChildAt(i);
                             if (i == position) {
-                                selectedType = (RechargeType) sutitleLayout.getTag();
+                                selectedType = (PayModeType) sutitleLayout.getTag();
                                 sutitleLayout.select(true);
                             } else {
                                 sutitleLayout.select(false);

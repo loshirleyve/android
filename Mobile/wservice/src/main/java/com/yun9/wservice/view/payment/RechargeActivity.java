@@ -2,7 +2,6 @@ package com.yun9.wservice.view.payment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,11 +29,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.enums.RechargeNo;
 import com.yun9.wservice.manager.AlipayManager;
 import com.yun9.wservice.model.AddRechargeResult;
-import com.yun9.wservice.model.Payinfo;
-import com.yun9.wservice.model.RechargeGroup;
-import com.yun9.wservice.model.RechargeType;
-
-import java.util.List;
+import com.yun9.wservice.model.PayModeType;
 
 /**
  * 充值界面
@@ -76,7 +71,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
 
     private RechargeCommand rechargeCommand;
 
-    private RechargeType rechargeType;
+    private PayModeType rechargeType;
 
     public static void start(Activity activity, RechargeCommand command) {
         Intent intent = new Intent(activity, RechargeActivity.class);
@@ -136,7 +131,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (command != null && command.getRequestCode() == requestCode
                 && resultCode == command.RESULT_CODE_OK) {
-            RechargeType type = (RechargeType) data.getSerializableExtra("type");
+            PayModeType type = (PayModeType) data.getSerializableExtra("type");
             if (type != null) {
                 showDesc(type);
             } else {
@@ -161,7 +156,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
     }
 
     private void addRechargeRecord(String amount) {
-        if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getRechargeno())) {
+        if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getCode())) {
             showToast("功能正在研发...");
             return;
         }
@@ -177,9 +172,9 @@ public class RechargeActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 registerDialog.dismiss();
                 AddRechargeResult result = (AddRechargeResult) response.getPayload();
-                if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getRechargeno())) {
+                if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getCode())) {
                     payByAlipay(result);
-                } else if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getRechargeno())) {
+                } else if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getCode())) {
                 }
             }
 
@@ -252,12 +247,12 @@ public class RechargeActivity extends JupiterFragmentActivity {
         alipayManager.pay(this, orderInfo, handler);
     }
 
-    private void showDesc(RechargeType type) {
+    private void showDesc(PayModeType type) {
         rechargeType = type;
         choosedRechargeTypeLL.setVisibility(View.VISIBLE);
-        rechargeTypeTipTV.setText("将使用 " + type.getRechargename() + " 方式付款");
-        rechargeTypeDescTV.setText(type.getWarmthwarning());
-        titleLayout.getHotNitoceTV().setText(type.getRechargename());
+        rechargeTypeTipTV.setText("将使用 " + type.getName() + " 方式付款");
+        rechargeTypeDescTV.setText(type.getDescr());
+        titleLayout.getHotNitoceTV().setText(type.getDescr());
         titleLayout.getHotNitoceTV().setTextColor(getResources().getColor(R.color.black));
 
     }
