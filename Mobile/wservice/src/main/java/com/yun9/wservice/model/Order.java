@@ -15,7 +15,7 @@ public class Order implements Serializable{
 
     private List<OrderLog> orderLogs;
 
-    private List<OrderWorkOrder> orderWorkorders;
+    private List<WorkorderDto> workorders;
 
     public OrderBase getOrder() {
         return order;
@@ -41,12 +41,12 @@ public class Order implements Serializable{
         this.orderLogs = orderLogs;
     }
 
-    public List<OrderWorkOrder> getOrderWorkorders() {
-        return orderWorkorders;
+    public List<WorkorderDto> getWorkorders() {
+        return workorders;
     }
 
-    public void setOrderWorkorders(List<OrderWorkOrder> orderWorkorders) {
-        this.orderWorkorders = orderWorkorders;
+    public void setWorkorders(List<WorkorderDto> workorders) {
+        this.workorders = workorders;
     }
 
     public static class OrderBase implements Serializable{
