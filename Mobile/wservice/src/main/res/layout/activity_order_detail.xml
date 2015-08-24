@@ -4,59 +4,75 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <com.yun9.jupiter.widget.JupiterTitleBarLayout
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleLeftIcoVisibility="true"
-        app:titleRightTextVisibility="true"
-        app:titleRightText="@string/complain"
-        app:titleText="@string/app_name"
+        android:focusable="true"
         android:focusableInTouchMode="true"
-        android:focusable="true">
-    </com.yun9.jupiter.widget.JupiterTitleBarLayout>
+        app:titleLeftIcoVisibility="true"
+        app:titleRightText="@string/complain"
+        app:titleRightTextVisibility="true"
+        app:titleText="@string/app_name"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
+
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
-        android:layout_below="@id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
         android:overScrollMode="never">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.yun9.wservice.view.order.OrderDetailBaseWidget
                 android:id="@+id/order_detail_base_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/devide_line"/>
+                android:background="@color/devide_line" />
+
             <com.yun9.wservice.view.order.OrderDetailProcessWidget
                 android:id="@+id/order_detail_process_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </com.yun9.wservice.view.order.OrderDetailProcessWidget>
+                android:layout_height="wrap_content"></com.yun9.wservice.view.order.OrderDetailProcessWidget>
+
             <com.yun9.wservice.view.order.OrderDetailPayinfoWidget
                 android:id="@+id/order_detail_payinfo_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <com.yun9.wservice.view.order.OrderDetailAttachWidget
                 android:id="@+id/order_detail_attach_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <com.yun9.wservice.view.order.OrderDetailAdvisorWidget
                 android:id="@+id/order_detail_advisor_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
             <com.yun9.wservice.view.order.OrderDetailProviderWidget
                 android:id="@+id/order_detail_provider_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
+
+            <!--<com.yun9.jupiter.widget.JupiterListView-->
+            <!--android:id="@+id/order_detail_work_order_list_widget"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_below="@id/line2"-->
+            <!--android:layout_marginLeft="30dp"-->
+            <!--android:background="@color/whites"></com.yun9.jupiter.widget.JupiterListView>-->
             <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
                 android:id="@+id/order_detail_work_order_list_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 </RelativeLayout>
