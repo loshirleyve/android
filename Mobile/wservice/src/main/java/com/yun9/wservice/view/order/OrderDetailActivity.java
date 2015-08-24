@@ -71,7 +71,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
     private OrderDetailProviderWidget orderDetailProviderWidget;
 
     @ViewInject(id = R.id.order_detail_work_order_list_widget)
-    private JupiterListView orderDetailWorkOrderListWidget;
+    private OrderDetailWorkOrderListWidget orderDetailWorkOrderListWidget;
 
     @ViewInject(id = R.id.main)
     private RelativeLayout mainRl;
@@ -250,7 +250,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
                 || order.getWorkorders().size() == 0) {
             orderDetailWorkOrderListWidget.setVisibility(View.GONE);
         } else {
-            orderDetailWorkOrderListWidget.setAdapter(new OrderListSubItemAdapter(order.getWorkorders(), OrderDetailActivity.this));
+            orderDetailWorkOrderListWidget.buildWithData(order.getWorkorders(),OrderDetailActivity.this);
         }
         mainRl.setVisibility(View.VISIBLE);
         reloadDataDialog.dismiss();

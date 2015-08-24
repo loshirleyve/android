@@ -62,14 +62,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.yun9.jupiter.widget.JupiterListView
+
+            <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
                 android:id="@+id/order_detail_work_order_list_widget"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.yun9.jupiter.widget.JupiterListView>
-            <!--<com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget-->
-            <!--android:id="@+id/order_detail_work_order_list_widget"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 </RelativeLayout>

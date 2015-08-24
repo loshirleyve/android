@@ -10,6 +10,7 @@ import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Order;
+import com.yun9.wservice.model.WorkorderDto;
 
 import java.util.List;
 
@@ -20,11 +21,8 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
 
     private ListView workOrdeLV;
 
-    private JupiterAdapter adapter;
+    private OrderListSubItemAdapter adapter;
 
-    private Order order;
-
-    private List<Order.OrderWorkOrder> workOrders;
 
     public OrderDetailWorkOrderListWidget(Context context) {
         super(context);
@@ -38,12 +36,13 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(Order order) {
-        this.order = order;
-        //workOrders = order.getOrderWorkorders();
+    public void buildWithData(List<WorkorderDto> workorderDtos,Context mContext) {
+        adapter=new OrderListSubItemAdapter(workorderDtos, mContext);
+        workOrdeLV.setAdapter(adapter);
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+
     }
 
     @Override
@@ -54,43 +53,9 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         workOrdeLV = (ListView) this.findViewById(R.id.listview);
-        buildView();
+
     }
 
-    private void buildView() {
-        adapter = new JupiterAdapter() {
-            @Override
-            public int getCount() {
-                if (workOrders != null){
-                    return workOrders.size();
-                }
-                return 0;
-            }
 
-            @Override
-            public Object getItem(int position) {
-                return null;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                OrderDetailWorkOrderWidget workOrderWidget;
-                if (convertView == null) {
-                    workOrderWidget = new OrderDetailWorkOrderWidget(OrderDetailWorkOrderListWidget.this.getContext());
-                    convertView = workOrderWidget;
-                } else {
-                    workOrderWidget = (OrderDetailWorkOrderWidget) convertView;
-                }
-                workOrderWidget.buildWithData(order.getOrder().getOrderid(),workOrders.get(position));
-                return convertView;
-            }
-        };
-        workOrdeLV.setAdapter(adapter);
-    }
 
 }

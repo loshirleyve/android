@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/work_order_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="10dp"
-        android:textSize="14dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/work_order_state"
         android:textColor="@color/devide_line"
-        android:text="@string/work_order_state"/>
+        android:textSize="14dp" />
+
     <com.yun9.jupiter.widget.JupiterListView
         android:id="@+id/listview"
-        android:layout_below="@id/work_order_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="5dp">
-    </com.yun9.jupiter.widget.JupiterListView>
+        android:layout_below="@id/work_order_tip"></com.yun9.jupiter.widget.JupiterListView>
 </RelativeLayout>
