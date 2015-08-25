@@ -18,10 +18,13 @@ import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
+import com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout;
+import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.enums.PayModeType;
 import com.yun9.wservice.enums.PayRegisterCollectState;
 import com.yun9.wservice.model.HistoryPayInfo;
 import com.yun9.wservice.model.PayRegisterCollect;
@@ -41,6 +44,15 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
 
     @ViewInject(id=R.id.items_ll)
     private LinearLayout itemsLl;
+
+    @ViewInject(id=R.id.remain_balance)
+    private TextView remainBalance;
+
+    @ViewInject(id=R.id.payment_payway)
+    private JupiterRowStyleTitleLayout paymentPayWay;
+
+    @ViewInject(id=R.id.remain_balance_rl)
+    private RelativeLayout remainBalanceRl;
 
     @BeanInject
     private ResourceFactory resourceFactory;
@@ -114,6 +126,13 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         } else {
             stateNameTv.setText("支付未完成！");
         }
+        if (payInfo.getUnPayamount() <=0.0){
+            remainBalanceRl.setVisibility(View.GONE);
+        }
+        paymentPayWay.getHotNitoceTV().setVisibility(View.VISIBLE);
+        paymentPayWay.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
+        paymentPayWay.getHotNitoceTV().setText(payInfo.getPaymodeName());
+        remainBalance.setText(payInfo.getUnPayamount() + "元");
         if (payInfo.getPayRegisterCollects() != null){
             String name = null;
             String amount  = null;

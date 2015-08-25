@@ -53,6 +53,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@color/devide_line"/>
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/payment_payway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rowStyleTitleShowMainImage="false"
+                app:rowStyleTitleShowArrow="false"
+                app:rowStyleTitleShowHotText="true"
+                app:rowStyleTitleText="支付方式">
+            </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/devide_line"/>
             <LinearLayout
                 android:id="@+id/items_ll"
                 android:layout_width="match_parent"
@@ -60,8 +73,38 @@
                 android:background="@color/whites"
                 android:orientation="vertical"
                 android:paddingBottom="20dp">
-
             </LinearLayout>
+            <RelativeLayout
+                android:id="@+id/remain_balance_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/whites"
+                android:paddingBottom="10dp">
+                <View
+                    android:id="@+id/remain_balance_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/devide_line"/>
+                <TextView
+                    android:layout_below="@id/remain_balance_line"
+                    android:layout_marginTop="19dp"
+                    android:id="@+id/remain_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/title_color"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16dp"
+                    android:text="1460.00元"/>
+                <TextView
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@id/remain_balance_line"
+                    android:layout_toLeftOf="@id/remain_balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="还需支付: "/>
+            </RelativeLayout>
         </LinearLayout>
     </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
     <LinearLayout

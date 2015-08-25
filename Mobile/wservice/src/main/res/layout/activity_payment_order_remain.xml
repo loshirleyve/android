@@ -62,6 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/title_color"
+                        android:layout_marginTop="-1dp"
                         android:textSize="16dp"
                         android:text="1460.00元"/>
                     <TextView
