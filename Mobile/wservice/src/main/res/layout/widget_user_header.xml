@@ -85,7 +85,7 @@
 
             <ImageView
                 style="@style/user_hader_btnbar_img"
-                android:src="@drawable/user_org" />
+                android:src="@drawable/money" />
 
             <TextView
                 style="@style/user_hader_btnbar_text"

@@ -9,13 +9,6 @@
         android:layout_height="wrap_content"
         app:titleLeftIcoVisibility="true"
         app:titleText="@string/payment_ways"/>
-    <EditText
-        android:id="@+id/edit_text"
-        android:layout_below="@id/title_bar"
-        android:layout_width="match_parent"
-        android:background="@null"
-        android:layout_height="wrap_content"
-        android:selectAllOnFocus="true"/>
     <LinearLayout
         android:id="@+id/confirm_ll"
         android:layout_width="match_parent"
@@ -31,4 +24,44 @@
             android:layout_gravity="center"
             android:textColor="@color/whites"/>
     </LinearLayout>
+    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_above="@id/confirm_ll">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whites"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tip_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="请输入金额："
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/gray_font"
+                android:textSize="20dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="0.5dp"
+                android:background="@color/devide_line"/>
+            <EditText
+                android:id="@+id/edit_text"
+                android:layout_width="match_parent"
+                android:background="@null"
+                android:textSize="25dp"
+                android:textColor="@color/title_color"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_height="wrap_content"
+                android:text="hello"
+                android:selectAllOnFocus="true"/>
+        </LinearLayout>
+    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
 </RelativeLayout>
