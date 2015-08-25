@@ -38,4 +38,15 @@
         </output>
         <type>yun9</type>
     </repository>
+
+    <!-- 查询机构详情服务 -->
+    <repository>
+        <name>QueryInstInfoService</name>
+        <action>com.yun9.ws.biz.service.QueryInstInfoService</action>
+        <output>
+            <classname>com.yun9.wservice.model.BigInst</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 </repositorys>

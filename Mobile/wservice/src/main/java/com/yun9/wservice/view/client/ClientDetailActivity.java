@@ -539,13 +539,17 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         @Override
         public void onFocusChange(final View v, boolean hasFocus) {
             if (!v.hasFocus()) {
-                Resource resource = resourceFactory.create("QueryInstClients");
-                if (v == clientNoEt) {
-                    resource.param("sn", clientNoEt.getText().toString());
-                } else if (v == companyAbbrNameEt) {
-                    resource.param("name", companyAbbrNameEt.getText().toString());
-                } else if (v == contactPhoneEt) {
-                    resource.param("contactphone", contactPhoneEt.getText().toString());
+                Resource resource = resourceFactory.create("QueryClientsByAdviser");
+                switch (v.getId()){
+                    case R.id.clientNoEt:
+                        resource.param("sn", clientNoEt.getText().toString());
+                        break;
+                    case R.id.companyAbbrNameEt:
+                        resource.param("name", companyAbbrNameEt.getText().toString());
+                        break;
+                    case R.id.contactPhoneEt:
+                        resource.param("contactphone", contactPhoneEt.getText().toString());
+                        break;
                 }
                 resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
                     @Override

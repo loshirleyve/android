@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.util.AssertValue;
@@ -29,6 +30,9 @@ public class InputTextActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.edit_text)
     private EditText editText;
+
+    @ViewInject(id=R.id.tip_tv)
+    private TextView tipTv;
 
     @ViewInject(id=R.id.confirm_ll)
     private LinearLayout confirmLl;
@@ -66,7 +70,7 @@ public class InputTextActivity extends JupiterFragmentActivity{
         }
 
         if (AssertValue.isNotNullAndNotEmpty(command.getTip())){
-            editText.setHint(command.getTip());
+            tipTv.setText(command.getTip());
         }
 
 
