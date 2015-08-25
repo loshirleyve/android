@@ -96,7 +96,11 @@ public class MyWalletActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 Balance balance = (Balance) response.getPayload();
-                orderRechargeWidget.buildWithData(balance.getBalance());
+                if (balance == null){
+                    orderRechargeWidget.buildWithData(0.0);
+                } else {
+                    orderRechargeWidget.buildWithData(balance.getBalance());
+                }
             }
 
             @Override
