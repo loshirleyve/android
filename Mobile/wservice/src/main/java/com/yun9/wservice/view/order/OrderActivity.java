@@ -99,16 +99,17 @@ public class OrderActivity extends JupiterFragmentActivity {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 orderinfos.clear();
-                if (!AssertValue.isNotNullAndNotEmpty(orderGroups)) {
-                    refreshOrderGroup();
-                    mPtrFrame.refreshComplete();
+                orderGroups.clear();
+
+                refreshOrderGroup();
+                mPtrFrame.refreshComplete();
+
+                if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
+                    refreshOrderInfos(currOrderGroup, orderinfos.get(0).getOrderid(), Page.PAGE_DIR_PULL);
                 } else {
-                    if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
-                        refreshOrderInfos(currOrderGroup, orderinfos.get(0).getOrderid(), Page.PAGE_DIR_PULL);
-                    } else {
-                        refreshOrderInfos(currOrderGroup, null, Page.PAGE_DIR_PULL);
-                    }
+                    refreshOrderInfos(currOrderGroup, null, Page.PAGE_DIR_PULL);
                 }
+
             }
         });
 
@@ -216,7 +217,10 @@ public class OrderActivity extends JupiterFragmentActivity {
 
     private void addCategory(OrderGroup orderGroup) {
         RadioButton radioButton = (RadioButton) this.getLayoutInflater().inflate(R.layout.radio_button_item, null);
-        radioButton.setText(orderGroup.getStatename()+"("+orderGroup.getNums()+")");
+        String orderGroupName = orderGroup.getStatename();
+        if (orderGroup.getNums() > 0)
+            orderGroupName += "(" + orderGroup.getNums() + ")";
+        radioButton.setText(orderGroupName);
         radioButton.setTag(orderGroup);
         radioButton.setOnClickListener(onCategoryClickListener);
         segmentedGroup.addView(radioButton);
@@ -292,13 +296,13 @@ public class OrderActivity extends JupiterFragmentActivity {
             CacheInst inst = InstCache.getInstance().getInst(orderInfo.getInstid());
             if (AssertValue.isNotNull(inst))
                 widgetOrderListItem.getOrderInstname().setText(inst.getInstname());
-
+            widgetOrderListItem.getProductName().setText(orderInfo.getName());
             widgetOrderListItem.getOrderDesc().setText(orderInfo.getIntroduce());
             widgetOrderListItem.getOrderPrice().setText(orderInfo.getFactamount() + "元");
             SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
             String date = format.format(new Date(orderInfo.getCreatedate()));
             widgetOrderListItem.getOrderDate().setText(date);
-            widgetOrderListItem.getOrderWork().setAdapter(new OrderListSubItemAdapter(orderInfo.getWorkorders(),OrderActivity.this));
+            widgetOrderListItem.getOrderWork().setAdapter(new OrderListSubItemAdapter(orderInfo.getWorkorders(), OrderActivity.this));
             widgetOrderListItem.setTag(orderInfo.getOrderid());
             widgetOrderListItem.setOnClickListener(onOrderItemClickListener);
             return widgetOrderListItem;
@@ -309,8 +313,8 @@ public class OrderActivity extends JupiterFragmentActivity {
     private View.OnClickListener onOrderItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String orderid=(String)v.getTag();
-            OrderDetailActivity.start(OrderActivity.this,orderid);
+            String orderid = (String) v.getTag();
+            OrderDetailActivity.start(OrderActivity.this, orderid);
         }
     };
 

@@ -19,6 +19,7 @@ public class WidgetOrderListItem extends JupiterRelativeLayout {
     private TextView orderState;
     private ImageView orderImage;
     private TextView orderInstname;
+    private TextView productName;
     private TextView orderDesc;
     private TextView orderPrice;
     private TextView orderDate;
@@ -48,6 +49,7 @@ public class WidgetOrderListItem extends JupiterRelativeLayout {
         orderState = (TextView) findViewById(R.id.order_state_tv);
         orderImage = (ImageView) findViewById(R.id.order_img);
         orderInstname = (TextView) findViewById(R.id.order_inst_tv);
+        productName= (TextView) findViewById(R.id.product_name_tv);
         orderDesc = (TextView) findViewById(R.id.order_desc_tv);
         orderPrice = (TextView) findViewById(R.id.order_price_tv);
         orderDate = (TextView) findViewById(R.id.order_date_tv);
@@ -84,6 +86,15 @@ public class WidgetOrderListItem extends JupiterRelativeLayout {
 
     public void setOrderInstname(TextView orderInstname) {
         this.orderInstname = orderInstname;
+    }
+
+
+    public TextView getProductName() {
+        return productName;
+    }
+
+    public void setProductName(TextView productName) {
+        this.productName = productName;
     }
 
     public TextView getOrderDesc() {
