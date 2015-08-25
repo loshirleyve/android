@@ -77,6 +77,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/whites"
                 app:rowStyleTitleMainImage="@drawable/switch_acc"
+                android:visibility="gone"
                 app:rowStyleTitleText="@string/switch_acc"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
 
