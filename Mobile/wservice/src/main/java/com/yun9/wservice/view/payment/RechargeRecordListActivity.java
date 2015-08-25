@@ -229,44 +229,46 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             RechargeRecordItemWidget widget;
+            final RechargeRecord record = records.get(position);
             if (convertView == null){
-                final RechargeRecord record = records.get(position);
                 widget = new RechargeRecordItemWidget(RechargeRecordListActivity.this);
-                widget.getSutitleLayout()
-                        .setTitleText(
-                                CtrlCodeCache.getInstance().getCtrlcodeName(
-                                        CtrlCodeDefNo.ACCOUNT_TYPE, record.getAccounttype()
-                                ) + "充值");
-                widget.getSutitleLayout().setSubTitleText(record.getTypeName() +
-                        "支付  " + record.getAmount() + "元");
-                widget.getSutitleLayout().getTimeTv().setText(DateUtil.getDateStr(record.getExpirydate()));
-                widget.getRechargeStateTv().setText(CtrlCodeCache.getInstance()
-                        .getCtrlcodeName(CtrlCodeDefNo.RECHARGE_DETAIL_STATE,
-                                record.getState()));
-                widget.getRechardIdTv().setText(record.getId());
-                if (RechargeState.UN_ARRIVE.equals(record.getState())){
-                    widget.getSutitleLayout().setTitleText(widget.getSutitleLayout().getTitleTV().getText()
-                                                            +"("+
-                                    CtrlCodeCache.getInstance()
-                                            .getCtrlcodeName(CtrlCodeDefNo.RECHARGE_DETAIL_STATE,
-                                                    record.getState())+
-                                    ")"
-                                                        );
-                    widget.getRechargeStateTv().setBackgroundColor(
-                            getResources().getColor(R.color.title_color)
-                    );
-                    widget.getRechargeStateTv().setTextColor(
-                            getResources().getColor(R.color.whites)
-                    );
-                    widget.getRechargeStateTv().setText("重新支付");
-                    widget.getRechargeStateTv().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            rechargeAgain(record);
-                        }
-                    });
-                }
                 convertView = widget;
+            } else {
+                widget = (RechargeRecordItemWidget) convertView;
+            }
+            widget.getSutitleLayout()
+                    .setTitleText(
+                            CtrlCodeCache.getInstance().getCtrlcodeName(
+                                    CtrlCodeDefNo.ACCOUNT_TYPE, record.getAccounttype()
+                            ) + "充值");
+            widget.getSutitleLayout().setSubTitleText(record.getTypeName() +
+                    "支付  " + record.getAmount() + "元");
+            widget.getSutitleLayout().getTimeTv().setText(DateUtil.getDateStr(record.getExpirydate()));
+            widget.getRechargeStateTv().setText(CtrlCodeCache.getInstance()
+                    .getCtrlcodeName(CtrlCodeDefNo.RECHARGE_DETAIL_STATE,
+                            record.getState()));
+            widget.getRechardIdTv().setText(record.getId());
+            if (RechargeState.UN_ARRIVE.equals(record.getState())){
+                widget.getSutitleLayout().setTitleText(widget.getSutitleLayout().getTitleTV().getText()
+                                +"("+
+                                CtrlCodeCache.getInstance()
+                                        .getCtrlcodeName(CtrlCodeDefNo.RECHARGE_DETAIL_STATE,
+                                                record.getState())+
+                                ")"
+                );
+                widget.getRechargeStateTv().setBackgroundColor(
+                        getResources().getColor(R.color.title_color)
+                );
+                widget.getRechargeStateTv().setTextColor(
+                        getResources().getColor(R.color.whites)
+                );
+                widget.getRechargeStateTv().setText("重新支付");
+                widget.getRechargeStateTv().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rechargeAgain(record);
+                    }
+                });
             }
             return convertView;
         }
