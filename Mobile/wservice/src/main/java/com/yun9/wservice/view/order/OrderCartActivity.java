@@ -28,6 +28,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.cache.CacheClientProxy;
 import com.yun9.wservice.cache.ClientProxyCache;
+import com.yun9.wservice.model.BigInst;
 import com.yun9.wservice.model.OrderCartInfo;
 import com.yun9.wservice.model.wrapper.OrderCartInfoWrapper;
 
@@ -109,8 +110,8 @@ public class OrderCartActivity extends JupiterFragmentActivity{
         SessionManager sessionManager = JupiterApplication.getBeanManager().get(SessionManager.class);
         ResourceFactory resourceFactory = JupiterApplication.getBeanManager().get(ResourceFactory.class);
         Resource resource = resourceFactory.create("UpdateOrderByBuyService");
-        resource.param("orderid",orderCartInfoWrapper.getId());
-        resource.param("userid",sessionManager.getUser().getId());
+        resource.param("orderid", orderCartInfoWrapper.getId());
+        resource.param("userid", sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -213,16 +214,37 @@ public class OrderCartActivity extends JupiterFragmentActivity{
 
     private void checkTitle() {
         if (ClientProxyCache.getInstance().isProxy()){
-            CacheInst inst = InstCache.getInstance().getInst(ClientProxyCache.getInstance().getProxy().getInstId());
-            if (inst != null){
-                titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
-                titleBarLayout.getTitleSutitleTv().setText("正在为"+inst.getInstname()+"代理购买");
-            } else {
-                titleBarLayout.getTitleSutitleTv().setText("警告：无法获取代理机构信息！！");
-            }
+            loadInstAndSetSubTitle(ClientProxyCache.getInstance().getProxy().getInstId());
         } else {
             titleBarLayout.getTitleSutitleTv().setVisibility(View.GONE);
         }
+    }
+
+    private void loadInstAndSetSubTitle(String instId) {
+        final Resource resource = resourceFactory.create("QueryInstInfoService");
+        resource.param("instid",instId);
+        resource.invok(new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                BigInst bigInst = (BigInst) response.getPayload();
+                if (bigInst != null){
+                    titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
+                    titleBarLayout.getTitleSutitleTv().setText("正在为"+bigInst.getName()+"代理购买");
+                } else {
+                    titleBarLayout.getTitleSutitleTv().setVisibility(View.VISIBLE);
+                    titleBarLayout.getTitleSutitleTv().setText("警告：无法获取代理机构信息！！");
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+            }
+        });
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
