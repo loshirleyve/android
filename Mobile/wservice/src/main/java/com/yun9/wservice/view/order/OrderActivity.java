@@ -74,6 +74,8 @@ public class OrderActivity extends JupiterFragmentActivity {
     private List<OrderGroup> orderGroups = new ArrayList<>();
     private LinkedList<OrderInfo> orderinfos = new LinkedList<>();
 
+    private boolean isFirstIn = true;// 第一次进入，刷新时自动触发第一个分组的点击事件
+
     @Override
     protected int getContentView() {
         return R.layout.activity_order;
@@ -93,15 +95,19 @@ public class OrderActivity extends JupiterFragmentActivity {
 
     protected void initViews() {
         titleBarLayout.getTitleLeft().setOnClickListener(onCancelClickListener);
-        refreshOrderGroup();
         mPtrFrame.setLastUpdateTimeRelateObject(this);
+        cleanCategory();
+        refreshOrderGroup();
         mPtrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 orderinfos.clear();
                 orderGroups.clear();
 
-                refreshOrderGroup();
+                if (!isFirstIn) {
+                    refreshOrderGroup();
+                }
+                isFirstIn = false;
                 mPtrFrame.refreshComplete();
 
                 if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
@@ -137,14 +143,13 @@ public class OrderActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 orderGroups = (List<OrderGroup>) response.getPayload();
-                cleanCategory();
                 if (AssertValue.isNotNullAndNotEmpty(orderGroups)) {
                     for (OrderGroup orderGroup : orderGroups) {
-                        addCategory(orderGroup);
+                        addOrUpdateCategory(orderGroup);
                     }
 
                     //触发第一个分类点击
-                    if (segmentedGroup.getChildCount() > 0) {
+                    if (segmentedGroup.getChildCount() > 0 && isFirstIn) {
                         segmentedGroup.getChildAt(0).performClick();
                     }
                 }
@@ -225,6 +230,19 @@ public class OrderActivity extends JupiterFragmentActivity {
         radioButton.setOnClickListener(onCategoryClickListener);
         segmentedGroup.addView(radioButton);
         segmentedGroup.updateBackground();
+    }
+
+    private void addOrUpdateCategory(OrderGroup orderGroup) {
+        View view = segmentedGroup.findViewWithTag(orderGroup);
+        if (view != null){
+            RadioButton radioButton = (RadioButton) view;
+            String orderGroupName = orderGroup.getStatename();
+            if (orderGroup.getNums() > 0)
+                orderGroupName += "(" + orderGroup.getNums() + ")";
+            radioButton.setText(orderGroupName);
+        } else {
+            addCategory(orderGroup);
+        }
     }
 
     private void cleanCategory() {

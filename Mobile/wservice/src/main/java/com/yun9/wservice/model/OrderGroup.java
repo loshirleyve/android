@@ -43,5 +43,24 @@ public class OrderGroup implements Serializable {
     public void setStatename(String statename) {
         this.statename = statename;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderGroup that = (OrderGroup) o;
+
+        if (!state.equals(that.state)) return false;
+        return statename.equals(that.statename);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = state.hashCode();
+        result = 31 * result + statename.hashCode();
+        return result;
+    }
 }
 
