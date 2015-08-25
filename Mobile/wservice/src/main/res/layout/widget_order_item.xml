@@ -86,6 +86,14 @@
                 android:textColor="@color/gray_font" />
 
             <TextView
+                android:id="@+id/product_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="@string/msg_card_context"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/order_desc_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
