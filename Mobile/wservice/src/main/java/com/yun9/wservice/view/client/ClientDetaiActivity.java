@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.repository.Resource;
@@ -49,6 +50,8 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
     private Button btnCheckDetail;
     @ViewInject(id = R.id.btnProxyOrder)
     private Button btnProxyOrder;
+    @ViewInject(id = R.id.btn_consult_salesman)
+    private Button btnConsultSalesman;
     private Client client;
 
     public ClientDetaiActivity() {
@@ -77,8 +80,19 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
         btnInitInst.setOnClickListener(onBtnInitInstClickListener);
         btnCheckDetail.setOnClickListener(onEditorClickListener);
         btnProxyOrder.setOnClickListener(onBtnProxyOrderClickListener);
+        btnConsultSalesman.setOnClickListener(onConsultSalesmanClickListener);
     }
 
+    private boolean isProxyed(){
+        if (ClientProxyCache.getInstance().isProxy()){
+            CacheClientProxy proxy = ClientProxyCache.getInstance().getProxy();
+            if (proxy.getUserId().equals(client.getClientadminid())
+                    && proxy.getInstId().equals(client.getClientinstid())){
+            return true;
+            }
+        }
+        return false;
+    }
     @Override
     protected int getContentView() {
         return R.layout.activity_client_detai;
@@ -91,6 +105,13 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 client = (Client) response.getPayload();
+                // 如果正在代理该机构
+                if (isProxyed()){
+                    btnProxyOrder.setText("正在代理");
+                }
+                else {
+                    btnProxyOrder.setText("代理下单");
+                }
                 displayClientData(client);
             }
 
@@ -176,6 +197,12 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
             proxyClient(client);
         }
     };
+    private View.OnClickListener onConsultSalesmanClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ClientConsultantSalesmanActivity.start(ClientDetaiActivity.this, command);
+        }
+    };
     private void proxyClient(Client client) {
         if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
             showToast(R.string.the_client_is_not_init_yet);
@@ -186,6 +213,7 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
                 && proxy.getInstId().equals(client.getClientinstid())){
             ClientProxyCache.getInstance().putClientProxy(null);
             showToast(R.string.success_cancel_proxy);
+            btnProxyOrder.setText("代理下单");
         } else {
             CacheClientProxy clientProxy = new CacheClientProxy();
             clientProxy.setInstId(client.getClientinstid());
@@ -193,7 +221,15 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
             clientProxy.setClientId(client.getId());
             ClientProxyCache.getInstance().putClientProxy(clientProxy);
             showToast(getResources().getString(R.string.success_proxy_client,client.getFullname()));
+            btnProxyOrder.setText("正在代理");
         }
+        setResult(JupiterCommand.RESULT_CODE_OK);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == JupiterCommand.RESULT_CODE_OK){
+            setResult(JupiterCommand.RESULT_CODE_OK);
+        }
+    }
 }

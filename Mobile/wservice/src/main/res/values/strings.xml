@@ -152,7 +152,7 @@
     <string name="order_detail">订单详情</string>
     <string name="times">次数</string>
     <string name="pay_detail">付款详情</string>
-    <string name="advisor">专属顾问</string>
+    <string name="consultant">专属顾问</string>
     <string name="service_provider">服务提供商</string>
     <string name="submit_attach">提交资料</string>
     <string name="attach_submit">资料提交</string>
@@ -332,4 +332,5 @@
     <string name="online_pay">在线支付</string>
     <string name="remain_pay">继续支付</string>
     <string name="single_input">单个输入</string>
+    <string name="viewConsultantAndSalesman">专属顾问和业务员</string>
 </resources>

@@ -27,4 +27,6 @@ public class CtrlCodeDefNo {
 
     public static final String CLIENT_LEVEL_STATE = "clientlevel";
 
+    public static final String CLIENT_USERROLE = "userrole";
+
 }
