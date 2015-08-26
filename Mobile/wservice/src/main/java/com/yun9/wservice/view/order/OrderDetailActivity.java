@@ -178,6 +178,10 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
         }
         if (AssertValue.isNotNull(order.getOrder())
                 && AssertValue.isNotNullAndNotEmpty(order.getOrder().getState())) {
+
+            // 不再显示后面的描述
+            orderDetailPayinfoWidget.getSutitleLayout()
+                    .getHotNitoceTV().setVisibility(View.GONE);
             orderDetailPayinfoWidget.buildWithData(order);
 
             orderDetailPayinfoWidget.getSutitleLayout()
