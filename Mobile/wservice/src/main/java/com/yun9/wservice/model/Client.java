@@ -28,15 +28,6 @@ public class Client implements java.io.Serializable {
     private String industry;
     private String contactposition;
     private String clientadminid;
-    private String userrole;
-
-    public String getUserrole() {
-        return userrole;
-    }
-
-    public void setUserrole(String userrole) {
-        this.userrole = userrole;
-    }
 
     public String getCreateby() {
         return createby;
