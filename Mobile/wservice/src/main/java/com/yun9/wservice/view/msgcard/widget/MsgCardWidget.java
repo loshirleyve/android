@@ -172,7 +172,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     }
 
 
-    public void buildWithData(MsgCard msgCard) {
+    public void buildWithData(MsgCard msgCard,String content) {
         this.mMsgCard = msgCard;
 
         if (!AssertValue.isNotNull(msgCard))
@@ -226,7 +226,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
 
         //content
-            contentTV.setText(msgCard.getContent());
+            contentTV.setText(content);
 
         //location
         locationTV.setText(msgCard.getLocationlabel());

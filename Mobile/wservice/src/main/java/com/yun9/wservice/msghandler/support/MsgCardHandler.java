@@ -60,7 +60,7 @@ public class MsgCardHandler implements MsgHandler{
         final MsgCard msgCard = msg.getMsgCard();
         msgCardWidget.getPraiseRL().setTag(msg.getMsgCard());
         msgCardWidget.setTag(msgCard);
-        msgCardWidget.buildWithData(msgCard);
+        msgCardWidget.buildWithData(msgCard,msg.getContent());
         msgCardWidget.getPraiseRL().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -167,7 +167,9 @@ public class MsgCardListActivity extends CustomCallbackActivity {
             if (msgCard.getRead() == 0){
                 markAsReaded(msgCard.getId());
             }
+            view.setEnabled(false);
             MsgCardDetailActivity.start(MsgCardListActivity.this, new MsgCardDetailCommand().setMsgCardId(msgCard.getId()));
+            view.setEnabled(true);
         }
     };
 

@@ -329,7 +329,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             }
         }
 
-        msgCardWidget.buildWithData(msgCard);
+        msgCardWidget.buildWithData(msgCard,msgCard.getContent());
         msgCardWidget.getIsNewIv().setVisibility(View.GONE);
 
         commonItem.getDescTextTV().setText(msgCard.getCommentcount() + "");
