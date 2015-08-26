@@ -149,7 +149,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     inputTextCommand.setTip("请输入金额:");
                     inputTextCommand.addRegular(".+", "请输入金额");
                     inputTextCommand
-                            .addRegular("^(([0-9]+\\.[0-9]*[1-9][0-9]*)|" +
+                            .addRegular("^(([0-9]+\\.[0-9]*[0-9][0-9]*)|" +
                                             "([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*)|(0+))$",
                                     "输入非有效金额，请重输");
                     inputTextCommand.setMinValue(0.0);
