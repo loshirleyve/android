@@ -31,6 +31,8 @@ import com.yun9.wservice.view.common.InputTextActivity;
 import com.yun9.wservice.view.common.InputTextCommand;
 import com.yun9.wservice.view.order.OrderDetailActivity;
 
+import java.math.BigDecimal;
+
 /**
  * 立即支付订单界面
  * Created by huangbinglong on 15/6/24.
@@ -115,7 +117,9 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         }
         if (inputTextCommand != null && inputTextCommand.getRequestCode() == requestCode){
             useBalance = Double.valueOf(data.getStringExtra(JupiterCommand.RESULT_PARAM));
-            unPayAmount = payinfo.getPayableAmount() - useBalance;
+            BigDecimal bigDecimal = (new BigDecimal(payinfo.getPayableAmount()))
+                    .subtract(new BigDecimal(useBalance));
+            unPayAmount = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             refreshUnpayAmount();
             refreshUseBalance();
         } else if (paymentOrderChoicePayWayCommand != null
