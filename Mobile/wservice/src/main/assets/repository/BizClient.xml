@@ -21,6 +21,16 @@
         <type>yun9</type>
     </repository>
 
+    <repository>
+        <name>QueryInstClientInfoById</name>
+        <action>com.yun9.ws.biz.service.QueryInstClientInfoByIdService</action>
+        <output>
+            <classname>com.yun9.wservice.model.Client</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
     <!--保存机构客户信息-->
     <repository>
         <name>AddOrUpdateInstClientsService</name>

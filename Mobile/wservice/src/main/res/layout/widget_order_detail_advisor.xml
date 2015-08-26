@@ -10,7 +10,7 @@
         android:layout_marginLeft="10dp"
         android:textSize="14dp"
         android:textColor="@color/devide_line"
-        android:text="@string/advisor"/>
+        android:text="@string/consultant"/>
     <RelativeLayout
         android:layout_below="@id/advisor_tip"
         android:layout_width="match_parent"
