@@ -146,8 +146,8 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private void completeRefresh() {
         Resource resource = resourceFactory.create("QueryClientsByAdviser");
-        resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
-        //resource.param("instid", "10000001468002").param("userid", "10000001468039");
+        //resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
+        resource.param("instid", "10000001468002").param("userid", "10000001468039");
         showClients.clear();
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
@@ -177,8 +177,7 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == command.getRequestCode()
-                    && resultCode == JupiterCommand.RESULT_CODE_OK){
+            if (resultCode == JupiterCommand.RESULT_CODE_OK){
                 refresh();
             }
     }
@@ -212,7 +211,8 @@ public class ClientActivity extends JupiterFragmentActivity {
     private View.OnClickListener onTitleRightTvClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            editClient(null);
+            command = new EditClientCommand();
+            ClientDetailActivity.start(ClientActivity.this, command);
         }
     };
 
