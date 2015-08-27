@@ -18,8 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/purple_font"
-                android:textSize="14dp"
-                android:text="用户名"/>
+                android:textSize="14dp"/>
             <TextView
                 android:id="@+id/time_tv"
                 android:layout_width="wrap_content"
@@ -27,16 +26,14 @@
                 android:textColor="@color/devide_line"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
-                android:textSize="12dp"
-                android:text="2015-06-17"/>
+                android:textSize="12dp"/>
         </RelativeLayout>
         <TextView
             android:id="@+id/content_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:text="时代共赢服务做的不错，省去了我们很多麻烦，价格也实惠，会继续使用的。"/>
+            android:layout_marginLeft="20dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:rating="3"
+                android:rating="0"
                 android:isIndicator="true"
                 android:progressDrawable="@drawable/room_rating_bar"
                 android:numStars="5"

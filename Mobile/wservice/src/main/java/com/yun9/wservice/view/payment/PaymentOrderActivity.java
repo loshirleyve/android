@@ -13,6 +13,7 @@ import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.listener.OnClickWithNetworkListener;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheInst;
 import com.yun9.jupiter.repository.Resource;
@@ -130,23 +131,23 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
     }
 
     private void buildView() {
-        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+        titleBarLayout.getTitleLeft().setOnClickListener(new OnClickWithNetworkListener() {
             @Override
-            public void onClick(View v) {
+            public void onClickWithNetwork(View v) {
                 PaymentOrderActivity.this.finish();
             }
         });
 
-        payIb.setOnClickListener(new View.OnClickListener() {
+        payIb.setOnClickListener(new OnClickWithNetworkListener() {
             @Override
-            public void onClick(View v) {
+            public void onClickWithNetwork(View v) {
                 registerPay();
             }
         });
 
-        paymentBalance.setOnClickListener(new View.OnClickListener() {
+        paymentBalance.setOnClickListener(new OnClickWithNetworkListener() {
             @Override
-            public void onClick(View v) {
+            public void onClickWithNetwork(View v) {
                 if (inputTextCommand == null) {
                     inputTextCommand = new InputTextCommand();
                     inputTextCommand.setTitle("请输入金额");
@@ -166,9 +167,9 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
             }
         });
 
-        paymentPayWay.setOnClickListener(new View.OnClickListener() {
+        paymentPayWay.setOnClickListener(new OnClickWithNetworkListener() {
             @Override
-            public void onClick(View v) {
+            public void onClickWithNetwork(View v) {
                 if (paymentOrderChoicePayWayCommand == null) {
                     paymentOrderChoicePayWayCommand = new PaymentOrderChoicePayWayCommand();
                     paymentOrderChoicePayWayCommand.setPayModes(payinfo.getPaymodes());

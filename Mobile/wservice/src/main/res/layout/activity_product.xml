@@ -123,6 +123,8 @@
                     android:id="@+id/select_category_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    ext:rowStyleSutitleText=""
+                    ext:rowStyleSutitleTitleText=""
                     ext:rowStyleSutitleShowMainImage="false"
                     ext:rowStyleSutitleShowTimeText="false">
 
