@@ -16,24 +16,27 @@ public class CacheInst implements java.io.Serializable {
         return instid;
     }
 
-    public void setInstid(String instid) {
+    public CacheInst setInstid(String instid) {
         this.instid = instid;
+        return this;
     }
 
     public String getInstname() {
         return instname;
     }
 
-    public void setInstname(String instname) {
+    public CacheInst setInstname(String instname) {
         this.instname = instname;
+        return this;
     }
 
     public String getTel() {
         return tel;
     }
 
-    public void setTel(String tel) {
+    public CacheInst setTel(String tel) {
         this.tel = tel;
+        return this;
     }
 
     public String getLogo() {
