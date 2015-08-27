@@ -2,6 +2,7 @@ package com.yun9.wservice.view.order;
 
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.wservice.model.Order;
+import com.yun9.wservice.model.WordOrder;
 
 /**
  * Created by huangbinglong on 7/16/15.
@@ -9,7 +10,7 @@ import com.yun9.wservice.model.Order;
 public class OrderCommentCommand extends JupiterCommand{
 
     private String orderId;
-    private Order.OrderWorkOrder workOrder;
+    private WordOrder workOrder;
 
     public String getOrderId() {
         return orderId;
@@ -20,12 +21,11 @@ public class OrderCommentCommand extends JupiterCommand{
         return this;
     }
 
-    public Order.OrderWorkOrder getWorkOrder() {
+    public WordOrder getWorkOrder() {
         return workOrder;
     }
 
-    public OrderCommentCommand setWorkOrder(Order.OrderWorkOrder workOrder) {
+    public void setWorkOrder(WordOrder workOrder) {
         this.workOrder = workOrder;
-        return this;
     }
 }

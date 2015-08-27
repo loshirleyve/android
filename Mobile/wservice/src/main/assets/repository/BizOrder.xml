@@ -167,4 +167,16 @@
         <type>yun9</type>
     </repository>
 
+    <!--查询工单详情服务-->
+    <repository>
+        <name>QueryWorkordersByNoAndSource</name>
+        <action>com.yun9.ws.biz.service.QueryWorkordersByNoAndSourceService</action>
+        <output>
+            <classname>com.yun9.wservice.model.WordOrder</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+
 </repositorys>

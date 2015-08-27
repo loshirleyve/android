@@ -56,6 +56,17 @@ public class OrderListSubItemAdapter extends JupiterAdapter {
         widgetOrderListSubItem.getWorkorderitemdescr().setText(workorderDto.getDescr());
         widgetOrderListSubItem.getWorkorderitemname().setText(workorderDto.getInserviceName());
         widgetOrderListSubItem.getWorkorderitemnums().setText(workorderDto.getCompleteNum() + "/" +workorderDto.getAllNum());
+        widgetOrderListSubItem.setOnClickListener(onClickItemListener);
         return widgetOrderListSubItem;
     }
+
+
+
+
+    private View.OnClickListener onClickItemListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            WorkOrderDetailActivity.start(mcontext,"1");
+        }
+    };
 };
