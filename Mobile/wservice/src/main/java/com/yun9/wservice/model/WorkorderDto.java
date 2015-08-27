@@ -11,6 +11,7 @@ public class WorkorderDto implements Serializable {
     private String inserviceName;
     private int completeNum;
     private int allNum;
+    private String no;
 
     public String getDescr() {
         return descr;
@@ -42,5 +43,14 @@ public class WorkorderDto implements Serializable {
 
     public void setAllNum(int allNum) {
         this.allNum = allNum;
+    }
+
+    public String getNo() {
+        return no;
+    }
+
+    public WorkorderDto setNo(String no) {
+        this.no = no;
+        return this;
     }
 }
