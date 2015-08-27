@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yun9.jupiter.widget.JupiterTitleBarLayout
+        android:id="@+id/client_consultant_salesman_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleLeftIcoSrc="@drawable/arrow_left"
+        app:titleLeftIcoVisibility="true"
+        app:titleText="@string/viewConsultantAndSalesman"/>
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/client_consultant_salesman_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarStyle="outsideOverlay">
+    </com.baoyz.swipemenulistview.SwipeMenuListView>
+</LinearLayout>

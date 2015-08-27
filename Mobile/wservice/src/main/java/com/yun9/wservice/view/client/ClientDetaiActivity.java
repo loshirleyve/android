@@ -93,6 +93,12 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
         }
         return false;
     }
+    private boolean isInited(){
+        if (AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
+            return true;
+        }
+        return false;
+    }
     @Override
     protected int getContentView() {
         return R.layout.activity_client_detai;
@@ -111,6 +117,13 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
                 }
                 else {
                     btnProxyOrder.setText("代理下单");
+                }
+                if(isInited()){
+                    btnInitInst.setText(R.string.inited_notice);
+                    btnInitInst.setEnabled(false);
+                }else {
+                    btnInitInst.setText(R.string.init_inst);
+                    btnInitInst.setEnabled(true);
                 }
                 displayClientData(client);
             }
@@ -156,7 +169,11 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
     private View.OnClickListener onBtnInitInstClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            initClient(client);
+            if(AssertValue.isNotNullAndNotEmpty(client.getContactphone())) {
+                initClient(client);
+            }else {
+                Toast.makeText(mContext, getString(R.string.lack_phone_notice), Toast.LENGTH_LONG).show();
+            }
         }
     };
     private void refresh() {
@@ -200,11 +217,11 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
     private View.OnClickListener onConsultSalesmanClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ClientConsultantSalesmanActivity.start(ClientDetaiActivity.this, command);
+            ClientUserroleActivity.start(ClientDetaiActivity.this, command);
         }
     };
     private void proxyClient(Client client) {
-        if (!AssertValue.isNotNullAndNotEmpty(client.getClientinstid())){
+        if (!isInited()){
             showToast(R.string.the_client_is_not_init_yet);
             return;
         }
