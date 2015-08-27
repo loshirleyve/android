@@ -502,11 +502,6 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".view.inst.StaffNumActivity"
-            android:label="@string/staff_num"
-            android:theme="@android:style/Theme.Light.NoTitleBar"
-            android:screenOrientation="portrait"></activity>
-        <activity
             android:name=".view.myself.AppAboutActivity"
             android:label="@string/setting_about"
             android:theme="@android:style/Theme.Light.NoTitleBar"
@@ -531,6 +526,12 @@
         <activity
             android:name=".view.client.ClientConsultantSalesmanActivity"
             android:label="@string/viewConsultantAndSalesman"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".view.order.WorkOrderDetailActivity"
+            android:label="@string/workorder_detail"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
     </application>

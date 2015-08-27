@@ -146,8 +146,7 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private void completeRefresh() {
         Resource resource = resourceFactory.create("QueryClientsByAdviser");
-        //resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
-        resource.param("instid", "10000001468002").param("userid", "10000001468039");
+        resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
         showClients.clear();
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
