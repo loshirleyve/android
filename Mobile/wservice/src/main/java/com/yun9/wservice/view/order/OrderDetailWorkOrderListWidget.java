@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.yun9.jupiter.listener.OnClickWithNetworkListener;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -53,7 +55,12 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         workOrdeLV = (ListView) this.findViewById(R.id.listview);
-
+        workOrdeLV.setOnItemClickListener(new OnClickWithNetworkListener(){
+            public void ItemClickWithNetwork(AdapterView<?> parent, View view, int position, long id) {
+                WorkorderDto workorderDto = (WorkorderDto) view.getTag();
+                WorkOrderDetailActivity.start(view.getContext(),workorderDto.getNo());
+            }
+        });
     }
 
 

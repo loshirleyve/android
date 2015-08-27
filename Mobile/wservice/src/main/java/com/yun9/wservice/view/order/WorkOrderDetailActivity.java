@@ -57,9 +57,9 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
 
 
     public static void start(Context context, String orderId) {
-        Intent intent = new Intent(context, OrderDetailActivity.class);
+        Intent intent = new Intent(context, WorkOrderDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("orderid", orderId);
+        bundle.putSerializable("no", orderId);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -78,7 +78,12 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
 
     private void buildView() {
         titleBarLayout.getTitleTv().setText(R.string.workorder_detail);
-        titleBarLayout.getTitleLeftTv().setOnClickListener(onCancelClickListener);
+        titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WorkOrderDetailActivity.this.finish();
+            }
+        });
         refreshWorkOrderInfos();
     }
 
@@ -148,13 +153,6 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
             }
             widgetOrderListItem.buildWithData("",workorderInfos.get(position));
             return widgetOrderListItem;
-        }
-    };
-
-    private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            finish();
         }
     };
 
