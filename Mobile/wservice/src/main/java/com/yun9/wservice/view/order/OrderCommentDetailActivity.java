@@ -99,7 +99,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryWorkCommentsByWorkOrderIdService");
-        resource.param("workorderid", commentCommand.getWorkOrder().getOrderworkid());
+        resource.param("workorderid", commentCommand.getWorkOrder().getWorkorderid());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -147,7 +147,7 @@ public class OrderCommentDetailActivity extends JupiterFragmentActivity{
         // 调用服务提交评论
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("AddWorkOrderCommentService");
-        resource.param("workorderid", commentCommand.getWorkOrder().getOrderworkid());
+        resource.param("workorderid", commentCommand.getWorkOrder().getWorkorderid());
         resource.param("senderid",sessionManager.getUser().getId());
         resource.param("commenttype",WorkOrderComment.TYPE_ADD_COMMENT);
         resource.param("commenttext",content);

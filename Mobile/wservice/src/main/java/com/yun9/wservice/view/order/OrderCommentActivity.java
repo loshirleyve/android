@@ -92,8 +92,8 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             }
         });
         // 设置工单信息
-        workOrderIdTV.setText("工单号 " + commentCommand.getWorkOrder().getOrderworkid());
-        workOrderNameTV.setText(commentCommand.getWorkOrder().getOrderworkname());
+        workOrderIdTV.setText("工单号 " + commentCommand.getWorkOrder().getWorkorderid());
+        workOrderNameTV.setText(commentCommand.getWorkOrder().getName());
     }
 
     private void loadData() {
@@ -136,7 +136,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         // 调用服务提交评论
         Resource resource = resourceFactory.create("AddWorkOrderCommentService");
-        resource.param("workorderid",commentCommand.getWorkOrder().getOrderworkid());
+        resource.param("workorderid",commentCommand.getWorkOrder().getWorkorderid());
         resource.param("senderid",sessionManager.getUser().getId());
         resource.param("commenttype","comment");
         resource.param("commenttext",content);

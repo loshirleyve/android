@@ -166,6 +166,7 @@
     <string name="append_comment">追加评论</string>
     <string name="order_score">服务评分</string>
     <string name="comment_detail">评价详情</string>
+    <string name="workorder_detail">工单详情</string>
 
     <string name="recharge">充值</string>
     <string name="confirm_recharge">确认充值</string>

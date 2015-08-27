@@ -18,6 +18,7 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.enums.CtrlCodeDefNo;
 import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.State;
+import com.yun9.wservice.model.WordOrder;
 import com.yun9.wservice.model.WorkOrderComment;
 
 import org.w3c.dom.Text;
@@ -35,7 +36,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
 
     private String orderId;
 
-    private Order.OrderWorkOrder workOrder;
+    private WordOrder workOrder;
 
     public OrderDetailWorkOrderWidget(Context context) {
         super(context);
@@ -49,16 +50,16 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(String orderId,Order.OrderWorkOrder workOrder) {
+    public void buildWithData(String orderId,WordOrder workOrder) {
         this.orderId = orderId;
         this.workOrder = workOrder;
-        workOrderNameTV.setText(workOrder.getOrderworkname());
-        workOrderIdTV.setText("工单号 "+workOrder.getOrderworkid());
+        workOrderNameTV.setText(workOrder.getName());
+        workOrderIdTV.setText("工单号 "+workOrder.getWorkorderid());
         workOrderStateTV.setText(CtrlCodeCache.getInstance()
-                .getCtrlcodeName(CtrlCodeDefNo.WORK_STATE, workOrder.getOrderworkstate()));
-        workOrderRemarkTV.setText(workOrder.getRemark());
+                .getCtrlcodeName(CtrlCodeDefNo.WORK_STATE, workOrder.getState()));
+        workOrderRemarkTV.setText("");
         // 没有完成不能评论
-        if (!State.WorkOrder.COMPLETE.equals(workOrder.getOrderworkstate())) {
+        if (!State.WorkOrder.COMPLETE.equals(workOrder.getState())) {
             checkoutWorkOrderCommentTV.setVisibility(GONE);
         } else {
             checkoutComment();
@@ -84,7 +85,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
     }
 
     private void checkoutComment() {
-        if (workOrder.getCommentNum() > 0) {
+        if (workOrder.getWorkorderCommentList().size() > 0) {
             checkoutWorkOrderCommentTV.setText("查看评论");
             checkoutWorkOrderCommentTV.setOnClickListener(showComment);
         } else {
