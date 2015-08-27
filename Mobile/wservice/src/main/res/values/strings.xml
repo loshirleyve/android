@@ -333,4 +333,6 @@
     <string name="remain_pay">继续支付</string>
     <string name="single_input">单个输入</string>
     <string name="viewConsultantAndSalesman">专属顾问和业务员</string>
+    <string name="lack_phone_notice">缺少客户联系电话</string>
+    <string name="inited_notice">已初始化</string>
 </resources>

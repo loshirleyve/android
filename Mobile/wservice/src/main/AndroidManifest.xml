@@ -529,7 +529,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".view.client.ClientConsultantSalesmanActivity"
+            android:name=".view.client.ClientUserroleActivity"
             android:label="@string/viewConsultantAndSalesman"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
