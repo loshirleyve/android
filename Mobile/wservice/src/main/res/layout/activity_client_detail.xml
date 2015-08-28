@@ -38,9 +38,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/client_no_input_notice"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <TextView
@@ -58,9 +58,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/company_abbrev_name"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <TextView
@@ -78,9 +78,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/company_full_name"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
@@ -138,9 +138,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/region"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <TextView
@@ -158,9 +158,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/client_address"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <TextView
@@ -178,9 +178,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/contact_name"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <TextView
@@ -198,9 +198,9 @@
                 android:layout_marginTop="5dp"
                 android:background="@color/whites"
                 android:hint="@string/contact_phone"
-                android:paddingBottom="20dp"
+                android:paddingBottom="16dp"
                 android:paddingLeft="20dp"
-                android:paddingTop="20dp"
+                android:paddingTop="16dp"
                 android:textSize="16dp" />
 
             <com.yun9.jupiter.widget.JupiterRowStyleSutitleLayout
