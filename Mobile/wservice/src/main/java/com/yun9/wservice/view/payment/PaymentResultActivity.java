@@ -96,8 +96,8 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayRegisterBySourceService");
-        resource.param("source",command.getSource());
-        resource.param("sourceid",command.getSourceId());
+        resource.param("source", command.getSource());
+        resource.param("sourceid", command.getSourceId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -145,6 +145,16 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
                 sum += collect.getAmount();
                 amount = collect.getAmount()+"元";
                 itemsLl.addView(createItem(name,amount));
+            }
+            if (payInfo.getPayRegisterCollects().size() > 0){
+                View line = new View(this);
+                LinearLayout.LayoutParams params =
+                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                params.setMargins(0,22,0,0);
+                line.setLayoutParams(params);
+                line.setBackgroundResource(R.drawable.dash_line_1);
+                line.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                itemsLl.addView(line);
             }
             itemsLl.addView(createItem("总支付:",sum+"元"));
         }
