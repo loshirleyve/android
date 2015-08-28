@@ -254,7 +254,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
                 || order.getWorkorders().size() == 0) {
             orderDetailWorkOrderListWidget.setVisibility(View.GONE);
         } else {
-            orderDetailWorkOrderListWidget.buildWithData(order.getWorkorders(),OrderDetailActivity.this);
+            orderDetailWorkOrderListWidget.buildWithData(order.getWorkorders(),OrderDetailActivity.this,order.getOrder().getOrderid());
         }
         mainRl.setVisibility(View.VISIBLE);
         reloadDataDialog.dismiss();

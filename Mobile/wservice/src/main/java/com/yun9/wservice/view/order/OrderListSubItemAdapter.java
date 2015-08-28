@@ -34,7 +34,7 @@ public class OrderListSubItemAdapter extends JupiterAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return workorderDtos.get(position);
     }
 
     @Override
