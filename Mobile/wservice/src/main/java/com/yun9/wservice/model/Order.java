@@ -63,7 +63,7 @@ public class Order implements Serializable{
         private String buyerinstid;
         private String proxyinstid;
         private String proxyman;
-        private String salesmanid;
+        private String adviser;
         private String purchase;
         private Long createdate;
         private String createby;
@@ -188,12 +188,12 @@ public class Order implements Serializable{
             return this;
         }
 
-        public String getSalesmanid() {
-            return salesmanid;
+        public String getAdviser() {
+            return adviser;
         }
 
-        public OrderBase setSalesmanid(String salesmanid) {
-            this.salesmanid = salesmanid;
+        public OrderBase setAdviser(String adviser) {
+            this.adviser = adviser;
             return this;
         }
 

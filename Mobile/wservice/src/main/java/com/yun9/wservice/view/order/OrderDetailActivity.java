@@ -23,7 +23,6 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
-import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -234,7 +233,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
             orderDetailAttachWidget.setVisibility(View.GONE);
         }
         if (AssertValue.isNotNull(order.getOrder())
-                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getSalesmanid())) {
+                && AssertValue.isNotNullAndNotEmpty(order.getOrder().getAdviser())) {
             orderDetailAdvisorWidget.buildWitdhData(order);
             orderDetailAdvisorWidget.getContactUsIV().setOnClickListener(onContactUsClick);
             orderDetailAdvisorWidget.getCallUsIv().setOnClickListener(onCallUsClick);
@@ -265,7 +264,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             MsgCardDetailCommand msgCardDetailCommand =
                     new MsgCardDetailCommand().setOrderId(orderId);
-            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getSalesmanid());
+            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviser());
             if (user != null) {
                 msgCardDetailCommand.setTitle(user.getName());
             }
@@ -278,14 +277,14 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             OrgUserDetailActivity.start(OrderDetailActivity.this,
-                    new OrgUserDetailCommand().setUserId(order.getOrder().getSalesmanid()));
+                    new OrgUserDetailCommand().setUserId(order.getOrder().getAdviser()));
         }
     };
 
     private View.OnClickListener onCallUsClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getSalesmanid());
+            CacheUser user = UserCache.getInstance().getUser(order.getOrder().getAdviser());
             if (user == null
                     || AssertValue.isNotNullAndNotEmpty(user.getFirstPhone())) {
                 showToast("无法获取用户电话号码");
