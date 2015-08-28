@@ -313,6 +313,9 @@ public class DynamicSessionFragment extends JupiterFragment {
             }
             jupiterRowStyleSutitleLayout.setTag(msgsGroup);
             jupiterRowStyleSutitleLayout.getTitleTV().setText(msgsGroup.getFromuserid());
+
+            jupiterRowStyleSutitleLayout.getSutitleTv().setLineSpacing(8f,1f);
+            jupiterRowStyleSutitleLayout.getSutitleTv().setMaxLines(2);
             jupiterRowStyleSutitleLayout.getSutitleTv().setText(msgsGroup.getLastcontent());
             jupiterRowStyleSutitleLayout.getTimeTv().setText(DateUtil.timeAgo(msgsGroup.getLastmsgdate()));
 

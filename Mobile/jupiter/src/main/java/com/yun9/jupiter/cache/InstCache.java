@@ -9,7 +9,7 @@ import com.yun9.jupiter.util.AssertValue;
  */
 public class InstCache extends AbsCache {
 
-    private static final String CACHE_KEY = "yun9_inst_id";
+    protected static final String CACHE_KEY = "yun9_inst_id";
     private static InstCache instance;
 
     public static InstCache getInstance() {
@@ -34,7 +34,7 @@ public class InstCache extends AbsCache {
         this.put(userid, cacheInst);
     }
 
-    private InstCache() {
+    protected InstCache() {
         super(CACHE_KEY);
     }
 }
