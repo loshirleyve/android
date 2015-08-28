@@ -28,7 +28,6 @@ import com.yun9.wservice.enums.PayModeType;
 import com.yun9.wservice.model.HistoryPayInfo;
 import com.yun9.wservice.model.PayMode;
 import com.yun9.wservice.model.Payinfo;
-import com.yun9.wservice.view.common.InputTextActivity;
 import com.yun9.wservice.view.common.InputTextCommand;
 import com.yun9.wservice.view.order.OrderDetailActivity;
 
@@ -163,7 +162,7 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
                     inputTextCommand.setMaxValue(maxValue);
                 }
                 inputTextCommand.setValue(useBalance + "");
-                InputTextActivity.start(PaymentOrderActivity.this, inputTextCommand);
+                PaymentInputAmountActivity.start(PaymentOrderActivity.this, inputTextCommand);
             }
         });
 

@@ -422,6 +422,12 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+            android:name=".view.payment.PaymentInputAmountActivity"
+            android:label="@string/single_input"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
             android:name=".view.payment.RechargeRecordListActivity"
             android:label="@string/recharge_history"
             android:screenOrientation="portrait"
