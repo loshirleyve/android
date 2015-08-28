@@ -300,7 +300,7 @@ public class OrderActivity extends JupiterFragmentActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             WidgetOrderListItem widgetOrderListItem = null;
-            OrderInfo orderInfo = orderinfos.get(position);
+            final OrderInfo orderInfo = orderinfos.get(position);
 
             if (AssertValue.isNotNull(convertView)) {
                 widgetOrderListItem = (WidgetOrderListItem) convertView;
@@ -327,7 +327,13 @@ public class OrderActivity extends JupiterFragmentActivity {
             widgetOrderListItem.getOrderWork().setAdapter(new OrderListSubItemAdapter(orderInfo.getWorkorders(), OrderActivity.this));
             widgetOrderListItem.setTag(orderInfo.getOrderid());
             widgetOrderListItem.setOnClickListener(onOrderItemClickListener);
-            widgetOrderListItem.getOrderWork().setOnItemClickListener(onItemClickListener);
+            widgetOrderListItem.getOrderWork().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    WorkorderDto workorderDto = (WorkorderDto) view.getTag();
+                    WorkOrderDetailActivity.start(view.getContext(), new WorkOrderCommand().setSource("so").setOrderid(orderInfo.getOrderid()).setWorkorderno(workorderDto.getNo()));
+                }
+            });
             return widgetOrderListItem;
         }
     };
@@ -338,16 +344,6 @@ public class OrderActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             String orderid = (String) v.getTag();
             OrderDetailActivity.start(OrderActivity.this, orderid);
-        }
-    };
-
-
-    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            String orderid = (String)  parent.getTag();
-            WorkorderDto workorderDto = (WorkorderDto) view.getTag();
-            WorkOrderDetailActivity.start(view.getContext(), new WorkOrderCommand().setSource("so").setOrderid(orderid).setWorkorderno(workorderDto.getNo()));
         }
     };
 

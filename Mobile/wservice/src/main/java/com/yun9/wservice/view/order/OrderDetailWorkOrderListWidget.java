@@ -39,9 +39,9 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
         super(context, attrs, defStyle);
     }
 
-    public void buildWithData(List<WorkorderDto> workorderDtos,Context mContext,String orderid) {
-        adapter=new OrderListSubItemAdapter(workorderDtos, mContext);
-        this.orderid=orderid;
+    public void buildWithData(List<WorkorderDto> workorderDtos, Context mContext, String orderid) {
+        adapter = new OrderListSubItemAdapter(workorderDtos, mContext);
+        this.orderid = orderid;
         workOrdeLV.setAdapter(adapter);
         if (adapter != null) {
             adapter.notifyDataSetChanged();
@@ -57,14 +57,13 @@ public class OrderDetailWorkOrderListWidget extends JupiterRelativeLayout {
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         workOrdeLV = (ListView) this.findViewById(R.id.listview);
-        workOrdeLV.setOnItemClickListener(new OnClickWithNetworkListener(){
+        workOrdeLV.setOnItemClickListener(new OnClickWithNetworkListener() {
             public void ItemClickWithNetwork(AdapterView<?> parent, View view, int position, long id) {
                 WorkorderDto workorderDto = (WorkorderDto) view.getTag();
-                WorkOrderDetailActivity.start(view.getContext(),new WorkOrderCommand().setSource("so").setOrderid(orderid).setWorkorderno(workorderDto.getNo()));
+                WorkOrderDetailActivity.start(view.getContext(), new WorkOrderCommand().setSource("so").setOrderid(orderid).setWorkorderno(workorderDto.getNo()));
             }
         });
     }
-
 
 
 }
