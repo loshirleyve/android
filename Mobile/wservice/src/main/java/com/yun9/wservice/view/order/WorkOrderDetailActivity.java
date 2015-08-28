@@ -34,6 +34,7 @@ import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderGroup;
 import com.yun9.wservice.model.OrderInfo;
 import com.yun9.wservice.model.WordOrder;
+import com.yun9.wservice.view.org.OrgCompositeCommand;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,11 +56,14 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
     @BeanInject
     private ResourceFactory resourceFactory;
 
+    private WorkOrderCommand command;
 
-    public static void start(Context context, String orderId) {
+    private String orderid;
+
+    public static void start(Context context,WorkOrderCommand command ) {
         Intent intent = new Intent(context, WorkOrderDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("no", orderId);
+        bundle.putSerializable("command", command);
         intent.putExtras(bundle);
         context.startActivity(intent);
     }
@@ -77,7 +81,10 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
     }
 
     private void buildView() {
+        command = (WorkOrderCommand) this.getIntent().getSerializableExtra("command");
+        orderid=command.getOrderid();
         titleBarLayout.getTitleTv().setText(R.string.workorder_detail);
+        titleBarLayout.getTitleRight().setVisibility(View.GONE);
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +97,9 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
     private void refreshWorkOrderInfos() {
 
         Resource resource = resourceFactory.create("QueryWorkordersByNoAndSource");
-        resource.param("no", "10000001447016");
-        resource.param("source", "so");
-        resource.param("sourcevalue","10000002148002");
+        resource.param("no", command.getWorkorderno());
+        resource.param("source",command.getSource());
+        resource.param("sourcevalue",command.getOrderid());
 
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -151,7 +158,7 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
             } else {
                 widgetOrderListItem = new OrderDetailWorkOrderWidget(WorkOrderDetailActivity.this);
             }
-            widgetOrderListItem.buildWithData("",workorderInfos.get(position));
+            widgetOrderListItem.buildWithData(orderid,workorderInfos.get(position));
             return widgetOrderListItem;
         }
     };
