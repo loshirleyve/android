@@ -85,7 +85,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
     }
 
     private void checkoutComment() {
-        if (workOrder.getWorkorderCommentList().size() > 0) {
+        if (AssertValue.isNotNullAndNotEmpty(workOrder.getWorkorderCommentList()) && workOrder.getWorkorderCommentList().size() > 0) {
             checkoutWorkOrderCommentTV.setText("查看评论");
             checkoutWorkOrderCommentTV.setOnClickListener(showComment);
         } else {
