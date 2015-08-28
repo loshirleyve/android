@@ -220,9 +220,12 @@ public class PaymentOrderActivity extends JupiterFragmentActivity{
         paymentBalance.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentBalance.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
         paymentBalance.getSutitleTv().setTextColor(getResources().getColor(R.color.title_color));
-        if (payinfo.getBalance() != null){
+        if (payinfo.getBalance() != null
+                && payinfo.getBalance().getBalance() != null
+                && payinfo.getBalance().getBalance() > 0.0){
             paymentBalance.getSutitleTv().setText(payinfo.getBalance().getBalance() + "元");
         } else {
+            paymentBalance.getHotNitoceTV().setText("无余额可用");
             paymentBalance.getSutitleTv().setText("0元");
             paymentBalance.setEnabled(false);
         }
