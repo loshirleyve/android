@@ -91,7 +91,7 @@ public class OrderListActivity extends JupiterFragmentActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                OrderDetailActivity.start(OrderListActivity.this, orderList.get(position).getOrderid());
+                OrderDetailActivity.start(OrderListActivity.this, orderList.get(position).getId());
             }
         });
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
@@ -160,16 +160,16 @@ public class OrderListActivity extends JupiterFragmentActivity{
                 List<OrderBaseInfo> orderBaseInfos = wrapper.getOrderList();
                 if (orderBaseInfos != null && orderBaseInfos.size() > 0){
                     if (Page.PAGE_DIR_PULL.equals(dir)){
-                        pullRowid = orderBaseInfos.get(0).getOrderid();
+                        pullRowid = orderBaseInfos.get(0).getId();
                         orderList.addAll(0,orderBaseInfos);
                         if (!AssertValue.isNotNullAndNotEmpty(pushRowid)){
-                            pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getOrderid();
+                            pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getId();
                         }
                         if (orderBaseInfos.size() < Integer.valueOf(resource.page().getSize())){
                             orderLV.setHasMoreItems(false);
                         }
                     } else {
-                        pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getOrderid();
+                        pushRowid = orderBaseInfos.get(orderBaseInfos.size() - 1).getId();
                         orderList.addAll(orderBaseInfos);
                     }
                 } else if (Page.PAGE_DIR_PULL.equals(dir)) {

@@ -54,7 +54,7 @@ public class OrderDetailAttachWidget extends JupiterRelativeLayout{
         titleLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderAttachmentActivity.start(OrderDetailAttachWidget.this.mContext,order.getOrder().getOrderid());
+                OrderAttachmentActivity.start(OrderDetailAttachWidget.this.mContext,order.getOrder().getId());
             }
         });
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class OrderBaseInfo implements Serializable{
 
-    private String orderid;
+    private String id;
     private String productname;
     private String ordersn;
     private String state;
@@ -34,12 +34,13 @@ public class OrderBaseInfo implements Serializable{
         return this;
     }
 
-    public String getOrderid() {
-        return orderid;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderid(String orderid) {
-        this.orderid = orderid;
+    public OrderBaseInfo setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getProductname() {

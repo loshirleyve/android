@@ -105,7 +105,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 Order order = (Order) response.getPayload();
                 if (order != null
-                        && AssertValue.isNotNullAndNotEmpty(order.getOrder().getOrderid())){
+                        && AssertValue.isNotNullAndNotEmpty(order.getOrder().getId())){
                     buildWithOrder(order);
                 }
             }

@@ -206,13 +206,13 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
                     if (State.OrderPayState.WAITING_PAY.equals(order.getOrder().getPaystate())) {
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
-                        command.setSourceValue(order.getOrder().getOrderid());
+                        command.setSourceValue(order.getOrder().getId());
                         command.setInstId(order.getOrder().getInstid());
                         PaymentOrderActivity.start(OrderDetailActivity.this, command);
                     } else if (State.OrderPayState.UN_CONFIRM.equals(order.getOrder().getPaystate())) {
                         PaymentOrderCommand command = new PaymentOrderCommand();
                         command.setSource(PaymentOrderCommand.SOURCE_ORDER);
-                        command.setSourceValue(order.getOrder().getOrderid());
+                        command.setSourceValue(order.getOrder().getId());
                         command.setInstId(order.getOrder().getInstid());
                         PaymentOrderRemainActivity.start(OrderDetailActivity.this, command);
                     } else {
@@ -253,7 +253,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
                 || order.getWorkorders().size() == 0) {
             orderDetailWorkOrderListWidget.setVisibility(View.GONE);
         } else {
-            orderDetailWorkOrderListWidget.buildWithData(order.getWorkorders(),OrderDetailActivity.this,order.getOrder().getOrderid());
+            orderDetailWorkOrderListWidget.buildWithData(order.getWorkorders(),OrderDetailActivity.this,order.getOrder().getId());
         }
         mainRl.setVisibility(View.VISIBLE);
         reloadDataDialog.dismiss();

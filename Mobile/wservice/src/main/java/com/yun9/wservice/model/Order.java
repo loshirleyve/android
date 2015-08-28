@@ -50,7 +50,7 @@ public class Order implements Serializable{
     }
 
     public static class OrderBase implements Serializable{
-        private String orderid;
+        private String id;
         private String name;
         private String imgid;
         private String introduce;
@@ -71,12 +71,12 @@ public class Order implements Serializable{
         private Long begindate;
         private Long enddate;
 
-        public String getOrderid() {
-            return orderid;
+        public String getId() {
+            return id;
         }
 
-        public OrderBase setOrderid(String orderid) {
-            this.orderid = orderid;
+        public OrderBase setId(String id) {
+            this.id = id;
             return this;
         }
 
