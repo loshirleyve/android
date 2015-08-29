@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class OrderInfo implements Serializable {
 
-    private String orderid;
+    private String id;
     private String name;
     private String imgid;
     private String introduce;
@@ -31,12 +31,13 @@ public class OrderInfo implements Serializable {
     private long enddate;
     private List<WorkorderDto> workorders;
 
-    public String getOrderid() {
-        return orderid;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderid(String orderid) {
-        this.orderid = orderid;
+    public OrderInfo setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getName() {

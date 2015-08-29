@@ -52,13 +52,24 @@
                 app:rowStyleTitleText="@string/user_discover"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
             <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
+                android:id="@+id/analysis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/whites"
+                app:rowStyleTitleMainImage="@drawable/analysis"
+                app:rowStyleTitleText="@string/sale_analysis">
+            </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+
+            <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
                 android:id="@+id/about2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/whites"
                 app:rowStyleTitleMainImage="@drawable/contact"
-                app:rowStyleTitleText="@string/user_mycontact"></com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
+                app:rowStyleTitleText="@string/user_mycontact">
+            </com.yun9.jupiter.widget.JupiterRowStyleTitleLayout>
 
             <com.yun9.jupiter.widget.JupiterRowStyleTitleLayout
                 android:id="@+id/user_org"

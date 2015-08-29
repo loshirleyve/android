@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<repositorys>
+
+    <repository>
+        <name>QueryDateSectionByNameService</name>
+        <action>com.yun9.sys.md.service.QueryDateSectionByNameService</action>
+        <output>
+            <classname>com.yun9.wservice.model.DateSection</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <repository>
+        <name>QuerySignbillService</name>
+        <action>com.yun9.ws.biz.service.QuerySignbillService</action>
+        <output>
+            <classname>com.yun9.wservice.model.SignBill</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+</repositorys>

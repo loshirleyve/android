@@ -541,6 +541,12 @@
             android:label="@string/workorder_detail"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".view.analysis.SaleAnalysisActivity"
+            android:label="@string/sale_analysis"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

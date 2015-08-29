@@ -1,7 +1,6 @@
 package com.yun9.wservice.view.order;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,6 @@ import com.yun9.jupiter.cache.CtrlCodeCache;
 import com.yun9.jupiter.cache.InstCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
-import com.yun9.jupiter.listener.OnClickWithNetworkListener;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheCtrlcodeItem;
 import com.yun9.jupiter.model.CacheInst;
@@ -25,18 +23,14 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
-import com.yun9.jupiter.widget.JupiterSegmentedGroup;
-import com.yun9.jupiter.widget.JupiterSegmentedItem;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
-import com.yun9.wservice.model.Order;
 import com.yun9.wservice.model.OrderGroup;
 import com.yun9.wservice.model.OrderInfo;
 import com.yun9.wservice.model.WorkorderDto;
-import com.yun9.wservice.view.inst.SelectInstCommand;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -115,7 +109,7 @@ public class OrderActivity extends JupiterFragmentActivity {
                 mPtrFrame.refreshComplete();
 
                 if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
-                    refreshOrderInfos(currOrderGroup, orderinfos.get(0).getOrderid(), Page.PAGE_DIR_PULL);
+                    refreshOrderInfos(currOrderGroup, orderinfos.get(0).getId(), Page.PAGE_DIR_PULL);
                 } else {
                     refreshOrderInfos(currOrderGroup, null, Page.PAGE_DIR_PULL);
                 }
@@ -129,7 +123,7 @@ public class OrderActivity extends JupiterFragmentActivity {
             public void onLoadMoreItems() {
                 if (AssertValue.isNotNullAndNotEmpty(orderinfos)) {
                     OrderInfo order = orderinfos.get(orderinfos.size() - 1);
-                    refreshOrderInfos(currOrderGroup, order.getOrderid(), Page.PAGE_DIR_PUSH);
+                    refreshOrderInfos(currOrderGroup, order.getId(), Page.PAGE_DIR_PUSH);
                 } else {
                     orderLists.onFinishLoading(true);
                 }
@@ -325,13 +319,15 @@ public class OrderActivity extends JupiterFragmentActivity {
             String date = format.format(new Date(orderInfo.getCreatedate()));
             widgetOrderListItem.getOrderDate().setText(date);
             widgetOrderListItem.getOrderWork().setAdapter(new OrderListSubItemAdapter(orderInfo.getWorkorders(), OrderActivity.this));
-            widgetOrderListItem.setTag(orderInfo.getOrderid());
+            widgetOrderListItem.setTag(orderInfo.getId());
             widgetOrderListItem.setOnClickListener(onOrderItemClickListener);
             widgetOrderListItem.getOrderWork().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     WorkorderDto workorderDto = (WorkorderDto) view.getTag();
-                    WorkOrderDetailActivity.start(view.getContext(), new WorkOrderCommand().setSource("so").setOrderid(orderInfo.getOrderid()).setWorkorderno(workorderDto.getNo()));
+                    WorkOrderDetailActivity.start(view.getContext(),
+                            new WorkOrderCommand().setSource("so").setOrderid(orderInfo.getId())
+                                    .setWorkorderno(workorderDto.getNo()));
                 }
             });
             return widgetOrderListItem;

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.yun9.jupiter.cache.UserCache;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.listener.OnClickWithNetworkListener;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheUser;
 import com.yun9.jupiter.model.User;
@@ -24,6 +25,7 @@ import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.analysis.SaleAnalysisActivity;
 import com.yun9.wservice.view.client.ClientActivity;
 import com.yun9.wservice.view.client.ClientCommand;
 import com.yun9.wservice.view.order.MyWalletActivity;
@@ -62,6 +64,9 @@ public class UserFragment extends JupiterFragment {
 
     @ViewInject(id = R.id.user_org)
     private JupiterRowStyleTitleLayout userOgrLayout;
+
+    @ViewInject(id = R.id.analysis)
+    private JupiterRowStyleTitleLayout analysis;
 
     @ViewInject(id = R.id.about2)
     private JupiterRowStyleTitleLayout client;
@@ -140,6 +145,13 @@ public class UserFragment extends JupiterFragment {
                 }
                 clientCommand.setId(sessionManager.getUser().getId());
                 ClientActivity.start(getActivity(), clientCommand);
+            }
+        });
+
+        analysis.setOnClickListener(new OnClickWithNetworkListener(){
+            @Override
+            public void onClickWithNetwork(View v) {
+                SaleAnalysisActivity.start(getActivity());
             }
         });
 
