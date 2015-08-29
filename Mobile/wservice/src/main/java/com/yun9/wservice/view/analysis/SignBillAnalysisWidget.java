@@ -12,7 +12,7 @@ import com.yun9.wservice.R;
 /**
  * Created by huangbinglong on 15/8/28.
  */
-public class SaleAnalysisWidget extends JupiterRelativeLayout {
+public class SignBillAnalysisWidget extends JupiterRelativeLayout {
 
     private ImageView userHeadIv;
     private TextView userNameTv;
@@ -21,15 +21,15 @@ public class SaleAnalysisWidget extends JupiterRelativeLayout {
     private TextView amountTv;
     private JupiterListView classifyListView;
 
-    public SaleAnalysisWidget(Context context) {
+    public SignBillAnalysisWidget(Context context) {
         super(context);
     }
 
-    public SaleAnalysisWidget(Context context, AttributeSet attrs) {
+    public SignBillAnalysisWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SaleAnalysisWidget(Context context, AttributeSet attrs, int defStyle) {
+    public SignBillAnalysisWidget(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

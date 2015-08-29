@@ -543,7 +543,7 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".view.analysis.SaleAnalysisActivity"
+            android:name=".view.analysis.SignBillAnalysisActivity"
             android:label="@string/sale_analysis"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>

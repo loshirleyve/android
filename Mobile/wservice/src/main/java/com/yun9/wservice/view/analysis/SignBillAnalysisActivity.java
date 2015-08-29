@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +31,8 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.DateSection;
-import com.yun9.wservice.model.OrderBaseInfo;
 import com.yun9.wservice.model.SignBill;
 import com.yun9.wservice.model.SignBillClassify;
-import com.yun9.wservice.model.wrapper.OrderBaseInfoWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +45,7 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * Created by huangbinglong on 15/8/28.
  */
-public class SaleAnalysisActivity extends JupiterFragmentActivity{
+public class SignBillAnalysisActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
@@ -81,7 +78,7 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
     private ResourceFactory resourceFactory;
 
     public static void start(Context context) {
-        Intent intent = new Intent(context, SaleAnalysisActivity.class);
+        Intent intent = new Intent(context, SignBillAnalysisActivity.class);
         Bundle bundle = new Bundle();
         intent.putExtras(bundle);
         context.startActivity(intent);
@@ -98,7 +95,7 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaleAnalysisActivity.this.finish();
+                SignBillAnalysisActivity.this.finish();
             }
         });
 
@@ -293,7 +290,7 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_sale_analysis;
+        return R.layout.activity_signbill_analysis;
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
@@ -318,24 +315,24 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             SignBill signBill = signBillList.get(position);
-            SaleAnalysisWidget widget = null;
+            SignBillAnalysisWidget widget = null;
             if (convertView == null){
-                widget = new SaleAnalysisWidget(SaleAnalysisActivity.this);
+                widget = new SignBillAnalysisWidget(SignBillAnalysisActivity.this);
                 convertView = widget;
             } else {
-                widget = (SaleAnalysisWidget) convertView;
+                widget = (SignBillAnalysisWidget) convertView;
             }
             buildWidgetWithData(widget,signBill);
             return convertView;
         }
     };
 
-    private void buildWidgetWithData(SaleAnalysisWidget widget,final SignBill signBill) {
+    private void buildWidgetWithData(SignBillAnalysisWidget widget,final SignBill signBill) {
         CacheUser cacheUser = UserCache.getInstance().getUser(signBill.getUserid());
         if (cacheUser != null){
             widget.getUserNameTv().setText(cacheUser.getName());
-            ImageLoaderUtil.getInstance(SaleAnalysisActivity.this).displayImage(
-                    cacheUser.getHead(),widget.getUserHeadIv()
+            ImageLoaderUtil.getInstance(SignBillAnalysisActivity.this).displayImage(
+                    cacheUser.getHead(), widget.getUserHeadIv()
             );
         }
         widget.getSortNoTv().setText(signBill.getSortno()+"");
@@ -365,7 +362,7 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
                 SignBillClassify classify = signBill.getClassifys().get(position);
                 SignBillClassifyWidget signBillClassifyWidget;
                 if (convertView == null){
-                    signBillClassifyWidget = new SignBillClassifyWidget(SaleAnalysisActivity.this);
+                    signBillClassifyWidget = new SignBillClassifyWidget(SignBillAnalysisActivity.this);
                     convertView = signBillClassifyWidget;
                 } else {
                     signBillClassifyWidget = (SignBillClassifyWidget) convertView;
@@ -381,9 +378,9 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
     private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
-            WindowManager.LayoutParams lp = SaleAnalysisActivity.this.getWindow().getAttributes();
+            WindowManager.LayoutParams lp = SignBillAnalysisActivity.this.getWindow().getAttributes();
             lp.alpha = 1f;
-            SaleAnalysisActivity.this.getWindow().setAttributes(lp);
+            SignBillAnalysisActivity.this.getWindow().setAttributes(lp);
         }
     };
 }
