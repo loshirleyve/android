@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <repositorys>
 
+    <!-- 查询时间段-->
     <repository>
         <name>QueryDateSectionByNameService</name>
         <action>com.yun9.sys.md.service.QueryDateSectionByNameService</action>
@@ -11,6 +12,7 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询签单统计列表-->
     <repository>
         <name>QuerySignbillService</name>
         <action>com.yun9.ws.biz.service.QuerySignbillService</action>
@@ -20,4 +22,27 @@
         </output>
         <type>yun9</type>
     </repository>
+
+    <!-- 查询应收款项基础信息-->
+    <repository>
+        <name>QueryPayRegisterAnalysisService</name>
+        <action>com.yun9.ws.biz.service.QueryPayRegisterAnalysisService</action>
+        <output>
+            <classname>com.yun9.wservice.model.PayRegisterAnalysis</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 查询签应收款，收款人列表-->
+    <repository>
+        <name>QueryPayRegisterCollectAnalysisService</name>
+        <action>com.yun9.ws.biz.service.QueryPayRegisterCollectAnalysisService</action>
+        <output>
+            <classname>com.yun9.wservice.model.PayRegisterCollectAnalysis</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

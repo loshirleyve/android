@@ -554,6 +554,16 @@
             android:label="@string/signbill_analysis"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.analysis.GatheringAnalysisActivity"
+            android:label="@string/gathering_analysis"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.analysis.WorkorderAnalysisActivity"
+            android:label="@string/workorder_analysis"
+            android:theme="@android:style/Theme.Light.NoTitleBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

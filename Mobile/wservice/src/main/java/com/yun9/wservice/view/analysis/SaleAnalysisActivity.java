@@ -95,9 +95,21 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity {
                     break;
                 case 1:
                     titleLayout.getTitleTV().setText(R.string.gathering_analysis);
+                    titleLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            GatheringAnalysisActivity.start(SaleAnalysisActivity.this);
+                        }
+                    });
                     break;
                 case 2:
                     titleLayout.getTitleTV().setText(R.string.workorder_analysis);
+                    titleLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            WorkorderAnalysisActivity.start(SaleAnalysisActivity.this);
+                        }
+                    });
             }
             return convertView;
         }

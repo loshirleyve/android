@@ -35,7 +35,7 @@ public class SignBillAnalysisWidget extends JupiterRelativeLayout {
 
     @Override
     protected int getContextView() {
-        return R.layout.widget_sale_analysis;
+        return R.layout.widget_signbill_analysis;
     }
 
     @Override
