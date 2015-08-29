@@ -16,6 +16,7 @@ import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -24,6 +25,7 @@ import com.yun9.jupiter.util.StringUtil;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterSearchInputLayout;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
+import com.yun9.jupiter.widget.paging.listview.PagingListView;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
@@ -61,7 +63,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     private ClientListAdapter clientListAdapter;
 
     @ViewInject(id=R.id.client_list_ptr)
-    private SwipeMenuListView clientListView;
+    private PagingListView clientListView;
 
     @ViewInject(id=R.id.rotate_header_list_view_frame_client)
     private PtrClassicFrameLayout mPtrFrame;
@@ -77,6 +79,8 @@ public class ClientActivity extends JupiterFragmentActivity {
     private EditClientCommand command;
     private ClientItemLayout clientItemLayout;
 
+    private String pullRowid = null;
+    private String pushRowid = null;
 
     public static void start(Activity activity,ClientCommand command) {
         Intent intent = new Intent(activity, ClientActivity.class);
@@ -109,7 +113,10 @@ public class ClientActivity extends JupiterFragmentActivity {
         mPtrFrame.setPtrHandler(new PtrHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                refresh();
+                clientListView.setHasMoreItems(true);
+                pullRowid = null;
+                clients.clear();
+                refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
             @Override
@@ -123,14 +130,24 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListAdapter = new ClientListAdapter(this, showClients);
         clientListView.setAdapter(clientListAdapter);
         clientListView.setOnItemClickListener(onItemClickListener);
+        clientListView.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if(AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                    refresh(pushRowid, Page.PAGE_DIR_PUSH);
+                }else {
+                    clientListView.onFinishLoading(true);
+                }
+            }
+        });
         this.autoRefresh();
     }
 
-    private void refresh() {
+    private void refresh(final String rowid, final String dir) {
         mPtrFrame.postDelayed(new Runnable() {
             @Override
             public void run() {
-                completeRefresh();
+                refreshClient(rowid, dir);
             }
         }, 100);
     }
@@ -144,7 +161,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
-    private void completeRefresh() {
+/*    private void completeRefresh() {
         Resource resource = resourceFactory.create("QueryClientsByAdviser");
         resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
         showClients.clear();
@@ -166,6 +183,50 @@ public class ClientActivity extends JupiterFragmentActivity {
                 mPtrFrame.refreshComplete();
             }
         });
+    }*/
+
+    private void refreshClient(String rowid, final String dir) {
+        final Resource resource = resourceFactory.create("QueryClientsByAdviser");
+        resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
+        showClients.clear();
+        resource.page().setRowid(rowid).setDir(dir);
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                clients = (List<Client>) response.getPayload();
+                if (AssertValue.isNotNullAndNotEmpty(clients)) {
+                    if(Page.PAGE_DIR_PULL.equals(dir)){
+                        pullRowid = clients.get(0).getId();
+                        showClients.addAll(0, clients);
+                        if(!AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                            pushRowid = clients.get(clients.size() - 1).getId();
+                        }
+                        if(clients.size() < Integer.valueOf(resource.page().getSize())){
+                            clientListView.setHasMoreItems(false);
+                        }
+                    }else {
+                        pushRowid = clients.get(clients.size() - 1).getId();
+                        showClients.addAll(clients);
+                    }
+                }else if (Page.PAGE_DIR_PULL.equals(dir)){
+                    showToast(getString(R.string.pull_down_notice));
+                }else if (Page.PAGE_DIR_PUSH.equals(dir)){
+                    clientListView.setHasMoreItems(false);
+                    showToast(R.string.app_no_more_data);
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void onFinally(Response response) {
+                clientListAdapter.notifyDataSetChanged();
+                mPtrFrame.refreshComplete();
+                clientListView.onFinishLoading(true);
+            }
+        });
     }
 
     @Override
@@ -177,7 +238,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (resultCode == JupiterCommand.RESULT_CODE_OK){
-                refresh();
+                refresh(null, Page.PAGE_DIR_PULL);
             }
     }
 
