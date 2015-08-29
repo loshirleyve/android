@@ -30,7 +30,6 @@
             android:gravity="center"
             android:textColor="@color/purple_font"
             android:layout_centerInParent="true"
-            android:background="@drawable/button_blue"
             android:text=""/>
     </RelativeLayout>
     <in.srain.cube.views.ptr.PtrClassicFrameLayout

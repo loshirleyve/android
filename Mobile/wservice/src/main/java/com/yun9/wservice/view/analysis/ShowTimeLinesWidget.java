@@ -8,6 +8,7 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterLinearLayout;
 import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by huangbinglong on 15/8/28.
  */
-public class ShowTimeLinesWidget extends JupiterRelativeLayout {
+public class ShowTimeLinesWidget extends JupiterLinearLayout {
 
     private JupiterListView timeLineListView;
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -206,9 +208,15 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
     private void openWindow() {
         if (timeLineWindow != null) {
             WindowManager.LayoutParams lp = this.getWindow().getAttributes();
-            lp.alpha = 0.4f;
+            lp.alpha = 1f;
             this.getWindow().setAttributes(lp);
-            timeLineWindow.showAtLocation(selectedTimeLineTv, Gravity.CENTER_HORIZONTAL, 0, 0);
+            showTimeLinesWidget.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            int popupWidth = showTimeLinesWidget.getMeasuredWidth();
+            int[] location = new int[2];
+            selectedTimeLineTv.getLocationOnScreen(location);
+            timeLineWindow.showAtLocation(selectedTimeLineTv, Gravity.NO_GRAVITY,
+                    PublicHelp.dip2px(getApplicationContext(),(titleBarLayout.getWidth() - popupWidth) / 2),
+                    location[1]+selectedTimeLineTv.getHeight()+3);
         }
     }
 
@@ -221,7 +229,6 @@ public class SaleAnalysisActivity extends JupiterFragmentActivity{
         timeLineWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         timeLineWindow.setOutsideTouchable(true);
         timeLineWindow.setFocusable(true);
-        timeLineWindow.setAnimationStyle(R.style.top2bottom_bottom2top);
         showTimeLinesWidget.setCallback(new SelectedTimeLineCallback() {
             @Override
             public void callback(DateSection timeLine) {
