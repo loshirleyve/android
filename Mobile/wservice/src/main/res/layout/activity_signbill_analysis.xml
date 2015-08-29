@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         app:titleLeftIcoSrc="@drawable/arrow_left"
         app:titleLeftIcoVisibility="true"
-        app:titleText="@string/sale_analysis"/>
+        app:titleText="@string/signbill_analysis"/>
     <RelativeLayout
         android:id="@+id/time_line_rl"
         android:layout_below="@id/title_bar"

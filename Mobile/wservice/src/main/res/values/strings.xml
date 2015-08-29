@@ -338,4 +338,7 @@
     <string name="inited_notice">已初始化</string>
     <string name="sale_analysis">销售分析</string>
     <string name="pull_down_notice">没有新数据</string>
+    <string name="signbill_analysis">签单统计</string>
+    <string name="gathering_analysis">应收统计</string>
+    <string name="workorder_analysis">工单统计</string>
 </resources>

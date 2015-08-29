@@ -25,6 +25,7 @@ import com.yun9.jupiter.widget.JupiterRowStyleTitleLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
+import com.yun9.wservice.view.analysis.SaleAnalysisActivity;
 import com.yun9.wservice.view.analysis.SignBillAnalysisActivity;
 import com.yun9.wservice.view.client.ClientActivity;
 import com.yun9.wservice.view.client.ClientCommand;
@@ -151,7 +152,7 @@ public class UserFragment extends JupiterFragment {
         analysis.setOnClickListener(new OnClickWithNetworkListener(){
             @Override
             public void onClickWithNetwork(View v) {
-                SignBillAnalysisActivity.start(getActivity());
+                SaleAnalysisActivity.start(getActivity());
             }
         });
 
