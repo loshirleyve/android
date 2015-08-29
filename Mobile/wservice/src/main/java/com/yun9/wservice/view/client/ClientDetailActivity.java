@@ -118,11 +118,11 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         sourceLayout.setOnClickListener(onSourceClickListener);
         postLayout.setOnClickListener(onPostClickListener);
         clientRankLayout.setOnClickListener(onClientRankClickListener);
-        if(!AssertValue.isNotNullAndNotEmpty(clientid)){
+        /*if(!AssertValue.isNotNullAndNotEmpty(clientid)){
             clientNoEt.setOnFocusChangeListener(new OnFocusChangeListener());
             companyAbbrNameEt.setOnFocusChangeListener(new OnFocusChangeListener());
             contactPhoneEt.setOnFocusChangeListener(new OnFocusChangeListener());
-        }
+        }*/
     }
 
     private View.OnClickListener onSureClickListener = new View.OnClickListener() {
@@ -535,7 +535,7 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
         clientRank = client.getLevel();
     }
 
-    private class OnFocusChangeListener implements View.OnFocusChangeListener {
+    /*private class OnFocusChangeListener implements View.OnFocusChangeListener {
         @Override
         public void onFocusChange(final View v, boolean hasFocus) {
             if (!v.hasFocus()) {
@@ -579,5 +579,5 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
                 });
             }
         }
-    }
+    }*/
 }
