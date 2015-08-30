@@ -256,7 +256,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
 
     private void loadTimeLines() {
         Resource resource = resourceFactory.create("QueryDateSectionByNameService");
-        resource.param("name", "QD");
+        resource.param("name", "YS");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -315,12 +315,15 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
                     amountTv.setText(analysis.getAmount() + "元");
                     payAmountTv.setText(analysis.getPayAmount() + "元");
                     unPayAmountTv.setText(analysis.getUnPayAmount() + "元");
+                } else {
+                    cleanBaseInfo();
                 }
             }
 
             @Override
             public void onFailure(Response response) {
                 showToast(response.getCause());
+                cleanBaseInfo();
             }
 
             @Override
@@ -328,6 +331,12 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
 
             }
         });
+    }
+
+    private void cleanBaseInfo() {
+        amountTv.setText("");
+        payAmountTv.setText("");
+        unPayAmountTv.setText("");
     }
 
     @Override

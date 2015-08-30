@@ -45,4 +45,26 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 查询工单统计基础信息-->
+    <repository>
+        <name>QueryWorkorderAnalysisService</name>
+        <action>com.yun9.ws.biz.service.QueryWorkorderAnalysisService</action>
+        <output>
+            <classname>com.yun9.wservice.model.WorkorderAnalysis</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
+    <!-- 查询工单统计，用户列表-->
+    <repository>
+        <name>QueryWorkorderAnalysisUserService</name>
+        <action>com.yun9.ws.biz.service.QueryWorkorderAnalysisUserService</action>
+        <output>
+            <classname>com.yun9.wservice.model.WorkorderAnalysisUser</classname>
+            <type>list</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

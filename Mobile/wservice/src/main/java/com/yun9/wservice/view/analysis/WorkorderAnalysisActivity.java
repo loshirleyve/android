@@ -32,6 +32,8 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.DateSection;
 import com.yun9.wservice.model.PayRegisterAnalysis;
 import com.yun9.wservice.model.PayRegisterCollectAnalysis;
+import com.yun9.wservice.model.WorkorderAnalysis;
+import com.yun9.wservice.model.WorkorderAnalysisUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,14 +60,23 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.analysis_list_ptr)
     private PagingListView analysisListView;
 
-    @ViewInject(id=R.id.amount_tv)
-    private TextView amountTv;
+    @ViewInject(id=R.id.allnums_tv)
+    private TextView allNumsTv;
 
-    @ViewInject(id=R.id.pay_amount_tv)
-    private TextView payAmountTv;
+    @ViewInject(id=R.id.complete_nums_tv)
+    private TextView completeNumsTv;
 
-    @ViewInject(id=R.id.un_pay_amount_tv)
-    private TextView unPayAmountTv;
+    @ViewInject(id=R.id.in_service_nums)
+    private TextView inserviceNumsTv;
+
+    @ViewInject(id=R.id.completerate_tv)
+    private TextView completerateTv;
+
+    @ViewInject(id=R.id.wait_nums_tv)
+    private TextView waitNumsTv;
+
+    @ViewInject(id=R.id.laterate_tv)
+    private TextView laterateTv;
 
     private PopupWindow timeLineWindow;
 
@@ -73,7 +84,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
 
     private DateSection selectedDateSection;
 
-    private List<PayRegisterCollectAnalysis> analysisList;
+    private List<WorkorderAnalysisUser> analysisList;
 
     private String pullRowid = null;
 
@@ -166,7 +177,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         if (selectedDateSection == null){
             return;
         }
-        final Resource resource = resourceFactory.create("QueryPayRegisterCollectAnalysisService");
+        final Resource resource = resourceFactory.create("QueryWorkorderAnalysisUserService");
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("beginDate",selectedDateSection.getBegindate());
         resource.param("endDate",selectedDateSection.getEnddate());
@@ -174,7 +185,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                List<PayRegisterCollectAnalysis> temps = (List<PayRegisterCollectAnalysis>) response.getPayload();
+                List<WorkorderAnalysisUser> temps = (List<WorkorderAnalysisUser>) response.getPayload();
                 if (temps != null && temps.size() > 0) {
                     if (Page.PAGE_DIR_PULL.equals(dir)) {
                         pullRowid = temps.get(0).getId();
@@ -255,7 +266,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
 
     private void loadTimeLines() {
         Resource resource = resourceFactory.create("QueryDateSectionByNameService");
-        resource.param("name", "QD");
+        resource.param("name", "GD");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -302,24 +313,30 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
     }
 
     private void loadBaseInfo() {
-        final Resource resource = resourceFactory.create("QueryPayRegisterAnalysisService");
+        final Resource resource = resourceFactory.create("QueryWorkorderAnalysisService");
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("beginDate",selectedDateSection.getBegindate());
         resource.param("endDate",selectedDateSection.getEnddate());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
-                PayRegisterAnalysis analysis = (PayRegisterAnalysis) response.getPayload();
+                WorkorderAnalysis analysis = (WorkorderAnalysis) response.getPayload();
                 if (analysis != null) {
-                    amountTv.setText(analysis.getAmount() + "元");
-                    payAmountTv.setText(analysis.getPayAmount() + "元");
-                    unPayAmountTv.setText(analysis.getUnPayAmount() + "元");
+                    allNumsTv.setText(analysis.getAllNums() + "单");
+                    completeNumsTv.setText(analysis.getCompleteNums() + "单");
+                    inserviceNumsTv.setText(analysis.getInserviceNums() + "单");
+                    completerateTv.setText(analysis.getComleterate() + "%");
+                    waitNumsTv.setText(analysis.getWaitNums() + "单");
+                    laterateTv.setText(analysis.getLaterate() + "%");
+                } else {
+                    cleanBaseInfo();
                 }
             }
 
             @Override
             public void onFailure(Response response) {
                 showToast(response.getCause());
+                cleanBaseInfo();
             }
 
             @Override
@@ -329,9 +346,18 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         });
     }
 
+    private void cleanBaseInfo() {
+        allNumsTv.setText("");
+        completeNumsTv.setText("");
+        inserviceNumsTv.setText("");
+        completerateTv.setText("");
+        waitNumsTv.setText("");
+        laterateTv.setText("");
+    }
+
     @Override
     protected int getContentView() {
-        return R.layout.activity_gathering_analysis;
+        return R.layout.activity_workorder_analysis;
     }
 
     private JupiterAdapter adapter = new JupiterAdapter() {
@@ -355,25 +381,28 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            PayRegisterCollectAnalysis analysis = analysisList.get(position);
-            GatheringAnalysisWidget widget = null;
+            WorkorderAnalysisUser analysis = analysisList.get(position);
+            WorkorderAnalysisUserWidget widget = null;
             if (convertView == null){
-                widget = new GatheringAnalysisWidget(WorkorderAnalysisActivity.this);
+                widget = new WorkorderAnalysisUserWidget(WorkorderAnalysisActivity.this);
                 convertView = widget;
             } else {
-                widget = (GatheringAnalysisWidget) convertView;
+                widget = (WorkorderAnalysisUserWidget) convertView;
             }
             buildWidgetWithData(widget,analysis);
             return convertView;
         }
     };
 
-    private void buildWidgetWithData(GatheringAnalysisWidget widget,final PayRegisterCollectAnalysis analysis) {
+    private void buildWidgetWithData(WorkorderAnalysisUserWidget widget, final WorkorderAnalysisUser analysis) {
         CacheUser cacheUser = UserCache.getInstance().getUser(analysis.getUserid());
         if (cacheUser != null){
             widget.getUserNameTv().setText(cacheUser.getName());
         }
-        widget.getAmountTv().setText(analysis.getCollectAmount()+"元");
+        widget.getAllNumsTv().setText(analysis.getAllNums()+"");
+        widget.getCompleteNumsTv().setText(analysis.getCompleteNums()+"");
+        widget.getWaitNumsTv().setText(analysis.getWaitNums()+"");
+        widget.getCompleteRateTv().setText(analysis.getComleterate()+"%");
 
     }
 
