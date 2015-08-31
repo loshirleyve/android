@@ -30,8 +30,11 @@ import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.Client;
+import com.yun9.wservice.model.OrderInfo;
+import com.yun9.wservice.view.org.OrgCompositeUserListBean;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -54,18 +57,18 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     private static final Logger logger = Logger.getLogger(ClientActivity.class);
 
-    @ViewInject(id=R.id.client_title)
+    @ViewInject(id = R.id.client_title)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.searchRL)
+    @ViewInject(id = R.id.searchRL)
     private JupiterSearchInputLayout jupiterSearchInputLayout;
 
     private ClientListAdapter clientListAdapter;
 
-    @ViewInject(id=R.id.client_list_ptr)
+    @ViewInject(id = R.id.client_list_ptr)
     private PagingListView clientListView;
 
-    @ViewInject(id=R.id.rotate_header_list_view_frame_client)
+    @ViewInject(id = R.id.rotate_header_list_view_frame_client)
     private PtrClassicFrameLayout mPtrFrame;
 
     @BeanInject
@@ -73,8 +76,8 @@ public class ClientActivity extends JupiterFragmentActivity {
     @BeanInject
     private SessionManager sessionManager;
 
-    private List<Client> clients;
-    private List<Client> showClients;
+    private List<Client> clients = new ArrayList<>();
+    private LinkedList<Client> showClients = new LinkedList<>();
 
     private EditClientCommand command;
     private ClientItemLayout clientItemLayout;
@@ -82,7 +85,7 @@ public class ClientActivity extends JupiterFragmentActivity {
     private String pullRowid = null;
     private String pushRowid = null;
 
-    public static void start(Activity activity,ClientCommand command) {
+    public static void start(Activity activity, ClientCommand command) {
         Intent intent = new Intent(activity, ClientActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
@@ -93,8 +96,6 @@ public class ClientActivity extends JupiterFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        clients = new ArrayList<>();
-        showClients = new ArrayList<>();
         buildView();
     }
 
@@ -116,6 +117,7 @@ public class ClientActivity extends JupiterFragmentActivity {
                 clientListView.setHasMoreItems(true);
                 pullRowid = null;
                 clients.clear();
+                showClients.clear();
                 refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
@@ -133,9 +135,9 @@ public class ClientActivity extends JupiterFragmentActivity {
         clientListView.setPagingableListener(new PagingListView.Pagingable() {
             @Override
             public void onLoadMoreItems() {
-                if(AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                if (AssertValue.isNotNullAndNotEmpty(pushRowid)) {
                     refresh(pushRowid, Page.PAGE_DIR_PUSH);
-                }else {
+                } else {
                     clientListView.onFinishLoading(true);
                 }
             }
@@ -152,7 +154,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
-    private void autoRefresh(){
+    private void autoRefresh() {
         mPtrFrame.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -188,41 +190,64 @@ public class ClientActivity extends JupiterFragmentActivity {
     private void refreshClient(String rowid, final String dir) {
         final Resource resource = resourceFactory.create("QueryClientsByAdviser");
         resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
-        showClients.clear();
         resource.page().setRowid(rowid).setDir(dir);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 clients = (List<Client>) response.getPayload();
-                if (AssertValue.isNotNullAndNotEmpty(clients)) {
-                    if(Page.PAGE_DIR_PULL.equals(dir)){
-                        pullRowid = clients.get(0).getId();
-                        showClients.addAll(0, clients);
-                        if(!AssertValue.isNotNullAndNotEmpty(pushRowid)){
-                            pushRowid = clients.get(clients.size() - 1).getId();
-                        }
-                        if(clients.size() < Integer.valueOf(resource.page().getSize())){
-                            clientListView.setHasMoreItems(false);
-                        }
-                    }else {
-                        pushRowid = clients.get(clients.size() - 1).getId();
-                        showClients.addAll(clients);
+                if (AssertValue.isNotNullAndNotEmpty(clients) && Page.PAGE_DIR_PULL.equals(dir)) {
+                    for (int i = clients.size(); i > 0; i--) {
+                        Client client = clients.get(i - 1);
+                        showClients.addFirst(client);
                     }
-                }else if (Page.PAGE_DIR_PULL.equals(dir)){
-                    showToast(getString(R.string.pull_down_notice));
-                }else if (Page.PAGE_DIR_PUSH.equals(dir)){
-                    clientListView.setHasMoreItems(false);
-                    showToast(R.string.app_no_more_data);
                 }
+
+                if (AssertValue.isNotNullAndNotEmpty(clients) && Page.PAGE_DIR_PUSH.equals(dir)) {
+                    for (Client client : clients) {
+                        showClients.addLast(client);
+                    }
+                }
+
+                if (!AssertValue.isNotNullAndNotEmpty(clients) && Page.PAGE_DIR_PUSH.equals(dir)) {
+                    clientListView.onFinishLoading(false);
+                }
+
+                clientListAdapter.notifyDataSetChanged();
+
+//                if (AssertValue.isNotNullAndNotEmpty(clients)) {
+//                    if(Page.PAGE_DIR_PULL.equals(dir)){
+//                        pullRowid = clients.get(0).getId();
+//                        showClients.addAll(0, clients);
+//                        if(!AssertValue.isNotNullAndNotEmpty(pushRowid)){
+//                            pushRowid = clients.get(clients.size() - 1).getId();
+//                        }
+//                        if(clients.size() < Integer.valueOf(resource.page().getSize())){
+//                            //clientListView.onFinishLoading(false);
+//                            clientListView.setHasMoreItems(false);
+//                        }
+//                    }else {
+//                        pushRowid = clients.get(clients.size() - 1).getId();
+//                        showClients.addAll(clients);
+//                    }
+//                }else if (Page.PAGE_DIR_PULL.equals(dir)){
+//                    showToast(getString(R.string.pull_down_notice));
+//                }else if (Page.PAGE_DIR_PUSH.equals(dir)){
+//                    //clientListView.onFinishLoading(false);
+//                    clientListView.setHasMoreItems(false);
+//                    showToast(R.string.app_no_more_data);
+//                }
             }
 
             @Override
             public void onFailure(Response response) {
                 Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
             }
+
             @Override
             public void onFinally(Response response) {
-                clientListAdapter.notifyDataSetChanged();
+//                clientListAdapter.notifyDataSetChanged();
+//                mPtrFrame.refreshComplete();
+//                clientListView.onFinishLoading(true);
                 mPtrFrame.refreshComplete();
                 clientListView.onFinishLoading(true);
             }
@@ -237,18 +262,20 @@ public class ClientActivity extends JupiterFragmentActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (resultCode == JupiterCommand.RESULT_CODE_OK){
-                refresh(null, Page.PAGE_DIR_PULL);
-            }
+        if (resultCode == JupiterCommand.RESULT_CODE_OK) {
+            refresh(null, Page.PAGE_DIR_PULL);
+        }
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
             showClients.clear();
