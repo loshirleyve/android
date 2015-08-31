@@ -28,9 +28,9 @@ import java.util.List;
  */
 public class ClientListAdapter extends JupiterAdapter {
     private Context context;
-    private List<Client> clients;
+    private LinkedList<Client> clients;
 
-    public ClientListAdapter(Context context, List<Client> clients) {
+    public ClientListAdapter(Context context, LinkedList<Client> clients) {
         this.context = context;
         this.clients = clients;
     }
