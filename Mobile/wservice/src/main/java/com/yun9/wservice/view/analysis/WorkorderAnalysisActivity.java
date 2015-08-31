@@ -398,6 +398,8 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         CacheUser cacheUser = UserCache.getInstance().getUser(analysis.getUserid());
         if (cacheUser != null){
             widget.getUserNameTv().setText(cacheUser.getName());
+        } else {
+            widget.getUserNameTv().setText("自主用户");
         }
         widget.getAllNumsTv().setText(analysis.getAllNums()+"");
         widget.getCompleteNumsTv().setText(analysis.getCompleteNums()+"");
