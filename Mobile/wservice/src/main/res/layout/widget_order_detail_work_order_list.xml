@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="8dp"
-        android:text="@string/work_order_state"
+        android:text="工单"
         android:textColor="@color/devide_line"
         android:textSize="14dp" />
 

@@ -332,12 +332,17 @@ public class SignBillAnalysisActivity extends JupiterFragmentActivity{
         if (cacheUser != null){
             widget.getUserNameTv().setText(cacheUser.getName());
             ImageLoaderUtil.getInstance(SignBillAnalysisActivity.this).displayImage(
-                    cacheUser.getHead(), widget.getUserHeadIv()
+                    cacheUser.getUrl(), widget.getUserHeadIv()
+            );
+        } else {
+            widget.getUserNameTv().setText("用户自主下单");
+            ImageLoaderUtil.getInstance(SignBillAnalysisActivity.this).displayImage(
+                    "drawable://"+R.drawable.user_head, widget.getUserHeadIv()
             );
         }
         widget.getSortNoTv().setText(signBill.getSortno()+"");
-        widget.getNumsTv().setText(signBill.getNums()+"单");
-        widget.getAmountTv().setText(signBill.getAmount()+"元");
+        widget.getNumsTv().setText(signBill.getNums()+"");
+        widget.getAmountTv().setText(signBill.getAmount()+"");
         widget.getClassifyListView().setAdapter(new JupiterAdapter() {
             @Override
             public int getCount() {
@@ -368,8 +373,8 @@ public class SignBillAnalysisActivity extends JupiterFragmentActivity{
                     signBillClassifyWidget = (SignBillClassifyWidget) convertView;
                 }
                 signBillClassifyWidget.getNameTv().setText(classify.getClassfifyName());
-                signBillClassifyWidget.getNumsTv().setText(classify.getNums()+"单");
-                signBillClassifyWidget.getAmountTv().setText(classify.getAmount()+"元");
+                signBillClassifyWidget.getNumsTv().setText(classify.getNums()+"");
+                signBillClassifyWidget.getAmountTv().setText(classify.getAmount()+"");
                 return convertView;
             }
         });

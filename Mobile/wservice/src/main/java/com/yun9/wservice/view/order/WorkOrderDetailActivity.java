@@ -83,7 +83,7 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
     private void buildView() {
         command = (WorkOrderCommand) this.getIntent().getSerializableExtra("command");
         orderid=command.getOrderid();
-        titleBarLayout.getTitleTv().setText(R.string.workorder_detail);
+        titleBarLayout.getTitleTv().setText("工单列表");
         titleBarLayout.getTitleRight().setVisibility(View.GONE);
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +95,8 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
     }
 
     private void refreshWorkOrderInfos() {
-
+        final ProgressDialog reloadDataDialog =
+                ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryWorkordersByNoAndSource");
         resource.param("no", command.getWorkorderno());
         resource.param("source",command.getSource());
@@ -115,7 +116,7 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-
+                reloadDataDialog.dismiss();
             }
         });
     }
