@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -49,6 +50,9 @@ public class SignBillAnalysisActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
+
+    @ViewInject(id=R.id.time_line_rl)
+    private RelativeLayout timeLineRl;
 
     @ViewInject(id=R.id.selected_time_line_tv)
     private TextView selectedTimeLineTv;
@@ -128,7 +132,7 @@ public class SignBillAnalysisActivity extends JupiterFragmentActivity{
 
         // 初始化选择时间段窗口
         initPopWindow();
-        selectedTimeLineTv.setOnClickListener(new View.OnClickListener() {
+        timeLineRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openWindow();

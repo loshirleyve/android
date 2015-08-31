@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -49,6 +50,9 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
+
+    @ViewInject(id=R.id.time_line_rl)
+    private RelativeLayout timeLineRl;
 
     @ViewInject(id=R.id.selected_time_line_tv)
     private TextView selectedTimeLineTv;
@@ -138,7 +142,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
 
         // 初始化选择时间段窗口
         initPopWindow();
-        selectedTimeLineTv.setOnClickListener(new View.OnClickListener() {
+        timeLineRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openWindow();
@@ -312,9 +316,9 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 PayRegisterAnalysis analysis = (PayRegisterAnalysis) response.getPayload();
                 if (analysis != null) {
-                    amountTv.setText(analysis.getAmount() + "元");
-                    payAmountTv.setText(analysis.getPayAmount() + "元");
-                    unPayAmountTv.setText(analysis.getUnPayAmount() + "元");
+                    amountTv.setText(analysis.getAmount() + "");
+                    payAmountTv.setText(analysis.getPayAmount() + "");
+                    unPayAmountTv.setText(analysis.getUnPayAmount() + "");
                 } else {
                     cleanBaseInfo();
                 }

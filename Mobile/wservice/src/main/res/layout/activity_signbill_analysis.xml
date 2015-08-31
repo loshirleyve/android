@@ -16,21 +16,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="3dp"
-        android:paddingBottom="3dp"
         android:background="@color/whites">
-        <TextView
-            android:id="@+id/selected_time_line_tv"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="21dp"
+            android:orientation="horizontal"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
-            android:gravity="center"
-            android:textColor="@color/purple_font"
-            android:layout_centerInParent="true"
-            android:text=""/>
+            android:gravity="center">
+            <TextView
+                android:id="@+id/selected_time_line_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="@color/purple_font"
+                android:layout_centerInParent="true"
+                android:text=""/>
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="3dp"
+                android:background="@drawable/downgrey"/>
+        </LinearLayout>
     </RelativeLayout>
     <in.srain.cube.views.ptr.PtrClassicFrameLayout
         xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"

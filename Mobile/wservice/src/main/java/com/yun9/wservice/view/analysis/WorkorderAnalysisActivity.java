@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yun9.jupiter.cache.UserCache;
@@ -50,6 +51,9 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
+
+    @ViewInject(id=R.id.time_line_rl)
+    private RelativeLayout timeLineRl;
 
     @ViewInject(id=R.id.selected_time_line_tv)
     private TextView selectedTimeLineTv;
@@ -148,7 +152,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
 
         // 初始化选择时间段窗口
         initPopWindow();
-        selectedTimeLineTv.setOnClickListener(new View.OnClickListener() {
+        timeLineRl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openWindow();
@@ -323,8 +327,8 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
                 WorkorderAnalysis analysis = (WorkorderAnalysis) response.getPayload();
                 if (analysis != null) {
                     allNumsTv.setText(analysis.getAllNums() + "单");
-                    completeNumsTv.setText(analysis.getCompleteNums() + "单");
-                    inserviceNumsTv.setText(analysis.getInserviceNums() + "单");
+                    completeNumsTv.setText(analysis.getCompleteNums() + "");
+                    inserviceNumsTv.setText(analysis.getInserviceNums() + "");
                     completerateTv.setText((int)(analysis.getComleterate()*100) + "%");
                     waitNumsTv.setText(analysis.getWaitNums() + "单");
                     laterateTv.setText((int)(analysis.getLaterate()*100) + "%");
