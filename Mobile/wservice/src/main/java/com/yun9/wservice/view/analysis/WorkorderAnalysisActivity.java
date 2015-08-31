@@ -399,7 +399,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         if (cacheUser != null){
             widget.getUserNameTv().setText(cacheUser.getName());
         } else {
-            widget.getUserNameTv().setText("自主用户");
+            widget.getUserNameTv().setText("未分配");
         }
         widget.getAllNumsTv().setText(analysis.getAllNums()+"");
         widget.getCompleteNumsTv().setText(analysis.getCompleteNums()+"");

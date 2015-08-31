@@ -383,7 +383,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
         if (cacheUser != null){
             widget.getUserNameTv().setText(cacheUser.getName());
         } else {
-            widget.getUserNameTv().setText("自主用户");
+            widget.getUserNameTv().setText("未分配");
         }
         widget.getAmountTv().setText(analysis.getCollectAmount()+"元");
 
