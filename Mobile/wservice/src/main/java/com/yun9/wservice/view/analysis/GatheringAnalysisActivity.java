@@ -116,6 +116,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
                 analysisListView.setHasMoreItems(true);
                 pullRowid = null;
                 analysisList.clear();
+                loadBaseInfo();
                 refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
@@ -244,7 +245,6 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
                 if (!(selectedDateSection != null && timeLine != null
                         && selectedDateSection.getId().equals(timeLine.getId()))) {
                     selectedDateSection = timeLine;
-                    loadBaseInfo();
                     autoRefresh();
                 }
                 selectedDateSection = timeLine;
@@ -284,7 +284,6 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
         for (DateSection section : dateSections){
             if (section.getIsdefault() == 1){
                 selectedDateSection = section;
-                loadBaseInfo();
                 autoRefresh();
             }
         }
@@ -303,6 +302,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     }
 
     private void loadBaseInfo() {
+        cleanBaseInfo();
         final Resource resource = resourceFactory.create("QueryPayRegisterAnalysisService");
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("beginDate",selectedDateSection.getBegindate());

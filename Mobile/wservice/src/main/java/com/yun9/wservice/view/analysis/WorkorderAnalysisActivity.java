@@ -126,6 +126,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
                 analysisListView.setHasMoreItems(true);
                 pullRowid = null;
                 analysisList.clear();
+                loadBaseInfo();
                 refresh(pullRowid, Page.PAGE_DIR_PULL);
             }
 
@@ -254,7 +255,6 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
                 if (!(selectedDateSection != null && timeLine != null
                         && selectedDateSection.getId().equals(timeLine.getId()))) {
                     selectedDateSection = timeLine;
-                    loadBaseInfo();
                     autoRefresh();
                 }
                 selectedDateSection = timeLine;
@@ -294,7 +294,6 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         for (DateSection section : dateSections){
             if (section.getIsdefault() == 1){
                 selectedDateSection = section;
-                loadBaseInfo();
                 autoRefresh();
             }
         }
@@ -313,6 +312,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
     }
 
     private void loadBaseInfo() {
+        cleanBaseInfo();
         final Resource resource = resourceFactory.create("QueryWorkorderAnalysisService");
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("beginDate",selectedDateSection.getBegindate());
@@ -325,9 +325,9 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
                     allNumsTv.setText(analysis.getAllNums() + "单");
                     completeNumsTv.setText(analysis.getCompleteNums() + "单");
                     inserviceNumsTv.setText(analysis.getInserviceNums() + "单");
-                    completerateTv.setText(analysis.getComleterate()*100 + "%");
+                    completerateTv.setText((int)(analysis.getComleterate()*100) + "%");
                     waitNumsTv.setText(analysis.getWaitNums() + "单");
-                    laterateTv.setText(analysis.getLaterate()*100 + "%");
+                    laterateTv.setText((int)(analysis.getLaterate()*100) + "%");
                 } else {
                     cleanBaseInfo();
                 }
@@ -402,7 +402,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         widget.getAllNumsTv().setText(analysis.getAllNums()+"");
         widget.getCompleteNumsTv().setText(analysis.getCompleteNums()+"");
         widget.getWaitNumsTv().setText(analysis.getWaitNums()+"");
-        widget.getCompleteRateTv().setText(analysis.getComleterate()*100+"%");
+        widget.getCompleteRateTv().setText((int)(analysis.getComleterate()*100)+"%");
 
     }
 

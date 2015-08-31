@@ -12,8 +12,8 @@ public class WorkorderAnalysis implements Serializable {
     private int completeNums;
     private int waitNums;
     private int inserviceNums;
-    private int comleterate;
-    private int laterate;
+    private double comleterate;
+    private double laterate;
 
     public String getPage() {
         return page;
@@ -60,20 +60,20 @@ public class WorkorderAnalysis implements Serializable {
         return this;
     }
 
-    public int getComleterate() {
+    public double getComleterate() {
         return comleterate;
     }
 
-    public WorkorderAnalysis setComleterate(int comleterate) {
+    public WorkorderAnalysis setComleterate(double comleterate) {
         this.comleterate = comleterate;
         return this;
     }
 
-    public int getLaterate() {
+    public double getLaterate() {
         return laterate;
     }
 
-    public WorkorderAnalysis setLaterate(int laterate) {
+    public WorkorderAnalysis setLaterate(double laterate) {
         this.laterate = laterate;
         return this;
     }
