@@ -116,6 +116,7 @@ public class ClientActivity extends JupiterFragmentActivity {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 clientListView.setHasMoreItems(true);
                 pullRowid = null;
+                pushRowid = null;
                 clients.clear();
                 showClients.clear();
                 refresh(pullRowid, Page.PAGE_DIR_PULL);
