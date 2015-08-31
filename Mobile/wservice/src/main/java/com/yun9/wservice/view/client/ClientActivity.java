@@ -163,79 +163,35 @@ public class ClientActivity extends JupiterFragmentActivity {
         }, 100);
     }
 
-/*    private void completeRefresh() {
-        Resource resource = resourceFactory.create("QueryClientsByAdviser");
-        resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
-        showClients.clear();
-        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
-            @Override
-            public void onSuccess(Response response) {
-                clients = (List<Client>) response.getPayload();
-                if (AssertValue.isNotNullAndNotEmpty(clients)) {
-                    showClients.addAll(clients);
-                }
-            }
-            @Override
-            public void onFailure(Response response) {
-                Toast.makeText(ClientActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onFinally(Response response) {
-                clientListAdapter.notifyDataSetChanged();
-                mPtrFrame.refreshComplete();
-            }
-        });
-    }*/
-
     private void refreshClient(String rowid, final String dir) {
         final Resource resource = resourceFactory.create("QueryClientsByAdviser");
-        resource.param("instid", sessionManager.getInst().getId()).param("userid", sessionManager.getUser().getId());
+        resource.param("instid", sessionManager.getInst().getId())
+                .param("userid", sessionManager.getUser().getId());
         resource.page().setRowid(rowid).setDir(dir);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 clients = (List<Client>) response.getPayload();
-                if (AssertValue.isNotNullAndNotEmpty(clients) && Page.PAGE_DIR_PULL.equals(dir)) {
-                    for (int i = clients.size(); i > 0; i--) {
-                        Client client = clients.get(i - 1);
-                        showClients.addFirst(client);
+                if (clients != null && clients.size() > 0){
+                    if (Page.PAGE_DIR_PULL.equals(dir)){
+                        pullRowid = clients.get(0).getId();
+                        showClients.addAll(0,clients);
+                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)){
+                            pushRowid = clients.get(clients.size() - 1).getId();
+                        }
+                        if (clients.size() < Integer.valueOf(resource.page().getSize())){
+                            clientListView.setHasMoreItems(false);
+                        }
+                    } else {
+                        pushRowid = clients.get(clients.size() - 1).getId();
+                        showClients.addAll(clients);
                     }
+                } else if (Page.PAGE_DIR_PULL.equals(dir)) {
+                    showToast("没有新数据");
+                } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
+                    clientListView.setHasMoreItems(false);
+                    showToast(R.string.app_no_more_data);
                 }
-
-                if (AssertValue.isNotNullAndNotEmpty(clients) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    for (Client client : clients) {
-                        showClients.addLast(client);
-                    }
-                }
-
-                if (!AssertValue.isNotNullAndNotEmpty(clients) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    clientListView.onFinishLoading(false);
-                }
-
-                clientListAdapter.notifyDataSetChanged();
-
-//                if (AssertValue.isNotNullAndNotEmpty(clients)) {
-//                    if(Page.PAGE_DIR_PULL.equals(dir)){
-//                        pullRowid = clients.get(0).getId();
-//                        showClients.addAll(0, clients);
-//                        if(!AssertValue.isNotNullAndNotEmpty(pushRowid)){
-//                            pushRowid = clients.get(clients.size() - 1).getId();
-//                        }
-//                        if(clients.size() < Integer.valueOf(resource.page().getSize())){
-//                            //clientListView.onFinishLoading(false);
-//                            clientListView.setHasMoreItems(false);
-//                        }
-//                    }else {
-//                        pushRowid = clients.get(clients.size() - 1).getId();
-//                        showClients.addAll(clients);
-//                    }
-//                }else if (Page.PAGE_DIR_PULL.equals(dir)){
-//                    showToast(getString(R.string.pull_down_notice));
-//                }else if (Page.PAGE_DIR_PUSH.equals(dir)){
-//                    //clientListView.onFinishLoading(false);
-//                    clientListView.setHasMoreItems(false);
-//                    showToast(R.string.app_no_more_data);
-//                }
             }
 
             @Override
@@ -245,9 +201,7 @@ public class ClientActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-//                clientListAdapter.notifyDataSetChanged();
-//                mPtrFrame.refreshComplete();
-//                clientListView.onFinishLoading(true);
+                clientListAdapter.notifyDataSetChanged();
                 mPtrFrame.refreshComplete();
                 clientListView.onFinishLoading(true);
             }

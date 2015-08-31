@@ -1,5 +1,6 @@
 package com.yun9.jupiter.widget.paging.listview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -10,6 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.yun9.jupiter.R;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.widget.paging.LoadingView;
 
 import java.util.List;
@@ -19,6 +21,8 @@ public class PagingListView extends ListView {
 
     private boolean isLoading;
     private boolean isFling;
+    private boolean isScrollToTop;
+    private boolean isScrollToBottom;
     private boolean hasMoreItems = true;
     private Pagingable pagingableListener;
     private LoadingView loadingView;
@@ -101,6 +105,15 @@ public class PagingListView extends ListView {
                         pagingableListener.onLoadMoreItems();
                     }
 
+                }
+
+                isScrollToTop = false;
+                if(firstVisibleItem==0){
+                    isScrollToTop = true;
+                }
+                isScrollToBottom = false;
+                if(visibleItemCount+firstVisibleItem==totalItemCount){
+                    isScrollToBottom = true;
                 }
             }
         });
