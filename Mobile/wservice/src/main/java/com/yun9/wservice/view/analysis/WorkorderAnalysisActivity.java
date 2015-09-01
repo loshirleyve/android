@@ -36,6 +36,7 @@ import com.yun9.wservice.model.PayRegisterCollectAnalysis;
 import com.yun9.wservice.model.WorkorderAnalysis;
 import com.yun9.wservice.model.WorkorderAnalysisUser;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -319,8 +320,8 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         cleanBaseInfo();
         final Resource resource = resourceFactory.create("QueryWorkorderAnalysisService");
         resource.param("instid", sessionManager.getInst().getId());
-        resource.param("beginDate",selectedDateSection.getBegindate());
-        resource.param("endDate",selectedDateSection.getEnddate());
+        resource.param("beginDate", selectedDateSection.getBegindate());
+        resource.param("endDate", selectedDateSection.getEnddate());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -329,9 +330,9 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
                     allNumsTv.setText(analysis.getAllNums() + "单");
                     completeNumsTv.setText(analysis.getCompleteNums() + "");
                     inserviceNumsTv.setText(analysis.getInserviceNums() + "");
-                    completerateTv.setText((int)(analysis.getComleterate()*100) + "%");
+                    completerateTv.setText(multiply(analysis.getComleterate(),100) + "%");
                     waitNumsTv.setText(analysis.getWaitNums() + "单");
-                    laterateTv.setText((int)(analysis.getLaterate()*100) + "%");
+                    laterateTv.setText(multiply(analysis.getLaterate(),100) + "%");
                 } else {
                     cleanBaseInfo();
                 }
@@ -393,7 +394,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
             } else {
                 widget = (WorkorderAnalysisUserWidget) convertView;
             }
-            buildWidgetWithData(widget,analysis);
+            buildWidgetWithData(widget, analysis);
             return convertView;
         }
     };
@@ -408,7 +409,7 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
         widget.getAllNumsTv().setText(analysis.getAllNums()+"");
         widget.getCompleteNumsTv().setText(analysis.getCompleteNums()+"");
         widget.getWaitNumsTv().setText(analysis.getWaitNums()+"");
-        widget.getCompleteRateTv().setText((int)(analysis.getComleterate()*100)+"%");
+        widget.getCompleteRateTv().setText(multiply(analysis.getComleterate(),100)+"%");
 
     }
 
@@ -420,4 +421,9 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
             WorkorderAnalysisActivity.this.getWindow().setAttributes(lp);
         }
     };
+
+    private double multiply(double a,int b) {
+        BigDecimal bigDecimal = (new BigDecimal(a)).multiply(new BigDecimal(b));
+        return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
 }
