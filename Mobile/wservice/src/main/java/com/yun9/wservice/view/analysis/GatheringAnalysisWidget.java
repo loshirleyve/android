@@ -14,6 +14,7 @@ public class GatheringAnalysisWidget extends JupiterRelativeLayout {
 
     private TextView userNameTv;
     private TextView amountTv;
+    private TextView amountDescrTv;
 
     public GatheringAnalysisWidget(Context context) {
         super(context);
@@ -36,6 +37,7 @@ public class GatheringAnalysisWidget extends JupiterRelativeLayout {
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
         userNameTv = (TextView) this.findViewById(R.id.user_name_tv);
         amountTv = (TextView) this.findViewById(R.id.amount_tv);
+        amountDescrTv = (TextView) this.findViewById(R.id.amount__desc_tv);
     }
 
     public TextView getUserNameTv() {
@@ -54,5 +56,9 @@ public class GatheringAnalysisWidget extends JupiterRelativeLayout {
     public GatheringAnalysisWidget setAmountTv(TextView amountTv) {
         this.amountTv = amountTv;
         return this;
+    }
+
+    public TextView getAmountDescrTv() {
+        return amountDescrTv;
     }
 }

@@ -389,6 +389,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
         } else {
             widget.getUserNameTv().setText("未分配");
         }
+        widget.getAmountDescrTv().setText(analysis.getDescr());
         widget.getAmountTv().setText(analysis.getCollectAmount()+"元");
 
     }
