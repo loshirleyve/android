@@ -169,7 +169,7 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
 
                 if (!AssertValue.isNotNullAndNotEmpty(workorderInfos) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
-                    workorderlistview.onFinishLoading(false);
+                    workorderlistview.setHasMoreItems(false);
                 }
 
                 wordOrderAdapter.notifyDataSetChanged();

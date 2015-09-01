@@ -150,6 +150,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
                 if (!AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
                     productCommentList.onFinishLoading(false);
+                    productCommentList.setHasMoreItems(false);
                 }
 
                 adapter.notifyDataSetChanged();
