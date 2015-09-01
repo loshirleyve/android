@@ -60,6 +60,8 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
 
     private String prodctid;
 
+    private String pullRowid = null;
+    private String pushRowid = null;
 
     public static void start(Activity activity, String prodctid) {
         Intent intent = new Intent(activity, ProductCommentListActivity.class);
@@ -95,8 +97,10 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 productComments.clear();
+                pullRowid = null;
+                pushRowid = null;
                 productCommentList.setHasMoreItems(true);
-                refreshProductCommet(null, Page.PAGE_DIR_PULL);
+                refreshProductCommet(pullRowid, Page.PAGE_DIR_PULL);
             }
 
             @Override
@@ -115,45 +119,64 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
         productCommentList.setPagingableListener(new PagingListView.Pagingable() {
             @Override
             public void onLoadMoreItems() {
-                if (AssertValue.isNotNullAndNotEmpty(productComments)) {
-                    WorkOrderComment comment = productComments.get(productComments.size() - 1);
-                    refreshProductCommet(comment.getId(), Page.PAGE_DIR_PUSH);
+                if (AssertValue.isNotNullAndNotEmpty(pushRowid)) {
+                    refresh(pushRowid, Page.PAGE_DIR_PUSH);
                 } else {
                     productCommentList.onFinishLoading(true);
                 }
             }
         });
+        this.autoRefresh();
+    }
+
+
+    private void refresh(final String rowid, final String dir) {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshProductCommet(rowid, dir);
+            }
+        }, 100);
+    }
+
+    private void autoRefresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh();
+            }
+        }, 100);
     }
 
 
     private void refreshProductCommet(String rowid, final String dir) {
-        Resource resource = resourceFactory.create("QueryWorkCommentsByProductId");
+        final Resource resource = resourceFactory.create("QueryWorkCommentsByProductId");
         resource.param("productid", prodctid);
         resource.page().setDir(dir).setRowid(rowid);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 List<WorkOrderComment> comments = (List<WorkOrderComment>) response.getPayload();
-                if (AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PULL.equals(dir)) {
-                    for (int i = comments.size(); i > 0; i--) {
-                        WorkOrderComment comment = comments.get(i - 1);
-                        productComments.addFirst(comment);
+                if (comments != null && comments.size() > 0) {
+                    if (Page.PAGE_DIR_PULL.equals(dir)) {
+                        pullRowid = comments.get(0).getId();
+                        productComments.addAll(0, comments);
+                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)) {
+                            pushRowid = comments.get(comments.size() - 1).getId();
+                        }
+                        if (comments.size() < Integer.valueOf(resource.page().getSize())) {
+                            productCommentList.setHasMoreItems(false);
+                        }
+                    } else {
+                        pushRowid = comments.get(comments.size() - 1).getId();
+                        productComments.addAll(comments);
                     }
-                }
-
-                if (AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    for (WorkOrderComment comment : comments) {
-                        productComments.addLast(comment);
-                    }
-                }
-
-                if (!AssertValue.isNotNullAndNotEmpty(comments) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
-                    productCommentList.onFinishLoading(false);
+                } else if (Page.PAGE_DIR_PULL.equals(dir)) {
+                    showToast("没有新数据");
+                } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
                     productCommentList.setHasMoreItems(false);
+                    showToast(R.string.app_no_more_data);
                 }
-
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -163,6 +186,7 @@ public class ProductCommentListActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
+                adapter.notifyDataSetChanged();
                 productCommentList.onFinishLoading(true);
                 ptrClassicFrameLayout.refreshComplete();
             }

@@ -71,6 +71,9 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
 
     private WorkOrderCommand command;
 
+    private String pullRowid = null;
+    private String pushRowid = null;
+
     private String orderid;
 
     public static void start(Context context, WorkOrderCommand command) {
@@ -110,8 +113,10 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 workorderinfos.clear();
+                pullRowid = null;
+                pushRowid = null;
                 workorderlistview.setHasMoreItems(true);
-                refreshWorkOrderInfos(null, Page.PAGE_DIR_PULL);
+                refreshWorkOrderInfos(pullRowid, Page.PAGE_DIR_PULL);
 
             }
 
@@ -121,31 +126,41 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
             }
         });
 
+        wordOrderAdapter = new WordOrderAdapter(workorderinfos);
+        workorderlistview.setAdapter(wordOrderAdapter);
+        workorderlistview.setPagingableListener(new PagingListView.Pagingable() {
+            @Override
+            public void onLoadMoreItems() {
+                if (AssertValue.isNotNullAndNotEmpty(pushRowid)) {
+                    refresh(pushRowid, Page.PAGE_DIR_PUSH);
+                } else {
+                    workorderlistview.onFinishLoading(true);
+                }
+            }
+        });
+        this.autoRefresh();
+    }
+
+    private void refresh(final String rowid, final String dir) {
+        mPtrFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshWorkOrderInfos(rowid, dir);
+            }
+        }, 100);
+    }
+
+    private void autoRefresh() {
         mPtrFrame.postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPtrFrame.autoRefresh();
             }
         }, 100);
-
-        wordOrderAdapter = new WordOrderAdapter(workorderinfos);
-        workorderlistview.setAdapter(wordOrderAdapter);
-        workorderlistview.setPagingableListener(new PagingListView.Pagingable() {
-            @Override
-            public void onLoadMoreItems() {
-                if (AssertValue.isNotNullAndNotEmpty(workorderinfos)) {
-                    WordOrder wordOrder = workorderinfos.get(workorderinfos.size() - 1);
-                    refreshWorkOrderInfos(wordOrder.getId(), Page.PAGE_DIR_PUSH);
-                } else {
-                    workorderlistview.onFinishLoading(true);
-                }
-            }
-        });
-
     }
 
     private void refreshWorkOrderInfos(String rowid, final String dir) {
-        Resource resource = resourceFactory.create("QueryWorkordersByNoAndSource");
+        final Resource resource = resourceFactory.create("QueryWorkordersByNoAndSource");
         resource.param("no", command.getWorkorderno());
         resource.param("source", command.getSource());
         resource.param("sourcevalue", command.getOrderid());
@@ -154,26 +169,26 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 List<WordOrder> workorderInfos = (List<WordOrder>) response.getPayload();
-                if (AssertValue.isNotNullAndNotEmpty(workorderInfos) && Page.PAGE_DIR_PULL.equals(dir)) {
-                    for (int i = workorderInfos.size(); i > 0; i--) {
-                        WordOrder wordOrder = workorderInfos.get(i - 1);
-                        workorderinfos.addFirst(wordOrder);
+                if (workorderInfos != null && workorderInfos.size() > 0) {
+                    if (Page.PAGE_DIR_PULL.equals(dir)) {
+                        pullRowid = workorderInfos.get(0).getId();
+                        workorderinfos.addAll(0, workorderInfos);
+                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)) {
+                            pushRowid = workorderInfos.get(workorderInfos.size() - 1).getId();
+                        }
+                        if (workorderInfos.size() < Integer.valueOf(resource.page().getSize())) {
+                            workorderlistview.setHasMoreItems(false);
+                        }
+                    } else {
+                        pushRowid = workorderInfos.get(workorderInfos.size() - 1).getId();
+                        workorderinfos.addAll(workorderInfos);
                     }
-                }
-
-                if (AssertValue.isNotNullAndNotEmpty(workorderInfos) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    for (WordOrder wordOrder : workorderInfos) {
-                        workorderinfos.addLast(wordOrder);
-                    }
-                }
-
-                if (!AssertValue.isNotNullAndNotEmpty(workorderInfos) && Page.PAGE_DIR_PUSH.equals(dir)) {
-                    Toast.makeText(mContext, R.string.app_no_more_data, Toast.LENGTH_SHORT).show();
+                } else if (Page.PAGE_DIR_PULL.equals(dir)) {
+                    showToast("没有新数据");
+                } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
                     workorderlistview.setHasMoreItems(false);
+                    showToast(R.string.app_no_more_data);
                 }
-
-                wordOrderAdapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -183,6 +198,7 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
+                wordOrderAdapter.notifyDataSetChanged();
                 workorderlistview.onFinishLoading(true);
                 mPtrFrame.refreshComplete();
             }
