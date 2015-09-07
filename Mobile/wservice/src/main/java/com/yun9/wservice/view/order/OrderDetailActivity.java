@@ -19,6 +19,7 @@ import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.model.CacheUser;
+import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
@@ -41,6 +42,11 @@ import com.yun9.wservice.view.payment.PaymentOrderRemainActivity;
 import com.yun9.wservice.view.payment.PaymentResultActivity;
 import com.yun9.wservice.view.payment.PaymentResultCommand;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * Created by huangbinglong on 15/6/15.
  */
@@ -50,6 +56,9 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
+
+    @ViewInject(id=R.id.rotate_header_list_view_frame)
+    private PtrClassicFrameLayout ptrClassicFrameLayout;
 
     @ViewInject(id = R.id.order_detail_base_widget)
     private OrderDetailBaseWidget orderDetailBaseWidget;
@@ -100,15 +109,14 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
         mainRl.setVisibility(View.GONE);
         orderId = getIntent().getStringExtra("orderid");
         this.buildView();
-        reloadData();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == JupiterCommand.RESULT_CODE_OK) {
-            reloadData();
+            autoRefresh();
         } else if (AppCache.getInstance().getAsBoolean(ORDER_DETAIL_NEES_REFRESH)) {
-            reloadData();
+            autoRefresh();
         }
     }
 
@@ -131,6 +139,37 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
                 OrderComplainActivity.start(OrderDetailActivity.this, orderId);
             }
         });
+        ptrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
+        ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refresh();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        autoRefresh();
+    }
+
+    private void refresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                reloadData();
+            }
+        }, 100);
+    }
+
+    private void autoRefresh(){
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh();
+            }
+        }, 100);
     }
 
     private void reloadData() {
@@ -153,6 +192,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
+                ptrClassicFrameLayout.refreshComplete();
             }
         });
     }

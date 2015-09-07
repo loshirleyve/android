@@ -62,6 +62,11 @@ import com.yun9.wservice.view.org.OrgCompositeCommand;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * Created by Leon on 15/4/24.
  */
@@ -86,6 +91,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     @ViewInject(id = R.id.msg_card_detail_title)
     private JupiterTitleBarLayout titleBar;
+
+    @ViewInject(id = R.id.rotate_header_list_view_frame)
+    private PtrClassicFrameLayout ptrClassicFrameLayout;
 
     @ViewInject(id = R.id.msg_card_info)
     private MsgCardWidget msgCardWidget;
@@ -186,22 +194,53 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         toolbarTabWidget.getForwardLayout().setOnClickListener(onForwardClickListener);
         toolbarTabWidget.getPraiseLayout().setOnClickListener(new OnPraiseClickListener(toolbarTabWidget));
 
-        if (AssertValue.isNotNull(command)
-                && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())
-                && AssertValue.isNotNullAndNotEmpty(currUserid)) {
-            Handler handler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    super.handleMessage(msg);
-                    refresh(command.getMsgCardId(), currUserid);
+        ptrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
+        ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refresh();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        autoRefresh();
+    }
+
+
+    private void refresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (AssertValue.isNotNull(command)
+                        && AssertValue.isNotNullAndNotEmpty(command.getMsgCardId())
+                        && AssertValue.isNotNullAndNotEmpty(currUserid)) {
+                    Handler handler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            super.handleMessage(msg);
+                            refresh(command.getMsgCardId(), currUserid);
+                        }
+                    };
+                    handler.sendEmptyMessageDelayed(0, 500);
+                } else if (AssertValue.isNotNull(command)
+                        && AssertValue.isNotNullAndNotEmpty(command.getOrderId())
+                        && AssertValue.isNotNullAndNotEmpty(currUserid)) {
+                    refreshByOrderId(command.getOrderId(), currUserid);
                 }
-            };
-            handler.sendEmptyMessageDelayed(0, 500);
-        } else if (AssertValue.isNotNull(command)
-                && AssertValue.isNotNullAndNotEmpty(command.getOrderId())
-                && AssertValue.isNotNullAndNotEmpty(currUserid)) {
-            refreshByOrderId(command.getOrderId(), currUserid);
-        }
+            }
+        }, 100);
+    }
+
+    private void autoRefresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh();
+            }
+        }, 100);
     }
 
     private void refreshByOrderId(final String orderId, String userid) {
@@ -209,7 +248,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         resource.param("source", SourceType.TYPE_ORDER)
                 .param("sourceid", orderId)
                 .param("userid", userid);
-        final ProgressDialog progressDialog = ProgressDialog.show(MsgCardDetailActivity.this, null, getResources().getString(R.string.app_wating), true);
 
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
@@ -233,7 +271,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                progressDialog.dismiss();
+                ptrClassicFrameLayout.refreshComplete();
             }
         });
     }
@@ -241,8 +279,6 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private void refresh(final String msgCardId, String userid) {
         Resource resource = resourceFactory.create("QueryMsgCardInfoById");
         resource.param("userid", userid).param("msgcardid", msgCardId);
-        final ProgressDialog progressDialog = ProgressDialog.show(MsgCardDetailActivity.this, null, getResources().getString(R.string.app_wating), true);
-
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -264,7 +300,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                progressDialog.dismiss();
+                ptrClassicFrameLayout.refreshComplete();
             }
         });
     }
@@ -284,12 +320,12 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     }
 
     private void markAsReaded() {
-        if (mMsgCard.getRead() > 0){
+        if (mMsgCard.getRead() > 0) {
             return;
         }
         Resource resource = resourceFactory.create("UpdateMsgCardStateByIdsService");
-        resource.param("msgcardidList",new String[]{mMsgCard.getId()});
-        resource.param("userid",sessionManager.getUser().getId());
+        resource.param("msgcardidList", new String[]{mMsgCard.getId()});
+        resource.param("userid", sessionManager.getUser().getId());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -311,25 +347,25 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
     private void builderView(MsgCard msgCard) {
         CacheUser user = UserCache.getInstance().getUser(msgCard.getFrom());
-        if (!AssertValue.isNotNullAndNotEmpty(command.getTitle())){
-            if (user != null){
+        if (!AssertValue.isNotNullAndNotEmpty(command.getTitle())) {
+            if (user != null) {
                 titleBar.getTitleTv().setText(user.getName());
             }
         }
-        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getBriefSimpleInstname())){
+        if (user != null && AssertValue.isNotNullAndNotEmpty(user.getBriefSimpleInstname())) {
             titleBar.getTitleSutitleTv().setVisibility(View.VISIBLE);
             titleBar.getTitleSutitleTv().setText(user.getBriefSimpleInstname());
         }
 
-        if (MsgFromType.TYPE_INST.equals(msgCard.getFromtype())){
+        if (MsgFromType.TYPE_INST.equals(msgCard.getFromtype())) {
             CacheInst inst = InstCache.getInstance().getInst(msgCard.getInstid());
-            if (inst != null){
+            if (inst != null) {
                 titleBar.getTitleSutitleTv().setVisibility(View.GONE);
                 titleBar.getTitleTv().setText(inst.getSimplename());
             }
         }
 
-        msgCardWidget.buildWithData(msgCard,msgCard.getContent());
+        msgCardWidget.buildWithData(msgCard, msgCard.getContent());
         msgCardWidget.getIsNewIv().setVisibility(View.GONE);
 
         commonItem.getDescTextTV().setText(msgCard.getCommentcount() + "");
@@ -346,7 +382,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             }
             // 加个视图撑位置，不然最后一个对话框显示不全，不知道为啥
             View line = new View(mContext);
-            line.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,5));
+            line.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5));
             commentView.getCommonLl().addView(line);
         }
 
@@ -373,7 +409,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
     private MsgCardDetailCommentItemWidget createCommonItem(MsgCardComment msgCardComment) {
         MsgCardDetailCommentItemWidget itemWidget = new MsgCardDetailCommentItemWidget(mContext);
         CacheUser cacheUser = UserCache.getInstance().getUser(msgCardComment.getFrom());
-        if (msgCardComment.getFrom().equals(sessionManager.getUser().getId())){
+        if (msgCardComment.getFrom().equals(sessionManager.getUser().getId())) {
             itemWidget.getLeftLl().setVisibility(View.GONE);
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getRightIv());
             itemWidget.getRightTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
@@ -382,7 +418,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             itemWidget.getRightLl().setVisibility(View.GONE);
             itemWidget.getLeftTitleTv().setText(cacheUser.getName());
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
-            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefSimpleInstname())){
+            if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefSimpleInstname())) {
                 itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
                 itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstsimplename());
             }

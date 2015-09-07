@@ -16,57 +16,72 @@
         app:titleRightTextVisibility="true"
         app:titleText="@string/app_name"></com.yun9.jupiter.widget.JupiterTitleBarLayout>
 
-    <com.yun9.jupiter.widget.JupiterSpringbackScrollView
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rotate_header_list_view_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title_bar"
-        android:overScrollMode="never">
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/title_bar"
+        android:background="@color/groupbackground"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
 
-        <LinearLayout
+        <com.yun9.jupiter.widget.JupiterSpringbackScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_below="@id/title_bar"
+            android:overScrollMode="never">
 
-            <com.yun9.wservice.view.order.OrderDetailBaseWidget
-                android:id="@+id/order_detail_base_widget"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/devide_line" />
+                <com.yun9.wservice.view.order.OrderDetailBaseWidget
+                    android:id="@+id/order_detail_base_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <com.yun9.wservice.view.order.OrderDetailProcessWidget
-                android:id="@+id/order_detail_process_widget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.yun9.wservice.view.order.OrderDetailProcessWidget>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/devide_line" />
 
-            <com.yun9.wservice.view.order.OrderDetailPayinfoWidget
-                android:id="@+id/order_detail_payinfo_widget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <com.yun9.wservice.view.order.OrderDetailProcessWidget
+                    android:id="@+id/order_detail_process_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></com.yun9.wservice.view.order.OrderDetailProcessWidget>
 
-            <com.yun9.wservice.view.order.OrderDetailAttachWidget
-                android:id="@+id/order_detail_attach_widget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <com.yun9.wservice.view.order.OrderDetailPayinfoWidget
+                    android:id="@+id/order_detail_payinfo_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <com.yun9.wservice.view.order.OrderDetailAdvisorWidget
-                android:id="@+id/order_detail_advisor_widget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <com.yun9.wservice.view.order.OrderDetailAttachWidget
+                    android:id="@+id/order_detail_attach_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            <com.yun9.wservice.view.order.OrderDetailProviderWidget
-                android:id="@+id/order_detail_provider_widget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <com.yun9.wservice.view.order.OrderDetailAdvisorWidget
+                    android:id="@+id/order_detail_advisor_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.yun9.wservice.view.order.OrderDetailProviderWidget
+                    android:id="@+id/order_detail_provider_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
 
-            <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
-                android:id="@+id/order_detail_work_order_list_widget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+                <com.yun9.wservice.view.order.OrderDetailWorkOrderListWidget
+                    android:id="@+id/order_detail_work_order_list_widget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </com.yun9.jupiter.widget.JupiterSpringbackScrollView>
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </RelativeLayout>
