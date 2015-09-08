@@ -30,14 +30,24 @@ import com.yun9.wservice.model.ClientUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+
 /**
  * Created by li on 2015/8/25.
  */
 public class ClientUserroleActivity extends JupiterFragmentActivity {
+
     @ViewInject(id = R.id.client_consultant_salesman_title)
     private JupiterTitleBarLayout titleBarLayout;
+
     @ViewInject(id = R.id.client_consultant_salesman_list)
     private SwipeMenuListView listView;
+
+    @ViewInject(id = R.id.rotate_header_list_view_frame)
+    private PtrClassicFrameLayout ptrClassicFrameLayout;
 
     private List<ClientUser> clientUsers;
     private String clientid;
@@ -46,7 +56,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     @BeanInject
     private ResourceFactory resourceFactory;
 
-    public static void start(Activity activity, EditClientCommand command){
+    public static void start(Activity activity, EditClientCommand command) {
         Intent intent = new Intent(activity, ClientUserroleActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("command", command);
@@ -65,10 +75,40 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         titleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
         command = (EditClientCommand) getIntent().getSerializableExtra("command");
-        if(AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getClientId())){
+        if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getClientId())) {
             clientid = command.getClientId();
         }
-        getConsultantSalesman();
+        ptrClassicFrameLayout.setLastUpdateTimeRelateObject(this);
+        ptrClassicFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                refresh();
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+        });
+        autoRefresh();
+    }
+
+    private void refresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getConsultantSalesman();
+            }
+        }, 100);
+    }
+
+    private void autoRefresh() {
+        ptrClassicFrameLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrClassicFrameLayout.autoRefresh();
+            }
+        }, 100);
     }
 
     private View.OnClickListener onBackClickListener = new View.OnClickListener() {
@@ -78,16 +118,15 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         }
     };
 
-    private void getConsultantSalesman(){
+    private void getConsultantSalesman() {
         final Resource resource = resourceFactory.create("QueryInstClientInfoById");
         resource.param("instClient", clientid);
-        final ProgressDialog progressDialog = ProgressDialog.show(this, null, getString(R.string.app_wating), true);
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 ClientAndUsers clientAndUsers = (ClientAndUsers) response.getPayload();
                 clientUsers = new ArrayList<ClientUser>();
-                if(AssertValue.isNotNull(clientAndUsers.getClientUsers())) {
+                if (AssertValue.isNotNull(clientAndUsers.getClientUsers())) {
                     for (int i = 0; i < clientAndUsers.getClientUsers().size(); i++) {
                         ClientUser clientUser = clientAndUsers.getClientUsers().get(i);
                         clientUsers.add(clientUser);
@@ -103,16 +142,18 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                progressDialog.dismiss();
+                ptrClassicFrameLayout.refreshComplete();
             }
         });
     }
 
-    private void showUp(){
+    private void showUp() {
         listView.setAdapter(new ClientConsultantSalesmanAdapter(mContext));
     }
-    private class ClientConsultantSalesmanAdapter extends JupiterAdapter{
+
+    private class ClientConsultantSalesmanAdapter extends JupiterAdapter {
         private Context mContext;
+
         public ClientConsultantSalesmanAdapter(Context mContext) {
             this.mContext = mContext;
         }
@@ -137,13 +178,13 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             ClientUserroleItemWidget clientUserroleItemWidget = null;
             ClientUser clientUser = clientUsers.get(position);
 
-            if(AssertValue.isNotNull(convertView)){
+            if (AssertValue.isNotNull(convertView)) {
                 clientUserroleItemWidget = (ClientUserroleItemWidget) convertView;
-            }else {
+            } else {
                 clientUserroleItemWidget = new ClientUserroleItemWidget(mContext);
             }
-            if(AssertValue.isNotNull(clientUser)){
-                switch (clientUser.getUserrole()){
+            if (AssertValue.isNotNull(clientUser)) {
+                switch (clientUser.getUserrole()) {
                     case "adviser":
                         clientUserroleItemWidget.getTitleTv().setText(R.string.exclusive_advisor);
                         break;
@@ -157,14 +198,14 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         }
     }
 
-    private void queryAndDisplayUserName(final ClientUser clientUser, final ClientUserroleItemWidget clientUserroleItemWidget){
+    private void queryAndDisplayUserName(final ClientUser clientUser, final ClientUserroleItemWidget clientUserroleItemWidget) {
         Resource resource1 = resourceFactory.create("QueryUserInfoByIdService");
         resource1.param("userid", clientUser.getUserid());
         resource1.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 User user = (User) response.getPayload();
-                if(AssertValue.isNotNull(user)) {
+                if (AssertValue.isNotNull(user)) {
                     clientUserroleItemWidget.getContentTv().setText(user.getName());
                 }
             }
