@@ -341,4 +341,5 @@
     <string name="signbill_analysis">签单统计</string>
     <string name="gathering_analysis">应收统计</string>
     <string name="workorder_analysis">工单统计</string>
+    <string name="instinited_notice">已初始化</string>
 </resources>

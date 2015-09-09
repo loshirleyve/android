@@ -206,7 +206,7 @@ public class UserFragment extends JupiterFragment {
                         userHeadWidget.getSignTV().setText(user.getSignature());
                         CacheUser cacheUser = UserCache.getInstance().getUser(user.getId());
                         if (AssertValue.isNotNull(cacheUser)) {
-                            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userHeadWidget.getUserHeaderIV());
+                            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), userHeadWidget.getUserHeaderIV(), R.drawable.user_head);
                         }
                     }
                 }

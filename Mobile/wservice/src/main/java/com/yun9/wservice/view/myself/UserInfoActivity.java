@@ -186,7 +186,7 @@ public class UserInfoActivity extends JupiterFragmentActivity {
         if(AssertValue.isNotNull(yunImageCommand) && requestCode == yunImageCommand.getRequestCode() && resultCode == YunImageCommand.RESULT_CODE_OK){
            List<FileBean> onSelectYunImages = (List<FileBean>) data.getSerializableExtra(YunImageCommand.PARAM_IMAGE);
             if(AssertValue.isNotNullAndNotEmpty(onSelectYunImages)) {
-                ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV());
+                ImageLoaderUtil.getInstance(mContext).displayImage(onSelectYunImages.get(0).getId(), userInfoWidget.getUserHeadIV(), R.drawable.user_head);
                 updateUserByHeaderfileid(onSelectYunImages.get(0).getId());
 
                 Intent intent = new Intent();

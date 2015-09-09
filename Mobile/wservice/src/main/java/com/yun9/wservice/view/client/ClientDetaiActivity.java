@@ -194,6 +194,8 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 showToast(getString(R.string.init_inst_success));
+                btnInitInst.setEnabled(false);
+                btnInitInst.setText(getString(R.string.instinited_notice));
                 refresh();
             }
 
