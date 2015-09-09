@@ -195,11 +195,7 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
             public void onSuccess(Response response) {
                 showToast(getString(R.string.init_inst_success));
                 btnInitInst.setEnabled(false);
-<<<<<<< HEAD
                 btnInitInst.setText(getString(R.string.instinited_notice));
-=======
-                btnInitInst.setText("已初始化");
->>>>>>> dev-shirley
                 refresh();
             }
 
