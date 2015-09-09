@@ -324,7 +324,7 @@ public class DynamicSessionFragment extends JupiterFragment {
 
             if (AssertValue.isNotNull(cacheUser)) {
                 ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(),
-                        jupiterRowStyleSutitleLayout.getMainIV());
+                        jupiterRowStyleSutitleLayout.getMainIV(), R.drawable.user_head);
                 jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
                 if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstsimplename())){
                     jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.VISIBLE);
@@ -345,7 +345,7 @@ public class DynamicSessionFragment extends JupiterFragment {
                 CacheInst cacheInst = InstCache.getInstance().getInst(msgsGroup.getInstid());
                 if (cacheInst != null){
                     ImageLoaderUtil.getInstance(mContext).displayImage(cacheInst.getLogourl(),
-                            jupiterRowStyleSutitleLayout.getMainIV());
+                            jupiterRowStyleSutitleLayout.getMainIV(), R.drawable.user_head);
                     jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.GONE);
                     jupiterRowStyleSutitleLayout.getTitleTV().setTextColor(getResources()
                     .getColor(R.color.dark_blue));
