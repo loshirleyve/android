@@ -308,7 +308,9 @@ public class YunImageActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setResult(YunImageCommand.RESULT_CODE_CANCEL);
+            Intent intent = new Intent();
+            intent.putExtra(DocCompositeCommand.PARAM_EDIT, mEdit);
+            setResult(YunImageCommand.RESULT_CODE_CANCEL,intent);
             finish();
         }
     };
@@ -330,6 +332,7 @@ public class YunImageActivity extends JupiterFragmentActivity {
 
                     Intent intent = new Intent();
                     intent.putExtra(YunImageCommand.PARAM_IMAGE, onSelectImages);
+                    intent.putExtra(DocCompositeCommand.PARAM_EDIT, mEdit);
                     setResult(YunImageCommand.RESULT_CODE_OK, intent);
                     finish();
                 }

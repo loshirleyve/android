@@ -14,7 +14,7 @@ public class DocCompositeCommand extends JupiterCommand {
 
     public static final String PARAM_FILE = "file";
     public static final String PARAM_IMAGE = "image";
-
+    public static final String PARAM_EDIT="edit";
 
     private boolean edit;
 

@@ -179,7 +179,9 @@ public class LocalFileActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setResult(LocalFileCommand.RESULT_CODE_CANCEL);
+            Intent intent = new Intent();
+            intent.putExtra(DocCompositeCommand.PARAM_EDIT, mEdit);
+            setResult(LocalFileCommand.RESULT_CODE_CANCEL,intent);
             finish();
         }
     };
@@ -202,6 +204,7 @@ public class LocalFileActivity extends JupiterFragmentActivity {
 
                     Intent intent = new Intent();
                     intent.putExtra(LocalFileCommand.PARAM_FILE, onSelectFiles);
+                    intent.putExtra(DocCompositeCommand.PARAM_EDIT, mEdit);
                     setResult(LocalFileCommand.RESULT_CODE_OK, intent);
                     finish();
                 }
