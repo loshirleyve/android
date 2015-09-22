@@ -411,13 +411,13 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         CacheUser cacheUser = UserCache.getInstance().getUser(msgCardComment.getFrom());
         if (msgCardComment.getFrom().equals(sessionManager.getUser().getId())) {
             itemWidget.getLeftLl().setVisibility(View.GONE);
-            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getRightIv());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getRightIv(), R.drawable.user_head);
             itemWidget.getRightTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
             itemWidget.getRightContentTv().setText(msgCardComment.getContent());
         } else {
             itemWidget.getRightLl().setVisibility(View.GONE);
             itemWidget.getLeftTitleTv().setText(cacheUser.getName());
-            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getLeftIv(), R.drawable.user_head);
             if (AssertValue.isNotNullAndNotEmpty(cacheUser.getBriefSimpleInstname())) {
                 itemWidget.getLeftTitleTipTv().setVisibility(View.VISIBLE);
                 itemWidget.getLeftTitleTipTv().setText(cacheUser.getInstsimplename());
@@ -435,7 +435,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
 
         if (AssertValue.isNotNull(cacheUser)) {
             itemWidget.getTitleTV().setText(cacheUser.getName());
-            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV(), R.drawable.user_head);
         }
         itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardPraise.getCreatedate()));
         itemWidget.setShowArrow(false);
@@ -450,7 +450,7 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         CacheUser cacheToUser = UserCache.getInstance().getUser(msgCardShare.getTouserid());
         if (AssertValue.isNotNull(cacheUser)) {
             itemWidget.getTitleTV().setText(cacheUser.getName());
-            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV());
+            ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getMainIV(), R.drawable.user_head);
         }
         itemWidget.getTimeTv().setText(DateUtil.timeAgo(msgCardShare.getCreatedate()));
         if (AssertValue.isNotNull(cacheToUser) && AssertValue.isNotNullAndNotEmpty(cacheToUser.getName())) {
