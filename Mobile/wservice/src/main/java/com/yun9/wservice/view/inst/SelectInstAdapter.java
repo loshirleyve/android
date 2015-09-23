@@ -52,7 +52,7 @@ public class SelectInstAdapter extends JupiterAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, final ViewGroup parent) {
         JupiterRowStyleSutitleLayout rowStyleSutitleLayout = null;
         Inst inst = mInsts.get(position);
 
@@ -65,6 +65,23 @@ public class SelectInstAdapter extends JupiterAdapter {
             rowStyleSutitleLayout.setShowSutitleText(false);
             rowStyleSutitleLayout.setShowMainImage(false);
             rowStyleSutitleLayout.setSelectMode(true);
+            rowStyleSutitleLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JupiterRowStyleSutitleLayout temp = (JupiterRowStyleSutitleLayout) v;
+                     if (onSelectListener != null && !temp.isSelected()){
+                        int count = SelectInstAdapter.this.getCount();
+                        for (int i = 0; i < count; i++) {
+                            JupiterRowStyleSutitleLayout t =
+                                    (JupiterRowStyleSutitleLayout)
+                                            parent.getChildAt(i);
+                            t.select(false);
+                        }
+                        temp.select(true);
+                        onSelectListener.onSelect(temp,true);
+                    }
+                }
+            });
             if (AssertValue.isNotNull(onSelectListener)){
                 rowStyleSutitleLayout.setOnSelectListener(onSelectListener);
             }

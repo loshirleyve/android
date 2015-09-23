@@ -3,7 +3,9 @@ package com.yun9.wservice.view.order;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.yun9.jupiter.app.JupiterApplication;
@@ -93,6 +95,7 @@ public class OrderDetailWorkOrderWidget extends JupiterRelativeLayout{
             checkoutWorkOrderCommentTV.setText("评论工单");
         }
     }
+
 
     private OnClickListener commentWorkOrder = new OnClickListener() {
         @Override
