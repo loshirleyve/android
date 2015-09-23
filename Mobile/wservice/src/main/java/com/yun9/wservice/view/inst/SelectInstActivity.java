@@ -109,7 +109,7 @@ public class SelectInstActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == InstCommand.RESULT_CODE_OK){
+        if (resultCode == InstCommand.RESULT_CODE_OK) {
             refresh();
         }
     }
@@ -154,7 +154,7 @@ public class SelectInstActivity extends JupiterFragmentActivity {
                 }
             }
         }
-        if(insts.size() == 0){
+        if (insts.size() == 0) {
             Dialog alertDialog = new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.app_notice))
                     .setMessage(getString(R.string.init_inst_notice))
@@ -163,18 +163,18 @@ public class SelectInstActivity extends JupiterFragmentActivity {
                     .setNegativeButton(getString(R.string.no), onNoClickListener).create();
             alertDialog.show();
 
-        }else {
+        } else {
             if (!AssertValue.isNotNull(selectInstAdapter)) {
-                        this.selectInstAdapter = new SelectInstAdapter(this, insts);
-                        this.selectInstAdapter.setOnSelectListener(onInstSelectListener);
-                        Inst currInst = sessionManager.getInst(command.getUser().getId());
-                        if (AssertValue.isNotNull(currInst)){
-                            selectInstAdapter.setCurrInst(currInst);
-                        }
-                        instListView.setAdapter(selectInstAdapter);
-                    } else {
-                        selectInstAdapter.notifyDataSetChanged();
-                    }
+                this.selectInstAdapter = new SelectInstAdapter(this, insts);
+                this.selectInstAdapter.setOnSelectListener(onInstSelectListener);
+                Inst currInst = sessionManager.getInst(command.getUser().getId());
+                if (AssertValue.isNotNull(currInst)) {
+                    selectInstAdapter.setCurrInst(currInst);
+                }
+                instListView.setAdapter(selectInstAdapter);
+            } else {
+                selectInstAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -182,20 +182,20 @@ public class SelectInstActivity extends JupiterFragmentActivity {
         @Override
         public void onSelect(View view, boolean mode) {
             Inst inst = (Inst) view.getTag();
-
             if (AssertValue.isNotNull(inst)) {
                 Intent intent = new Intent();
                 intent.putExtra(SelectInstCommand.PARAM_INST, inst);
                 setResult(SelectInstCommand.RESULT_CODE_OK, intent);
                 SelectInstActivity.this.finish();
             }
+
         }
     };
 
     private DialogInterface.OnClickListener onYesClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            if(!AssertValue.isNotNull(instCommand)){
+            if (!AssertValue.isNotNull(instCommand)) {
                 instCommand = new InstCommand();
             }
             instCommand.setUserid(command.getUser().getId());
