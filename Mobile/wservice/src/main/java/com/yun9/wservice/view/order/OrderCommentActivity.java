@@ -166,8 +166,6 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//        editText.setVisibility(View.GONE);
-//        editText.setVisibility(View.VISIBLE);
         inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
         return super.dispatchTouchEvent(ev);
     }
