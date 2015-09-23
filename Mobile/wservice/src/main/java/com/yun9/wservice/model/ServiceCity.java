@@ -131,4 +131,24 @@ public class ServiceCity implements java.io.Serializable {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    @Override
+    public String toString() {
+        return "ServiceCity{" +
+                "id='" + id + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", district='" + district + '\'' +
+                ", cityno='" + cityno + '\'' +
+                ", isdefault=" + isdefault +
+                ", sortno=" + sortno +
+                ", createby='" + createby + '\'' +
+                ", updateby='" + updateby + '\'' +
+                ", createdate=" + createdate +
+                ", updatedate=" + updatedate +
+                ", disabled=" + disabled +
+                ", remark='" + remark + '\'' +
+                ", selected=" + selected +
+                '}';
+    }
 }
