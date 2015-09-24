@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.yun9.jupiter.manager.SessionManager;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
@@ -67,6 +68,7 @@ public class SettingActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             sessionManager.logout(sessionManager.getUser());
             ClientProxyCache.getInstance().removeProxy();
+            Toast.makeText(mContext, getString(R.string.logout_notice),Toast.LENGTH_LONG).show();
             SettingActivity.this.finish();
         }
     };

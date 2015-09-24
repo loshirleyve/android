@@ -128,7 +128,7 @@ public class ClientActivity extends JupiterFragmentActivity {
             }
         });
 
-        titleBarLayout.getTitleRightTv().setOnClickListener(onTitleRightTvClickListener);
+        titleBarLayout.getTitleRight().setOnClickListener(onTitleRightTvClickListener);
         titleBarLayout.getTitleLeftIV().setOnClickListener(onTitleLeftClickListener);
         clientListAdapter = new ClientListAdapter(this, showClients);
         clientListView.setAdapter(clientListAdapter);

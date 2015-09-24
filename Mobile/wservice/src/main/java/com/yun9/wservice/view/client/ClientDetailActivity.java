@@ -191,6 +191,8 @@ public class ClientDetailActivity extends JupiterFragmentActivity {
 
             @Override
             public void onSuccess(Response response) {
+                if(AssertValue.isNotNullAndNotEmpty(clientid)){
+                }
                 showToast(getString(R.string.save_client_success_not));
                 doSuccess();
             }
