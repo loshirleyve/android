@@ -84,7 +84,7 @@ public class WorkOrderComment implements Serializable{
         this.addcomments = addcomments;
     }
 
-    public static class SubComment {
+    public static class SubComment implements Serializable{
         private String senderid;
         private String workorderid;
         private String commenttext;

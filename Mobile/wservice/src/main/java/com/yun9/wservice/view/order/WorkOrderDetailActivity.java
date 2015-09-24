@@ -97,6 +97,13 @@ public class WorkOrderDetailActivity extends JupiterFragmentActivity {
     }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == JupiterCommand.RESULT_CODE_OK){
+            mPtrFrame.autoRefresh();
+        }
+    }
+
     protected void initViews() {
         command = (WorkOrderCommand) this.getIntent().getSerializableExtra("command");
         orderid = command.getOrderid();
