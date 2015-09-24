@@ -237,11 +237,13 @@ public class WorkorderAnalysisActivity extends JupiterFragmentActivity{
             this.getWindow().setAttributes(lp);
             showTimeLinesWidget.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
             int popupWidth = showTimeLinesWidget.getMeasuredWidth();
+            int popupHeight = showTimeLinesWidget.getMeasuredHeight();
             int[] location = new int[2];
             selectedTimeLineTv.getLocationOnScreen(location);
-            timeLineWindow.showAtLocation(selectedTimeLineTv, Gravity.NO_GRAVITY,
-                    PublicHelp.dip2px(getApplicationContext(),(titleBarLayout.getWidth() - popupWidth) / 2),
-                    location[1]+selectedTimeLineTv.getHeight()+3);
+            timeLineWindow.showAtLocation(selectedTimeLineTv, Gravity.DISPLAY_CLIP_VERTICAL,
+                    0,
+                    -((PublicHelp.getDeviceHeightPixels(WorkorderAnalysisActivity.this) - popupHeight)/2)
+                            + location[1]+selectedTimeLineTv.getHeight()+5);
         }
     }
 
