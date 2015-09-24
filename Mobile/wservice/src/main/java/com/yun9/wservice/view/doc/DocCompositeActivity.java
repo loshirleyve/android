@@ -270,9 +270,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (!AssertValue.isNotNull(localImageCommand)) {
-                localImageCommand = new LocalImageCommand().setEdit(mEdit).setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(mUserid).setInstid(mInstid);
+                localImageCommand = new LocalImageCommand().setCompleteType(LocalImageCommand.COMPLETE_TYPE_CALLBACK).setMaxSelectNum(maxSelectNum).setUserid(mUserid).setInstid(mInstid);
             }
-            localImageCommand.setSelectImages(onSelectLocalImages);
+            localImageCommand.setEdit(mEdit).setSelectImages(onSelectLocalImages);
             LocalImageActivity.start(DocCompositeActivity.this, localImageCommand);
         }
     };
@@ -284,10 +284,10 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
 
             if (!AssertValue.isNotNull(localFileCommand)) {
                 localFileCommand = new LocalFileCommand().setMaxSelectNum(maxSelectNum)
-                        .setEdit(mEdit).setCompleteType(LocalFileCommand.COMPLETE_TYPE_CALLBACK)
+                        .setCompleteType(LocalFileCommand.COMPLETE_TYPE_CALLBACK)
                         .setUserid(mUserid).setInstid(mInstid);
             }
-            localFileCommand.setSelectFiles(onSelectLocalFiles);
+            localFileCommand.setEdit(mEdit).setSelectFiles(onSelectLocalFiles);
             LocalFileActivity.start(DocCompositeActivity.this, localFileCommand);
 
         }
@@ -297,9 +297,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (!AssertValue.isNotNull(yunFileCommand)) {
-                yunFileCommand = new YunFileCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
+                yunFileCommand = new YunFileCommand().setMaxSelectNum(maxSelectNum).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
             }
-            yunFileCommand.setSelectFiles(onSelectYunFiles);
+            yunFileCommand.setEdit(mEdit).setSelectFiles(onSelectYunFiles);
             YunFileActivity.start(DocCompositeActivity.this, yunFileCommand);
         }
     };
@@ -308,9 +308,9 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
         @Override
         public void onClick(View v) {
             if (!AssertValue.isNotNull(yunImageCommand)) {
-                yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setEdit(mEdit).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
+                yunImageCommand = new YunImageCommand().setMaxSelectNum(maxSelectNum).setCompleteType(YunFileCommand.COMPLETE_TYPE_CALLBACK).setUserid(mUserid).setInstid(mInstid);
             }
-            yunImageCommand.setSelectImages(onSelectYunImages);
+            yunImageCommand.setEdit(mEdit).setSelectImages(onSelectYunImages);
             YunImageActivity.start(DocCompositeActivity.this, yunImageCommand);
 
         }
@@ -452,6 +452,11 @@ public class DocCompositeActivity extends JupiterFragmentActivity {
                 onCameraImages.add(fileBean);
                 cameraImageSelectsGVAdapter.notifyDataSetChanged();
             }
+        }
+
+        if(AssertValue.isNotNull(data))
+        {
+            setEdit((boolean)data.getSerializableExtra(DocCompositeCommand.PARAM_EDIT));
         }
 
     }

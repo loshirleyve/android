@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -105,7 +107,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 Order order = (Order) response.getPayload();
                 if (order != null
-                        && AssertValue.isNotNullAndNotEmpty(order.getOrder().getId())){
+                        && AssertValue.isNotNullAndNotEmpty(order.getOrder().getId())) {
                     buildWithOrder(order);
                 }
             }
@@ -140,7 +142,7 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
         resource.param("senderid",sessionManager.getUser().getId());
         resource.param("commenttype","comment");
         resource.param("commenttext",content);
-        resource.param("score",starBar.getRating());
+        resource.param("score", starBar.getRating());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -159,5 +161,12 @@ public class OrderCommentActivity extends JupiterFragmentActivity{
                 registerDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        return super.dispatchTouchEvent(ev);
     }
 }

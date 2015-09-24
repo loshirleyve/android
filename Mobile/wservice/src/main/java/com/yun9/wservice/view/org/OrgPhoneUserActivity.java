@@ -209,7 +209,6 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
                     contactusers.put(phoneNumber, user);
                 }
             }
-            System.out.print(contactusers.size());
             phoneCursor.close();
         }
         return contactusers;
@@ -243,7 +242,6 @@ public class OrgPhoneUserActivity extends JupiterFragmentActivity {
                         contactusers.put(phoneNumber, user);
                     }
                 }
-                System.out.print(contactusers.size());
                 phoneCursor.close();
             }
         }

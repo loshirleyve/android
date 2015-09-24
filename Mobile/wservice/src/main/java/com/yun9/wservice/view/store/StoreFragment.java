@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -242,6 +243,7 @@ public class StoreFragment extends JupiterFragment {
     private void reset() {
         products.clear();
         topProducts.clear();
+        productLV.removeHeaderView(pageView);
         topProductViewPageAdapter.notifyDataSetChanged();
         productListViewAdapter.notifyDataSetChanged();
         circlePageIndicator.notifyDataSetChanged();
@@ -412,6 +414,7 @@ public class StoreFragment extends JupiterFragment {
 
 
     private void switchLocation(ServiceCity serviceCity) {
+        Log.d(StoreFragment.class.getSimpleName(), "::::" + serviceCity);
         if (!AssertValue.isNotNull(serviceCity))
             return;
 
@@ -443,6 +446,9 @@ public class StoreFragment extends JupiterFragment {
                     if (segmentedGroup.getChildCount() > 0) {
                         segmentedGroup.getChildAt(0).performClick();
                     }
+                } else {
+                    topProductViewPageAdapter.notifyDataSetChanged();
+                    currProductGroup = null;
                 }
             }
 

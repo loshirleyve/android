@@ -30,6 +30,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.view.camera.CameraActivity;
 import com.yun9.wservice.view.camera.CameraCommand;
+import com.yun9.wservice.view.org.OrgCompositeCommand;
 import com.yun9.wservice.widget.AlbumImageGridItem;
 
 import java.util.ArrayList;
@@ -278,7 +279,9 @@ public class LocalImageActivity extends JupiterFragmentActivity {
     private View.OnClickListener onCancelClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            setResult(LocalImageCommand.RESULT_CODE_CANCEL);
+            Intent intent = new Intent();
+            intent.putExtra(DocCompositeCommand.PARAM_EDIT, edit);
+            setResult(LocalImageCommand.RESULT_CODE_CANCEL,intent);
             finish();
         }
     };
@@ -357,6 +360,7 @@ public class LocalImageActivity extends JupiterFragmentActivity {
 
                     Intent intent = new Intent();
                     intent.putExtra(LocalImageCommand.PARAM_IMAGE, onSelectImages);
+                    intent.putExtra(DocCompositeCommand.PARAM_EDIT, edit);
                     setResult(LocalImageCommand.RESULT_CODE_OK, intent);
                     finish();
                 }

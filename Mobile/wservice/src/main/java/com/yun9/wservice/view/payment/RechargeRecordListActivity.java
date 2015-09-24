@@ -279,6 +279,7 @@ public class RechargeRecordListActivity extends JupiterFragmentActivity{
         if (resultCode == JupiterCommand.RESULT_CODE_OK) {
             records.clear();
             pullRowid = null;
+            setResult(JupiterCommand.RESULT_CODE_OK);
             autoRefresh();
         }
     }
