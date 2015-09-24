@@ -199,8 +199,7 @@ public class OrderDetailActivity extends JupiterFragmentActivity {
 
     private void reloadData(final Order order) {
         this.order = order;
-        if (!AssertValue.isNotNull(order.getOrder())
-                || !State.Order.COMPLETE.equals(order.getOrder().getState())) {
+        if (!AssertValue.isNotNull(order.getOrder())) {
             titleBarLayout.getTitleRight().setVisibility(View.GONE);
         }
         if (order.getOrderproducts() == null

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yun9.jupiter.cache.FileCache;
@@ -102,6 +103,7 @@ public class SettingActivity extends JupiterFragmentActivity {
         public void onClick(View v) {
             sessionManager.logout(sessionManager.getUser());
             ClientProxyCache.getInstance().removeProxy();
+            Toast.makeText(mContext, getString(R.string.logout_notice),Toast.LENGTH_LONG).show();
             SettingActivity.this.finish();
         }
     };

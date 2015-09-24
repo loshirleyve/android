@@ -53,7 +53,6 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.btn_consult_salesman)
     private Button btnConsultSalesman;
     private Client client;
-
     public ClientDetaiActivity() {
     }
 
@@ -157,7 +156,7 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
     private View.OnClickListener onBackClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            finish();
+            ClientDetaiActivity.this.finish();
         }
     };
     private View.OnClickListener onEditorClickListener = new View.OnClickListener() {
@@ -177,7 +176,7 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
         }
     };
     private void refresh() {
-        ClientDetaiActivity.start(this, command);
+        queryInstClientById(clientid);
     }
     private void initClient(Client client) {
         final ProgressDialog registerDialog =
@@ -248,6 +247,7 @@ public class ClientDetaiActivity extends JupiterFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == JupiterCommand.RESULT_CODE_OK){
+            refresh();
             setResult(JupiterCommand.RESULT_CODE_OK);
         }
     }
