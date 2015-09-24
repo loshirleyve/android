@@ -3,6 +3,7 @@ package com.yun9.wservice.view.order;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,6 +42,9 @@ import java.util.List;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrUIHandler;
+import in.srain.cube.views.ptr.PtrUIHandlerHook;
+import in.srain.cube.views.ptr.indicator.PtrIndicator;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 /**
@@ -117,6 +121,33 @@ public class OrderActivity extends JupiterFragmentActivity {
             }
         });
 
+        mPtrFrame.addPtrUIHandler(new PtrUIHandler() {
+            @Override
+            public void onUIReset(PtrFrameLayout frame) {
+                enableSegmentGroup(true);
+            }
+
+            @Override
+            public void onUIRefreshPrepare(PtrFrameLayout frame) {
+
+            }
+
+            @Override
+            public void onUIRefreshBegin(PtrFrameLayout frame) {
+                enableSegmentGroup(false);
+            }
+
+            @Override
+            public void onUIRefreshComplete(PtrFrameLayout frame) {
+
+            }
+
+            @Override
+            public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+
+            }
+        });
+
         orderLists.setAdapter(orderListViewAdapter);
         orderLists.setPagingableListener(new PagingListView.Pagingable() {
             @Override
@@ -178,7 +209,6 @@ public class OrderActivity extends JupiterFragmentActivity {
         resource.param("instid", sessionManager.getInst().getId());
         resource.param("userid", sessionManager.getUser().getId());
         resource.page().setRowid(rowid).setDir(dir);
-
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -200,13 +230,13 @@ public class OrderActivity extends JupiterFragmentActivity {
                 if (!AssertValue.isNotNullAndNotEmpty(orderInfos) && Page.PAGE_DIR_PUSH.equals(dir)) {
                     orderLists.onFinishLoading(false);
                 }
-
                 orderListViewAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(Response response) {
                 Toast.makeText(OrderActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                enableSegmentGroup(true);
             }
 
             @Override
@@ -215,6 +245,16 @@ public class OrderActivity extends JupiterFragmentActivity {
                 orderLists.onFinishLoading(true);
             }
         });
+    }
+
+    private void enableSegmentGroup(boolean isEnable) {
+        int count = segmentedGroup.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View view = segmentedGroup.getChildAt(i);
+            if (view instanceof RadioButton){
+                view.setEnabled(isEnable);
+            }
+        }
     }
 
 
