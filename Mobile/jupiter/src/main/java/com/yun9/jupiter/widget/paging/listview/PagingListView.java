@@ -131,6 +131,14 @@ public class PagingListView extends ListView {
         });
     }
 
+    public boolean isScrollToTop() {
+        return isScrollToTop;
+    }
+
+    public boolean isScrollToBottom() {
+        return isScrollToBottom;
+    }
+
     @Override
     public void setOnScrollListener(OnScrollListener listener) {
         onScrollListener = listener;
