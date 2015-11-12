@@ -396,6 +396,7 @@ public class StoreFragment extends JupiterFragment {
 
                 productListViewAdapter.notifyDataSetChanged();
                 circlePageIndicator.notifyDataSetChanged();
+                topProductViewPageAdapter.notifyDataSetChanged();
             }
 
             @Override
