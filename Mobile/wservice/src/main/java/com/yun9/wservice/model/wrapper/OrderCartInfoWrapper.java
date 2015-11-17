@@ -40,6 +40,7 @@ public class OrderCartInfoWrapper implements Serializable{
     private String page;
     private Long begindate;
     private Long enddate;
+    private String preferentialInfo;
 
     public String getCreateby() {
         return createby;
@@ -308,6 +309,15 @@ public class OrderCartInfoWrapper implements Serializable{
 
     public OrderCartInfoWrapper setEnddate(Long enddate) {
         this.enddate = enddate;
+        return this;
+    }
+
+    public String getPreferentialInfo() {
+        return preferentialInfo;
+    }
+
+    public OrderCartInfoWrapper setPreferentialInfo(String preferentialInfo) {
+        this.preferentialInfo = preferentialInfo;
         return this;
     }
 }

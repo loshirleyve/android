@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -48,8 +49,15 @@ public class OrderCartActivity extends JupiterFragmentActivity{
     @ViewInject(id=R.id.order_list)
     private ListView orderLV;
 
+    @ViewInject(id=R.id.order_fee__tip)
+    private TextView orderFeeTipTV;
+
     @ViewInject(id=R.id.order_fee_tv)
     private TextView orderFeeTV;
+
+    @ViewInject(id=R.id.order_preferentialInfo_tv)
+    private TextView orderpPreferentialInfoTV;
+
     @ViewInject(id=R.id.pay_now_ll)
     private RelativeLayout payNowLL;
 
@@ -157,6 +165,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
             public void onSuccess(Response response) {
                 orderCartInfoWrapper = (OrderCartInfoWrapper) response.getPayload();
                 orderFeeTV.setText(orderCartInfoWrapper.getFactamount() + "元");
+                showPreferentialInfo(orderCartInfoWrapper.getPreferentialInfo());
                 loadProducts(orderCartInfoWrapper.getId());
                 checkTitle();
             }
@@ -173,6 +182,16 @@ public class OrderCartActivity extends JupiterFragmentActivity{
                 registerDialog.dismiss();
             }
         });
+    }
+
+    private void showPreferentialInfo(String preferentialInfo) {
+        if (TextUtils.isEmpty(preferentialInfo)) {
+            return;
+        }
+        orderpPreferentialInfoTV.setText(preferentialInfo);
+        orderpPreferentialInfoTV.setVisibility(View.VISIBLE);
+        orderFeeTipTV.setTextSize(14);
+        orderFeeTV.setTextSize(14);
     }
 
     private void loadProducts(String orderId) {

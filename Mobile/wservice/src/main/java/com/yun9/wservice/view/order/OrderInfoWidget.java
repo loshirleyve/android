@@ -74,7 +74,7 @@ public class OrderInfoWidget extends JupiterRelativeLayout{
     private JupiterAdapter adapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            if (order != null){
+            if (order != null && orderProducts != null && orderProducts.size() > 0){
                 return 1;
             }
             return 0;
