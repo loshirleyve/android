@@ -345,7 +345,7 @@ public class StoreFragment extends JupiterFragment {
                     }
                     productLV.addHeaderView(pageView);
                 }
-                topProductViewPageAdapter.notifyDataSetChanged();
+                viewPager.setAdapter(topProductViewPageAdapter);
                 circlePageIndicator.notifyDataSetChanged();
             }
 
