@@ -174,6 +174,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
             public void onFailure(Response response) {
                 showToast(response.getCause());
                 orderCartInfoWrapper = null;
+                OrderCartActivity.this.finish();
             }
 
             @Override
