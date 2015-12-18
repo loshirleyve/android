@@ -5,5 +5,5 @@ package com.yun9.wservice.enums;
  */
 public class PayModeTypeCode {
     public static final String CODE_ALIPAY = "alipay";
-    public static final String CODE_WX = "wxpay";
+    public static final String CODE_WX = "tenpay";
 }

@@ -6,6 +6,6 @@ package com.yun9.wservice.enums;
 public interface RechargeNo {
 
     public static final String TYPE_ALIPAY = "alipay";
-    public static final String TYPE_WEIXIN = "wxpay";
+    public static final String TYPE_WEIXIN = "tenpay";
 
 }

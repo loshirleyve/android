@@ -27,4 +27,7 @@
 
 	<!--支付宝配置 -->
 	<config name="app.config.pay.notify.url">http://120.24.84.201:10080/ws-biz/pay/alipay.yun9</config>
+
+	<!--微信配置 -->
+	<config name="app.config.pay.wx.notify.url">http://120.24.84.201:10080/ws-biz/pay/tenpay.yun9</config>
 </configs>

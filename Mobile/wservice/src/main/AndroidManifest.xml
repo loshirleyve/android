@@ -407,7 +407,13 @@
         android:name=".view.payment.PaymentByOnlineActivity"
         android:label="@string/online_pay"
         android:screenOrientation="portrait"
-        android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        android:theme="@android:style/Theme.Light.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="wx38baa215cc9a46bb"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".view.payment.PaymentOrderRemainActivity"
@@ -497,6 +503,11 @@
             android:exported="false"
 
             android:screenOrientation="behind"></activity>
+        <!-- 微信支付-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".view.register.UserRegisterCompleteActivity"
             android:label="@string/user_register"

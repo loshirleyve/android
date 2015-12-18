@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.tencent.mm.sdk.constants.ConstantsAPI;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -29,27 +34,29 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.PayModeTypeCode;
 import com.yun9.wservice.manager.AlipayManager;
+import com.yun9.wservice.manager.WeChatManager;
 import com.yun9.wservice.model.PayModeType;
 import com.yun9.wservice.model.PayRegisterCollect;
+import com.yun9.wservice.wxapi.WXPayEntryActivity;
 
 import java.util.List;
 
 /**
  * Created by huangbinglong on 8/20/15.
  */
-public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
+public class PaymentByOnlineActivity extends JupiterFragmentActivity {
 
     public static final String CODE_RECHARGE = "0001";
 
     public static final String CODE_PAY = "0002";
 
-    @ViewInject(id=R.id.title_bar)
+    @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.payment_ways_lv)
+    @ViewInject(id = R.id.payment_ways_lv)
     private ListView listView;
 
-    @ViewInject(id=R.id.payment_amount)
+    @ViewInject(id = R.id.payment_amount)
     private JupiterRowStyleTitleLayout paymentAmount;
 
     @BeanInject
@@ -61,12 +68,19 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
     @BeanInject
     private AlipayManager alipayManager;
 
+    @BeanInject
+    private WeChatManager weChatManager;
+
     private PaymentByOnlineCommand paymentByOnlineCommand;
 
     private List<PayModeType> payModeTypes;
 
-    public static void start(Activity activity,PaymentByOnlineCommand command) {
-        Intent intent = new Intent(activity,PaymentByOnlineActivity.class);
+    private IWXAPI iwxapi;
+
+    private ProgressDialog wechatDialog;
+
+    public static void start(Activity activity, PaymentByOnlineCommand command) {
+        Intent intent = new Intent(activity, PaymentByOnlineActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(PaymentByOnlineCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
@@ -78,6 +92,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
         super.onCreate(savedInstanceState);
         paymentByOnlineCommand = (PaymentByOnlineCommand) this.getIntent()
                 .getSerializableExtra(PaymentByOnlineCommand.PARAM_COMMAND);
+        iwxapi = WXAPIFactory.createWXAPI(this, WeChatManager.APP_ID);
         buildView();
         loadData();
     }
@@ -85,9 +100,9 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
     private void loadData() {
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("QueryPayModeTypeService");
-        resource.param("instid",paymentByOnlineCommand.getInstId());
-        resource.param("paymodetype","online");
-        resource.param("type","3rdparty");
+        resource.param("instid", paymentByOnlineCommand.getInstId());
+        resource.param("paymodetype", "online");
+        resource.param("type", "3rdparty");
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -117,7 +132,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
         listView.setAdapter(adapter);
         paymentAmount.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentAmount.getHotNitoceTV().setTextColor(getResources().getColor(R.color.title_color));
-        paymentAmount.getHotNitoceTV().setText(paymentByOnlineCommand.getAmount()+"元");
+        paymentAmount.getHotNitoceTV().setText(paymentByOnlineCommand.getAmount() + "元");
     }
 
     @Override
@@ -154,7 +169,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                 sutitleLayout.getTitleTV().setText(payMode.getName());
                 sutitleLayout.getSutitleTv().setText(payMode.getDescr());
                 sutitleLayout.getTimeTv().setVisibility(View.GONE);
-                ImageLoaderUtil.getInstance(mContext).displayImage(payMode.getImgid(),sutitleLayout.getMainIV());
+                ImageLoaderUtil.getInstance(mContext).displayImage(payMode.getImgid(), sutitleLayout.getMainIV());
                 sutitleLayout.setTag(payMode);
                 sutitleLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -163,7 +178,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                     }
                 });
                 convertView = sutitleLayout;
-            }else {
+            } else {
                 sutitleLayout = (JupiterRowStyleSutitleLayout) convertView;
             }
             return convertView;
@@ -171,20 +186,31 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
     };
 
     private void payBy(final PayModeType payMode) {
+
         if (PayModeTypeCode.CODE_WX.equals(payMode.getCode())) {
-            showToast("功能正在研发...");
-            return;
+            if(!iwxapi.isWXAppInstalled())
+            {
+                showToast("您没有安装微信！");
+                return;
+            }
+
+            if(!iwxapi.isWXAppSupportAPI())
+            {
+                showToast("当前微信版本不支持支付功能");
+                return;
+            }
         }
+
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, "登记中，请稍候...", true);
         Resource resource = resourceFactory.create("UpdateByCollectService");
-        resource.param("payRegisterId",paymentByOnlineCommand.getPayRegisterId());
-        resource.param("source",paymentByOnlineCommand.getSource());
-        resource.param("sourceid",paymentByOnlineCommand.getSourceid());
-        resource.param("type","lock");
-        resource.param("payTypeCode",payMode.getCode());
-        resource.param("amount",paymentByOnlineCommand.getAmount());
-        resource.param("createby",sessionManager.getUser().getId());
-        resource.param("collectuserid",paymentByOnlineCommand.getCreateBy());
+        resource.param("payRegisterId", paymentByOnlineCommand.getPayRegisterId());
+        resource.param("source", paymentByOnlineCommand.getSource());
+        resource.param("sourceid", paymentByOnlineCommand.getSourceid());
+        resource.param("type", "lock");
+        resource.param("payTypeCode", payMode.getCode());
+        resource.param("amount", paymentByOnlineCommand.getAmount());
+        resource.param("createby", sessionManager.getUser().getId());
+        resource.param("collectuserid", paymentByOnlineCommand.getCreateBy());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -193,6 +219,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                 if (PayModeTypeCode.CODE_ALIPAY.equals(payMode.getCode())) {
                     payByAlipay(result);
                 } else if (PayModeTypeCode.CODE_WX.equals(payMode.getCode())) {
+                    payByWeChat(result);
                 }
             }
 
@@ -209,6 +236,48 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
     }
 
     /**
+     * 使用微信进行支付
+     *
+     * @param result 注册订单返回的结果信息
+     */
+    private void payByWeChat(final PayRegisterCollect result) {
+        iwxapi.registerApp(WeChatManager.APP_ID);
+        wechatDialog = ProgressDialog.show(this, null, "微信支付中，请稍候...", true);
+        WeChatManager.OrderInfo orderInfo = new WeChatManager.OrderInfo("微信支付", sessionManager.getUser().getName()
+                + "于" + DateUtil.getStringToday() + "支付" + result.getAmount() + "元",
+                result.getId() + "_" + CODE_PAY, result.getAmount() + "");
+        weChatManager.pay(PaymentByOnlineActivity.this, orderInfo, new WeChatManager.HttpResponseCallback() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                PayReq req = weChatManager.getReq(PaymentByOnlineActivity.this, bytes);
+                if (req != null) {
+                    boolean hasApp = iwxapi.sendReq(req);
+                    WXPayEntryActivity.setWeChatCallback(new WXPayEntryActivity.WeChatCallback() {
+                        @Override
+                        public void onResp(BaseResp resp) {
+                            PaymentByOnlineActivity.this.onResp(resp);
+                        }
+                    });
+                    if (!hasApp) {
+                        wechatDialog.dismiss();
+                        showToast("打开微信失败。");
+                        closeThis();
+                    }
+                } else {
+                    wechatDialog.dismiss();
+                    showToast("微信支付下单失败！");
+                    closeThis();
+                }
+            }
+
+            @Override
+            public void onFailure(byte[] bytes, Throwable throwable) {
+                showToast("获取微信预付码错误:" + throwable.getMessage());
+            }
+        });
+    }
+
+    /**
      * 使用支付宝支付
      *
      * @param result
@@ -218,7 +287,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
         AlipayManager.OrderInfo orderInfo =
                 new AlipayManager.OrderInfo("支付宝支付", sessionManager.getUser().getName()
                         + "于" + DateUtil.getStringToday() + "支付" + result.getAmount() + "元",
-                        result.getId()+"_"+CODE_PAY, result.getAmount() + "");
+                        result.getId() + "_" + CODE_PAY, result.getAmount() + "");
         Handler handler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
@@ -250,12 +319,7 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                                 showToast("支付失败\n" + memo);
                             }
-                            PaymentByOnlineActivity.this.finish();
-                            PaymentOrderCommand command = new PaymentOrderCommand();
-                            command.setSource(paymentByOnlineCommand.getSource());
-                            command.setSourceValue(paymentByOnlineCommand.getSourceid());
-                            command.setInstId(paymentByOnlineCommand.getInstId());
-                            PaymentOrderRemainActivity.start(PaymentByOnlineActivity.this, command);
+                            closeThis();
                         }
                         break;
                     }
@@ -266,5 +330,41 @@ public class PaymentByOnlineActivity  extends JupiterFragmentActivity{
             }
         };
         alipayManager.pay(this, orderInfo, handler);
+    }
+
+    private void onResp(BaseResp baseResp) {
+        if (wechatDialog != null && wechatDialog.isShowing()) {
+            wechatDialog.dismiss();
+            wechatDialog = null;
+        }
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
+                setResult(JupiterCommand.RESULT_CODE_OK);
+                showToast("支付成功");
+                PaymentByOnlineActivity.this.finish();
+                PaymentResultCommand resultCommand = new PaymentResultCommand();
+                resultCommand.setInstId(paymentByOnlineCommand.getInstId());
+                resultCommand.setSource(paymentByOnlineCommand.getSource());
+                resultCommand.setSourceId(paymentByOnlineCommand.getSourceid());
+                resultCommand.setPaymentDone(true);
+                resultCommand.setCreateBy(paymentByOnlineCommand.getCreateBy());
+                PaymentResultActivity.start(PaymentByOnlineActivity.this, resultCommand);
+                return;
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_COMM) {
+                showToast("支付失败\n" + baseResp.errStr);
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL) {
+                showToast("用户取消操作。");
+            }
+            closeThis();
+        }
+    }
+
+    private void closeThis() {
+        PaymentByOnlineActivity.this.finish();
+        PaymentOrderCommand command = new PaymentOrderCommand();
+        command.setSource(paymentByOnlineCommand.getSource());
+        command.setSourceValue(paymentByOnlineCommand.getSourceid());
+        command.setInstId(paymentByOnlineCommand.getInstId());
+        PaymentOrderRemainActivity.start(PaymentByOnlineActivity.this, command);
     }
 }

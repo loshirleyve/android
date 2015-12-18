@@ -321,14 +321,15 @@ public class DynamicSessionFragment extends JupiterFragment {
 
             //获取用户信息
             CacheUser cacheUser = UserCache.getInstance().getUser(msgsGroup.getFromuserid());
+            CacheInst cacheInst = InstCache.getInstance().getInst(msgsGroup.getInstid());
 
-            if (AssertValue.isNotNull(cacheUser)) {
+            if (AssertValue.isNotNull(cacheUser) && AssertValue.isNotNull(cacheInst)) {
                 ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(),
                         jupiterRowStyleSutitleLayout.getMainIV(), R.drawable.user_head);
                 jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
-                if (AssertValue.isNotNullAndNotEmpty(cacheUser.getInstsimplename())){
+                if (AssertValue.isNotNullAndNotEmpty(cacheInst.getSimplename())){
                     jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.VISIBLE);
-                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheUser.getInstsimplename());
+                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheInst.getSimplename());
                 }
             }
 
@@ -342,7 +343,6 @@ public class DynamicSessionFragment extends JupiterFragment {
             // 如果是来自机构
             if (MsgFromType.TYPE_INST.equals(msgsGroup.getFromtype())
                     && AssertValue.isNotNullAndNotEmpty(msgsGroup.getInstid())){
-                CacheInst cacheInst = InstCache.getInstance().getInst(msgsGroup.getInstid());
                 if (cacheInst != null){
                     ImageLoaderUtil.getInstance(mContext).displayImage(cacheInst.getLogourl(),
                             jupiterRowStyleSutitleLayout.getMainIV(), R.drawable.user_head);
