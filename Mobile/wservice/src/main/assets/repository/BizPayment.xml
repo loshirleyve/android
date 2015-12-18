@@ -87,6 +87,17 @@
         <type>yun9</type>
     </repository>
 
+    <!--获取真实充值记录ID-->
+    <repository>
+        <name>AddRechargeD</name>
+        <action>com.yun9.ws.biz.service.AddRechargeDService</action>
+        <output>
+            <classname>com.yun9.wservice.model.AddRechargeResult</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
     <!-- 提交支付凭证 -->
     <repository>
         <name>UpdateCollectByArriveInfoService</name>

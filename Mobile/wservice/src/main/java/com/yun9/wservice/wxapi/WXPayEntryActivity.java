@@ -2,9 +2,9 @@ package com.yun9.wservice.wxapi;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -50,11 +50,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 	public void onResp(BaseResp resp) {
 		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
 			if (weChatCallback != null) {
-				finish();
 				weChatCallback.onResp(resp);
 				weChatCallback =null;
 			}
 		}
+		WXPayEntryActivity.this.finish();
 	}
 
 	public static interface WeChatCallback{

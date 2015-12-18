@@ -12,6 +12,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tencent.mm.sdk.constants.ConstantsAPI;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -29,9 +34,11 @@ import com.yun9.wservice.enums.PayModeType;
 import com.yun9.wservice.enums.PayModeTypeCode;
 import com.yun9.wservice.enums.PayRegisterCollectState;
 import com.yun9.wservice.manager.AlipayManager;
+import com.yun9.wservice.manager.WeChatManager;
 import com.yun9.wservice.model.HistoryPayInfo;
 import com.yun9.wservice.model.PayRegisterCollect;
 import com.yun9.wservice.view.common.LeftRightTextWidget;
+import com.yun9.wservice.wxapi.WXPayEntryActivity;
 
 /**
  * Created by huangbinglong on 8/20/15.
@@ -69,9 +76,16 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
     @BeanInject
     private AlipayManager alipayManager;
 
+    @BeanInject
+    private WeChatManager weChatManager;
+
     private HistoryPayInfo payInfo;
 
     private PaymentOrderCommand command;
+
+    private IWXAPI iwxapi;
+
+    private ProgressDialog wechatDialog;
 
     public static void start(Activity activity,PaymentOrderCommand command) {
         Intent intent =  new Intent(activity,PaymentOrderRemainActivity.class);
@@ -85,6 +99,7 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (PaymentOrderCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
+        iwxapi = WXAPIFactory.createWXAPI(this, WeChatManager.APP_ID);
         buildView();
         loadData();
     }
@@ -175,10 +190,21 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
 
     private void payAgain(PayRegisterCollect collect) {
         if (PayModeTypeCode.CODE_WX.equals(collect.getPtcode())) {
-            showToast("功能正在研发...");
-            return;
+            if(!iwxapi.isWXAppInstalled())
+            {
+                showToast("您没有安装微信！");
+                return;
+            }
+
+            if(!iwxapi.isWXAppSupportAPI())
+            {
+                showToast("当前微信版本不支持支付功能");
+                return;
+            }
+            payByWeChat(collect);
+        } else if (PayModeTypeCode.CODE_ALIPAY.equals(collect.getPtcode())) {
+            payByAlipay(collect);
         }
-        payByAlipay(collect);
 
     }
 
@@ -259,6 +285,79 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
             }
         };
         alipayManager.pay(this, orderInfo, handler);
+    }
+
+    /**
+     * 使用微信进行支付
+     *
+     * @param result 注册订单返回的结果信息
+     */
+    private void payByWeChat(final PayRegisterCollect result) {
+        iwxapi.registerApp(WeChatManager.APP_ID);
+        wechatDialog = ProgressDialog.show(this, null, "微信支付中，请稍候...", true);
+        WeChatManager.OrderInfo orderInfo = new WeChatManager.OrderInfo("微信支付", "移办通订单支付",
+                result.getId() + "_" + CODE_PAY, result.getAmount() + "");
+        weChatManager.pay(PaymentOrderRemainActivity.this, orderInfo, new WeChatManager.HttpResponseCallback() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                PayReq req = weChatManager.getReq(PaymentOrderRemainActivity.this, bytes);
+                if (req != null) {
+                    boolean hasApp = iwxapi.sendReq(req);
+                    WXPayEntryActivity.setWeChatCallback(new WXPayEntryActivity.WeChatCallback() {
+                        @Override
+                        public void onResp(BaseResp resp) {
+                            PaymentOrderRemainActivity.this.onResp(resp);
+                        }
+                    });
+                    if (!hasApp) {
+                        wechatDialog.dismiss();
+                        showToast("打开微信失败。");
+                        closeThis();
+                    }
+                } else {
+                    wechatDialog.dismiss();
+                    showToast("微信支付下单失败！");
+                    closeThis();
+                }
+            }
+
+            @Override
+            public void onFailure(byte[] bytes, Throwable throwable) {
+                showToast("获取微信预付码错误:" + throwable.getMessage());
+            }
+        });
+    }
+
+    private void onResp(BaseResp baseResp) {
+        if (wechatDialog != null && wechatDialog.isShowing()) {
+            wechatDialog.dismiss();
+            wechatDialog = null;
+        }
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
+                setResult(JupiterCommand.RESULT_CODE_OK);
+                showToast("支付成功");
+                PaymentOrderRemainActivity.this.finish();
+                PaymentResultCommand resultCommand = new PaymentResultCommand();
+                resultCommand.setInstId(command.getInstId());
+                resultCommand.setSource(command.getSource());
+                resultCommand.setSourceId(command.getSourceValue());
+                resultCommand.setPaymentDone(true);
+                resultCommand.setCreateBy(payInfo.getCreateby());
+                PaymentResultActivity.start(PaymentOrderRemainActivity.this, resultCommand);
+                return;
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_COMM) {
+                showToast("支付失败\n" + baseResp.errStr);
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL) {
+                showToast("用户取消操作。");
+            }
+            closeThis();
+        }
+    }
+
+    private void closeThis() {
+        PaymentOrderRemainActivity.this.finish();
+        PaymentOrderRemainActivity.start(PaymentOrderRemainActivity.this, command);
     }
 
     @Override

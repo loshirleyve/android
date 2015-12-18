@@ -243,8 +243,7 @@ public class PaymentByOnlineActivity extends JupiterFragmentActivity {
     private void payByWeChat(final PayRegisterCollect result) {
         iwxapi.registerApp(WeChatManager.APP_ID);
         wechatDialog = ProgressDialog.show(this, null, "微信支付中，请稍候...", true);
-        WeChatManager.OrderInfo orderInfo = new WeChatManager.OrderInfo("微信支付", sessionManager.getUser().getName()
-                + "于" + DateUtil.getStringToday() + "支付" + result.getAmount() + "元",
+        WeChatManager.OrderInfo orderInfo = new WeChatManager.OrderInfo("微信支付", "移办通订单支付",
                 result.getId() + "_" + CODE_PAY, result.getAmount() + "");
         weChatManager.pay(PaymentByOnlineActivity.this, orderInfo, new WeChatManager.HttpResponseCallback() {
             @Override

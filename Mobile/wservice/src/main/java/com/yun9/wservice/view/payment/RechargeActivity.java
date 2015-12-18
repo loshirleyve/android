@@ -12,6 +12,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tencent.mm.sdk.constants.ConstantsAPI;
+import com.tencent.mm.sdk.modelbase.BaseResp;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.yun9.jupiter.command.JupiterCommand;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
@@ -28,8 +33,10 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.RechargeNo;
 import com.yun9.wservice.manager.AlipayManager;
+import com.yun9.wservice.manager.WeChatManager;
 import com.yun9.wservice.model.AddRechargeResult;
 import com.yun9.wservice.model.PayModeType;
+import com.yun9.wservice.wxapi.WXPayEntryActivity;
 
 /**
  * 充值界面
@@ -67,11 +74,18 @@ public class RechargeActivity extends JupiterFragmentActivity {
     @BeanInject
     private AlipayManager alipayManager;
 
+    @BeanInject
+    private WeChatManager weChatManager;
+
     private RechargeChoiceWaysCommand command;
 
     private RechargeCommand rechargeCommand;
 
     private PayModeType rechargeType;
+
+    private IWXAPI iwxapi;
+
+    private ProgressDialog wechatDialog;
 
     public static void start(Activity activity, RechargeCommand command) {
         Intent intent = new Intent(activity, RechargeActivity.class);
@@ -86,6 +100,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
         super.onCreate(savedInstanceState);
         rechargeCommand =
                 (RechargeCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
+        iwxapi = WXAPIFactory.createWXAPI(this, WeChatManager.APP_ID);
         buildView();
     }
 
@@ -157,8 +172,17 @@ public class RechargeActivity extends JupiterFragmentActivity {
 
     private void addRechargeRecord(String amount) {
         if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getCode())) {
-            showToast("功能正在研发...");
-            return;
+            if(!iwxapi.isWXAppInstalled())
+            {
+                showToast("您没有安装微信！");
+                return;
+            }
+
+            if(!iwxapi.isWXAppSupportAPI())
+            {
+                showToast("当前微信版本不支持支付功能");
+                return;
+            }
         }
         final ProgressDialog registerDialog = ProgressDialog.show(this, null, "登记中，请稍候...", true);
         Resource resource = resourceFactory.create("AddRechargeService");
@@ -175,6 +199,7 @@ public class RechargeActivity extends JupiterFragmentActivity {
                 if (RechargeNo.TYPE_ALIPAY.equals(rechargeType.getCode())) {
                     payByAlipay(result);
                 } else if (RechargeNo.TYPE_WEIXIN.equals(rechargeType.getCode())) {
+                    payByWeChat(result);
                 }
             }
 
@@ -186,6 +211,47 @@ public class RechargeActivity extends JupiterFragmentActivity {
             @Override
             public void onFinally(Response response) {
                 registerDialog.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 使用微信进行支付
+     *
+     * @param result 注册订单返回的结果信息
+     */
+    private void payByWeChat(final AddRechargeResult result) {
+        iwxapi.registerApp(WeChatManager.APP_ID);
+        wechatDialog = ProgressDialog.show(this, null, "微信支付中，请稍候...", true);
+        WeChatManager.OrderInfo orderInfo = new WeChatManager.OrderInfo("余额充值", "移办通充值",
+                result.getCallbackid(), result.getAmount() + "");
+        weChatManager.pay(RechargeActivity.this, orderInfo, new WeChatManager.HttpResponseCallback() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                PayReq req = weChatManager.getReq(RechargeActivity.this, bytes);
+                if (req != null) {
+                    boolean hasApp = iwxapi.sendReq(req);
+                    WXPayEntryActivity.setWeChatCallback(new WXPayEntryActivity.WeChatCallback() {
+                        @Override
+                        public void onResp(BaseResp resp) {
+                            RechargeActivity.this.onResp(result,resp);
+                        }
+                    });
+                    if (!hasApp) {
+                        wechatDialog.dismiss();
+                        showToast("打开微信失败。");
+                        closeThis();
+                    }
+                } else {
+                    wechatDialog.dismiss();
+                    showToast("微信支付下单失败！");
+                    closeThis();
+                }
+            }
+
+            @Override
+            public void onFailure(byte[] bytes, Throwable throwable) {
+                showToast("获取微信预付码错误:" + throwable.getMessage());
             }
         });
     }
@@ -245,6 +311,36 @@ public class RechargeActivity extends JupiterFragmentActivity {
             }
         };
         alipayManager.pay(this, orderInfo, handler);
+    }
+
+    private void onResp(AddRechargeResult result,BaseResp baseResp) {
+        if (wechatDialog != null && wechatDialog.isShowing()) {
+            wechatDialog.dismiss();
+            wechatDialog = null;
+        }
+        if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
+            RechargeResultCommand command =
+                    new RechargeResultCommand(result.getRechargeid(), result.getStateName(),
+                            result.getRecharegeTypeName(), result.getAmount());
+            if (baseResp.errCode == BaseResp.ErrCode.ERR_OK) {
+                command.setStateName("支付成功");
+                RechargeResultActivity.start(RechargeActivity.this, command);
+                setResult(JupiterCommand.RESULT_CODE_OK);
+                RechargeActivity.this.finish();
+                return;
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_COMM) {
+                showToast("支付失败\n" + baseResp.errStr);
+            } else if (baseResp.errCode == BaseResp.ErrCode.ERR_USER_CANCEL) {
+                showToast("用户取消操作。");
+            }
+            closeThis();
+        }
+    }
+
+    private void closeThis() {
+        RechargeActivity.this.finish();
+        setResult(JupiterCommand.RESULT_CODE_CANCEL);
+        RechargeRecordListActivity.start(RechargeActivity.this, null, null);
     }
 
     private void showDesc(PayModeType type) {
