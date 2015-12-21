@@ -329,7 +329,7 @@ public class DynamicSessionFragment extends JupiterFragment {
                 jupiterRowStyleSutitleLayout.getTitleTV().setText(cacheUser.getName());
                 if (AssertValue.isNotNullAndNotEmpty(cacheInst.getSimplename())){
                     jupiterRowStyleSutitleLayout.getTitleTipTV().setVisibility(View.VISIBLE);
-                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText(cacheInst.getSimplename());
+                    jupiterRowStyleSutitleLayout.getTitleTipTV().setText("来自"+cacheInst.getSimplename());
                 }
             }
 

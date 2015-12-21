@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,7 +24,6 @@ import com.yun9.jupiter.repository.Page;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.ImageLoaderUtil;
 import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
@@ -35,9 +35,12 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.DateSection;
 import com.yun9.wservice.model.PayRegisterAnalysis;
 import com.yun9.wservice.model.PayRegisterCollectAnalysis;
+import com.yun9.wservice.model.PayRegisterCollectAnalysisUserDtos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -47,30 +50,30 @@ import in.srain.cube.views.ptr.PtrHandler;
 /**
  * Created by huangbinglong on 15/8/28.
  */
-public class GatheringAnalysisActivity extends JupiterFragmentActivity{
+public class GatheringAnalysisActivity extends JupiterFragmentActivity {
 
-    @ViewInject(id=R.id.title_bar)
+    @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.time_line_rl)
+    @ViewInject(id = R.id.time_line_rl)
     private RelativeLayout timeLineRl;
 
-    @ViewInject(id=R.id.selected_time_line_tv)
+    @ViewInject(id = R.id.selected_time_line_tv)
     private TextView selectedTimeLineTv;
 
-    @ViewInject(id=R.id.rotate_header_list_view_frame)
+    @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
-    @ViewInject(id=R.id.analysis_list_ptr)
+    @ViewInject(id = R.id.analysis_list_ptr)
     private PagingListView analysisListView;
 
-    @ViewInject(id=R.id.amount_tv)
+    @ViewInject(id = R.id.amount_tv)
     private TextView amountTv;
 
-    @ViewInject(id=R.id.pay_amount_tv)
+    @ViewInject(id = R.id.pay_amount_tv)
     private TextView payAmountTv;
 
-    @ViewInject(id=R.id.un_pay_amount_tv)
+    @ViewInject(id = R.id.un_pay_amount_tv)
     private TextView unPayAmountTv;
 
     private PopupWindow timeLineWindow;
@@ -84,6 +87,16 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     private String pullRowid = null;
 
     private String pushRowid = null;
+
+    private Map<Integer, Integer> mapDataSection;
+
+    private int sectionDataTotalLen = 0;
+
+    private int sectionLen = 0;
+
+    private int currentSectionIndex = 0;
+
+    private int currentSectionDataIndex = 0;
 
     @BeanInject
     private SessionManager sessionManager;
@@ -102,6 +115,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         analysisList = new ArrayList<>();
+        mapDataSection = new HashMap<>();
         buildView();
     }
 
@@ -160,7 +174,7 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
         }, 100);
     }
 
-    private void autoRefresh(){
+    private void autoRefresh() {
         ptrClassicFrameLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -170,32 +184,46 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     }
 
     private void refreshAnalysis(String rowid, final String dir) {
-        if (selectedDateSection == null){
+        if (selectedDateSection == null) {
             return;
         }
         final Resource resource = resourceFactory.create("QueryPayRegisterCollectAnalysisService");
         resource.param("instid", sessionManager.getInst().getId());
-        resource.param("beginDate",selectedDateSection.getBegindate());
-        resource.param("endDate",selectedDateSection.getEnddate());
+        resource.param("beginDate", selectedDateSection.getBegindate());
+        resource.param("endDate", selectedDateSection.getEnddate());
         resource.page().setRowid(rowid).setDir(dir);
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
                 List<PayRegisterCollectAnalysis> temps = (List<PayRegisterCollectAnalysis>) response.getPayload();
+                analysisList.clear();
+                mapDataSection.clear();
+                sectionDataTotalLen = 0;
+                sectionLen = 0;
+                currentSectionIndex = 0;
                 if (temps != null && temps.size() > 0) {
-                    if (Page.PAGE_DIR_PULL.equals(dir)) {
-                        pullRowid = temps.get(0).getId();
-                        analysisList.addAll(0, temps);
-                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)) {
-                            pushRowid = temps.get(temps.size() - 1).getId();
-                        }
-                        if (temps.size() < Integer.valueOf(resource.page().getSize())) {
-                            analysisListView.setHasMoreItems(false);
-                        }
-                    } else {
-                        pushRowid = temps.get(temps.size() - 1).getId();
-                        analysisList.addAll(temps);
+                    analysisList.addAll(0, temps);
+                    int len = 0;
+                    for (PayRegisterCollectAnalysis analysis : temps) {
+                        len = (analysis.getPayRegisterCollectAnalysisUserDtos() != null) ?
+                                analysis.getPayRegisterCollectAnalysisUserDtos().size() : 0;
+                        mapDataSection.put((sectionDataTotalLen == 0?0:sectionDataTotalLen+1), sectionLen);
+                        sectionDataTotalLen += len;
+                        sectionLen += 1;
                     }
+//                    if (Page.PAGE_DIR_PULL.equals(dir)) {
+//                        pullRowid = temps.get(0).getId();
+//                        analysisList.addAll(0, temps);
+//                        if (!AssertValue.isNotNullAndNotEmpty(pushRowid)) {
+//                            pushRowid = temps.get(temps.size() - 1).getId();
+//                        }
+//                        if (temps.size() < Integer.valueOf(resource.page().getSize())) {
+//                            analysisListView.setHasMoreItems(false);
+//                        }
+//                    } else {
+//                        pushRowid = temps.get(temps.size() - 1).getId();
+//                        analysisList.addAll(temps);
+//                    }
                 } else if (Page.PAGE_DIR_PULL.equals(dir)) {
                     showToast("没有新数据");
                 } else if (Page.PAGE_DIR_PUSH.equals(dir)) {
@@ -232,8 +260,8 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
             selectedTimeLineTv.getLocationOnScreen(location);
             timeLineWindow.showAtLocation(selectedTimeLineTv, Gravity.DISPLAY_CLIP_VERTICAL,
                     0,
-                    -((PublicHelp.getDeviceHeightPixels(GatheringAnalysisActivity.this) - popupHeight)/2)
-                    + location[1]+selectedTimeLineTv.getHeight()+5);
+                    -((PublicHelp.getDeviceHeightPixels(GatheringAnalysisActivity.this) - popupHeight) / 2)
+                            + location[1] + selectedTimeLineTv.getHeight() + 5);
         }
     }
 
@@ -288,8 +316,8 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     }
 
     private void setupDefaultDateSection(List<DateSection> dateSections) {
-        for (DateSection section : dateSections){
-            if (section.getIsdefault() == 1){
+        for (DateSection section : dateSections) {
+            if (section.getIsdefault() == 1) {
                 selectedDateSection = section;
                 autoRefresh();
             }
@@ -298,12 +326,12 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     }
 
     private void refreshDateSection() {
-        if (selectedDateSection == null){
+        if (selectedDateSection == null) {
             selectedTimeLineTv.setText("");
         } else {
             selectedTimeLineTv.setText(selectedDateSection.getLabel());
         }
-        if (timeLineWindow.isShowing()){
+        if (timeLineWindow.isShowing()) {
             timeLineWindow.dismiss();
         }
     }
@@ -312,8 +340,8 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
         cleanBaseInfo();
         final Resource resource = resourceFactory.create("QueryPayRegisterAnalysisService");
         resource.param("instid", sessionManager.getInst().getId());
-        resource.param("beginDate",selectedDateSection.getBegindate());
-        resource.param("endDate",selectedDateSection.getEnddate());
+        resource.param("beginDate", selectedDateSection.getBegindate());
+        resource.param("endDate", selectedDateSection.getEnddate());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
@@ -354,8 +382,8 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
     private JupiterAdapter adapter = new JupiterAdapter() {
         @Override
         public int getCount() {
-            if (analysisList != null){
-                return analysisList.size();
+            if (sectionDataTotalLen > 0) {
+                return sectionDataTotalLen + sectionLen;
             }
             return 0;
         }
@@ -372,28 +400,64 @@ public class GatheringAnalysisActivity extends JupiterFragmentActivity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            PayRegisterCollectAnalysis analysis = analysisList.get(position);
-            GatheringAnalysisWidget widget = null;
-            if (convertView == null){
-                widget = new GatheringAnalysisWidget(GatheringAnalysisActivity.this);
-                convertView = widget;
+            PayRegisterCollectAnalysis analysis = analysisList.get(getSection(position));
+            if (isSection(position)) {
+                currentSectionDataIndex = 0;
+                TextView widget = null;
+                if (convertView == null) {
+                    LinearLayout linearLayout = new LinearLayout(GatheringAnalysisActivity.this);
+                    linearLayout
+                            .setLayoutParams(new ListView.LayoutParams(
+                                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    widget = new TextView(GatheringAnalysisActivity.this);
+                    widget.setTextColor(getResources().getColor(R.color.gray_font));
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(16, 8, 0, 0);
+                    widget.setLayoutParams(params);
+                    linearLayout.addView(widget);
+                    convertView = linearLayout;
+                } else {
+                    widget = (TextView) ((LinearLayout) convertView).getChildAt(0);
+                }
+                widget.setText(analysis.getPaymode());
             } else {
-                widget = (GatheringAnalysisWidget) convertView;
+                GatheringAnalysisWidget widget = null;
+                if (convertView == null) {
+                    widget = new GatheringAnalysisWidget(GatheringAnalysisActivity.this);
+                    convertView = widget;
+                } else {
+                    widget = (GatheringAnalysisWidget) convertView;
+                }
+                buildWidgetWithData(widget, analysis.getPayRegisterCollectAnalysisUserDtos().get(currentSectionDataIndex));
+                currentSectionDataIndex++;
             }
-            buildWidgetWithData(widget,analysis);
+
             return convertView;
         }
     };
 
-    private void buildWidgetWithData(GatheringAnalysisWidget widget,final PayRegisterCollectAnalysis analysis) {
+    private boolean isSection(int position) {
+        return mapDataSection.get(position) != null;
+    }
+
+    private int getSection(int position) {
+        Integer section = mapDataSection.get(position);
+        if (section != null) {
+            currentSectionIndex = section;
+        }
+        return currentSectionIndex;
+    }
+
+    private void buildWidgetWithData(GatheringAnalysisWidget widget, final PayRegisterCollectAnalysisUserDtos analysis) {
         CacheUser cacheUser = UserCache.getInstance().getUser(analysis.getUserid());
-        if (cacheUser != null){
+        if (cacheUser != null) {
             widget.getUserNameTv().setText(cacheUser.getName());
         } else {
             widget.getUserNameTv().setText("未分配");
         }
         widget.getAmountDescrTv().setText(analysis.getDescr());
-        widget.getAmountTv().setText(analysis.getCollectAmount()+"元");
+        widget.getAmountTv().setText(analysis.getCollectAmount() + "元");
 
     }
 

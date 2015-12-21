@@ -1,6 +1,7 @@
 package com.yun9.wservice.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by huangbinglong on 15/8/29.
@@ -9,9 +10,17 @@ public class PayRegisterCollectAnalysis implements Serializable {
 
     private String id;
     private String page;
-    private String userid;
-    private Double collectAmount;
-    private String descr;
+    private String paymode;
+    private List<PayRegisterCollectAnalysisUserDtos> payRegisterCollectAnalysisUserDtos;
+
+    public String getId() {
+        return id;
+    }
+
+    public PayRegisterCollectAnalysis setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getPage() {
         return page;
@@ -22,39 +31,21 @@ public class PayRegisterCollectAnalysis implements Serializable {
         return this;
     }
 
-    public String getUserid() {
-        return userid;
+    public String getPaymode() {
+        return paymode;
     }
 
-    public PayRegisterCollectAnalysis setUserid(String userid) {
-        this.userid = userid;
+    public PayRegisterCollectAnalysis setPaymode(String paymode) {
+        this.paymode = paymode;
         return this;
     }
 
-    public Double getCollectAmount() {
-        return collectAmount;
+    public List<PayRegisterCollectAnalysisUserDtos> getPayRegisterCollectAnalysisUserDtos() {
+        return payRegisterCollectAnalysisUserDtos;
     }
 
-    public PayRegisterCollectAnalysis setCollectAmount(Double collectAmount) {
-        this.collectAmount = collectAmount;
-        return this;
-    }
-
-    public String getDescr() {
-        return descr;
-    }
-
-    public PayRegisterCollectAnalysis setDescr(String descr) {
-        this.descr = descr;
-        return this;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public PayRegisterCollectAnalysis setId(String id) {
-        this.id = id;
+    public PayRegisterCollectAnalysis setPayRegisterCollectAnalysisUserDtos(List<PayRegisterCollectAnalysisUserDtos> payRegisterCollectAnalysisUserDtos) {
+        this.payRegisterCollectAnalysisUserDtos = payRegisterCollectAnalysisUserDtos;
         return this;
     }
 }
