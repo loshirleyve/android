@@ -106,6 +106,22 @@
         <type>yun9</type>
     </repository>
 
+    <!---更新用户当前机构服务 -->
+    <repository>
+        <name>UpdateUserByCurrinstidService</name>
+        <action>com.yun9.sys.user.service.UpdateUserByCurrinstidService</action>
+        <type>yun9</type>
+    </repository>
 
+    <!---更新用户当前机构服务 -->
+    <repository>
+        <name>QueryCurrInstByUserService</name>
+        <action>com.yun9.sys.inst.serivce.QueryCurrInstByUserService</action>
+        <output>
+            <classname>com.yun9.jupiter.model.Inst</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
 
 </repositorys>

@@ -143,16 +143,7 @@ public class LoginActivity extends JupiterFragmentActivity {
             @Override
             public void onSuccess(Response response) {
                 LoginUser loginUser = (LoginUser) response.getPayload();
-                user = loginUser.getUser();
-                //检查登录用户的机构信息
-                Inst cacheInst = sessionManager.getInst(user.getId());
-                cacheInst = containInst(loginUser.getInsts(), cacheInst);
-                if (AssertValue.isNotNull(cacheInst)) {
-                    complete(user, cacheInst);
-                } else {
-                    //未选择机构，进行机构选择操作
-                    SelectInstActivity.start(LoginActivity.this, new SelectInstCommand().setUser(user));
-                }
+                queryCurrentInstAndReturn(loginUser);
             }
 
             @Override
@@ -164,10 +155,46 @@ public class LoginActivity extends JupiterFragmentActivity {
 
             @Override
             public void onFinally(Response response) {
-                setLoading(false);
 
             }
         });
+    }
+
+    private void queryCurrentInstAndReturn(final LoginUser loginUser) {
+        user = loginUser.getUser();
+        //检查登录用户的机构信息
+        Resource resource = resourceFactory.create("QueryCurrInstByUserService");
+        resource.param("userid", user.getId());
+
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                Inst currentInst = (Inst) response.getPayload();
+
+                Inst cacheInst = sessionManager.getInst(user.getId());
+                cacheInst = containInst(loginUser.getInsts(), cacheInst);
+
+                if (AssertValue.isNotNull(currentInst)) {
+                    complete(user, currentInst);
+                } else if (AssertValue.isNotNull(cacheInst)) {
+                    complete(user, cacheInst);
+                } else {
+                    //未选择机构，进行机构选择操作
+                    SelectInstActivity.start(LoginActivity.this, new SelectInstCommand().setUser(user));
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(LoginActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                setLoading(false);
+            }
+        });
+
     }
 
     private Inst containInst(List<Inst> insts, Inst cacheInst) {

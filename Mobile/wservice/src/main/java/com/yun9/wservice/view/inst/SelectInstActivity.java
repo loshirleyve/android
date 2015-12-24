@@ -183,14 +183,36 @@ public class SelectInstActivity extends JupiterFragmentActivity {
         public void onSelect(View view, boolean mode) {
             Inst inst = (Inst) view.getTag();
             if (AssertValue.isNotNull(inst)) {
+                updateCurrentInstAndReturn(inst);
+            }
+
+        }
+    };
+
+    private void updateCurrentInstAndReturn(final Inst inst) {
+        Resource resource = resourceFactory.create("UpdateUserByCurrinstidService");
+        resource.param("userid", command.getUser().getId());
+        resource.param("currinstid", inst.getId());
+
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(SelectInstActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
                 Intent intent = new Intent();
                 intent.putExtra(SelectInstCommand.PARAM_INST, inst);
                 setResult(SelectInstCommand.RESULT_CODE_OK, intent);
                 SelectInstActivity.this.finish();
             }
-
-        }
-    };
+        });
+    }
 
     private DialogInterface.OnClickListener onYesClickListener = new DialogInterface.OnClickListener() {
         @Override

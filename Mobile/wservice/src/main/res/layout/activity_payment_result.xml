@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleLeftIcoVisibility="true"
+        app:titleRightText="退款"
         app:titleText="支付完成"/>
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
         android:layout_width="match_parent"
@@ -96,7 +97,7 @@
                     android:textColor="@color/title_color"
                     android:layout_marginRight="10dp"
                     android:textSize="16dp"
-                    android:text="1460.00元"/>
+                    android:text="0.00元"/>
                 <TextView
                     android:layout_marginTop="20dp"
                     android:layout_below="@id/remain_balance_line"

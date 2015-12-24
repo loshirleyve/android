@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleLeftIcoVisibility="true"
+        app:titleRightText="退款"
         app:titleText="等待支付">
     </com.yun9.jupiter.widget.JupiterTitleBarLayout>
     <com.yun9.jupiter.widget.JupiterSpringbackScrollView
