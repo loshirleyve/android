@@ -41,6 +41,9 @@ public class OrderCartInfoWrapper implements Serializable{
     private Long begindate;
     private Long enddate;
     private String preferentialInfo;
+    private String refundstate;
+    private String refundreason;
+    private Double refundamount;
 
     public String getCreateby() {
         return createby;
@@ -318,6 +321,33 @@ public class OrderCartInfoWrapper implements Serializable{
 
     public OrderCartInfoWrapper setPreferentialInfo(String preferentialInfo) {
         this.preferentialInfo = preferentialInfo;
+        return this;
+    }
+
+    public String getRefundstate() {
+        return refundstate;
+    }
+
+    public OrderCartInfoWrapper setRefundstate(String refundstate) {
+        this.refundstate = refundstate;
+        return this;
+    }
+
+    public String getRefundreason() {
+        return refundreason;
+    }
+
+    public OrderCartInfoWrapper setRefundreason(String refundreason) {
+        this.refundreason = refundreason;
+        return this;
+    }
+
+    public Double getRefundamount() {
+        return refundamount;
+    }
+
+    public OrderCartInfoWrapper setRefundamount(Double refundamount) {
+        this.refundamount = refundamount;
         return this;
     }
 }

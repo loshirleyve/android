@@ -178,5 +178,16 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 订单退款申请-->
+    <repository>
+        <name>UpdateOrderRefundService</name>
+        <action>com.yun9.ws.biz.order.service.UpdateOrderRefundService</action>
+        <output>
+            <classname>com.yun9.wservice.model.wrapper.OrderCartInfoWrapper</classname>
+            <type>object</type>
+        </output>
+        <type>yun9</type>
+    </repository>
+
 
 </repositorys>

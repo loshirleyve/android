@@ -49,22 +49,22 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
 
     public static final String CODE_PAY = "0002";
 
-    @ViewInject(id=R.id.title_bar)
+    @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.payment_payway)
+    @ViewInject(id = R.id.payment_payway)
     private JupiterRowStyleSutitleLayout paymentPayWay;
 
-    @ViewInject(id=R.id.go_to_pay_ib)
+    @ViewInject(id = R.id.go_to_pay_ib)
     private ImageButton payIb;
 
-    @ViewInject(id=R.id.remain_balance)
+    @ViewInject(id = R.id.remain_balance)
     private TextView remainBalance;
 
-    @ViewInject(id=R.id.items_ll)
+    @ViewInject(id = R.id.items_ll)
     private LinearLayout itemsLl;
 
-    @ViewInject(id=R.id.bottom_operator_ll)
+    @ViewInject(id = R.id.bottom_operator_ll)
     private LinearLayout bottomOperatorLl;
 
     @BeanInject
@@ -87,10 +87,10 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
 
     private ProgressDialog wechatDialog;
 
-    public static void start(Activity activity,PaymentOrderCommand command) {
-        Intent intent =  new Intent(activity,PaymentOrderRemainActivity.class);
+    public static void start(Activity activity, PaymentOrderCommand command) {
+        Intent intent = new Intent(activity, PaymentOrderRemainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(JupiterCommand.PARAM_COMMAND,command);
+        bundle.putSerializable(JupiterCommand.PARAM_COMMAND, command);
         intent.putExtras(bundle);
         activity.startActivityForResult(intent, command.getRequestCode());
     }
@@ -109,6 +109,16 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View v) {
                 PaymentOrderRemainActivity.this.finish();
+            }
+        });
+
+        titleBarLayout.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentRefundCommand refundCommand = new PaymentRefundCommand();
+                refundCommand.setOrderId(command.getSourceValue());
+                refundCommand.setRefundamount(0D);
+                PaymentRefundActivity.start(PaymentOrderRemainActivity.this, refundCommand);
             }
         });
 
@@ -145,38 +155,39 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
     }
 
     private void buildWithData() {
-        if (payInfo == null){
+        if (payInfo == null) {
             return;
         }
 
         if (PayModeType.TYPE_OFFLINE.equals(payInfo.getPaymodeType())
-                || payInfo.getUnPayamount() <=0.0){
+                || payInfo.getUnPayamount() <= 0.0) {
             bottomOperatorLl.setVisibility(View.GONE);
         }
 
+        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
         paymentPayWay.getHotNitoceTV().setText(payInfo.getPaymodeName());
         remainBalance.setText(payInfo.getUnPayamount() + "元");
-        if (payInfo.getPayRegisterCollects() != null){
+        if (payInfo.getPayRegisterCollects() != null) {
             itemsLl.addView(createItem(new PayRegisterCollect().setPtname("支付总额").setAmount(payInfo.getAmount())));
-            for (PayRegisterCollect collect : payInfo.getPayRegisterCollects()){
+            for (PayRegisterCollect collect : payInfo.getPayRegisterCollects()) {
                 itemsLl.addView(createItem(collect));
             }
         }
     }
 
     private View createItem(final PayRegisterCollect collect) {
-        String name = "-" +collect.getPtname();
-        String amount  = collect.getAmount()+"元";
-        if (PayRegisterCollectState.LOCK.equals(collect.getState())){
+        String name = "-" + collect.getPtname();
+        String amount = collect.getAmount() + "元";
+        if (PayRegisterCollectState.LOCK.equals(collect.getState())) {
             name += "(等待确认)";
         }
         LeftRightTextWidget widget = new LeftRightTextWidget(this);
         widget.getLeftTv().setText(name);
         widget.getRightTv().setText(amount);
         if (PayModeType.TYPE_ONLINE.equals(collect.getPaymodetype())
-                && PayRegisterCollectState.LOCK.equals(collect.getState())){
+                && PayRegisterCollectState.LOCK.equals(collect.getState())) {
             widget.getBottomOperatorRl().setVisibility(View.VISIBLE);
             widget.getRightBtn().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,14 +201,12 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
 
     private void payAgain(PayRegisterCollect collect) {
         if (PayModeTypeCode.CODE_WX.equals(collect.getPtcode())) {
-            if(!iwxapi.isWXAppInstalled())
-            {
+            if (!iwxapi.isWXAppInstalled()) {
                 showToast("您没有安装微信！");
                 return;
             }
 
-            if(!iwxapi.isWXAppSupportAPI())
-            {
+            if (!iwxapi.isWXAppSupportAPI()) {
                 showToast("当前微信版本不支持支付功能");
                 return;
             }
@@ -209,7 +218,7 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
     }
 
     private void payNow() {
-        if (PayModeType.TYPE_ONLINE.equals(payInfo.getPaymodeType())){
+        if (PayModeType.TYPE_ONLINE.equals(payInfo.getPaymodeType())) {
             PaymentByOnlineCommand onlineCommand = new PaymentByOnlineCommand();
             onlineCommand.setPayRegisterId(payInfo.getId());
             onlineCommand.setSource(command.getSource());
@@ -241,7 +250,7 @@ public class PaymentOrderRemainActivity extends JupiterFragmentActivity {
         AlipayManager.OrderInfo orderInfo =
                 new AlipayManager.OrderInfo("支付宝支付", sessionManager.getUser().getName()
                         + "于" + DateUtil.getStringToday() + "支付" + result.getAmount() + "元",
-                        result.getId()+"_"+CODE_PAY, result.getAmount() + "");
+                        result.getId() + "_" + CODE_PAY, result.getAmount() + "");
         Handler handler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {

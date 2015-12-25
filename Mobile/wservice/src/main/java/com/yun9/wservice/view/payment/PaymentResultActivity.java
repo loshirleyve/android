@@ -39,19 +39,19 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.title_bar)
     private JupiterTitleBarLayout titleBarLayout;
 
-    @ViewInject(id=R.id.state_name_tv)
+    @ViewInject(id = R.id.state_name_tv)
     private TextView stateNameTv;
 
-    @ViewInject(id=R.id.items_ll)
+    @ViewInject(id = R.id.items_ll)
     private LinearLayout itemsLl;
 
-    @ViewInject(id=R.id.remain_balance)
+    @ViewInject(id = R.id.remain_balance)
     private TextView remainBalance;
 
-    @ViewInject(id=R.id.payment_payway)
+    @ViewInject(id = R.id.payment_payway)
     private JupiterRowStyleTitleLayout paymentPayWay;
 
-    @ViewInject(id=R.id.remain_balance_rl)
+    @ViewInject(id = R.id.remain_balance_rl)
     private RelativeLayout remainBalanceRl;
 
     @BeanInject
@@ -76,8 +76,8 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         command = (PaymentResultCommand) getIntent().getSerializableExtra(JupiterCommand.PARAM_COMMAND);
-        if (command.isPaymentDone()){
-            AppCache.getInstance().put(OrderDetailActivity.ORDER_DETAIL_NEES_REFRESH,true);
+        if (command.isPaymentDone()) {
+            AppCache.getInstance().put(OrderDetailActivity.ORDER_DETAIL_NEES_REFRESH, true);
             setResult(JupiterCommand.RESULT_CODE_OK);
         }
         buildView();
@@ -89,6 +89,16 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
             @Override
             public void onClick(View v) {
                 PaymentResultActivity.this.finish();
+            }
+        });
+
+        titleBarLayout.getTitleRightTv().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PaymentRefundCommand refundCommand = new PaymentRefundCommand();
+                refundCommand.setOrderId(command.getSourceId());
+                refundCommand.setRefundamount(0D);
+                PaymentRefundActivity.start(PaymentResultActivity.this, refundCommand);
             }
         });
     }
@@ -118,49 +128,50 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
     }
 
     private void buildWithData() {
-        if (payInfo == null){
+        if (payInfo == null) {
             return;
         }
-        if (payInfo.getComplete() > 0){
+        if (payInfo.getComplete() > 0) {
             stateNameTv.setText("支付完成！");
         } else {
             stateNameTv.setText("支付未完成！");
         }
-        if (payInfo.getUnPayamount() <=0.0){
+        if (payInfo.getUnPayamount() <= 0.0) {
             remainBalanceRl.setVisibility(View.GONE);
         }
+        titleBarLayout.getTitleRightTv().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setVisibility(View.VISIBLE);
         paymentPayWay.getHotNitoceTV().setTextColor(getResources().getColor(R.color.gray_font));
         paymentPayWay.getHotNitoceTV().setText(payInfo.getPaymodeName());
         remainBalance.setText(payInfo.getUnPayamount() + "元");
-        if (payInfo.getPayRegisterCollects() != null){
+        if (payInfo.getPayRegisterCollects() != null) {
             String name = null;
-            String amount  = null;
+            String amount = null;
             Double sum = 0.0;
-            for (PayRegisterCollect collect : payInfo.getPayRegisterCollects()){
-                name = collect.getPtname()+":";
-                if (PayRegisterCollectState.LOCK.equals(collect.getState())){
+            for (PayRegisterCollect collect : payInfo.getPayRegisterCollects()) {
+                name = collect.getPtname() + ":";
+                if (PayRegisterCollectState.LOCK.equals(collect.getState())) {
                     name += "(等待确认)";
                 }
                 sum += collect.getAmount();
-                amount = collect.getAmount()+"元";
-                itemsLl.addView(createItem(name,amount));
+                amount = collect.getAmount() + "元";
+                itemsLl.addView(createItem(name, amount));
             }
-            if (payInfo.getPayRegisterCollects().size() > 0){
+            if (payInfo.getPayRegisterCollects().size() > 0) {
                 View line = new View(this);
                 LinearLayout.LayoutParams params =
                         new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                params.setMargins(0,22,0,0);
+                params.setMargins(0, 22, 0, 0);
                 line.setLayoutParams(params);
                 line.setBackgroundResource(R.drawable.dash_line_1);
                 line.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 itemsLl.addView(line);
             }
-            itemsLl.addView(createItem("总支付:",sum+"元"));
+            itemsLl.addView(createItem("总支付:", sum + "元"));
         }
     }
 
-    private View createItem(String name,String amount) {
+    private View createItem(String name, String amount) {
         LeftRightTextWidget widget = new LeftRightTextWidget(this);
         widget.getLeftTv().setText(name);
         widget.getRightTv().setText(amount);

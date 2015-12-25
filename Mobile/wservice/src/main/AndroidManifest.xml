@@ -404,6 +404,12 @@
             android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <activity
+            android:name=".view.payment.PaymentRefundActivity"
+            android:label="@string/payment_refund"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+
+        <activity
         android:name=".view.payment.PaymentByOnlineActivity"
         android:label="@string/online_pay"
         android:screenOrientation="portrait"
