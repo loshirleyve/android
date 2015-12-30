@@ -63,6 +63,14 @@ public class PaymentRefundActivity extends JupiterFragmentActivity {
         loadData();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == JupiterCommand.RESULT_CODE_OK) {
+            setResult(JupiterCommand.RESULT_CODE_OK);
+        }
+    }
+
     private void loadData() {
         // 加载退款列表原因
     }

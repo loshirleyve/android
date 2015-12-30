@@ -84,6 +84,14 @@ public class PaymentResultActivity extends JupiterFragmentActivity {
         loadData();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == JupiterCommand.RESULT_CODE_OK) {
+            setResult(JupiterCommand.RESULT_CODE_OK);
+        }
+    }
+
     private void buildView() {
         titleBarLayout.getTitleLeft().setOnClickListener(new View.OnClickListener() {
             @Override
