@@ -80,10 +80,11 @@ public class ClientActivity extends JupiterFragmentActivity {
     private LinkedList<Client> showClients = new LinkedList<>();
 
     private EditClientCommand command;
-    private ClientItemLayout clientItemLayout;
 
     private String pullRowid = null;
     private String pushRowid = null;
+
+    private String searchInstName = null;
 
     public static void start(Activity activity, ClientCommand command) {
         Intent intent = new Intent(activity, ClientActivity.class);
@@ -168,6 +169,7 @@ public class ClientActivity extends JupiterFragmentActivity {
         final Resource resource = resourceFactory.create("QueryClientsByAdviser");
         resource.param("instid", sessionManager.getInst().getId())
                 .param("userid", sessionManager.getUser().getId());
+        resource.param("name",searchInstName);
         resource.page().setRowid(rowid).setDir(dir);
         resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
             @Override
@@ -233,20 +235,13 @@ public class ClientActivity extends JupiterFragmentActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            showClients.clear();
-
-            if (!AssertValue.isNotNullAndNotEmpty(s.toString())) {
-                for (Client client : clients) {
-                    showClients.add(client);
-                }
+            if (AssertValue.isNotNullAndNotEmpty(s.toString())) {
+                searchInstName = s.toString();
             } else {
-                for (Client client : clients) {
-                    if (StringUtil.contains(client.getName(), s.toString(), true)) {
-                        showClients.add(client);
-                    }
-                }
+                searchInstName = null;
             }
-            clientListAdapter.notifyDataSetChanged();
+            showClients.clear();
+            ClientActivity.this.autoRefresh();
         }
     };
 
