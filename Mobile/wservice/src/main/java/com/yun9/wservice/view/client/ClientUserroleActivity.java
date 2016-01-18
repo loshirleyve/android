@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.ClientAndUsers;
 import com.yun9.wservice.model.ClientUser;
+import com.yun9.wservice.model.CtrlCode;
 import com.yun9.wservice.view.dynamic.OrgAndUserBean;
 import com.yun9.wservice.view.login.LoginCommand;
 import com.yun9.wservice.view.login.LoginMainActivity;
@@ -122,8 +124,8 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
             List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
-            if (AssertValue.isNotNullAndNotEmpty(users)) {
-                // 添加业务员OR专属顾问：AddOrUpdateClientUserService
+            if (AssertValue.isNotNullAndNotEmpty(users) && AssertValue.isNotNullAndNotEmpty(userrole)) {
+                addNewOne(users.get(0));
             }
         }
     }
@@ -276,28 +278,79 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
-//        popupWindow.setAnimationStyle(R.style.top2bottom_bottom2top);
 
-        addNewSaleManPopLayout.getTx_addNewAdvisor().setOnClickListener(new View.OnClickListener() {
+        loadUserRoleList();
+
+    }
+
+    private void loadUserRoleList() {
+        Resource resource1 = resourceFactory.create("QueryCtrlCode");
+        resource1.param("defno", "userrole");
+        resource1.invok(new AsyncHttpResponseCallback() {
+
             @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-//                userrole = v.getTag();
-                OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true)
-                        .setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK)
-                        .setUserid(sessionManager.getUser().getId())
-                        .setInstid(sessionManager.getInst().getId());
-                OrgCompositeActivity.start(ClientUserroleActivity.this, orgCompositeCommand);
+            public void onSuccess(Response response) {
+                final List<CtrlCode> ctrlCodes = (List<CtrlCode>) response.getPayload();
+                if (AssertValue.isNotNullAndNotEmpty(ctrlCodes)) {
+                    JupiterAdapter adapter = new JupiterAdapter() {
+                        @Override
+                        public int getCount() {
+                            return ctrlCodes.size();
+                        }
+
+                        @Override
+                        public Object getItem(int position) {
+                            return ctrlCodes.get(position);
+                        }
+
+                        @Override
+                        public long getItemId(int position) {
+                            return position;
+                        }
+
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            TextView textView = null;
+                            if (convertView == null) {
+                                textView = new TextView(ClientUserroleActivity.this);
+                                textView.setPadding(10, 10, 10, 10);
+                                textView.setGravity(Gravity.CENTER);
+                                convertView = textView;
+                            } else {
+                                textView = (TextView) convertView;
+                            }
+                            textView.setTag(ctrlCodes.get(position));
+                            textView.setText(ctrlCodes.get(position).getName());
+                            return convertView;
+                        }
+                    };
+                    addNewSaleManPopLayout.getListView().setAdapter(adapter);
+                    addNewSaleManPopLayout.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            userrole = ((CtrlCode)view.getTag()).getNo();
+                            popupWindow.dismiss();
+                            OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true)
+                                    .setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK)
+                                    .setUserid(sessionManager.getUser().getId())
+                                    .setInstid(sessionManager.getInst().getId())
+                                    .setSingleSelect(true);
+                            OrgCompositeActivity.start(ClientUserroleActivity.this, orgCompositeCommand);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Response response) {
+
+            }
+
+            @Override
+            public void onFinally(Response response) {
+
             }
         });
-
-        addNewSaleManPopLayout.getTx_addNewSaleMan().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
     }
 
     private void showPopupWindow() {

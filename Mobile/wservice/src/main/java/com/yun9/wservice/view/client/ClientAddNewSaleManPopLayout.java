@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
 
@@ -15,8 +16,7 @@ import com.yun9.wservice.R;
  */
 public class ClientAddNewSaleManPopLayout extends JupiterRelativeLayout{
 
-    private TextView tx_addNewAdvisor;
-    private TextView tx_addNewSaleMan;
+    private JupiterListView listView;
 
     public ClientAddNewSaleManPopLayout(Context context) {
         super(context);
@@ -37,25 +37,15 @@ public class ClientAddNewSaleManPopLayout extends JupiterRelativeLayout{
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-        tx_addNewAdvisor = (TextView) this.findViewById(R.id.addNewAdvisor);
-        tx_addNewSaleMan = (TextView) this.findViewById(R.id.addNewSaleMan);
+        listView = (JupiterListView) this.findViewById(R.id.user_role_list);
     }
 
-    public TextView getTx_addNewAdvisor() {
-        return tx_addNewAdvisor;
+    public JupiterListView getListView() {
+        return listView;
     }
 
-    public ClientAddNewSaleManPopLayout setTx_addNewAdvisor(TextView tx_addNewAdvisor) {
-        this.tx_addNewAdvisor = tx_addNewAdvisor;
-        return this;
-    }
-
-    public TextView getTx_addNewSaleMan() {
-        return tx_addNewSaleMan;
-    }
-
-    public ClientAddNewSaleManPopLayout setTx_addNewSaleMan(TextView tx_addNewSaleMan) {
-        this.tx_addNewSaleMan = tx_addNewSaleMan;
+    public ClientAddNewSaleManPopLayout setListView(JupiterListView listView) {
+        this.listView = listView;
         return this;
     }
 }
