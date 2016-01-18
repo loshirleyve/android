@@ -151,6 +151,7 @@ public class LoginActivity extends JupiterFragmentActivity {
                 String cause = response.getCause();
                 //登录失败
                 Toast.makeText(LoginActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+                setLoading(false);
             }
 
             @Override

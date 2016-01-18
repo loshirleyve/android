@@ -37,6 +37,8 @@ import java.util.regex.Pattern;
 
 /**
  * Created by li on 2015/7/20.
+ *
+ * 编辑界面
  */
 public class ClientDetailActivity extends JupiterFragmentActivity {
     private List<SerialableEntry<String, String>> optionMap = new ArrayList<>();

@@ -39,6 +39,7 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.enums.MsgFromType;
 import com.yun9.wservice.enums.SourceType;
+import com.yun9.wservice.manager.support.TextViewHelper;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardComment;
 import com.yun9.wservice.model.MsgCardPraise;
@@ -368,6 +369,9 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
         msgCardWidget.buildWithData(msgCard, msgCard.getContent());
         msgCardWidget.getIsNewIv().setVisibility(View.GONE);
 
+        // 过滤URL
+        TextViewHelper.replaceUrlWithClickSpan(MsgCardDetailActivity.this, msgCardWidget.getContentTV(), "[点击查看]");
+
         commonItem.getDescTextTV().setText(msgCard.getCommentcount() + "");
         shareItem.getDescTextTV().setText(msgCard.getSharecount() + "");
         praiseItem.getDescTextTV().setText(msgCard.getPraisecount() + "");
@@ -414,6 +418,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             ImageLoaderUtil.getInstance(mContext).displayImage(cacheUser.getUrl(), itemWidget.getRightIv(), R.drawable.user_head);
             itemWidget.getRightTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
             itemWidget.getRightContentTv().setText(msgCardComment.getContent());
+            // 过滤URL
+            TextViewHelper.replaceUrlWithClickSpan(MsgCardDetailActivity.this, itemWidget.getRightContentTv(), "[点击查看]");
         } else {
             itemWidget.getRightLl().setVisibility(View.GONE);
             itemWidget.getLeftTitleTv().setText(cacheUser.getName());
@@ -424,6 +430,8 @@ public class MsgCardDetailActivity extends JupiterFragmentActivity {
             }
             itemWidget.getLeftTimeTv().setText(DateUtil.timeAgo(msgCardComment.getCreatedate()));
             itemWidget.getLeftContentTv().setText(msgCardComment.getContent());
+            // 过滤URL
+            TextViewHelper.replaceUrlWithClickSpan(MsgCardDetailActivity.this, itemWidget.getLeftContentTv(), "[点击查看]");
         }
         return itemWidget;
     }

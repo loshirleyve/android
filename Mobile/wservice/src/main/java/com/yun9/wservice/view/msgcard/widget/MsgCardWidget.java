@@ -1,7 +1,12 @@
 package com.yun9.wservice.view.msgcard.widget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yun9.jupiter.cache.FileCache;
 import com.yun9.jupiter.image.ImageBrowerActivity;
@@ -19,19 +25,25 @@ import com.yun9.jupiter.util.AssertValue;
 import com.yun9.jupiter.util.DateUtil;
 import com.yun9.jupiter.util.FileUtil;
 import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.Logger;
 import com.yun9.jupiter.view.JupiterGridView;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterListView;
 import com.yun9.jupiter.widget.JupiterRelativeLayout;
 import com.yun9.wservice.R;
+import com.yun9.wservice.manager.support.TextViewHelper;
 import com.yun9.wservice.model.MsgCard;
 import com.yun9.wservice.model.MsgCardAttachment;
 import com.yun9.wservice.model.State;
+import com.yun9.wservice.view.common.SimpleBrowserCommand;
 import com.yun9.wservice.widget.AlbumImageGridItem;
 import com.yun9.wservice.widget.FileItemWidget;
+import com.yun9.wservice.widget.Y9UrlSpan;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Leon on 15/4/24.
@@ -63,6 +75,8 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
     private MsgCard mMsgCard;
 
+    private Context mContext;
+
     private List<FileBean> imageAttachments = new ArrayList<>();
 
     private List<FileBean> docAttachments = new ArrayList<>();
@@ -86,7 +100,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
     @Override
     protected void initViews(Context context, AttributeSet attrs, int defStyle) {
-
+        this.mContext = context;
         mainRl = (RelativeLayout) findViewById(R.id.msg_card_rl);
 
         contentTV = (TextView) this.findViewById(R.id.msg_card_content_tv);
@@ -172,13 +186,13 @@ public class MsgCardWidget extends JupiterRelativeLayout {
     }
 
 
-    public void buildWithData(MsgCard msgCard,String content) {
+    public void buildWithData(MsgCard msgCard, String content) {
         this.mMsgCard = msgCard;
 
         if (!AssertValue.isNotNull(msgCard))
             return;
 
-        if (msgCard.getRead() > 0){
+        if (msgCard.getRead() > 0) {
             isNewIv.setVisibility(GONE);
         } else {
             isNewIv.setVisibility(VISIBLE);
@@ -226,7 +240,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
 
         //content
-            contentTV.setText(content);
+        contentTV.setText(content);
 
         //location
         locationTV.setText(msgCard.getLocationlabel());
@@ -239,9 +253,9 @@ public class MsgCardWidget extends JupiterRelativeLayout {
         }
 
         //praiseIv
-        if(mMsgCard.isMypraise()){
+        if (mMsgCard.isMypraise()) {
             praiseIV.setImageResource(R.drawable.some_praise);
-        }else {
+        } else {
             praiseIV.setImageResource(R.drawable.some_praise1);
         }
         //Praisecount
@@ -255,7 +269,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
         if (AssertValue.isNotNull(msgCard.getLastComment())) {
             lastCommentContentTV.setText(msgCard.getLastComment().getContent());
-        }else{
+        } else {
             lastCommentContentTV.setText("");
         }
 

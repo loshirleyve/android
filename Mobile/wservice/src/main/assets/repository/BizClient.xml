@@ -52,4 +52,11 @@
         <type>yun9</type>
     </repository>
 
+    <!-- 通过id查询机构客户信息 -->
+    <repository>
+        <name>AddOrUpdateClientUser</name>
+        <action>com.yun9.ws.biz.service.AddOrUpdateClientUserService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

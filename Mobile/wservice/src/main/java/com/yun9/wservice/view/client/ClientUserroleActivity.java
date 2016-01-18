@@ -4,20 +4,30 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
+import com.yun9.jupiter.manager.SessionManager;
+import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.ImageLoaderUtil;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
@@ -26,6 +36,12 @@ import com.yun9.mobile.annotation.ViewInject;
 import com.yun9.wservice.R;
 import com.yun9.wservice.model.ClientAndUsers;
 import com.yun9.wservice.model.ClientUser;
+import com.yun9.wservice.view.dynamic.OrgAndUserBean;
+import com.yun9.wservice.view.login.LoginCommand;
+import com.yun9.wservice.view.login.LoginMainActivity;
+import com.yun9.wservice.view.org.OrgCompositeActivity;
+import com.yun9.wservice.view.org.OrgCompositeCommand;
+import com.yun9.wservice.view.product.ProductClassifyPopLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +65,18 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     @ViewInject(id = R.id.rotate_header_list_view_frame)
     private PtrClassicFrameLayout ptrClassicFrameLayout;
 
+    @BeanInject
+    private SessionManager sessionManager;
+
+    private PopupWindow popupWindow;
+
+    private ClientAddNewSaleManPopLayout addNewSaleManPopLayout;
+
     private List<ClientUser> clientUsers;
     private String clientid;
     private EditClientCommand command;
 
+    private String userrole;// 将要新增的角色
     @BeanInject
     private ResourceFactory resourceFactory;
 
@@ -74,6 +98,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         titleBarLayout.getTitleLeftIV().setOnClickListener(onBackClickListener);
+        titleBarLayout.getTitleRightTv().setOnClickListener(onAddNewSaleMan);
         command = (EditClientCommand) getIntent().getSerializableExtra("command");
         if (AssertValue.isNotNull(command) && AssertValue.isNotNullAndNotEmpty(command.getClientId())) {
             clientid = command.getClientId();
@@ -91,6 +116,40 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             }
         });
         autoRefresh();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == OrgCompositeCommand.REQUEST_CODE && resultCode == OrgCompositeCommand.RESULT_CODE_OK) {
+            List<User> users = (List<User>) data.getSerializableExtra(OrgCompositeCommand.PARAM_USER);
+            if (AssertValue.isNotNullAndNotEmpty(users)) {
+                // 添加业务员OR专属顾问：AddOrUpdateClientUserService
+            }
+        }
+    }
+
+    private void addNewOne(User user) {
+        final Resource resource = resourceFactory.create("AddOrUpdateClientUser");
+        resource.param("clientid", clientid);
+        resource.param("userid", user.getId());
+        resource.param("userrole", userrole);
+        resource.invok(new AsyncHttpResponseCallback() {
+
+            @Override
+            public void onSuccess(Response response) {
+
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                showToast(response.getCause());
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                autoRefresh();
+            }
+        });
     }
 
     private void refresh() {
@@ -118,6 +177,13 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         }
     };
 
+    private View.OnClickListener onAddNewSaleMan = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            showPopupWindow();
+        }
+    };
+
     private void getConsultantSalesman() {
         final Resource resource = resourceFactory.create("QueryInstClientInfoById");
         resource.param("instClient", clientid);
@@ -133,6 +199,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
                     }
                     showUp();
                 }
+                initPopWindow();
             }
 
             @Override
@@ -198,6 +265,50 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         }
     }
 
+    /**
+     * 数据完成时才调用
+     */
+    private void initPopWindow() {
+        addNewSaleManPopLayout = new ClientAddNewSaleManPopLayout(mContext);
+        popupWindow = new PopupWindow(addNewSaleManPopLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOnDismissListener(onDismissListener);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+//        popupWindow.setAnimationStyle(R.style.top2bottom_bottom2top);
+
+        addNewSaleManPopLayout.getTx_addNewAdvisor().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+//                userrole = v.getTag();
+                OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true)
+                        .setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK)
+                        .setUserid(sessionManager.getUser().getId())
+                        .setInstid(sessionManager.getInst().getId());
+                OrgCompositeActivity.start(ClientUserroleActivity.this, orgCompositeCommand);
+            }
+        });
+
+        addNewSaleManPopLayout.getTx_addNewSaleMan().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+    }
+
+    private void showPopupWindow() {
+        if (popupWindow != null) {
+            WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+            lp.alpha = 1f;
+            this.getWindow().setAttributes(lp);
+            popupWindow.showAtLocation(titleBarLayout, Gravity.TOP, 0, titleBarLayout.getMeasuredHeight()+50);
+        }
+    }
+
     private void queryAndDisplayUserName(final ClientUser clientUser, final ClientUserroleItemWidget clientUserroleItemWidget) {
         Resource resource1 = resourceFactory.create("QueryUserInfoByIdService");
         resource1.param("userid", clientUser.getUserid());
@@ -221,4 +332,13 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             }
         });
     }
+
+    private PopupWindow.OnDismissListener onDismissListener = new PopupWindow.OnDismissListener() {
+        @Override
+        public void onDismiss() {
+            WindowManager.LayoutParams lp = ClientUserroleActivity.this.getWindow().getAttributes();
+            lp.alpha = 1f;
+            ClientUserroleActivity.this.getWindow().setAttributes(lp);
+        }
+    };
 }

@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:titleLeftIcoSrc="@drawable/arrow_left"
+        app:titleRightTextVisibility="true"
+        app:titleRightText="添加"
         app:titleLeftIcoVisibility="true"
         app:titleText="@string/viewConsultantAndSalesman" />
 

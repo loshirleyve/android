@@ -28,6 +28,8 @@ import com.yun9.wservice.model.Client;
 
 /**
  * Created by li on 2015/8/10.
+ *
+ * 简介界面
  */
 public class ClientDetaiActivity extends JupiterFragmentActivity {
     private EditClientCommand command;
