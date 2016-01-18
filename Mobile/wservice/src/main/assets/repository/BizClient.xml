@@ -59,4 +59,10 @@
         <type>yun9</type>
     </repository>
 
+    <repository>
+        <name>RemoveClientUser</name>
+        <action>com.yun9.ws.biz.service.RemoveClientUserService</action>
+        <type>yun9</type>
+    </repository>
+
 </repositorys>

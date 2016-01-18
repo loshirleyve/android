@@ -7,13 +7,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,15 +20,13 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.yun9.jupiter.http.AsyncHttpResponseCallback;
 import com.yun9.jupiter.http.Response;
 import com.yun9.jupiter.manager.SessionManager;
-import com.yun9.jupiter.model.Org;
 import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
-import com.yun9.jupiter.util.ImageLoaderUtil;
-import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
+import com.yun9.jupiter.widget.JupiterTextIco;
 import com.yun9.jupiter.widget.JupiterTitleBarLayout;
 import com.yun9.mobile.annotation.BeanInject;
 import com.yun9.mobile.annotation.ViewInject;
@@ -38,12 +34,9 @@ import com.yun9.wservice.R;
 import com.yun9.wservice.model.ClientAndUsers;
 import com.yun9.wservice.model.ClientUser;
 import com.yun9.wservice.model.CtrlCode;
-import com.yun9.wservice.view.dynamic.OrgAndUserBean;
-import com.yun9.wservice.view.login.LoginCommand;
-import com.yun9.wservice.view.login.LoginMainActivity;
 import com.yun9.wservice.view.org.OrgCompositeActivity;
 import com.yun9.wservice.view.org.OrgCompositeCommand;
-import com.yun9.wservice.view.product.ProductClassifyPopLayout;
+import com.yun9.wservice.view.org.OrgUserOperateLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +66,14 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     private PopupWindow popupWindow;
 
     private ClientAddNewSaleManPopLayout addNewSaleManPopLayout;
+
+    private ProgressDialog registerDialog;
+
+    private ClientConsultantSalesmanAdapter listViewAdapter;
+
+    private AdviserOperateLayout adviserOperateLayout;
+
+    private PopupWindow adviserOperatePopupW;
 
     private List<ClientUser> clientUsers;
     private String clientid;
@@ -217,7 +218,8 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     }
 
     private void showUp() {
-        listView.setAdapter(new ClientConsultantSalesmanAdapter(mContext));
+        listViewAdapter=new ClientConsultantSalesmanAdapter(mContext);
+        listView.setAdapter(listViewAdapter);
     }
 
     private class ClientConsultantSalesmanAdapter extends JupiterAdapter {
@@ -252,6 +254,8 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             } else {
                 clientUserroleItemWidget = new ClientUserroleItemWidget(mContext);
             }
+            clientUserroleItemWidget.setTag(clientUser);
+            clientUserroleItemWidget.setOnLongClickListener(onLongAdviserClick);
             if (AssertValue.isNotNull(clientUser)) {
                 switch (clientUser.getUserrole()) {
                     case "adviser":
@@ -272,8 +276,9 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
      */
     private void initPopWindow() {
         addNewSaleManPopLayout = new ClientAddNewSaleManPopLayout(mContext);
-        popupWindow = new PopupWindow(addNewSaleManPopLayout, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+//        popupWindow = new PopupWindow(addNewSaleManPopLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(addNewSaleManPopLayout, 200,200);
         popupWindow.setOnDismissListener(onDismissListener);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setOutsideTouchable(true);
@@ -358,7 +363,8 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             WindowManager.LayoutParams lp = this.getWindow().getAttributes();
             lp.alpha = 1f;
             this.getWindow().setAttributes(lp);
-            popupWindow.showAtLocation(titleBarLayout, Gravity.TOP, 0, titleBarLayout.getMeasuredHeight()+50);
+            popupWindow.showAtLocation(titleBarLayout, Gravity.NO_GRAVITY,titleBarLayout.getMeasuredWidth()-200,titleBarLayout.getMeasuredHeight() + 50);
+
         }
     }
 
@@ -394,4 +400,75 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             ClientUserroleActivity.this.getWindow().setAttributes(lp);
         }
     };
+
+
+    View.OnLongClickListener onLongAdviserClick = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            final ClientUserroleItemWidget item=(ClientUserroleItemWidget)v;
+            ClientUser clientUser=(ClientUser)v.getTag();
+            if(clientUser!=null)
+            {
+                ininPupup(item,clientUser);
+            }
+            return false;
+        }
+    };
+
+
+    public void ininPupup(final ClientUserroleItemWidget item,final ClientUser clientUser) {
+        adviserOperateLayout = new AdviserOperateLayout(mContext);
+        adviserOperateLayout.getCancle().setOnClickListener(onAdviserCancelClickListener);
+        adviserOperatePopupW = new PopupWindow(adviserOperateLayout, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        adviserOperatePopupW.setOnDismissListener(onDismissListener);
+        adviserOperatePopupW.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        adviserOperatePopupW.setOutsideTouchable(true);
+        adviserOperatePopupW.setFocusable(true);
+        adviserOperateLayout.getDelete_orguser().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteClientUserItem(item,clientUser);
+            }
+        });
+        adviserOperatePopupW.setAnimationStyle(R.style.bottom2top_top2bottom);
+        WindowManager.LayoutParams lp = this.getWindow().getAttributes();
+        lp.alpha = 0.4f;
+        this.getWindow().setAttributes(lp);
+        adviserOperatePopupW.showAtLocation(titleBarLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        adviserOperatePopupW.update();
+    }
+
+    private View.OnClickListener onAdviserCancelClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            adviserOperatePopupW.dismiss();
+        }
+    };
+
+
+    //删除用户的一项的方法
+    private void deleteClientUserItem(final ClientUserroleItemWidget item,ClientUser clientUser) {
+        registerDialog = ProgressDialog.show(ClientUserroleActivity.this, null, getResources().getString(R.string.app_wating), true);
+        Resource resource = resourceFactory.create("RemoveClientUser");
+        resource.param("id", clientUser.getId());
+        resourceFactory.invok(resource, new AsyncHttpResponseCallback() {
+            @Override
+            public void onSuccess(Response response) {
+                refresh();
+                Toast.makeText(ClientUserroleActivity.this, R.string.delete_tip, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Response response) {
+                Toast.makeText(ClientUserroleActivity.this, response.getCause(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinally(Response response) {
+                registerDialog.dismiss();
+                adviserOperatePopupW.dismiss();
+            }
+        });
+    }
 }

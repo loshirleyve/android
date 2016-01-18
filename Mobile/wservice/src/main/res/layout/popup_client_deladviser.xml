@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:alpha="0.8">
+
+    <LinearLayout
+        android:id="@+id/ll_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/delete_adviser"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/round_textview"
+            android:gravity="center"
+            android:text="@string/delete_adviser"
+            android:textColor="@color/red"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:alpha="0.5"
+            android:background="@color/devide_line" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cancle"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@id/ll_exit"
+        android:layout_margin="10dp"
+        android:background="@drawable/round_textview"
+        android:gravity="center"
+        android:text="@string/app_cancel"
+        android:textColor="@color/blue"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/cancle"
+        android:layout_marginTop="5dp" />
+
+</RelativeLayout>
