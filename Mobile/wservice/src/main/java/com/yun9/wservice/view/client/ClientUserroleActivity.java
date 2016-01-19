@@ -24,6 +24,7 @@ import com.yun9.jupiter.model.User;
 import com.yun9.jupiter.repository.Resource;
 import com.yun9.jupiter.repository.ResourceFactory;
 import com.yun9.jupiter.util.AssertValue;
+import com.yun9.jupiter.util.PublicHelp;
 import com.yun9.jupiter.view.JupiterFragmentActivity;
 import com.yun9.jupiter.widget.JupiterAdapter;
 import com.yun9.jupiter.widget.JupiterTextIco;
@@ -218,7 +219,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     }
 
     private void showUp() {
-        listViewAdapter=new ClientConsultantSalesmanAdapter(mContext);
+        listViewAdapter = new ClientConsultantSalesmanAdapter(mContext);
         listView.setAdapter(listViewAdapter);
     }
 
@@ -276,7 +277,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
      */
     private void initPopWindow() {
         addNewSaleManPopLayout = new ClientAddNewSaleManPopLayout(mContext);
-        popupWindow = new PopupWindow(addNewSaleManPopLayout, 300,300);
+        popupWindow = new PopupWindow(addNewSaleManPopLayout, PublicHelp.dip2px(ClientUserroleActivity.this, 150), ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setOnDismissListener(onDismissListener);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setOutsideTouchable(true);
@@ -316,7 +317,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
                             TextView textView = null;
                             if (convertView == null) {
                                 textView = new TextView(ClientUserroleActivity.this);
-                                textView.setPadding(10, 10, 10, 10);
+                                textView.setPadding(10, 15, 10, 15);
                                 textView.setGravity(Gravity.CENTER);
                                 convertView = textView;
                             } else {
@@ -331,7 +332,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
                     addNewSaleManPopLayout.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            userrole = ((CtrlCode)view.getTag()).getNo();
+                            userrole = ((CtrlCode) view.getTag()).getNo();
                             popupWindow.dismiss();
                             OrgCompositeCommand orgCompositeCommand = new OrgCompositeCommand().setEdit(true)
                                     .setCompleteType(OrgCompositeCommand.COMPLETE_TYPE_CALLBACK)
@@ -361,7 +362,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
             WindowManager.LayoutParams lp = this.getWindow().getAttributes();
             lp.alpha = 1f;
             this.getWindow().setAttributes(lp);
-            popupWindow.showAtLocation(titleBarLayout, Gravity.NO_GRAVITY,titleBarLayout.getMeasuredWidth()-200,titleBarLayout.getMeasuredHeight() + 50);
+            popupWindow.showAtLocation(titleBarLayout, Gravity.NO_GRAVITY, titleBarLayout.getMeasuredWidth() - 200, titleBarLayout.getMeasuredHeight() + 50);
 
         }
     }
@@ -403,18 +404,17 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
     View.OnLongClickListener onLongAdviserClick = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            final ClientUserroleItemWidget item=(ClientUserroleItemWidget)v;
-            ClientUser clientUser=(ClientUser)v.getTag();
-            if(clientUser!=null)
-            {
-                ininPupup(item,clientUser);
+            final ClientUserroleItemWidget item = (ClientUserroleItemWidget) v;
+            ClientUser clientUser = (ClientUser) v.getTag();
+            if (clientUser != null) {
+                ininPupup(item, clientUser);
             }
             return false;
         }
     };
 
 
-    public void ininPupup(final ClientUserroleItemWidget item,final ClientUser clientUser) {
+    public void ininPupup(final ClientUserroleItemWidget item, final ClientUser clientUser) {
         adviserOperateLayout = new AdviserOperateLayout(mContext);
         adviserOperateLayout.getCancle().setOnClickListener(onAdviserCancelClickListener);
         adviserOperatePopupW = new PopupWindow(adviserOperateLayout, ViewGroup.LayoutParams.MATCH_PARENT,
@@ -426,7 +426,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
         adviserOperateLayout.getDelete_orguser().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteClientUserItem(item,clientUser);
+                deleteClientUserItem(item, clientUser);
             }
         });
         adviserOperatePopupW.setAnimationStyle(R.style.bottom2top_top2bottom);
@@ -446,7 +446,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
 
 
     //删除用户的一项的方法
-    private void deleteClientUserItem(final ClientUserroleItemWidget item,ClientUser clientUser) {
+    private void deleteClientUserItem(final ClientUserroleItemWidget item, ClientUser clientUser) {
         registerDialog = ProgressDialog.show(ClientUserroleActivity.this, null, getResources().getString(R.string.app_wating), true);
         Resource resource = resourceFactory.create("RemoveClientUser");
         resource.param("id", clientUser.getId());
