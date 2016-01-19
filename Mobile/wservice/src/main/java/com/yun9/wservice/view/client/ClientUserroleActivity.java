@@ -276,9 +276,7 @@ public class ClientUserroleActivity extends JupiterFragmentActivity {
      */
     private void initPopWindow() {
         addNewSaleManPopLayout = new ClientAddNewSaleManPopLayout(mContext);
-//        popupWindow = new PopupWindow(addNewSaleManPopLayout, ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow = new PopupWindow(addNewSaleManPopLayout, 200,200);
+        popupWindow = new PopupWindow(addNewSaleManPopLayout, 300,300);
         popupWindow.setOnDismissListener(onDismissListener);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setOutsideTouchable(true);
