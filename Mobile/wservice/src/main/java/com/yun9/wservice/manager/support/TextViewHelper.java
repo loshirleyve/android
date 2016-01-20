@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public class TextViewHelper {
 
-    private static Pattern URL_PATTERN = Pattern.compile("(http:|https:)//[A-Za-z0-9\\._\\?%&+\\-=/#]*", Pattern.CASE_INSENSITIVE);
+    private static Pattern URL_PATTERN = Pattern.compile("(http:|https:)//[A-Za-z0-9\\._\\?%&+\\-=/#:]*", Pattern.CASE_INSENSITIVE);
 
     public static void replaceUrlWithClickSpan(Activity activity, TextView textView, String replcaseText) {
         if (!AssertValue.isNotNullAndNotEmpty(replcaseText)) {
