@@ -20,6 +20,7 @@ public class Y9UrlSpan extends ClickableSpan {
 
     private Activity activity;
     private SimpleBrowserCommand command;
+    private String originUrl;
 
     private static String __SECRET_CODE_PARAM_NAME = "secretCode";
 
@@ -29,7 +30,10 @@ public class Y9UrlSpan extends ClickableSpan {
     }
     @Override
     public void onClick(View widget) {
-        this.command.setUrl(appendSecretCode(this.command.getUrl()));
+        if (!AssertValue.isNotNullAndNotEmpty(originUrl)) {
+            originUrl = this.command.getUrl();
+        }
+        this.command.setUrl(appendSecretCode(originUrl));
         SimpleBrowserActivity.start(this.activity,this.command);
     }
 

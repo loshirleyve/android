@@ -240,7 +240,7 @@ public class MsgCardWidget extends JupiterRelativeLayout {
 
 
         //content
-        contentTV.setText(content);
+        contentTV.setText(content+" http://192.168.31.166:3000/common/bizRedirect?bizType=order&bizPk=10000002292367我啦");
 
         //location
         locationTV.setText(msgCard.getLocationlabel());
