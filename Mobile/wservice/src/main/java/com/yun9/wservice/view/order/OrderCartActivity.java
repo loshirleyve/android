@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -48,6 +49,9 @@ public class OrderCartActivity extends JupiterFragmentActivity{
 
     @ViewInject(id=R.id.order_list)
     private ListView orderLV;
+
+    @ViewInject(id=R.id.remark)
+    private EditText remarkET;
 
     @ViewInject(id=R.id.order_fee__tip)
     private TextView orderFeeTipTV;
@@ -120,6 +124,7 @@ public class OrderCartActivity extends JupiterFragmentActivity{
         Resource resource = resourceFactory.create("UpdateOrderByBuyService");
         resource.param("orderid", orderCartInfoWrapper.getId());
         resource.param("userid", sessionManager.getUser().getId());
+        resource.param("remark", remarkET.getText().toString());
         resource.invok(new AsyncHttpResponseCallback() {
             @Override
             public void onSuccess(Response response) {
